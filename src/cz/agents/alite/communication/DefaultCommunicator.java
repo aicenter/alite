@@ -1,0 +1,82 @@
+package cz.agents.alite.communication;
+
+import java.util.LinkedList;
+
+import cz.agents.alite.communication.channel.DefaultCommunicationChannel;
+import cz.agents.alite.communication.channel.CommunicationChannelException;
+import cz.agents.alite.communication.content.Content;
+import cz.agents.alite.communication.content.error.ErrorContent;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+/**
+ *
+ * @author vokrinek
+ */
+public class DefaultCommunicator implements Communicator {
+
+    private final String address;
+    private final LinkedList<DefaultCommunicationChannel> channels = new LinkedList<DefaultCommunicationChannel>();
+    private final List<MessageHandler> messageHandlers = new CopyOnWriteArrayList<MessageHandler>();
+
+    private static long counter = System.currentTimeMillis();
+
+    public DefaultCommunicator(String address) {
+        this.address = address;
+    }
+
+    public void addChannel(DefaultCommunicationChannel channel) {
+        channels.add(channel);
+    }
+
+    @Override
+    public String getAddress() {
+        return address;
+    }
+
+    @Override
+    public Message createMessage(Content content) {
+        return new Message(address, content, generateId());
+    }
+
+    @Override
+    public Message createReply(Message message, Content content) {
+        Message reply = new Message(address, content, generateId());
+        reply.addReceiver(message.getSender());
+        return reply;
+    }
+
+    @Override
+    public void addMessageHandler(MessageHandler handler) {
+        messageHandlers.add(handler);
+    }
+
+    @Override
+    public void removeMessageHandler(MessageHandler handler) {
+        messageHandlers.remove(handler);
+    }
+
+    @Override
+    public void sendMessage(Message message) {
+        for (DefaultCommunicationChannel channel : channels) {
+            try {
+                channel.sendMessage(message);
+            } catch (CommunicationChannelException e) {
+                Message errorMessage = createMessage(new ErrorContent(e));
+                errorMessage.addReceiver(getAddress());
+                receiveMessage(errorMessage);
+            }
+        }
+    };
+
+    @Override
+    public void receiveMessage(Message message) {
+        for (MessageHandler messageHandler : messageHandlers) {
+            messageHandler.notify(message);
+        }
+    }
+
+    private long generateId() {
+        return address.hashCode() + counter;
+    }
+}
