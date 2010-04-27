@@ -1,0 +1,24 @@
+
+usePlugin 'java'
+
+version = '0.2'
+
+task copyLibs(type: Copy) {
+    from 'libs'
+    into 'build/libs'
+}
+
+compileJava.dependsOn copyLibs
+
+sourceSets {
+    main {
+        classesDir = new File('build/classes')
+        compileClasspath = fileTree('build').include('**/*.jar')
+        java {
+            srcDir 'src'
+        }
+        resources {
+            srcDir 'resources'
+        }
+    }
+}
