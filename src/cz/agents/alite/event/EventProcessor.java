@@ -45,6 +45,7 @@ public class EventProcessor {
         addEvent(type, recipient, owner, content, 1);
     }
 
+    // TODO: refactorize the recipients/owners/senders/groups and similar
     public void addEvent(EventType type, EventHandler recipient, String owner, Object content, long deltaTime) {
         if (deltaTime < 1) {
             throw new IllegalArgumentException("deltaTime must be greater then zero!");
