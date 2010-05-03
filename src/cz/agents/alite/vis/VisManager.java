@@ -18,8 +18,25 @@ import cz.agents.alite.vis.layer.VisLayer;
 
 
 /**
+ * The VisManager is a singleton holding the visualization layers and providing
+ * the drawing cycle of them.
  *
- * @author vokrinek
+ * The VisManager has to be explicitly initialized by the init() method. Without
+ * its calling, the registered layers will be held, but the Vis singleton will not
+ * be used, so the visualization window will not be created and shown. This feature enables
+ * to use a live code for registering of the layers, but with conditioned turning
+ * on of the visualization window only by the VisManager.init() call.
+ *
+ * If the manager is not initialized, the drawing cycle is not started, so the
+ * layers do not request any data from the visualized elements.
+ *
+ * Besides the registration and un-registration of the layers, the manager
+ * also provides saving of a visualization state into a image file
+ * (the saveToFile() method).
+ *
+ *
+ * @author Jiri Vokrinek
+ * @author Antonin Komenda
  */
 public class VisManager {
 

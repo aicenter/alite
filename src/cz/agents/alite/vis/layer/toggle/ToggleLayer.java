@@ -4,6 +4,11 @@ import java.awt.Graphics2D;
 
 import cz.agents.alite.vis.layer.GroupLayer;
 
+/**
+ * A ToggleLayer can simply switch, if the sub-layers are drawn or not.
+ *
+ * @author Antonin Komenda
+ */
 public class ToggleLayer extends GroupLayer {
 
     private boolean enabled = true;
