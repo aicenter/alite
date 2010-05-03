@@ -9,7 +9,7 @@ import cz.agents.alite.vis.Vis;
 import cz.agents.alite.vis.element.Line;
 import cz.agents.alite.vis.element.aggregation.LineElements;
 
-// TODO: should be LineLayerExtender (no inheritance!)
+// TODO: should be an extender of the LineLayer (inheritance is bad here!)
 public class ArrowLayer extends LineLayer {
 
     protected ArrowLayer(LineElements lineElements) {

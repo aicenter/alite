@@ -7,6 +7,28 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The event processor is a wrapper for an event-queue cycle.
+ *
+ * On the fly, the processor lines up events added into it, and "sends" them
+ * to their particular recipients in a particular order. By sending,
+ * it is meant to call a {@link EventHandler}.handleEvent() method, with the
+ * event as an argument. An event handler needs to be registered into the
+ * processor to receive the events.
+ *
+ * The event is sent to all event handlers registered with the EventProcessor,
+ * if its recipient is <code>null</code> and it is sent to the particular event
+ * handler otherwise.
+ *
+ * The event-queue cycle can be paused/unpaused by the setRunning() method.
+ * By the default, the cycle is started running.
+ *
+ * The time of currently processed events can be obtained by the getCurrentTime()
+ * method.
+ *
+ *
+ * @author Antonin Komenda
+ */
 public class EventProcessor {
 
     private boolean running = true;

@@ -1,6 +1,11 @@
 package cz.agents.alite.event;
 
 
+/**
+ * An EventHandler is an object that can be affected (can receive) events.
+ *
+ * @author Antonin Komenda
+ */
 public interface EventHandler {
 
     public EventProcessor getEventProcessor();

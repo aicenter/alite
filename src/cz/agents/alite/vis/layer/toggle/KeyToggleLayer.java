@@ -8,6 +8,11 @@ import javax.swing.KeyStroke;
 import cz.agents.alite.vis.Vis;
 
 
+/**
+ * The KeyToggleLayer turns on and off its sub-layers according to a pressed key.
+ *
+ * @author Antonin Komenda
+ */
 public class KeyToggleLayer extends ToggleLayer {
 
     private final String toggleKey;

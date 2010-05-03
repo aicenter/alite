@@ -9,16 +9,9 @@ import spaceplan.maneuver.StartManeuver;
 import spaceplan.maneuver.ToEndManeuver;
 
 /**
- * <p>Title: Air Trafic Control Simulator</p>
- *
- * <p>Description: Path finder by maneuvers - using maneuver A* algorithm</p>
- *
- * <p>Copyright: Copyright (c) 2005</p>
- *
- * <p>Company: Gerstner Laboratory</p>
+ * Path finder by maneuvers - using maneuver A* algorithm
  *
  * @author Antonin Komenda
- * @version $Revision: 1.7 $ $Date: 2010/01/20 17:43:21 $
  */
 public class PathFinderByManeuvers {
 

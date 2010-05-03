@@ -23,6 +23,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
 
+
+/**
+ * Vis is a singleton holding the visualization window and the drawing canvas.
+ *
+ * Additionally, it also provides panning and zooming functionality for all
+ * visual elements drawn using the transformation methods
+ * (transX(), transY(), transW(), transH()).
+ *
+ * The Vis singleton do not need to be explicitly initialized. The static calls
+ * do the initialization automatically. But also, it can be explicitly initialized
+ * with specified window bounds (position and size) by the initWithBounds method.
+ *
+ *
+ * @author Antonin Komneda
+ */
 public class Vis extends Canvas {
 
     private static final long serialVersionUID = 1093434407555503398L;

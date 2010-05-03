@@ -5,6 +5,14 @@ import java.awt.Graphics2D;
 import cz.agents.alite.vis.Vis;
 
 
+/**
+ * The LodToggleLayer turns on and off its sub-layers according to a zoom of the
+ * view in the Vis singleton (nearness of the "camera" to the scene).
+ *
+ *
+ * @author Antonin Komenda
+ *
+ */
 public class LodToggleLayer extends ToggleLayer {
 
     private final double maxZoom;
