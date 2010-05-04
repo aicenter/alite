@@ -6,7 +6,7 @@ package cz.agents.alite.event;
  *
  * The event is described by a time in which the event will happen, a type
  * which can be arbitrarily redefined by the needs of the application, a content
- * carrying the payload of what have happend (i.e. parametrization of the event),
+ * carrying the payload of what have happened (i.e. parametrization of the event),
  * and recipient, who will be affected by the event (the owner is an
  * deprecated version of the recipient).
  *

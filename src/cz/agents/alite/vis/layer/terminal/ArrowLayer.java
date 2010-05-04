@@ -9,8 +9,8 @@ import cz.agents.alite.vis.Vis;
 import cz.agents.alite.vis.element.Line;
 import cz.agents.alite.vis.element.aggregation.LineElements;
 
-// TODO: should be an extender of the LineLayer (inheritance is bad here!)
 public class ArrowLayer extends LineLayer {
+// TODO: should be an extender of the LineLayer (inheritance is bad here!)
 
     protected ArrowLayer(LineElements lineElements) {
         super(lineElements);
@@ -43,6 +43,5 @@ public class ArrowLayer extends LineLayer {
     public static ArrowLayer create(LineElements lineElements) {
         return new ArrowLayer(lineElements);
     }
-
 
 }

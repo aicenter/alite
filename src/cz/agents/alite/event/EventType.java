@@ -1,7 +1,7 @@
 package cz.agents.alite.event;
 
 /**
- * The EventType interface marks enums of classes that they can be used as
+ * The EventType interface marks <code>enum</code>s of classes that they can be used as
  * a type of events.
  *
  * @author Antonin Komenda

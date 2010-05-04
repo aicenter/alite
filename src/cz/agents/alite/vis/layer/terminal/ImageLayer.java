@@ -7,9 +7,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import cz.agents.alite.vis.element.aggregation.ImageElements;
-import cz.agents.alite.vis.layer.AbstractLayer;
 
-public abstract class ImageLayer extends AbstractLayer {
+public abstract class ImageLayer extends TerminalLayer {
 
     private final ImageElements imageElements;
 

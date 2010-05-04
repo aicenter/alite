@@ -8,9 +8,8 @@ import javax.vecmath.Vector3d;
 import cz.agents.alite.vis.Vis;
 import cz.agents.alite.vis.element.Sprite;
 import cz.agents.alite.vis.element.aggregation.SpriteElements;
-import cz.agents.alite.vis.layer.AbstractLayer;
 
-public class SpriteLayer extends AbstractLayer {
+public class SpriteLayer extends TerminalLayer {
 
     private final SpriteElements spriteElements;
 

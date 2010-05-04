@@ -52,12 +52,10 @@ public class BackgroundLayer extends ImageLayer {
     }
 
     /**
-     * Simple tresholded double LOD background
+     * Simple thresholded double LOD background.
      *
-     * @param detailedImage
-     * @param image
-     * @param threshold
-     * @return
+     * The layer shows the <code>detailedImage</code>, if the zoom of the Vis view
+     * is greater then the <code>zoomThreshold</code>. Otherwise, the image is shown.
      */
     public static VisLayer create(File detailedImage, File image, double zoomThreshold) {
         LodToggleLayer toggleDetailed = LodToggleLayer.create(Double.POSITIVE_INFINITY, zoomThreshold);

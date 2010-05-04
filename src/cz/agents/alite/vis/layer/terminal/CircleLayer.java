@@ -6,9 +6,8 @@ import java.awt.Graphics2D;
 import cz.agents.alite.vis.Vis;
 import cz.agents.alite.vis.element.Circle;
 import cz.agents.alite.vis.element.aggregation.CircleElements;
-import cz.agents.alite.vis.layer.AbstractLayer;
 
-public class CircleLayer extends AbstractLayer {
+public class CircleLayer extends TerminalLayer {
 
     private final CircleElements circleElements;
 

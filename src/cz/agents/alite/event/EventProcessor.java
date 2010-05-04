@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * if its recipient is <code>null</code> and it is sent to the particular event
  * handler otherwise.
  *
- * The event-queue cycle can be paused/unpaused by the setRunning() method.
+ * The event-queue cycle can be paused/un-paused by the setRunning() method.
  * By the default, the cycle is started running.
  *
  * The time of currently processed events can be obtained by the getCurrentTime()

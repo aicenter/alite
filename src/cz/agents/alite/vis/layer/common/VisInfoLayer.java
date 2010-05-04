@@ -9,6 +9,12 @@ import cz.agents.alite.vis.layer.AbstractLayer;
 import cz.agents.alite.vis.layer.VisLayer;
 import cz.agents.alite.vis.layer.toggle.KeyToggleLayer;
 
+/**
+ * The VisInfoLayer shows current values of the coordinate systems of Vis.
+ *
+ * @author Antonin Komenda
+ *
+ */
 public class VisInfoLayer extends AbstractLayer {
 
     protected VisInfoLayer() {
