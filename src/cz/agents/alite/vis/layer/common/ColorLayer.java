@@ -4,11 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import cz.agents.alite.vis.Vis;
-import cz.agents.alite.vis.layer.AbstractLayer;
 import cz.agents.alite.vis.layer.VisLayer;
 
+public class ColorLayer extends CommonLayer {
 // TODO: the color should be requested
-public class ColorLayer extends AbstractLayer {
 
     private Color color;
 

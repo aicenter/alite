@@ -5,6 +5,11 @@ import java.awt.Graphics2D;
 import cz.agents.alite.vis.Vis;
 
 
+/**
+ * A default implementation of the {@link VisLayer} interface.
+ *
+ * @author Antonin Komenda
+ */
 public abstract class AbstractLayer implements VisLayer {
 
     private String helpOverrideString = null;

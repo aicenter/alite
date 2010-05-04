@@ -6,9 +6,8 @@ import java.awt.Graphics2D;
 import cz.agents.alite.vis.Vis;
 import cz.agents.alite.vis.element.Line;
 import cz.agents.alite.vis.element.aggregation.LineElements;
-import cz.agents.alite.vis.layer.AbstractLayer;
 
-public class LineLayer extends AbstractLayer {
+public class LineLayer extends TerminalLayer {
 
     private final LineElements lineElements;
 

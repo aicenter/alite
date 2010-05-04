@@ -5,6 +5,11 @@ import java.util.LinkedList;
 
 import cz.agents.alite.vis.Vis;
 
+/**
+ * A default implementation of the {@link GroupVisLayer} interface.
+ *
+ * @author Antonin Komenda
+ */
 public class GroupLayer extends AbstractLayer implements GroupVisLayer {
 
     private final LinkedList<VisLayer> subLayers = new LinkedList<VisLayer>();

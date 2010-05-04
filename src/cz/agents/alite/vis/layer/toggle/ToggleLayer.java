@@ -7,6 +7,9 @@ import cz.agents.alite.vis.layer.GroupLayer;
 /**
  * A ToggleLayer can simply switch, if the sub-layers are drawn or not.
  *
+ * The switching can be done by calling of the setEnabled() method.
+ *
+ *
  * @author Antonin Komenda
  */
 public class ToggleLayer extends GroupLayer {

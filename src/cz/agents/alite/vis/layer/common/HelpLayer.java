@@ -12,12 +12,26 @@ import cz.agents.alite.vis.layer.AbstractLayer;
 import cz.agents.alite.vis.layer.VisLayer;
 import cz.agents.alite.vis.layer.terminal.SpriteLayer;
 import cz.agents.alite.vis.layer.toggle.KeyToggleLayer;
+import cz.agents.alite.vis.layer.toggle.ToggleLayer;
 
+/**
+ * The HelpLayer shows a help window, if F1 is pressed.
+ *
+ * The help text is dynamically built from the help strings defined in
+ * the particular layers by the setHelpOverrideString() method, or
+ * from a default value, defined as a string "ClassNameOfTheLayer layer".
+ *
+ *
+ * @author Antonin Komenda
+ *
+ */
 public class HelpLayer extends AbstractLayer {
 
+    private final ToggleLayer toggleLayer;
     private int offsetPages = 0;
 
-    protected HelpLayer() {
+    protected HelpLayer(ToggleLayer toggleLayer) {
+        this.toggleLayer = toggleLayer;
     }
 
     @Override
@@ -46,6 +60,8 @@ public class HelpLayer extends AbstractLayer {
                     if (offsetPages > 10) {
                         offsetPages = 10;
                     }
+                } else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    toggleLayer.setEnabled(false);
                 }
             }
         });
@@ -69,7 +85,7 @@ public class HelpLayer extends AbstractLayer {
         canvas.drawString("Scroll help by PgUp/PgDn keys.", x + width - 195, y + height - 15);
 
         // info text
-        String infoText = "U-SCOUT DEMO PROTOTYPE (build 2009-07-21)\n" +
+        String infoText = "A-Lite Operator\n" +
                 "\n" +
                 "[Basic Controls] World can be zoomed and panned.\n" +
                 "Zooming can be done by mouse wheel and it magnifies area under mouse cursor.\n" +
@@ -132,7 +148,7 @@ public class HelpLayer extends AbstractLayer {
     public static VisLayer create() {
         KeyToggleLayer toggle = KeyToggleLayer.create(KeyEvent.VK_F1);
         toggle.setEnabled(false);
-        toggle.addSubLayer(new HelpLayer());
+        toggle.addSubLayer(new HelpLayer(toggle));
 
         return toggle;
     }

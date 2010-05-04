@@ -6,9 +6,8 @@ import java.awt.Graphics2D;
 import cz.agents.alite.vis.Vis;
 import cz.agents.alite.vis.element.Point;
 import cz.agents.alite.vis.element.aggregation.PointElements;
-import cz.agents.alite.vis.layer.AbstractLayer;
 
-public class PointLayer extends AbstractLayer {
+public class PointLayer extends TerminalLayer {
 
     private final PointElements pointElements;
 
