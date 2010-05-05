@@ -13,7 +13,6 @@ import java.util.logging.Logger;
  *
  *
  * @author Antonin Komenda
- *
  */
 public class CreatorFactory {
 
