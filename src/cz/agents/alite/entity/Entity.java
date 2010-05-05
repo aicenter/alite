@@ -1,7 +1,7 @@
 package cz.agents.alite.entity;
 
 /**
- * An Entity is a named object.
+ * The Entity is a named object.
  *
  *
  * @author Antonin Komenda
