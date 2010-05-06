@@ -53,7 +53,7 @@ public class Simulation extends EventProcessor {
     @Override
     protected void breforeRunningTest(Event event) {
         ++eventCount;
-        if (eventCount % 1000 == 0) {
+        if (eventCount % 10000000 == 0) {
             System.out.format(">>> TIME: %ds / RUNTIME: %.2fs / EVENTS: %d / QUEUE: %d \n", getCurrentTime() / 1000, (System.currentTimeMillis() - runTime) / 1000.0, eventCount, getCurrentQueueLength());
         }
 
