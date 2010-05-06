@@ -43,8 +43,8 @@ public class Vis extends Canvas {
     private static final long serialVersionUID = 1093434407555503398L;
 
     // TODO: refactor - conf
-    public static final int DIM_X = 1000;
-    public static final int DIM_Y = 1000;
+    public static final int DIM_X = 900;
+    public static final int DIM_Y = 900;
 
     // TODO: refactor - aggr
     private static final double SCALE_X = DIM_X / 1500.0;
@@ -116,7 +116,7 @@ public class Vis extends Canvas {
                 final double zoomStep = 1.1;
 
                 int rotation = mouseWheelEvent.getWheelRotation() * mouseWheelEvent.getScrollAmount();
-                if (rotation > 0) {
+                if (rotation < 0) {
                     offset.x -= transInvX(mouseWheelEvent.getX()) * SCALE_X * zoomFactor * (zoomStep - 1.0);
                     offset.y -= transInvY(mouseWheelEvent.getY()) * SCALE_Y * zoomFactor * (zoomStep - 1.0);
 
