@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="javadoc">
     <target name="javadoc">
-        <javadoc access="protected" author="true" classpath="../libs/vecmath.jar" destdir="" doctitle="A-Lite" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="cz.agents.alite,cz.agents.alite.planner.spatialmaneuver.maneuver,cz.agents.alite.creator,cz.agents.alite.directory,cz.agents.alite.event,cz.agents.alite.communication.content.error,cz.agents.alite.planner.spatialmaneuver.zone,cz.agents.alite.communication.protocol.cnp,cz.agents.alite.vis.layer,cz.agents.alite.communication.protocol,cz.agents.alite.entity,cz.agents.alite.environment,cz.agents.alite.planner.spatialmaneuver,cz.agents.alite.communication.channel,cz.agents.alite.vis.element,cz.agents.alite.vis.element.implemetation,cz.agents.alite.cross.protocol,cz.agents.alite.communication,cz.agents.alite.vis,cz.agents.alite.cross.environment.eventbased,cz.agents.alite.vis.layer.common,cz.agents.alite.vis.layer.terminal,cz.agents.alite.cross.simulation,cz.agents.alite.vis.element.aggregation,cz.agents.alite.communication.content,cz.agents.alite.vis.layer.toggle" source="1.6" sourcepath="../src" splitindex="true" use="true" version="true">
+        <javadoc access="protected" author="true" classpath="../libs/vecmath.jar" destdir="" doctitle="A-Lite" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" source="1.6" sourcepath="../src" splitindex="true" use="true" version="true">
             <link href="file:/home/gree/workspace/alite/docs/"/>
         </javadoc>
     </target>
