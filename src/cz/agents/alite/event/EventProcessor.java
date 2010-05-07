@@ -67,8 +67,18 @@ public class EventProcessor {
         addEvent(type, recipient, owner, content, 1);
     }
 
-    // TODO: refactorize the recipients/owners/senders/groups and similar
+    /**
+     * Add an event into the queue of the event processor.
+     *
+     *
+     * @param type the type of the event (see {@link EventType})
+     * @param recipient the target of the event (use <code>null</code> for all registered event handlers)
+     * @param owner a "deprecated" version of the recipient
+     * @param content the payload of the event (by the user specified data)
+     * @param deltaTime the duration (in milliseconds) from now till the time when the event should take place (be send to its recipients)
+     */
     public void addEvent(EventType type, EventHandler recipient, String owner, Object content, long deltaTime) {
+        // TODO: refactorize the recipients/owners/senders/groups and similar
         if (deltaTime < 1) {
             throw new IllegalArgumentException("deltaTime must be greater then zero!");
         }
