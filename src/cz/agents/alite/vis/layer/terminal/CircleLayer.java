@@ -21,11 +21,15 @@ public class CircleLayer extends TerminalLayer {
         canvas.setStroke(new BasicStroke(circleElements.getStrokeWidth()));
 
         for (Circle circle: circleElements.getCircles()) {
-            int x = Vis.transX(circle.getPosition().x - circle.getRadius());
-            int y = Vis.transY(circle.getPosition().y + circle.getRadius());
+            int x1 = Vis.transX(circle.getPosition().x - circle.getRadius());
+            int y1 = Vis.transY(circle.getPosition().y - circle.getRadius());
+            int x2 = Vis.transX(circle.getPosition().x + circle.getRadius());
+            int y2 = Vis.transY(circle.getPosition().y + circle.getRadius());
             int diameterW = Vis.transW(circle.getRadius() * 2.0);
             int diameterH = Vis.transH(circle.getRadius() * 2.0);
-            canvas.drawOval(x, y, diameterW, diameterH);
+            if (x2 > 0 && x1 < Vis.getDrawingDimension().width  && y2 > 0 && y1 < Vis.getDrawingDimension().height) {
+                canvas.drawOval(x1, y1, diameterW, diameterH);
+            }
         }
     }
 

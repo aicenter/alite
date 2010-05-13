@@ -26,12 +26,13 @@ public class LineLayer extends TerminalLayer {
             int xTo = Vis.transX(line.getTo().x);
             int yTo = Vis.transY(line.getTo().y);
 
-            //if ((x > 0 && x < Vis.getDrawingDimension().width  && y > 0 && y < Vis.getDrawingDimension().height)
-            //        || (xTo > 0 && xTo < Vis.getDrawingDimension().width  && yTo > 0 && yTo < Vis.getDrawingDimension().height)) {
+            // TODO: both points lies in out of the rectangle, but intersects it
+            if ((x > 0 && x < Vis.getDrawingDimension().width  && y > 0 && y < Vis.getDrawingDimension().height)
+                    || (xTo > 0 && xTo < Vis.getDrawingDimension().width && yTo > 0 && yTo < Vis.getDrawingDimension().height)) {
                 canvas.drawLine(x, y, xTo, yTo);
 
                 onEachLine(canvas, line);
-            //}
+            }
         }
     }
 

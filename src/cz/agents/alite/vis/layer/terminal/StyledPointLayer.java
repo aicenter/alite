@@ -29,16 +29,17 @@ public class StyledPointLayer extends TerminalLayer {
         canvas.setStroke(new BasicStroke(1));
         int radius = 10;
 
-        for(StyledPoint p: pointElements.getPoints())
-        {
-            canvas.setColor(p.getColor());
-            radius = (int) (p.getWidth() / 2.0);
+        for(StyledPoint point: pointElements.getPoints()) {
+            canvas.setColor(point.getColor());
+            radius = (int) (point.getWidth() / 2.0);
 
-            int x = Vis.transX(p.getPosition().x);
-            int y = Vis.transY(p.getPosition().y);
-            canvas.drawOval(x - radius, y - radius, radius * 2, radius * 2);
-            canvas.fillOval(x - radius, y - radius, radius * 2, radius * 2);
-
+            int x1 = Vis.transX(point.getPosition().x) - radius;
+            int y1 = Vis.transY(point.getPosition().y) - radius;
+            int x2 = Vis.transX(point.getPosition().x) + radius;
+            int y2 = Vis.transY(point.getPosition().y) + radius;
+            if (x2 > 0 && x1 < Vis.getDrawingDimension().width  && y2 > 0 && y1 < Vis.getDrawingDimension().height) {
+                canvas.fillOval(x1, y1, radius * 2, radius * 2);
+            }
         }
 
     }

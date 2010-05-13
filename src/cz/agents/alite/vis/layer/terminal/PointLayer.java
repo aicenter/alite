@@ -20,13 +20,16 @@ public class PointLayer extends TerminalLayer {
         int radius = (int) (pointElements.getStrokeWidth() / 2.0);
         canvas.setColor(pointElements.getColor());
         canvas.setStroke(new BasicStroke(1));
+
         for (Point point: pointElements.getPoints()) {
-            int x = Vis.transX(point.getPosition().x);
-            int y = Vis.transY(point.getPosition().y);
-            //if (x > 0 && x < Vis.getDrawingDimension().width  && y > 0 && y < Vis.getDrawingDimension().height) {
-                canvas.drawOval(x - radius, y - radius, radius * 2, radius * 2);
-                canvas.fillOval(x - radius, y - radius, radius * 2, radius * 2);
-            //}
+
+            int x1 = Vis.transX(point.getPosition().x) - radius;
+            int y1 = Vis.transY(point.getPosition().y) - radius;
+            int x2 = Vis.transX(point.getPosition().x) + radius;
+            int y2 = Vis.transY(point.getPosition().y) + radius;
+            if (x2 > 0 && x1 < Vis.getDrawingDimension().width  && y2 > 0 && y1 < Vis.getDrawingDimension().height) {
+                canvas.fillOval(x1, y1, radius * 2, radius * 2);
+            }
         }
     }
 
