@@ -3,7 +3,7 @@
 	<name>alite</name>
 	<comment></comment>
 	<projects>
-		<project>urbansim</project>
+		<project>alite</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
