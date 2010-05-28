@@ -51,10 +51,16 @@ public class KmlFileCreator
 	public static final String STYLE_WALKER = "sn_walker";
 	public static final String STYLE_METRO = "sn_metro";
 	public static final String STYLE_CAR = "sn_car";
+	public static final String STYLE_STREET = "sh_ylw-pushpin00";
 
+	public static final int LINE_STYLE_STREET = 0;
+	public static final int LINE_STYLE_METROA = 1;
+	public static final int LINE_STYLE_METROB = 2;
+	public static final int LINE_STYLE_METROC = 3;
+	
 	protected FolderType folder;
 	protected JAXBElement<? extends AbstractFeatureType> polygonOrigin;
-	protected JAXBElement<? extends AbstractFeatureType> roadOrigin;
+	protected ArrayList<JAXBElement<? extends AbstractFeatureType>> roadsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
 	protected JAXBElement<? extends AbstractFeatureType> placemarkOrigin;
 
 	DocumentType type;
@@ -86,9 +92,14 @@ public class KmlFileCreator
 
 	public void createRoadFromStringCoords(List<String> coordinates, String name)
 	{
+		createRoadFromStringCoords(coordinates, name, 0);		
+	}
+	
+	public void createRoadFromStringCoords(List<String> coordinates, String name, int style)
+	{
 		@SuppressWarnings("unchecked")
 		JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>) SerializableObjectCloner
-				.clone(roadOrigin);
+				.clone(roadsOrigin.get(style));
 
 		Object ob = clone.getValue();
 		PlacemarkType placemark = (PlacemarkType) ob;
@@ -98,6 +109,7 @@ public class KmlFileCreator
 		LineStringType line = (LineStringType) geometry.getValue();
 		line.getCoordinates().clear();
 		line.getCoordinates().addAll(coordinates);
+		//if(style != null) placemark.setStyleUrl("#" + style);
 		folder.getAbstractFeatureGroup().add(clone);
 	}
 
@@ -223,8 +235,12 @@ public class KmlFileCreator
 			JAXBElement<?> element2 = (JAXBElement<?>) elements.get(0);
 			FolderType ft = (FolderType) element2.getValue();
 			folder = ft;
+			//this is very stupid...
 			polygonOrigin = ft.getAbstractFeatureGroup().get(0);
-			roadOrigin = ft.getAbstractFeatureGroup().get(1);
+			roadsOrigin.add(ft.getAbstractFeatureGroup().get(5)); //street
+			roadsOrigin.add(ft.getAbstractFeatureGroup().get(6)); //metro A
+			roadsOrigin.add(ft.getAbstractFeatureGroup().get(7)); //metro B
+			roadsOrigin.add(ft.getAbstractFeatureGroup().get(8)); //metro C
 			// modelOrign = ft.getAbstractFeatureGroup().get(2);
 			placemarkOrigin = ft.getAbstractFeatureGroup().get(3);
 			// predictionRoadOrigin = ft.getAbstractFeatureGroup().get(4);
