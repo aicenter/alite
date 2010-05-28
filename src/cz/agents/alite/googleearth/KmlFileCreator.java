@@ -57,9 +57,14 @@ public class KmlFileCreator
 	public static final int LINE_STYLE_METROA = 1;
 	public static final int LINE_STYLE_METROB = 2;
 	public static final int LINE_STYLE_METROC = 3;
+
+	public static final int POLY_STYLE_GREEN = 0;
+	public static final int POLY_STYLE_YELLOW = 1;
+	public static final int POLY_STYLE_RED = 2;
+	public static final int POLY_STYLE_BLUE = 3;
 	
 	protected FolderType folder;
-	protected JAXBElement<? extends AbstractFeatureType> polygonOrigin;
+	protected ArrayList<JAXBElement<? extends AbstractFeatureType>> polygonsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
 	protected ArrayList<JAXBElement<? extends AbstractFeatureType>> roadsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
 	protected JAXBElement<? extends AbstractFeatureType> placemarkOrigin;
 
@@ -169,9 +174,15 @@ public class KmlFileCreator
 	public void createPolygonFromStringCoords(String name,
 			List<String> coordinates, String description, boolean extruded)
 	{
+		createPolygonFromStringCoords(name, coordinates, description, extruded, 0);		
+	}
+	
+	public void createPolygonFromStringCoords(String name,
+			List<String> coordinates, String description, boolean extruded, int style)
+	{
 		@SuppressWarnings("unchecked")
 		JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>) SerializableObjectCloner
-				.clone(polygonOrigin);
+				.clone(polygonsOrigin.get(style));
 		Object ob = clone.getValue();
 		PlacemarkType placemark = (PlacemarkType) ob;
 		placemark.setName(name);
@@ -236,11 +247,14 @@ public class KmlFileCreator
 			FolderType ft = (FolderType) element2.getValue();
 			folder = ft;
 			//this is very stupid...
-			polygonOrigin = ft.getAbstractFeatureGroup().get(0);
 			roadsOrigin.add(ft.getAbstractFeatureGroup().get(5)); //street
 			roadsOrigin.add(ft.getAbstractFeatureGroup().get(6)); //metro A
 			roadsOrigin.add(ft.getAbstractFeatureGroup().get(7)); //metro B
 			roadsOrigin.add(ft.getAbstractFeatureGroup().get(8)); //metro C
+			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(9)); //light green
+			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(10)); //light yellow
+			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(11)); //light red
+			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(12)); //metro station (blue)
 			// modelOrign = ft.getAbstractFeatureGroup().get(2);
 			placemarkOrigin = ft.getAbstractFeatureGroup().get(3);
 			// predictionRoadOrigin = ft.getAbstractFeatureGroup().get(4);
