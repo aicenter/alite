@@ -40,6 +40,7 @@ import cz.agents.alite.googleearth.kml.StyleType;
  * Basic wrapper for KML file creation.
  * 
  * @author Petr Benda
+ * @author Ondrej Milenovsky
  */
 public class KmlFileCreator
 {
