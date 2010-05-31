@@ -129,6 +129,9 @@ public class EventProcessor {
             for (EventHandler entity : entityList) {
                 entity.handleEvent(event);
             }
+            if (event.isType(EventProcessorEventType.STOP)) {
+                eventQueue.clear();
+            }
         }
     }
 
