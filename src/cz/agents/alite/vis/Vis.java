@@ -251,8 +251,6 @@ public class Vis extends Canvas {
 
         zoomFactorBack = zoomFactor;
         offsetBack.set(offset);
-
-        //getCanvas().clearRect(0, 0, getInstance().window.getWidth(), getInstance().window.getHeight());
     }
 
     public static int transX(double x) {

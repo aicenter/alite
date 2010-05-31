@@ -57,10 +57,12 @@ public class Simulation extends EventProcessor {
             System.out.format(">>> TIME: %ds / RUNTIME: %.2fs / EVENTS: %d / QUEUE: %d \n", getCurrentTime() / 1000, (System.currentTimeMillis() - runTime) / 1000.0, eventCount, getCurrentQueueLength());
         }
 
-        try {
-            Thread.sleep((long) ((event.getTime() - getCurrentTime()) * simulationSpeed));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(EventProcessor.class.getName()).log(Level.SEVERE, null, ex);
+        if (simulationSpeed > 0) {
+            try {
+                Thread.sleep((long) ((event.getTime() - getCurrentTime()) * simulationSpeed));
+            } catch (InterruptedException ex) {
+                Logger.getLogger(EventProcessor.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }
