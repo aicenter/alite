@@ -2,8 +2,6 @@ package cz.agents.alite.environment;
 
 import java.util.Random;
 
-import cz.agents.alite.cross.environment.eventbased.EventBasedAction;
-import cz.agents.alite.cross.environment.eventbased.EventBasedSensor;
 import cz.agents.alite.entity.Entity;
 
 
@@ -68,10 +66,11 @@ public abstract class Environment {
         protected Handler() {
         }
 
-        public <C extends EventBasedAction> C addAction(Class<C> clazz, Entity entity) {
+        public <C extends Action> C addAction(Class<C> clazz, Entity entity) {
             C instance = null;
 
             try {
+                // TODO: has to search for constructor with ? extends Environment.class, ? extends Entity
                 instance = clazz.getConstructor(Environment.class, Entity.class)
                         .newInstance(Environment.this, entity);
             } catch (Exception e) {
@@ -81,10 +80,11 @@ public abstract class Environment {
             return instance;
         }
 
-        public <C extends EventBasedSensor> C addSensor(Class<C> clazz, Entity entity) {
+        public <C extends Sensor> C addSensor(Class<C> clazz, Entity entity) {
             C instance = null;
 
             try {
+                // TODO: has to search for constructor with ? extends Environment.class, ? extends Entity
                 instance = clazz.getConstructor(Environment.class, Entity.class)
                         .newInstance(Environment.this, entity);
             } catch (Exception e) {
