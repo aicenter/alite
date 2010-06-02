@@ -43,6 +43,7 @@ public abstract class EventBasedEnvironment extends Environment {
             C instance = null;
 
             try {
+                // TODO: has to search for constructor with ? extends EventBasedEnvironment, ? extends Entity
                 instance = clazz.getConstructor(EventBasedEnvironment.class, Entity.class)
                         .newInstance(EventBasedEnvironment.this, entity);
             } catch (Exception e) {
@@ -56,6 +57,7 @@ public abstract class EventBasedEnvironment extends Environment {
             C instance = null;
 
             try {
+                // TODO: has to search for constructor with ? extends EventBasedEnvironment, ? extends Entity
                 instance = clazz.getConstructor(EventBasedEnvironment.class, Entity.class)
                         .newInstance(EventBasedEnvironment.this, entity);
             } catch (Exception e) {
