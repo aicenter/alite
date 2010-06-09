@@ -12,7 +12,7 @@ import cz.agents.alite.cross.simulation.Simulation;
  * strictly pre-defined, so that they can be arbitrarily designed
  * for each application and its needs.
  *
- * The typical elements of the universe are: {@link UrbanSimEnvironment},
+ * The typical elements of the universe are: {@link Environment},
  * {@link Simulation}, agents, communication infrastructure, and similar.
  *
  *
