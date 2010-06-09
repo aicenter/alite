@@ -40,31 +40,11 @@ public abstract class EventBasedEnvironment extends Environment {
         }
 
         public <C extends EventBasedAction> C addAction(Class<C> clazz, Entity entity) {
-            C instance = null;
-
-            try {
-                // TODO: has to search for constructor with ? extends EventBasedEnvironment, ? extends Entity
-                instance = clazz.getConstructor(EventBasedEnvironment.class, Entity.class)
-                        .newInstance(EventBasedEnvironment.this, entity);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return instance;
+            return instantiateEnvironmentClass(clazz, entity, new Class<?>[] {EventBasedEnvironment.class, Entity.class});
         }
 
         public <C extends EventBasedSensor> C addSensor(Class<C> clazz, Entity entity) {
-            C instance = null;
-
-            try {
-                // TODO: has to search for constructor with ? extends EventBasedEnvironment, ? extends Entity
-                instance = clazz.getConstructor(EventBasedEnvironment.class, Entity.class)
-                        .newInstance(EventBasedEnvironment.this, entity);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return instance;
+            return instantiateEnvironmentClass(clazz, entity, new Class<?>[] {EventBasedEnvironment.class, Entity.class});
         }
 
     }
