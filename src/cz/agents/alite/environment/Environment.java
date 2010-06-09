@@ -1,5 +1,7 @@
 package cz.agents.alite.environment;
 
+import java.lang.reflect.Constructor;
+import java.util.Arrays;
 import java.util.Random;
 
 import cz.agents.alite.entity.Entity;
@@ -67,36 +69,68 @@ public abstract class Environment {
         }
 
         public <C extends Action> C addAction(Class<C> clazz, Entity entity) {
-            C instance = null;
-
-            try {
-                // TODO: has to search for constructor with ? extends Environment.class, ? extends Entity
-                instance = clazz.getConstructor(Environment.class, Entity.class)
-                        .newInstance(Environment.this, entity);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return instance;
+            return instantiateEnvironmentClass(clazz, entity, new Class<?>[] {Environment.class, Entity.class});
         }
 
         public <C extends Sensor> C addSensor(Class<C> clazz, Entity entity) {
-            C instance = null;
-
-            try {
-                // TODO: has to search for constructor with ? extends Environment.class, ? extends Entity
-                instance = clazz.getConstructor(Environment.class, Entity.class)
-                        .newInstance(Environment.this, entity);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return instance;
+            return instantiateEnvironmentClass(clazz, entity, new Class<?>[] {Environment.class, Entity.class});
         }
 
         public Random getRandom() {
             return random;
         }
+
+        /**
+         * The method creates a new instance of the <code>clazz</code> in the environment.
+         *
+         * The instance is created  using a constructor, which is compatible with the parameter
+         * types in the <code>baseParameterTypesRequired</code> array. By the compatibility, it is
+         * meant the argument must be of the type or of a subtype of the type.
+         *
+         * @param <C> the class type of the instantiated class
+         * @param clazz a class literal of the instantiated class
+         * @param entity a related entity with the instantiated class
+         * @param baseParameterTypesRequired an array of the types according which the constructor should be used
+         * @return the newly instantiated environment class (sensor/action typically)
+         */
+        @SuppressWarnings("unchecked")
+        protected <C> C instantiateEnvironmentClass(Class<C> clazz, Entity entity, Class<?>[] baseParameterTypesRequired) {
+            C instance = null;
+
+            try {
+                Constructor<C> selectedConstructor = null;
+                for (Constructor<?> constructor : clazz.getConstructors()) {
+                    Class<?>[] parameterTypes = constructor.getParameterTypes();
+
+                    // is the constructor usable?
+                    boolean usable = true;
+                    for (int i = 0; i < parameterTypes.length; i++) {
+                        if (!baseParameterTypesRequired[i].isAssignableFrom(parameterTypes[i])) {
+                            usable = false;
+                            break;
+                        }
+                    }
+
+                    // select an usable constructor
+                    if (usable) {
+                        selectedConstructor = (Constructor<C>) constructor;
+                        break;
+                    }
+                }
+
+                if (selectedConstructor != null) {
+                    instance = selectedConstructor.newInstance(Environment.this, entity);
+                } else {
+                    throw new RuntimeException("Cannot find an usable constructor in class "
+                            + clazz.getCanonicalName() + " for base parameter types: "
+                            + Arrays.asList(baseParameterTypesRequired));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return instance;
+        }
+
     }
 
 }
