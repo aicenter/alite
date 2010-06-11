@@ -1,7 +1,6 @@
 package cz.agents.alite.googleearth.handler;
 
 import java.net.InetSocketAddress;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
