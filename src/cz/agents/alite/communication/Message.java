@@ -39,20 +39,32 @@ public final class Message {
     /**
      * Set the value of receiver
      *
-     * @param receiver new value of receiver
+     * @param newReceivers
      */
     public void addReceivers(Collection<String> newReceivers) {
         receivers.addAll(newReceivers);
     }
 
+    /**
+     *
+     * @param receiver
+     */
     public void addReceiver(String receiver) {
         receivers.add(receiver);
     }
 
+    /**
+     *
+     * @return
+     */
     public Content getContent() {
         return content;
     }
 
+    /**
+     *
+     * @return
+     */
     public long getId() {
         return id;
     }

@@ -21,23 +21,35 @@ public class DefaultCommunicator implements Communicator {
 
     private static long counter = System.currentTimeMillis();
 
+    /**
+     *
+     * @param address
+     */
     public DefaultCommunicator(String address) {
         this.address = address;
     }
 
+    /**
+     * Adds communication channel to the communicator.
+     *
+     * @param channel
+     */
     public void addChannel(DefaultCommunicationChannel channel) {
         channels.add(channel);
     }
+
 
     @Override
     public String getAddress() {
         return address;
     }
 
+
     @Override
     public Message createMessage(Content content) {
         return new Message(address, content, generateId());
     }
+
 
     @Override
     public Message createReply(Message message, Content content) {
@@ -46,15 +58,18 @@ public class DefaultCommunicator implements Communicator {
         return reply;
     }
 
+
     @Override
     public void addMessageHandler(MessageHandler handler) {
         messageHandlers.add(handler);
     }
 
+
     @Override
     public void removeMessageHandler(MessageHandler handler) {
         messageHandlers.remove(handler);
     }
+
 
     @Override
     public void sendMessage(Message message) {
@@ -68,6 +83,7 @@ public class DefaultCommunicator implements Communicator {
             }
         }
     };
+
 
     @Override
     public void receiveMessage(Message message) {

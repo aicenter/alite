@@ -3,10 +3,19 @@ package cz.agents.alite.communication.content.error;
 import cz.agents.alite.communication.Message;
 import cz.agents.alite.communication.MessageHandler;
 
+/**
+ * {@link MessageHandler} for handling {@link ErrorContent}.
+ *
+ * @author vokrinek
+ */
 public abstract class ErrorMessageHandler implements MessageHandler {
 
+    /**
+     *
+     */
     public ErrorMessageHandler() {
     }
+
 
     @Override
     public void notify(Message message) {
@@ -16,5 +25,11 @@ public abstract class ErrorMessageHandler implements MessageHandler {
         }
     }
 
+    /**
+     * Handler for error messages.
+     *
+     * @param message
+     * @param content
+     */
     abstract public void handleMessage(Message message, ErrorContent content);
 }
