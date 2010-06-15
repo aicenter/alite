@@ -1,43 +1,34 @@
 package cz.agents.alite.communication.protocol.cnp;
 
 import cz.agents.alite.communication.Communicator;
-import cz.agents.alite.communication.protocol.Protocol;
+import cz.agents.alite.communication.protocol.DefaultProtocol;
 
 /**
- *
+ * Contract-net-protocol wrapper
+ * 
  * @author vokrinek
  */
-public class Cnp implements Protocol {
+public class Cnp extends DefaultProtocol {
 
     static final String CNP_PROTOCOL_NAME = "CONTRACT_NET_PROTOCOL";
-    final Communicator communicator;
-    private final String name;
 
+    /**
+     *
+     * @param communicator
+     * @param name
+     */
     public Cnp(Communicator communicator, String name) {
-        this.communicator = communicator;
-        this.name = name;
+        super(communicator, buildName(name));
     }
 
-    @Override
-    public String getName() {
-        return buildName(name);
-    }
-
+    /**
+     * Builds a unique name of the protocol in the form
+     * {@code CNP_PROTOCOL_NAME + ": " + name;}
+     *
+     * @param name
+     * @return the name of the protocol
+     */
     protected static String buildName(String name) {
         return CNP_PROTOCOL_NAME + ": " + name;
-    }
-
-    @Override
-    public boolean equals(Protocol protocol) {
-        if (protocol == null) {
-            return false;
-        }
-
-        if (getName().equals(((Protocol) protocol).getName())) {
-            return true;
-        } else {
-            return false;
-        }
-
     }
 }

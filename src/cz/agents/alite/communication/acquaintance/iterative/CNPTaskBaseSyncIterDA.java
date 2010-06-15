@@ -1,17 +1,16 @@
 package cz.agents.alite.communication.acquaintance.iterative;
 
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.Map.Entry;
+
+import cz.agents.alite.common.capability.CapabilityRegister;
+import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.acquaintance.PlanCost;
 import cz.agents.alite.communication.acquaintance.Task;
 import cz.agents.alite.communication.acquaintance.Task.TaskListener;
-import cz.agents.alite.communication.acquaintance.TaskBase.AllocationCallback;
-import cz.agents.alite.common.capability.CapabilityRegister;
-import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.protocol.cnp.CnpInitiator;
-import cz.agents.alite.communication.protocol.cnp.CnpInitiator.CancelCallback;
 import cz.agents.alite.communication.protocol.cnp.DirectoredCnpInitiator;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * DelegateAll dynamic improvement strategy for {@link CNPTaskBaseSyncIter}.
@@ -33,7 +32,6 @@ public class CNPTaskBaseSyncIterDA extends CNPTaskBaseSyncIter {
 
         final CnpInitiator cnp = tasksOwned.get(task);
         final String lastResource = cnp.getWinner();
-        final PlanCost lastPlanCost = (PlanCost) cnp.getWinnerResponse();
         final TaskListener taskListener = taskListeners.get(task);
 
         Set<String> addresses = directory.getIdentities(DirectoredCnpInitiator.buildName(task.getTaskType()));

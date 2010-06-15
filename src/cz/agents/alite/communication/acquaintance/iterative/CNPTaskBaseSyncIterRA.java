@@ -1,11 +1,10 @@
 package cz.agents.alite.communication.acquaintance.iterative;
 
+import cz.agents.alite.common.capability.CapabilityRegister;
+import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.acquaintance.PlanCost;
 import cz.agents.alite.communication.acquaintance.Task;
 import cz.agents.alite.communication.acquaintance.Task.TaskListener;
-import cz.agents.alite.communication.acquaintance.TaskBase.AllocationCallback;
-import cz.agents.alite.common.capability.CapabilityRegister;
-import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.protocol.cnp.CnpInitiator;
 import cz.agents.alite.communication.protocol.cnp.CnpInitiator.CancelCallback;
 
@@ -29,7 +28,6 @@ public class CNPTaskBaseSyncIterRA extends CNPTaskBaseSyncIter {
 
         final CnpInitiator cnp = tasksOwned.remove(task);
         final String lastResource = cnp.getWinner();
-        final PlanCost lastPlanCost = (PlanCost) cnp.getWinnerResponse();
         final TaskListener taskListener = taskListeners.remove(task);
 
 

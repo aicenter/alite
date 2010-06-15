@@ -101,6 +101,9 @@ public class DefaultPlanBase implements PlanBase {
      * Only encaptulates LinkedList<Task>.
      */
     public static class MyPlan extends LinkedList<Task> implements Plan {
+
+        private static final long serialVersionUID = -5734327377766938273L;
+
     }
 
     /**

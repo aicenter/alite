@@ -31,6 +31,8 @@ public abstract class CnpInitiator extends Cnp {
     private MessageHandler messagehandler;
     private boolean active = false;
     private String winner = null;
+    private Object winnerResponse = null;
+    private CancelCallback cancelCallback = null;
 
     /**
      *
@@ -59,18 +61,22 @@ public abstract class CnpInitiator extends Cnp {
 
     /**
      * Cancels the protocol and terminates it.
+     * After termination the cancelCallback is invoked.
+     *
+     * @param cancelCallback
      */
-    public void cancel() {
+    public void cancel(CancelCallback cancelCallback) {
+        this.cancelCallback = cancelCallback;
         ProtocolContent content = new ProtocolContent(this, Performative.CANCEL, null, session);
         Message message = communicator.createMessage(content);
-        if (winner != null) {
-            message.addReceiver(winner);
+        if (getWinner() != null) {
+            message.addReceiver(getWinner());
         } else {
             message.addReceivers(participantAddress);
         }
         communicator.sendMessage(message);
-        active = false;
-        communicator.removeMessageHandler(messagehandler);
+//        active = false;
+//        communicator.removeMessageHandler(messagehandler);
     }
 
     /**
@@ -96,6 +102,12 @@ public abstract class CnpInitiator extends Cnp {
      */
     abstract protected void done();
 
+    /**
+     * Method is called after ACCEPT_PROPOSAL is confirmed by the winner
+     * @param success true if allocation has been successfull, false otherwise
+     */
+    abstract protected void allocated(boolean success);
+
     private void initProtocol() {
 
         messagehandler = new ProtocolMessageHandler(this, session) {
@@ -106,16 +118,11 @@ public abstract class CnpInitiator extends Cnp {
             }
         };
         communicator.addMessageHandler(messagehandler);
-        ProtocolContent content = new ProtocolContent(this, Performative.CALL_FOR_PROPOSAL, contentData, session);
+        ProtocolContent content = new ProtocolContent(this, Performative.CALL_FOR_PROPOSAL, getContentData(), session);
         Message message = communicator.createMessage(content);
         message.addReceivers(participantAddress);
         active = true;
         communicator.sendMessage(message);
-    }
-
-    private String generateSession() {
-        //todo: is this correct?
-        return "" + this.hashCode();
     }
 
     private void processMessage(Message message, ProtocolContent content) {
@@ -130,6 +137,22 @@ public abstract class CnpInitiator extends Cnp {
                 messages.put(message.getSender(), message);
                 pendingParticipants.remove(message.getSender());
                 checkAnswers();
+                break;
+            case CONFIRM:
+                allocated(true);
+                break;
+            //TODO: potential DISCONFIRM branching
+//            case DISCONFIRM:
+//                allocated(false);
+//                active = false;
+//                communicator.removeMessageHandler(messagehandler);
+//                break;
+            case INFORM:
+                active = false;
+                communicator.removeMessageHandler(messagehandler);
+                if (cancelCallback != null) {
+                    cancelCallback.cancelConfirmed();
+                }
                 break;
             case FAILURE:
                 failed();
@@ -149,9 +172,12 @@ public abstract class CnpInitiator extends Cnp {
         if (pendingParticipants.isEmpty()) {
             winner = evaluateReplies(responses);
             if (winner != null) {
-                participantAddress.remove(winner);
-                Message msg = createReply(winner, Performative.ACCEPT_PROPOSAL);
+                winnerResponse = responses.get(winner);
+                participantAddress.remove(getWinner());
+                Message msg = createReply(getWinner(), Performative.ACCEPT_PROPOSAL);
                 communicator.sendMessage(msg);
+            } else {
+                allocated(false);
             }
             for (String participant : participantAddress) {
                 Message msg = createReply(participant, Performative.REJECT_PROPOSAL);
@@ -162,5 +188,37 @@ public abstract class CnpInitiator extends Cnp {
 
     private Message createReply(String address, Performative performative) {
         return communicator.createReply(messages.get(address), new ProtocolContent(this, performative, null, session));
+    }
+
+    /**
+     * @return the contentData
+     */
+    public Object getContentData() {
+        return contentData;
+    }
+
+    /**
+     * @return the winner
+     */
+    public String getWinner() {
+        return winner;
+    }
+
+    /**
+     * @return the winnerResponse
+     */
+    public Object getWinnerResponse() {
+        return winnerResponse;
+    }
+
+    /**
+     * The callback for handling protocol cancelling.
+     */
+    public interface CancelCallback {
+
+        /**
+         * Method is called after CANCEL is confirmed by the winner
+         */
+        void cancelConfirmed();
     }
 }

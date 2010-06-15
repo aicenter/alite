@@ -1,13 +1,13 @@
 package cz.agents.alite.communication;
 
 import java.util.LinkedList;
-
-import cz.agents.alite.communication.channel.DefaultCommunicationChannel;
-import cz.agents.alite.communication.channel.CommunicationChannelException;
-import cz.agents.alite.communication.content.Content;
-import cz.agents.alite.communication.content.error.ErrorContent;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import cz.agents.alite.communication.channel.CommunicationChannelException;
+import cz.agents.alite.communication.channel.DefaultCommunicationChannel;
+import cz.agents.alite.communication.content.Content;
+import cz.agents.alite.communication.content.error.ErrorContent;
 
 /**
  *

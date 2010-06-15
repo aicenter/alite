@@ -1,20 +1,20 @@
 package cz.agents.alite.communication.acquaintance.iterative;
 
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import cz.agents.alite.common.capability.CapabilityRegister;
+import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.acquaintance.CNPTaskBase;
 import cz.agents.alite.communication.acquaintance.PlanCost;
 import cz.agents.alite.communication.acquaintance.Task;
 import cz.agents.alite.communication.acquaintance.Task.TaskListener;
-import cz.agents.alite.communication.acquaintance.TaskBase.AllocationCallback;
-import cz.agents.alite.common.capability.CapabilityRegister;
-import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.protocol.cnp.CnpInitiator.CancelCallback;
 import cz.agents.alite.communication.protocol.request.RequestInformInitiator;
 import cz.agents.alite.communication.protocol.request.RequestInformResponder;
 import cz.agents.alite.communication.protocol.tokenring.MasteredTokenRing;
 import cz.agents.alite.communication.protocol.tokenring.TokenRing.TokenProcessCallback;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *  Default agent TaskBase with iterative improvement and synchronization..

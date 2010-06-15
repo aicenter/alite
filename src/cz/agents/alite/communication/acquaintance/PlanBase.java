@@ -67,6 +67,8 @@ public interface PlanBase {
      */
     class TaskPlanError extends Exception {
 
+        private static final long serialVersionUID = 416794555267004753L;
+
         TaskPlanError(String string) {
             super(string);
         }
