@@ -1,14 +1,13 @@
 package cz.agents.alite.communication.protocol.cnp;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-
 import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.Message;
 import cz.agents.alite.communication.MessageHandler;
 import cz.agents.alite.communication.protocol.Performative;
 import cz.agents.alite.communication.protocol.ProtocolContent;
 import cz.agents.alite.communication.protocol.ProtocolMessageHandler;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 
 /**
  *
@@ -22,7 +21,7 @@ import cz.agents.alite.communication.protocol.ProtocolMessageHandler;
 //TODO: state machine
 public abstract class CnpResponder extends Cnp {
 
-    //private final LinkedHashMap<String, Object> proposals = new LinkedHashMap<String, Object>();
+    private final LinkedHashMap<String, Object> sentProposals = new LinkedHashMap<String, Object>();
     private final LinkedHashMap<String, Message> cnpRequests = new LinkedHashMap<String, Message>();
     private final LinkedHashSet<String> openCnp = new LinkedHashSet<String>();
     private MessageHandler messagehandler;
@@ -31,7 +30,6 @@ public abstract class CnpResponder extends Cnp {
      *
      * @param communicator
      * @param name      Custom protocol name to differentiate several CNPs
-     * @param contentData
      */
     public CnpResponder(Communicator communicator, String name) {
         super(communicator, name);
@@ -62,39 +60,65 @@ public abstract class CnpResponder extends Cnp {
     abstract protected void proposalRejected(String session);
 
     /**
-     * The accepred proposal with given session identification is cancelled.
+     * The acceped proposal with given session identification is cancelled.
      *
      * @param session
      */
     abstract protected void canceled(String session);
 
-    public void informDone(String session){
+    /**
+     * Call when the protocol of corresponding session is successfully terminated.
+     * The DONE message is sent to the CnpInitiator.
+     *
+     * @param session session identifying the protocol
+     */
+    public void informDone(String session) {
         Message message = cnpRequests.remove(session);
-        if (message != null) {
-            communicator.sendMessage(createReply(message, Performative.DONE, null, session));
-        } else {
-            // TODO: logger
-            System.out.println("Method CnpResponder.informDone do not know session '" + session + "'!");
-        }
+        sentProposals.remove(session);
+        communicator.sendMessage(createReply(message, Performative.DONE, null, session));
     }
 
-    public void informFail(String session){
+    /**
+     * Call when the protocol of corresponding session is unsuccessfully terminated.
+     * The FAILURE message is sent to the CnpInitiator.
+     *
+     * @param session session identifying the protocol
+     */
+    public void informFail(String session) {
         Message message = cnpRequests.remove(session);
-        if (message != null) {
-            communicator.sendMessage(createReply(message, Performative.FAILURE, null, session));
-        } else {
-            // TODO: logger
-            System.out.println("Method CnpResponder.informFail do not know session '" + session + "'!");
-        }
+        sentProposals.remove(session);
+        communicator.sendMessage(createReply(message, Performative.FAILURE, null, session));
     }
 
     /**
      * Check of the protocol activity.
      *
+     * @param session
      * @return true if the protocol session is running; false when finnished.
      */
     public boolean isActive(String session) {
         return cnpRequests.containsKey(session);
+    }
+
+    /**
+     * Gets the previously sent proposal.
+     *
+     * @param session session identifying the proposal
+     * @return content body of the proposal
+     */
+    public Object getSentProposal(String session) {
+        return sentProposals.get(session);
+    }
+
+    /**
+     * Gets the previously obtained request.
+     *
+     * @param session session identifying the request
+     * @return content body of the request
+     */
+    public Object getRequest(String session) {
+        return cnpRequests.get(session).getContent().getData();
+
     }
 
     private void initProtocol() {
@@ -116,20 +140,25 @@ public abstract class CnpResponder extends Cnp {
             case CANCEL:
                 if (openCnp.contains(session)) {
                     openCnp.remove(session);
-                    cnpRequests.remove(session);
                     proposalRejected(session);
+                    cnpRequests.remove(session);
+                    sentProposals.remove(session);
                 } else {
                     canceled(session);
                 }
+                communicator.sendMessage(createReply(message, Performative.INFORM, null, session));
                 break;
             case ACCEPT_PROPOSAL:
                 openCnp.remove(session);
                 proposalAccepted(session);
+                //TODO: potential DISCONFIRM branching
+                communicator.sendMessage(createReply(message, Performative.CONFIRM, null, session));
                 break;
             case REJECT_PROPOSAL:
                 openCnp.remove(session);
-                cnpRequests.remove(session);
                 proposalRejected(session);
+                cnpRequests.remove(session);
+                sentProposals.remove(session);
                 break;
             case CALL_FOR_PROPOSAL:
                 Object response = prepareProposal(body, session);
@@ -137,6 +166,7 @@ public abstract class CnpResponder extends Cnp {
                 if (response != null) {
                     openCnp.add(session);
                     cnpRequests.put(session, message);
+                    sentProposals.put(session, response);
                     msg = createReply(message, Performative.PROPOSE, response, session);
                 } else {
                     msg = createReply(message, Performative.REFUSE, null, session);
@@ -150,5 +180,4 @@ public abstract class CnpResponder extends Cnp {
     private Message createReply(Message message, Performative performative, Object body, String session) {
         return communicator.createReply(message, new ProtocolContent(this, performative, body, session));
     }
-
 }

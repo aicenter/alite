@@ -3,6 +3,8 @@ package cz.agents.alite.communication.protocol;
 import cz.agents.alite.communication.content.Content;
 
 /**
+ * The wrapper for protocol content for messaging.
+ * It encaptulates the protocol, performative and session ID.
  *
  * @author vokrinek
  */
@@ -12,6 +14,13 @@ public class ProtocolContent extends Content {
     private final Performative performative;
     private final String session;
 
+    /**
+     *
+     * @param protocol
+     * @param performative
+     * @param data
+     * @param session
+     */
     public ProtocolContent(Protocol protocol, Performative performative, Object data, String session) {
         super(data);
 
@@ -51,6 +60,10 @@ public class ProtocolContent extends Content {
         return protocol;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSession() {
         return session;
     }

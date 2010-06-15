@@ -40,7 +40,7 @@ public interface TaskBase {
     /**
      * Registers PlanBase for the given task type.
      * In case of decentralized TaskBases the TaskBase has to prapagate this capability to the others.
-     * 
+     *
      * @param taskType
      * @param planner
      */
@@ -56,7 +56,7 @@ public interface TaskBase {
 
     /**
      * Generates new unique ID for a task.
-     * 
+     *
      * @return new unique task ID
      */
     String generateNewTaskID();
@@ -65,6 +65,8 @@ public interface TaskBase {
      * Exception for unknown task type
      */
     public class UnknownTaskTypeException extends Exception {
+
+        private static final long serialVersionUID = -344501137439336175L;
 
         public UnknownTaskTypeException(String string) {
             super(string);

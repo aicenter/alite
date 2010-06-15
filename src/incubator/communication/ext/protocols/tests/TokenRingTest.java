@@ -20,7 +20,7 @@ public class TokenRingTest {
     public static void main(String[] args) {
         tokenRing();
         try {
-            Thread.currentThread().sleep(500);
+            Thread.sleep(500);
             System.out.println("*****************************************");
         } catch (InterruptedException ex) {
             Logger.getLogger(TokenRingTest.class.getName()).log(Level.SEVERE, null, ex);
