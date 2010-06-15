@@ -1,9 +1,9 @@
-package cz.agents.alite.cross.environment.eventbased;
+package cz.agents.alite.environment.eventbased;
 
+import cz.agents.alite.common.event.Event;
+import cz.agents.alite.common.event.EventHandler;
+import cz.agents.alite.common.event.EventProcessor;
 import cz.agents.alite.environment.Storage;
-import cz.agents.alite.event.Event;
-import cz.agents.alite.event.EventHandler;
-import cz.agents.alite.event.EventProcessor;
 
 /**
  * An EventBasedStorage can use the event processor to implement a spontaneous

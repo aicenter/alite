@@ -1,6 +1,6 @@
-package cz.agents.alite.cross.simulation;
+package cz.agents.alite.simulation;
 
-import cz.agents.alite.event.EventType;
+import cz.agents.alite.common.event.EventType;
 
 /**
  * The enumeration describes events originated in the {@link Simulation}.

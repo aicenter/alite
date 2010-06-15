@@ -1,4 +1,4 @@
-package cz.agents.alite.event;
+package cz.agents.alite.common.event;
 
 import java.util.LinkedList;
 import java.util.List;

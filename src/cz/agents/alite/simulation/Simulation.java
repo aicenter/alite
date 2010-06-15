@@ -1,11 +1,11 @@
-package cz.agents.alite.cross.simulation;
+package cz.agents.alite.simulation;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import cz.agents.alite.common.event.Event;
+import cz.agents.alite.common.event.EventProcessor;
 import cz.agents.alite.environment.Sensor;
-import cz.agents.alite.event.Event;
-import cz.agents.alite.event.EventProcessor;
 
 /**
  * The simulation is a wrapper of the {@link EventProcessor} with

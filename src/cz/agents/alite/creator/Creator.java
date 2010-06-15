@@ -1,6 +1,6 @@
 package cz.agents.alite.creator;
 
-import cz.agents.alite.cross.simulation.Simulation;
+import cz.agents.alite.simulation.Simulation;
 
 /**
  * A Creator encapsulates code that creates the application universe and runs
