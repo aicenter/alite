@@ -6,7 +6,7 @@ import cz.agents.alite.communication.protocol.DefaultProtocol;
 /**
  * Request-inform protocol wrapper.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class RequestInform extends DefaultProtocol {
 

@@ -7,7 +7,7 @@ import java.util.Set;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class DirectoredCnpInitiator extends CnpInitiator {
 

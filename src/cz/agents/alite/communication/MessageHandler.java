@@ -3,7 +3,7 @@ package cz.agents.alite.communication;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public interface MessageHandler {
 

@@ -3,7 +3,7 @@ package cz.agents.alite.communication.acquaintance;
 /**
  *  For plan cost comparisions
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public interface PlanCost {
 

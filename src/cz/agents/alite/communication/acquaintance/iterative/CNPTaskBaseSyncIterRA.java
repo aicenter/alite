@@ -11,7 +11,7 @@ import cz.agents.alite.communication.protocol.cnp.CnpInitiator.CancelCallback;
 /**
  *  ReallocateAll dynamic improvement strategy for {@link CNPTaskBaseSyncIter}.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class CNPTaskBaseSyncIterRA extends CNPTaskBaseSyncIter {
 

@@ -11,7 +11,7 @@ import cz.agents.alite.communication.content.error.ErrorContent;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class DefaultCommunicator implements Communicator {
 

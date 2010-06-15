@@ -6,7 +6,7 @@ import cz.agents.alite.communication.protocol.cnp.CnpInitiator;
 /**
  *  Interface for the Task Base definition
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public interface TaskBase {
 

@@ -5,7 +5,7 @@ package cz.agents.alite.communication.acquaintance;
  * Abstract class for default Task. 
  * Contains content Object which defines the taks activity.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class AbstractTask implements Task {
 

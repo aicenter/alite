@@ -16,7 +16,7 @@ import java.io.IOException;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class SnifferAddress {
     

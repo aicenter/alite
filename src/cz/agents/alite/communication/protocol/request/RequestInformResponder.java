@@ -15,7 +15,7 @@ import java.util.LinkedHashMap;
  * The RequestInformInitiator maintains all the active requests of the given type.
  * To deactivate the protocol, call the appropriate method.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class RequestInformResponder extends RequestInform {
 

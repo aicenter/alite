@@ -6,7 +6,7 @@ import cz.agents.alite.communication.content.Content;
  * The wrapper for protocol content for messaging.
  * It encaptulates the protocol, performative and session ID.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class ProtocolContent extends Content {
 

@@ -11,7 +11,7 @@ import cz.agents.alite.common.capability.CapabilityRegister;
  * The general subscription protocol. For each subscribe instance the method {@link handleInform(Object inform)}
  * is called on all subscribers except the invoker.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class SubscribeProtocol extends SubscribeProtocolSender {
 

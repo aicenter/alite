@@ -15,7 +15,7 @@ import cz.agents.alite.communication.protocol.cnp.DirectoredCnpInitiator;
 /**
  * DelegateAll dynamic improvement strategy for {@link CNPTaskBaseSyncIter}.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class CNPTaskBaseSyncIterDA extends CNPTaskBaseSyncIter {
 

@@ -6,7 +6,7 @@ import cz.agents.alite.communication.acquaintance.Task.TaskListener;
  *  Interface for the Plan Base definition
  *  The Plan Base is persistent entity able to maintain plans for the tasks.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public interface PlanBase {
 

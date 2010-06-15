@@ -9,7 +9,7 @@ import incubator.communication.channel.sniffer.SnifferWrapper;
  * Sniffed variant of {@link DirectCommunicationChannel}. 
  * Uses legacy A-globe sniffer.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class DirectCommunicationChannelSniffed extends DirectCommunicationChannel {
 

@@ -6,7 +6,7 @@ import cz.agents.alite.communication.protocol.DefaultProtocol;
 /**
  * Contract-net-protocol wrapper
  * 
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class Cnp extends DefaultProtocol {
 

@@ -4,7 +4,7 @@ import cz.agents.alite.communication.Message;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public interface CommunicationChannel {
 
