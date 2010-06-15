@@ -11,11 +11,17 @@ public abstract class DefaultCommunicationChannel implements CommunicationChanne
 
     private final CommunicationReceiver communicationReceiver;
 
+    /**
+     *
+     * @param communicator
+     */
     public DefaultCommunicationChannel(CommunicationReceiver communicator) {
         this.communicationReceiver = communicator;
     }
 
+
     public abstract void sendMessage(Message message) throws CommunicationChannelException;
+
 
     public void receiveMessage(Message message) {
         communicationReceiver.receiveMessage(message);

@@ -9,6 +9,8 @@ import cz.agents.alite.communication.CommunicationReceiver;
 import cz.agents.alite.communication.Message;
 
 /**
+ * Direct Call communication channel.
+ * Uses direct calling of the receiveMessage method.
  *
  * @author vokrinek
  */
@@ -16,10 +18,15 @@ public class DirectCommunicationChannel extends DefaultCommunicationChannel {
 
     private static final HashMap<String, CommunicationReceiver> channelReceivers = new HashMap<String, CommunicationReceiver>();
 
+    /**
+     *
+     * @param communicator
+     */
     public DirectCommunicationChannel(CommunicationReceiver communicator) {
         super(communicator);
         channelReceivers.put(communicator.getAddress(), communicator);
     }
+
 
     @Override
     public void sendMessage(Message message) throws CommunicationChannelException {
@@ -28,7 +35,7 @@ public class DirectCommunicationChannel extends DefaultCommunicationChannel {
         Collection<String> receivers = message.getReceivers();
         for (String communicatorAddress : receivers) {
             if (channelReceivers.containsKey(communicatorAddress)) {
-                channelReceivers.get(communicatorAddress).receiveMessage(message);
+                callDirectReceive(channelReceivers.get(communicatorAddress), message);
             } else {
                 unknownReceivers.add(communicatorAddress);
             }
@@ -37,5 +44,15 @@ public class DirectCommunicationChannel extends DefaultCommunicationChannel {
         if (!unknownReceivers.isEmpty()) {
             throw new UnknownReceiversException(unknownReceivers);
         }
+    }
+
+    /**
+     * Passes a message to the communication receiver using direct call.
+     *
+     * @param receiver
+     * @param message
+     */
+    protected void callDirectReceive(CommunicationReceiver receiver, Message message) {
+        receiver.receiveMessage(message);
     }
 }
