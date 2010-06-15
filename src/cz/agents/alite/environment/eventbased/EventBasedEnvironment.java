@@ -1,8 +1,8 @@
-package cz.agents.alite.cross.environment.eventbased;
+package cz.agents.alite.environment.eventbased;
 
-import cz.agents.alite.entity.Entity;
+import cz.agents.alite.common.entity.Entity;
+import cz.agents.alite.common.event.EventProcessor;
 import cz.agents.alite.environment.Environment;
-import cz.agents.alite.event.EventProcessor;
 
 
 /**

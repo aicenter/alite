@@ -4,7 +4,8 @@ import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Random;
 
-import cz.agents.alite.entity.Entity;
+import cz.agents.alite.common.entity.Entity;
+
 
 
 /**

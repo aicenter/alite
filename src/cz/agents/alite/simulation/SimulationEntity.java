@@ -1,9 +1,9 @@
-package cz.agents.alite.cross.simulation;
+package cz.agents.alite.simulation;
 
-import cz.agents.alite.entity.Entity;
+import cz.agents.alite.common.entity.Entity;
+import cz.agents.alite.common.event.EventHandler;
 import cz.agents.alite.environment.Action;
 import cz.agents.alite.environment.Sensor;
-import cz.agents.alite.event.EventHandler;
 
 /**
  * Simulation entity represents an object directly interacting in

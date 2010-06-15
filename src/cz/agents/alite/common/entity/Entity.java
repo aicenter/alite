@@ -1,9 +1,9 @@
-package cz.agents.alite.entity;
+package cz.agents.alite.common.entity;
 
 /**
- * The Entity is a named object.
- * 
- * 
+ * An Entity is a named object.
+ *
+ *
  * @author Antonin Komenda
  * @author Ondrej Milenovsky
  */
