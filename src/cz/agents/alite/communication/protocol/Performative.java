@@ -3,7 +3,7 @@ package cz.agents.alite.communication.protocol;
 /**
  * Performatives for use in the protocols.
  * 
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public enum Performative {
 

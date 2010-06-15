@@ -7,7 +7,7 @@ import cz.agents.alite.communication.content.Content;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public final class Message {
 

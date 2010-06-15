@@ -17,7 +17,7 @@ import java.util.Set;
  * The ({@link handleToken(String token)}) method is called for token on the whole ring except the invoker.
  * After all calls the {@link TokenRingInform.tokenBack()} method is called on the invoker.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class TokenRing extends DefaultProtocol {
 

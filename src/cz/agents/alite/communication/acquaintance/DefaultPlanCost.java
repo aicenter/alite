@@ -5,7 +5,7 @@ package cz.agents.alite.communication.acquaintance;
  * Floats and Doubles are internally handled as float, other types as long.
  * Note the isLower, add and sub methods allways treat the argument as the same type as internal price of this instance.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class DefaultPlanCost implements PlanCost {
 

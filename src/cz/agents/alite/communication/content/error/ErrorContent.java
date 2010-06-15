@@ -5,7 +5,7 @@ import cz.agents.alite.communication.content.Content;
 /**
  * Error content for encapsulating a {@link Exception} for messaging.
  * 
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class ErrorContent extends Content {
 

@@ -16,7 +16,7 @@ import java.util.LinkedHashSet;
  * The CnpInitiator maintains all the active CNPs of the given type.
  * To deactivate the protocol, call the appropriate method.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 //TODO: state machine
 public abstract class CnpResponder extends Cnp {

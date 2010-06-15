@@ -12,7 +12,7 @@ import cz.agents.alite.communication.Message;
  * Direct Call communication channel.
  * Uses direct calling of the receiveMessage method.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class DirectCommunicationChannel extends DefaultCommunicationChannel {
 

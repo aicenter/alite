@@ -5,7 +5,7 @@ import cz.agents.alite.common.capability.CapabilityRegisterImpl;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class DirectoryFacilitatorSingleton extends CapabilityRegisterImpl {
 

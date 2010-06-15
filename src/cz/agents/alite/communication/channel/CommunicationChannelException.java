@@ -2,7 +2,7 @@ package cz.agents.alite.communication.channel;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class CommunicationChannelException extends Exception {
 

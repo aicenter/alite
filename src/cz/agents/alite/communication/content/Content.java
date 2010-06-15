@@ -3,7 +3,7 @@ package cz.agents.alite.communication.content;
 /**
  * Basic content wrapper for the messaging.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class Content {
 

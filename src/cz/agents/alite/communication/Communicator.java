@@ -5,7 +5,7 @@ import cz.agents.alite.communication.content.Content;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public interface Communicator extends CommunicationSender, CommunicationReceiver {
 

@@ -17,7 +17,7 @@ import java.util.Set;
  * When created, it registeres protocol handler to the given communicator.
  * In the end of the protocol the handler is automatically derregistered.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 //TODO: state machine
 public abstract class CnpInitiator extends Cnp {

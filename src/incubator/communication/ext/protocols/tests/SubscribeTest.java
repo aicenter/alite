@@ -9,7 +9,7 @@ import cz.agents.alite.communication.directory.DirectoryFacilitatorSingleton;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class SubscribeTest {
 

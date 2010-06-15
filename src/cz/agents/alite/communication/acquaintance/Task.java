@@ -3,7 +3,7 @@ package cz.agents.alite.communication.acquaintance;
 /**
  * Interfance for Task used by agents' acquaintance models.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public interface Task {
 

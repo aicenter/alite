@@ -2,7 +2,7 @@ package cz.agents.alite.communication.protocol;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public interface Protocol {
 

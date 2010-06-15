@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
  * The number of threads in the executos pool correspond to the number of processor cores
  * {@see Runtime.getRuntime().availableProcessors()}.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class DirectCommunicationChannelAsync extends DirectCommunicationChannel {
 

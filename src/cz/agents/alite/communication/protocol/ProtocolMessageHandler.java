@@ -6,7 +6,7 @@ import cz.agents.alite.communication.MessageHandler;
 /**
  * The message handler for protocol-based messaging.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class ProtocolMessageHandler implements MessageHandler {
 

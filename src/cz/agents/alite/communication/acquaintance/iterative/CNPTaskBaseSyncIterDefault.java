@@ -7,7 +7,7 @@ import cz.agents.alite.communication.Communicator;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class CNPTaskBaseSyncIterDefault extends CNPTaskBaseSyncIter{
 

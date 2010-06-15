@@ -13,7 +13,7 @@ import cz.agents.alite.communication.protocol.ProtocolMessageHandler;
  * When created, it registeres protocol handler to the given communicator.
  * In the end of the protocol the handler is automatically derregistered.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class RequestInformInitiator extends RequestInform {
 

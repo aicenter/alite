@@ -15,7 +15,7 @@ import java.util.LinkedList;
  * The ({@link handleToken(String token)}) method is called for each token on the master first and then successively on the whole ring.
  * No {@link TokenRingInform.tokenBack()} method is called.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class MasteredTokenRing extends TokenRing {
 

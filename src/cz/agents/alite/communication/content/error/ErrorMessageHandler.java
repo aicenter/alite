@@ -6,7 +6,7 @@ import cz.agents.alite.communication.MessageHandler;
 /**
  * {@link MessageHandler} for handling {@link ErrorContent}.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class ErrorMessageHandler implements MessageHandler {
 

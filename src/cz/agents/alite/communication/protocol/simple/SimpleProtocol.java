@@ -14,7 +14,7 @@ import java.util.Collection;
  * It creates {@link ProtocolMessageHandler} bounded to the name provided and allows
  * to send messages to such handlers.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class SimpleProtocol extends DefaultProtocol {
 

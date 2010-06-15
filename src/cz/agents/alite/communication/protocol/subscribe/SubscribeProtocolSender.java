@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * {@link SubscribeProtocolSender} allows only information sending. It does not make the subscription.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class SubscribeProtocolSender extends DefaultProtocol {
 

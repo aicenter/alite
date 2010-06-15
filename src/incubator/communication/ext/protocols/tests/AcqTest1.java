@@ -26,7 +26,7 @@ import javax.vecmath.Point3d;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class AcqTest1 {
 

@@ -5,7 +5,7 @@ import cz.agents.alite.communication.Communicator;
 /**
  * Default protocol implementation providing basic methods.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class DefaultProtocol implements Protocol {
 

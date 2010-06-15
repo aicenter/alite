@@ -5,7 +5,7 @@ import cz.agents.alite.communication.Message;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class DefaultCommunicationChannel implements CommunicationChannel {
 

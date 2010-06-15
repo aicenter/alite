@@ -22,7 +22,7 @@ import java.util.Map.Entry;
  *  In case of R-D-Fd the TaskBase starts new CNP for task, which is reported unreachable (by the CNPResponder.failed).
  *  In case of R-Fd the task is reported unreachable in case of failure.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class CNPTaskBase implements TaskBase {
 

@@ -13,7 +13,7 @@ import java.util.LinkedList;
  *
  *  The attached executor has to accept the Plan in the form of MyPlan extends LinkedList<Task> defind in this class.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class DefaultPlanBase implements PlanBase {
 

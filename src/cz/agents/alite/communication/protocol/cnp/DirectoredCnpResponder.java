@@ -6,7 +6,7 @@ import cz.agents.alite.common.capability.CapabilityRegister;
 
 /**
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public abstract class DirectoredCnpResponder extends CnpResponder {
 

@@ -9,7 +9,7 @@ import java.util.LinkedList;
  *  Default agent TaskBase.
  *  Does not cooperate with any other TaskBase.
  *
- * @author vokrinek
+ * @author Jiri Vokrinek
  */
 public class DefaultTaskBase implements TaskBase {
 
