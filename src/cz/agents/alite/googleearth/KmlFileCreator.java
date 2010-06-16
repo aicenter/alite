@@ -16,17 +16,23 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
+
+
+
 
 import cz.agents.alite.googleearth.kml.AbstractFeatureType;
 import cz.agents.alite.googleearth.kml.AbstractGeometryType;
 import cz.agents.alite.googleearth.kml.AbstractObjectType;
 import cz.agents.alite.googleearth.kml.AbstractStyleSelectorType;
 import cz.agents.alite.googleearth.kml.AltitudeModeEnumType;
+import cz.agents.alite.googleearth.kml.BasicLinkType;
 import cz.agents.alite.googleearth.kml.BoundaryType;
 import cz.agents.alite.googleearth.kml.DocumentType;
 import cz.agents.alite.googleearth.kml.FolderType;
 import cz.agents.alite.googleearth.kml.KmlType;
 import cz.agents.alite.googleearth.kml.LineStringType;
+import cz.agents.alite.googleearth.kml.LineStyleType;
 import cz.agents.alite.googleearth.kml.LookAtType;
 import cz.agents.alite.googleearth.kml.ObjectFactory;
 import cz.agents.alite.googleearth.kml.PairType;
@@ -38,295 +44,372 @@ import cz.agents.alite.googleearth.kml.StyleType;
 
 /**
  * Basic wrapper for KML file creation.
- *
+ * 
+ * under construction !
+ * 
  * @author Petr Benda
  * @author Ondrej Milenovsky
  */
 public class KmlFileCreator
 {
 
-    public static final String KML_ORIGIN_FILE = "resources/googleearth-origin/origin2.kml";
+	public static final String KML_ORIGIN_FILE = "resources/googleearth-origin/origin2.kml";
 
-    //private static final String BODY_STYLE = "body";
-    private static final String EVENT_STYLE = "event";
-    public static final String STYLE_WALKER = "sn_walker";
-    public static final String STYLE_METRO = "sn_metro";
-    public static final String STYLE_CAR = "sn_car";
-    public static final String STYLE_STREET = "sh_ylw-pushpin00";
+	// private static final String BODY_STYLE = "body";
+	private static final String EVENT_STYLE = "event";
+	public static final String STYLE_WALKER = "sn_walker";
+	public static final String STYLE_METRO = "sn_metro";
+	public static final String STYLE_CAR = "sn_car";
+	public static final String STYLE_STREET = "sh_ylw-pushpin00";
 
-    public static final int LINE_STYLE_STREET = 0;
-    public static final int LINE_STYLE_METROA = 1;
-    public static final int LINE_STYLE_METROB = 2;
-    public static final int LINE_STYLE_METROC = 3;
+	public static final int LINE_STYLE_STREET = 0;
+	public static final int LINE_STYLE_METROA = 1;
+	public static final int LINE_STYLE_METROB = 2;
+	public static final int LINE_STYLE_METROC = 3;
 
-    public static final int POLY_STYLE_GREEN = 0;
-    public static final int POLY_STYLE_YELLOW = 1;
-    public static final int POLY_STYLE_RED = 2;
-    public static final int POLY_STYLE_BLUE = 3;
+	public static final int POLY_STYLE_GREEN = 0;
+	public static final int POLY_STYLE_YELLOW = 1;
+	public static final int POLY_STYLE_RED = 2;
+	public static final int POLY_STYLE_BLUE = 3;
 
-    protected FolderType folder;
-    protected ArrayList<JAXBElement<? extends AbstractFeatureType>> polygonsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
-    protected ArrayList<JAXBElement<? extends AbstractFeatureType>> roadsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
-    protected JAXBElement<? extends AbstractFeatureType> placemarkOrigin;
+	protected FolderType folder;
+	protected ArrayList<JAXBElement<? extends AbstractFeatureType>> polygonsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
+	protected ArrayList<JAXBElement<? extends AbstractFeatureType>> roadsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
+	protected JAXBElement<? extends AbstractFeatureType> placemarkOrigin;
 
-    DocumentType type;
-    JAXBElement<? extends AbstractObjectType> placemarkStyleMapOrigin;
-    List<JAXBElement<? extends AbstractFeatureType>> placemarkStyleElements;
+	DocumentType type;
+	JAXBElement<? extends AbstractObjectType> placemarkStyleMapOrigin;
+	List<JAXBElement<? extends AbstractFeatureType>> placemarkStyleElements;
 
-    JAXBContext context;
-    JAXBElement<? extends AbstractFeatureType> rootElement;
+	JAXBContext context;
+	JAXBElement<? extends AbstractFeatureType> rootElement;
 
-    public KmlFileCreator()
-    {
-        loadOrigins(KmlFileCreator.KML_ORIGIN_FILE);
-    }
+	public KmlFileCreator()
+	{
+		loadOrigins(KmlFileCreator.KML_ORIGIN_FILE);
+	}
 
-    public String createStringCoordinate(double x, double y, double z)
-    {
-        return x + "," + y + "," + z;
-    }
+	public String createStringCoordinate(double x, double y, double z)
+	{
+		return x + "," + y + "," + z;
+	}
 
-    public List<String> createStringCoordinateList(List<Point2d> coordinates)
-    {
-        List<String> out = new ArrayList<String>(coordinates.size());
-        for(Point2d point : coordinates)
-        {
-            out.add(createStringCoordinate(point.x, point.y, 0d));
-        }
-        return out;
-    }
+	public List<String> createStringCoordinateList(List<Point2d> coordinates)
+	{
+		List<String> out = new ArrayList<String>(coordinates.size());
+		for(Point2d point: coordinates)
+		{
+			out.add(createStringCoordinate(point.x, point.y, 0d));
+		}
+		return out;
+	}
 
-    public void createRoadFromStringCoords(List<String> coordinates, String name)
-    {
-        createRoadFromStringCoords(coordinates, name, 0);
-    }
+	public void createRoadFromStringCoords(List<String> coordinates, String name)
+	{
+		createRoadFromStringCoords(coordinates, name, 0);
+	}
 
-    public void createRoadFromStringCoords(List<String> coordinates, String name, int style)
-    {
-        @SuppressWarnings("unchecked")
-        JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>) SerializableObjectCloner
-                .clone(roadsOrigin.get(style));
+	public void createRoadFromStringCoords(List<String> coordinates, String name, int style)
+	{
+		@SuppressWarnings("unchecked")
+		JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>)SerializableObjectCloner
+				.clone(roadsOrigin.get(style));
 
-        Object ob = clone.getValue();
-        PlacemarkType placemark = (PlacemarkType) ob;
-        placemark.setDescription("<html>Name: " + name + "</html>");
-        JAXBElement<? extends AbstractGeometryType> geometry = placemark
-                .getAbstractGeometryGroup();
-        LineStringType line = (LineStringType) geometry.getValue();
-        line.getCoordinates().clear();
-        line.getCoordinates().addAll(coordinates);
-        //if(style != null) placemark.setStyleUrl("#" + style);
-        folder.getAbstractFeatureGroup().add(clone);
-    }
+		Object ob = clone.getValue();
+		PlacemarkType placemark = (PlacemarkType)ob;
+		placemark.setDescription("<html>Name: " + name + "</html>");
+		JAXBElement<? extends AbstractGeometryType> geometry = placemark.getAbstractGeometryGroup();
+		LineStringType line = (LineStringType)geometry.getValue();
+		line.getCoordinates().clear();
+		line.getCoordinates().addAll(coordinates);
+		//placemark.setStyleUrl("#" + style);
+		folder.getAbstractFeatureGroup().add(clone);
+	}
 
-    public void createBodyPlacemark(double lat, double lon, String name,
-            String description)
-    {
-        createPlacemark(lat, lon, name, description, STYLE_WALKER);
-    }
+	public void createBodyPlacemark(double lat, double lon, String name, String description)
+	{
+		createPlacemark(lat, lon, name, description, STYLE_WALKER);
+	}
 
-    public void createEventPlacemark(double lon, double lat, String name,
-            String description)
-    {
-        createPlacemark(lon, lat, name, description, EVENT_STYLE);
-    }
+	public void createEventPlacemark(double lon, double lat, String name, String description)
+	{
+		createPlacemark(lon, lat, name, description, EVENT_STYLE);
+	}
 
-    /**creates icon*/
-    public void createPlacemark(double lon, double lat, String name,
-            String description, String style)
-    {
-        try
-        {
-            @SuppressWarnings("unchecked")
-            JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>) SerializableObjectCloner
-                    .clone(placemarkOrigin);
-            Object ob = clone.getValue();
-            PlacemarkType placemark = (PlacemarkType) ob;
+	/** creates icon */
+	public void createPlacemark(double lon, double lat, String name, String description,
+			String style)
+	{
+		try
+		{
+			@SuppressWarnings("unchecked")
+			JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>)SerializableObjectCloner
+					.clone(placemarkOrigin);
+			Object ob = clone.getValue();
+			PlacemarkType placemark = (PlacemarkType)ob;
 
-            placemark.setName(name);
-            if(description != null)
-            {
-                placemark.setDescription(description);
-            }
+			placemark.setName(name);
+			if(description != null)
+			{
+				placemark.setDescription(description);
+			}
 
-            JAXBElement<? extends AbstractGeometryType> geometry = placemark
-                    .getAbstractGeometryGroup();
-            PointType pt = (PointType) geometry.getValue();
-            pt.getCoordinates().clear();
-            pt.getCoordinates().add(lon + "," + lat + ",0");
+			JAXBElement<? extends AbstractGeometryType> geometry = placemark
+					.getAbstractGeometryGroup();
+			PointType pt = (PointType)geometry.getValue();
+			pt.getCoordinates().clear();
+			pt.getCoordinates().add(lon + "," + lat + ",0");
 
-            // StyleMapType st = (StyleMapType)currentStyleMap.getValue();
+			// StyleMapType st = (StyleMapType)currentStyleMap.getValue();
 
-            placemark.setStyleUrl("#" + style);
+			placemark.setStyleUrl("#" + style);
 
-            LookAtType lookAt = (LookAtType) placemark.getAbstractViewGroup()
-                    .getValue();
+			LookAtType lookAt = (LookAtType)placemark.getAbstractViewGroup().getValue();
 
-            lookAt.setLatitude(lat);
-            lookAt.setLongitude(lon);
+			lookAt.setLatitude(lat);
+			lookAt.setLongitude(lon);
 
-            folder.getAbstractFeatureGroup().add(clone);
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+			folder.getAbstractFeatureGroup().add(clone);
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
 
-    public void createPolygonFromStringCoords(String name,
-            List<String> coordinates, String description, boolean extruded)
-    {
-        createPolygonFromStringCoords(name, coordinates, description, extruded, 0);
-    }
+	public void createPolygonFromStringCoords(String name, List<String> coordinates,
+			String description, boolean extruded)
+	{
+		createPolygonFromStringCoords(name, coordinates, description, extruded, 0);
+	}
 
-    public void createPolygonFromStringCoords(String name,
-            List<String> coordinates, String description, boolean extruded, int style)
-    {
-        @SuppressWarnings("unchecked")
-        JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>) SerializableObjectCloner
-                .clone(polygonsOrigin.get(style));
-        Object ob = clone.getValue();
-        PlacemarkType placemark = (PlacemarkType) ob;
-        placemark.setName(name);
-        placemark.setDescription(description);
-        // TODO set dynamic type
-        JAXBElement<? extends AbstractGeometryType> geometry = placemark
-                .getAbstractGeometryGroup();
-        PolygonType polygon = (PolygonType) geometry.getValue();
-        if(extruded)
-        {
-            polygon.setExtrude(true);
-            polygon.setTessellate(true);
-            ObjectFactory factory = new ObjectFactory();
-            factory.createAltitudeMode(AltitudeModeEnumType.ABSOLUTE);
-            polygon.setAltitudeModeGroup(factory
-                    .createAltitudeMode(AltitudeModeEnumType.ABSOLUTE));
-        }
-        BoundaryType boundaries = polygon.getOuterBoundaryIs();
-        boundaries.getLinearRing().getCoordinates().clear();
-        boundaries.getLinearRing().getCoordinates().addAll(coordinates);
-        folder.getAbstractFeatureGroup().add(clone);
-    }
+	public void createPolygonFromStringCoords(String name, List<String> coordinates,
+			String description, boolean extruded, int style)
+	{
+		@SuppressWarnings("unchecked")
+		JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>)SerializableObjectCloner
+				.clone(polygonsOrigin.get(style));
+		Object ob = clone.getValue();
+		PlacemarkType placemark = (PlacemarkType)ob;
+		placemark.setName(name);
+		placemark.setDescription(description);
+		// TODO set dynamic type
+		JAXBElement<? extends AbstractGeometryType> geometry = placemark.getAbstractGeometryGroup();
+		PolygonType polygon = (PolygonType)geometry.getValue();
+		if(extruded)
+		{
+			polygon.setExtrude(true);
+			polygon.setTessellate(true);
+			ObjectFactory factory = new ObjectFactory();
+			factory.createAltitudeMode(AltitudeModeEnumType.ABSOLUTE);
+			polygon.setAltitudeModeGroup(factory.createAltitudeMode(AltitudeModeEnumType.ABSOLUTE));
+		}
+		BoundaryType boundaries = polygon.getOuterBoundaryIs();
+		boundaries.getLinearRing().getCoordinates().clear();
+		boundaries.getLinearRing().getCoordinates().addAll(coordinates);
+		folder.getAbstractFeatureGroup().add(clone);
+	}
 
-    @SuppressWarnings("unchecked")
-    public void loadOrigins(String fileName)
-    {
-        try
-        {
-            context = JAXBContext
-                    .newInstance("cz.agents.alite.googleearth.kml");
-            Unmarshaller um = context.createUnmarshaller();
-            rootElement = (JAXBElement<? extends AbstractFeatureType>) um
-                    .unmarshal(new File(fileName));
-            Object o = rootElement.getValue();
-            KmlType t = (KmlType) o;
-            JAXBElement<? extends AbstractFeatureType> feature = t
-                    .getAbstractFeatureGroup();
-            type = (DocumentType) feature.getValue();
+	/** replace path for icons, replace external icon by local image */
+	private void editIconStyles(List<JAXBElement<? extends AbstractObjectType>> styles)
+	{
+		String iconPath = "";
+		try
+		{
+			File currDir = new File(".");
+			iconPath = currDir.getCanonicalPath() + File.separator + "resources" + File.separator
+					+ "img" + File.separator;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 
-            List<JAXBElement<? extends AbstractObjectType>> styles = new LinkedList<JAXBElement<? extends AbstractObjectType>>();
-            List<JAXBElement<? extends AbstractStyleSelectorType>> styleMaps = new LinkedList<JAXBElement<? extends AbstractStyleSelectorType>>();
+		for(JAXBElement<? extends AbstractObjectType> style: styles)
+		{
+			// System.out.println(style.getName());
+			Object typeObject = style.getValue();
+			if(typeObject instanceof StyleType)
+			{
+				StyleType type = (StyleType)typeObject;
+				// System.out.println(type.getId());
+				if(type.getId().equals(STYLE_WALKER))
+				{
+					BasicLinkType linkType = type.getIconStyle().getIcon();
+					linkType.setHref(iconPath + "walker.gif");
+				} else if(type.getId().equals(STYLE_CAR))
+				{
+					BasicLinkType linkType = type.getIconStyle().getIcon();
+					linkType.setHref(iconPath + "car.gif");
+				} else if(type.getId().equals(STYLE_METRO))
+				{
+					BasicLinkType linkType = type.getIconStyle().getIcon();
+					linkType.setHref(iconPath + "metro.gif");
+				}
+			}
+		}
+	}
 
-            for(JAXBElement<? extends AbstractStyleSelectorType> el: type
-                    .getAbstractStyleSelectorGroup())
-            {
-                Object obj2 = el.getValue();
-                if(obj2 instanceof StyleType)
-                {
-                    // StyleType s = (StyleType)obj2;
-                    styles.add(el);
-                }
-                if(obj2 instanceof StyleMapType)
-                {
-                    // StyleMapType map = (StyleMapType)obj2;
-                    styleMaps.add(el);
-                }
-            }
+	private void createStyles(List<JAXBElement<? extends AbstractObjectType>> styles)
+	{
+		ObjectFactory factory = new ObjectFactory(); // get factory
+		//create lines
+		/*
+		for(int i = 1; i <= 10; i++)
+		{
+			StyleType type = factory.createStyleType(); // new StyleType() can be used
+			type.setId("line" + i);
+			LineStyleType value = new LineStyleType();
+			// value.setColor(null)
+			value.setWidth((double)i);
+			type.setLineStyle(value);
+	
+			// create JAXBElement
+			QName name = new QName("http://earth.google.com/kml/2.2", "Style");
+			JAXBElement<StyleType> element = new JAXBElement<StyleType>(name, StyleType.class, JAXBElement.GlobalScope.class, type);
+	
+			// add this element to the styleGroup
+			styles.add(element);
+		}*/
+		
+		StyleType type = factory.createStyleType(); // new StyleType() can be used
+		type.setId("grr");
+		LineStyleType value = new LineStyleType();
+		value.setColor(new byte[]{127, 127, 127, 127});
+		value.setWidth(2.0);
+		type.setLineStyle(value);
 
-            List<JAXBElement<? extends AbstractFeatureType>> elements = type
-                    .getAbstractFeatureGroup();
-            JAXBElement<?> element2 = (JAXBElement<?>) elements.get(0);
-            FolderType ft = (FolderType) element2.getValue();
-            folder = ft;
-            //this is very stupid...
-            roadsOrigin.add(ft.getAbstractFeatureGroup().get(5)); //street
-            roadsOrigin.add(ft.getAbstractFeatureGroup().get(6)); //metro A
-            roadsOrigin.add(ft.getAbstractFeatureGroup().get(7)); //metro B
-            roadsOrigin.add(ft.getAbstractFeatureGroup().get(8)); //metro C
-            polygonsOrigin.add(ft.getAbstractFeatureGroup().get(9)); //light green
-            polygonsOrigin.add(ft.getAbstractFeatureGroup().get(10)); //light yellow
-            polygonsOrigin.add(ft.getAbstractFeatureGroup().get(11)); //light red
-            polygonsOrigin.add(ft.getAbstractFeatureGroup().get(12)); //metro station (blue)
-            // modelOrign = ft.getAbstractFeatureGroup().get(2);
-            placemarkOrigin = ft.getAbstractFeatureGroup().get(3);
-            // predictionRoadOrigin = ft.getAbstractFeatureGroup().get(4);
+		// create JAXBElement
+		QName name = new QName("http://earth.google.com/kml/2.2", "Style");
+		JAXBElement<StyleType> element = new JAXBElement<StyleType>(name, StyleType.class, JAXBElement.GlobalScope.class, type);
 
-            PlacemarkType placemark = (PlacemarkType) placemarkOrigin
-                    .getValue();
-            String style = placemark.getStyleUrl().substring(1);
+		// add this element to the styleGroup
+		styles.add(element);
+		
+	}
 
-            placemarkStyleElements = new LinkedList<JAXBElement<? extends AbstractFeatureType>>();
+	@SuppressWarnings("unchecked")
+	public void loadOrigins(String fileName)
+	{
+		try
+		{
+			context = JAXBContext.newInstance("cz.agents.alite.googleearth.kml");
+			Unmarshaller um = context.createUnmarshaller();
+			rootElement = (JAXBElement<? extends AbstractFeatureType>)um.unmarshal(new File(
+					fileName));
+			Object o = rootElement.getValue();
+			KmlType t = (KmlType)o;
+			JAXBElement<? extends AbstractFeatureType> feature = t.getAbstractFeatureGroup();
+			type = (DocumentType)feature.getValue();
 
-            for(JAXBElement<? extends AbstractObjectType> smtElement : styleMaps)
-            {
-                StyleMapType smt = (StyleMapType) smtElement.getValue();
+			List<JAXBElement<? extends AbstractObjectType>> styles = new LinkedList<JAXBElement<? extends AbstractObjectType>>();
+			List<JAXBElement<? extends AbstractStyleSelectorType>> styleMaps = new LinkedList<JAXBElement<? extends AbstractStyleSelectorType>>();
 
-                String id = smt.getId();
+			for(JAXBElement<? extends AbstractStyleSelectorType> el: type
+					.getAbstractStyleSelectorGroup())
+			{
+				Object obj2 = el.getValue();
+				if(obj2 instanceof StyleType)
+				{
+					// StyleType s = (StyleType)obj2;
+					styles.add(el);
+				}
+				if(obj2 instanceof StyleMapType)
+				{
+					// StyleMapType map = (StyleMapType)obj2;
+					styleMaps.add(el);
+				}
+			}
 
-                if(id.equals(style))
-                {
-                    placemarkStyleMapOrigin = smtElement;
+			editIconStyles(styles);
+			createStyles(styles);
 
-                    List<PairType> pairs = smt.getPair();
+			List<JAXBElement<? extends AbstractFeatureType>> elements = type
+					.getAbstractFeatureGroup();
+			JAXBElement<?> element2 = (JAXBElement<?>)elements.get(0);
+			FolderType ft = (FolderType)element2.getValue();
+			folder = ft;
+			// this is very stupid...
+			roadsOrigin.add(ft.getAbstractFeatureGroup().get(5)); // street
+			roadsOrigin.add(ft.getAbstractFeatureGroup().get(6)); // metro A
+			roadsOrigin.add(ft.getAbstractFeatureGroup().get(7)); // metro B
+			roadsOrigin.add(ft.getAbstractFeatureGroup().get(8)); // metro C
+			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(9)); // light
+			// green
+			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(10)); // light
+			// yellow
+			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(11)); // light
+			// red
+			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(12)); // metro
+			// station (blue)
+			// modelOrign = ft.getAbstractFeatureGroup().get(2);
+			placemarkOrigin = ft.getAbstractFeatureGroup().get(3);
+			// predictionRoadOrigin = ft.getAbstractFeatureGroup().get(4);
 
-                    List<String> relevantStyleNames = new LinkedList<String>();
-                    for(PairType pair : pairs)
-                    {
-                        relevantStyleNames.add(pair.getStyleUrl());
-                    }
+			PlacemarkType placemark = (PlacemarkType)placemarkOrigin.getValue();
+			String style = placemark.getStyleUrl().substring(1);
 
-                    for(JAXBElement<? extends AbstractObjectType> styleElement : styles)
-                    {
-                        StyleType s = (StyleType) styleElement.getValue();
+			placemarkStyleElements = new LinkedList<JAXBElement<? extends AbstractFeatureType>>();
 
-                        if(relevantStyleNames.contains("#" + s.getId()))
-                        {
-                            placemarkStyleElements
-                                    .add((JAXBElement<? extends AbstractFeatureType>) styleElement);
-                        }
-                    }
-                }
-            }
+			for(JAXBElement<? extends AbstractObjectType> smtElement: styleMaps)
+			{
+				StyleMapType smt = (StyleMapType)smtElement.getValue();
 
-            // remove origins from KML
-            folder.getAbstractFeatureGroup().clear();
+				String id = smt.getId();
 
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+				if(id.equals(style))
+				{
+					placemarkStyleMapOrigin = smtElement;
 
-    public String getKML()
-    {
-        Marshaller m;
-        try
-        {
-            m = context.createMarshaller();
+					List<PairType> pairs = smt.getPair();
 
-            StringWriter stringWriter = new StringWriter();
-            m.marshal(rootElement, stringWriter);
-            String s = stringWriter.toString();
-            return s;
-        } catch (JAXBException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
+					List<String> relevantStyleNames = new LinkedList<String>();
+					for(PairType pair: pairs)
+					{
+						relevantStyleNames.add(pair.getStyleUrl());
+					}
 
-    public void clear()
-    {
-        folder.getAbstractFeatureGroup().clear();
-    }
+					for(JAXBElement<? extends AbstractObjectType> styleElement: styles)
+					{
+						StyleType s = (StyleType)styleElement.getValue();
+
+						if(relevantStyleNames.contains("#" + s.getId()))
+						{
+							placemarkStyleElements
+									.add((JAXBElement<? extends AbstractFeatureType>)styleElement);
+						}
+					}
+				}
+			}
+
+			// remove origins from KML
+			folder.getAbstractFeatureGroup().clear();
+
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	public String getKML()
+	{
+		Marshaller m;
+		try
+		{
+			m = context.createMarshaller();
+
+			StringWriter stringWriter = new StringWriter();
+			m.marshal(rootElement, stringWriter);
+			String s = stringWriter.toString();
+			return s;
+		} catch (JAXBException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void clear()
+	{
+		folder.getAbstractFeatureGroup().clear();
+	}
 
 }
