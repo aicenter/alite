@@ -212,17 +212,9 @@ public class KmlFileCreator
 	/** replace path for icons, replace external icon by local image */
 	private void editIconStyles(List<JAXBElement<? extends AbstractObjectType>> styles)
 	{
-		String iconPath = "";
-		try
-		{
-			File currDir = new File(".");
-			iconPath = currDir.getCanonicalPath() + File.separator + "resources" + File.separator
+		String iconPath = getCurrentPath() + "resources" + File.separator
 					+ "img" + File.separator;
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
+		
 		for(JAXBElement<? extends AbstractObjectType> style: styles)
 		{
 			// System.out.println(style.getName());
@@ -412,4 +404,20 @@ public class KmlFileCreator
 		folder.getAbstractFeatureGroup().clear();
 	}
 
+	
+	public static String getCurrentPath()
+	{
+		String path = "";
+		try
+		{
+			File currDir = new File(".");
+			path = currDir.getCanonicalPath() + File.separator;
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return path;
+	}
+	
+	
 }
