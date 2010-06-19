@@ -242,26 +242,6 @@ public class KmlFileCreator
 			JAXBElement<? extends AbstractFeatureType> feature = t.getAbstractFeatureGroup();
 			type = (DocumentType)feature.getValue();
 
-			/*
-			List<JAXBElement<? extends AbstractObjectType>> styles = new LinkedList<JAXBElement<? extends AbstractObjectType>>();
-			List<JAXBElement<? extends AbstractStyleSelectorType>> styleMaps = new LinkedList<JAXBElement<? extends AbstractStyleSelectorType>>();
-
-			for(JAXBElement<? extends AbstractStyleSelectorType> el: type
-					.getAbstractStyleSelectorGroup())
-			{
-				Object obj2 = el.getValue();
-				if(obj2 instanceof StyleType)
-				{
-					// StyleType s = (StyleType)obj2;
-					styles.add(el);
-				}
-				if(obj2 instanceof StyleMapType)
-				{
-					// StyleMapType map = (StyleMapType)obj2;
-					styleMaps.add(el);
-				}
-			}
-			*/
 			
 			factory = new ObjectFactory();
 			createStyles();
@@ -278,44 +258,6 @@ public class KmlFileCreator
 			// modelOrign = ft.getAbstractFeatureGroup().get(2);
 			placemarkOrigin = ft.getAbstractFeatureGroup().get(3);
 			// predictionRoadOrigin = ft.getAbstractFeatureGroup().get(4);
-
-			/*
-			PlacemarkType placemark = (PlacemarkType)placemarkOrigin.getValue();
-			String style = placemark.getStyleUrl().substring(1);
-
-			placemarkStyleElements = new LinkedList<JAXBElement<? extends AbstractFeatureType>>();
-
-			for(JAXBElement<? extends AbstractObjectType> smtElement: styleMaps)
-			{
-				StyleMapType smt = (StyleMapType)smtElement.getValue();
-
-				String id = smt.getId();
-
-				if(id.equals(style))
-				{
-					placemarkStyleMapOrigin = smtElement;
-
-					List<PairType> pairs = smt.getPair();
-
-					List<String> relevantStyleNames = new LinkedList<String>();
-					for(PairType pair: pairs)
-					{
-						relevantStyleNames.add(pair.getStyleUrl());
-					}
-
-					for(JAXBElement<? extends AbstractObjectType> styleElement: styles)
-					{
-						StyleType s = (StyleType)styleElement.getValue();
-
-						if(relevantStyleNames.contains("#" + s.getId()))
-						{
-							placemarkStyleElements
-									.add((JAXBElement<? extends AbstractFeatureType>)styleElement);
-						}
-					}
-				}
-			}
-			*/
 			
 			// remove origins from KML
 			folder.getAbstractFeatureGroup().clear();
