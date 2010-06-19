@@ -4,6 +4,7 @@
  */
 package cz.agents.alite.googleearth;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -59,28 +60,26 @@ import cz.agents.alite.googleearth.kml.StyleType;
 public class KmlFileCreator
 {
 
-	public static final String FILE_NAME = "origin2.kml";
 	public static final String FILE_NAME2 = "tmp.kml";
 
 	private static final String BODY_STYLE = "body";
 	private static final String EVENT_STYLE = "event";
 
 	protected FolderType folder;
-	protected ArrayList<JAXBElement<? extends AbstractFeatureType>> polygonsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
-	protected ArrayList<JAXBElement<? extends AbstractFeatureType>> roadsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
+	
+	protected JAXBElement<? extends AbstractFeatureType> polygonOrigin;
+	protected JAXBElement<? extends AbstractFeatureType> lineOrigin;
+	protected JAXBElement<? extends AbstractFeatureType> modelOrigin;
 	protected JAXBElement<? extends AbstractFeatureType> placemarkOrigin;
 
+	
+	
 	protected DocumentType type;
 	protected JAXBElement<? extends AbstractObjectType> placemarkStyleMapOrigin;
 	protected List<JAXBElement<? extends AbstractFeatureType>> placemarkStyleElements;
 
 	protected JAXBContext context;
 	protected JAXBElement<? extends AbstractFeatureType> rootElement;
-
-	public KmlFileCreator()
-	{
-		this(FILE_NAME);
-	}
 
 	public KmlFileCreator(String fileName)
 	{
@@ -121,14 +120,14 @@ public class KmlFileCreator
 
 	public void createRoadFromStringCoords(List<String> coordinates, String name)
 	{
-		createRoadFromStringCoords(coordinates, name, 0);
+		createRoadFromStringCoords(coordinates, name, "sh_ylw-pushpin00");
 	}
 
-	public void createRoadFromStringCoords(List<String> coordinates, String name, int style)
+	public void createRoadFromStringCoords(List<String> coordinates, String name, String style)
 	{
 		@SuppressWarnings("unchecked")
 		JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>)SerializableObjectCloner
-				.clone(roadsOrigin.get(style));
+				.clone(lineOrigin);
 
 		Object ob = clone.getValue();
 		PlacemarkType placemark = (PlacemarkType)ob;
@@ -137,7 +136,7 @@ public class KmlFileCreator
 		LineStringType line = (LineStringType)geometry.getValue();
 		line.getCoordinates().clear();
 		line.getCoordinates().addAll(coordinates);
-		// placemark.setStyleUrl("#" + style);
+		placemark.setStyleUrl("#" + style);
 		folder.getAbstractFeatureGroup().add(clone);
 	}
 
@@ -194,20 +193,20 @@ public class KmlFileCreator
 	public void createPolygonFromStringCoords(String name, List<String> coordinates,
 			String description, boolean extruded)
 	{
-		createPolygonFromStringCoords(name, coordinates, description, extruded, 0);
+		createPolygonFromStringCoords(name, coordinates, description, extruded, "sh_ylw-pushpin00");
 	}
 
 	public void createPolygonFromStringCoords(String name, List<String> coordinates,
-			String description, boolean extruded, int style)
+			String description, boolean extruded, String style)
 	{
 		@SuppressWarnings("unchecked")
 		JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>)SerializableObjectCloner
-				.clone(polygonsOrigin.get(style));
+				.clone(polygonOrigin);
 		Object ob = clone.getValue();
 		PlacemarkType placemark = (PlacemarkType)ob;
 		placemark.setName(name);
 		placemark.setDescription(description);
-		// TODO set dynamic type
+		placemark.setStyleUrl("#" + style);
 		JAXBElement<? extends AbstractGeometryType> geometry = placemark.getAbstractGeometryGroup();
 		PolygonType polygon = (PolygonType)geometry.getValue();
 		if(extruded)
@@ -233,7 +232,7 @@ public class KmlFileCreator
 	}
 
 	/** create new styles, override this method */
-	protected void createStyles(List<JAXBElement<? extends AbstractObjectType>> styles)
+	protected void createStyles()
 	{
 	}
 
@@ -281,26 +280,16 @@ public class KmlFileCreator
 			}
 
 			editIconStyles(styles);
-			// createStyles(styles);
+			createStyles();
 
 			List<JAXBElement<? extends AbstractFeatureType>> elements = type
 					.getAbstractFeatureGroup();
 			JAXBElement<?> element2 = (JAXBElement<?>)elements.get(0);
 			FolderType ft = (FolderType)element2.getValue();
 			folder = ft;
-			// this is very stupid...
-			roadsOrigin.add(ft.getAbstractFeatureGroup().get(5)); // street
-			roadsOrigin.add(ft.getAbstractFeatureGroup().get(6)); // metro A
-			roadsOrigin.add(ft.getAbstractFeatureGroup().get(7)); // metro B
-			roadsOrigin.add(ft.getAbstractFeatureGroup().get(8)); // metro C
-			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(9)); // light
-			// green
-			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(10)); // light
-			// yellow
-			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(11)); // light
-			// red
-			polygonsOrigin.add(ft.getAbstractFeatureGroup().get(12)); // metro
-			// station (blue)
+			
+			polygonOrigin = ft.getAbstractFeatureGroup().get(0);
+			lineOrigin = ft.getAbstractFeatureGroup().get(1);
 			// modelOrign = ft.getAbstractFeatureGroup().get(2);
 			placemarkOrigin = ft.getAbstractFeatureGroup().get(3);
 			// predictionRoadOrigin = ft.getAbstractFeatureGroup().get(4);
@@ -373,6 +362,15 @@ public class KmlFileCreator
 		folder.getAbstractFeatureGroup().clear();
 	}
 
+	public static byte[] color2byte(Color color)
+	{
+		return new byte[] {
+				(byte)color.getAlpha(),
+				(byte)color.getBlue(),
+				(byte)color.getGreen(),
+				(byte)color.getRed()};
+	}
+
 	public static String getCurrentPath()
 	{
 		String path = "";
@@ -421,12 +419,11 @@ public class KmlFileCreator
 		out.close();
 	}
 
-	/**deletes file*/
+	/** deletes file */
 	public static void deleteFile(String name)
 	{
 		File f = new File(name);
 		f.delete();
 	}
-	
-	
+
 }
