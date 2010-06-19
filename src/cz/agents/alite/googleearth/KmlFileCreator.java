@@ -125,13 +125,19 @@ public class KmlFileCreator
 
 	public void createRoadFromStringCoords(List<String> coordinates, String name, String style)
 	{
+		createRoadFromStringCoords(coordinates, name, "", style);
+	}
+	
+	public void createRoadFromStringCoords(List<String> coordinates, String name, String description, String style)
+	{
 		@SuppressWarnings("unchecked")
 		JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>)SerializableObjectCloner
 				.clone(lineOrigin);
 
 		Object ob = clone.getValue();
 		PlacemarkType placemark = (PlacemarkType)ob;
-		placemark.setDescription("<html>Name: " + name + "</html>");
+		placemark.setDescription(description);
+		placemark.setName(name);
 		JAXBElement<? extends AbstractGeometryType> geometry = placemark.getAbstractGeometryGroup();
 		LineStringType line = (LineStringType)geometry.getValue();
 		line.getCoordinates().clear();
@@ -179,8 +185,12 @@ public class KmlFileCreator
 		}
 	}
 
-	public void createPolygonFromStringCoords(String name, List<String> coordinates,
-			String description, boolean extruded, String style)
+	public void createPolygonFromStringCoords(List<String> coordinates, String name, boolean extruded, String style)
+	{
+		createPolygonFromStringCoords(coordinates, name, "", extruded, style);
+	}
+	
+	public void createPolygonFromStringCoords(List<String> coordinates, String name, String description, boolean extruded, String style)
 	{
 		@SuppressWarnings("unchecked")
 		JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>)SerializableObjectCloner
@@ -289,7 +299,6 @@ public class KmlFileCreator
 		{
 			if(el.next().getDeclaredType() == FolderType.class)
 			{
-				System.out.println("lam");
 				el.remove();
 			}
 		}
