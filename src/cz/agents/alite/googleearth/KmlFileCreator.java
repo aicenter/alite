@@ -22,22 +22,28 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.namespace.QName;
 
 import cz.agents.alite.googleearth.kml.AbstractFeatureType;
 import cz.agents.alite.googleearth.kml.AbstractGeometryType;
 import cz.agents.alite.googleearth.kml.AbstractObjectType;
 import cz.agents.alite.googleearth.kml.AbstractStyleSelectorType;
 import cz.agents.alite.googleearth.kml.AltitudeModeEnumType;
+import cz.agents.alite.googleearth.kml.BasicLinkType;
 import cz.agents.alite.googleearth.kml.BoundaryType;
 import cz.agents.alite.googleearth.kml.DocumentType;
 import cz.agents.alite.googleearth.kml.FolderType;
+import cz.agents.alite.googleearth.kml.IconStyleType;
 import cz.agents.alite.googleearth.kml.KmlType;
+import cz.agents.alite.googleearth.kml.LabelStyleType;
 import cz.agents.alite.googleearth.kml.LineStringType;
+import cz.agents.alite.googleearth.kml.LineStyleType;
 import cz.agents.alite.googleearth.kml.LookAtType;
 import cz.agents.alite.googleearth.kml.ObjectFactory;
 import cz.agents.alite.googleearth.kml.PairType;
 import cz.agents.alite.googleearth.kml.PlacemarkType;
 import cz.agents.alite.googleearth.kml.PointType;
+import cz.agents.alite.googleearth.kml.PolyStyleType;
 import cz.agents.alite.googleearth.kml.PolygonType;
 import cz.agents.alite.googleearth.kml.StyleMapType;
 import cz.agents.alite.googleearth.kml.StyleType;
@@ -62,8 +68,10 @@ public class KmlFileCreator
 
 	public static final String FILE_NAME2 = "tmp.kml";
 
-	private static final String BODY_STYLE = "body";
+	private static final String ICON_STYLE = "body";
 	private static final String EVENT_STYLE = "event";
+	private static final String POLY_STYLE = "polygon1";
+	private static final String LINE_STYLE = "line1";
 
 	protected FolderType folder;
 	
@@ -81,6 +89,10 @@ public class KmlFileCreator
 	protected JAXBContext context;
 	protected JAXBElement<? extends AbstractFeatureType> rootElement;
 
+	protected ObjectFactory factory;
+	
+	
+	
 	public KmlFileCreator(String fileName)
 	{
 		this(fileName, null);
@@ -91,6 +103,7 @@ public class KmlFileCreator
 		// first replace some text in the file
 		String file2 = fileName;
 		if(replaceArray != null)
+		{
 			try
 			{
 				saveFile(FILE_NAME2, replaceText(loadFile(fileName), replaceArray));
@@ -99,7 +112,10 @@ public class KmlFileCreator
 			{
 				e.printStackTrace();
 			}
+		}
+		// now parse xml
 		loadOrigins(file2);
+		// delete tmp file
 		deleteFile(FILE_NAME2);
 	}
 
@@ -120,7 +136,7 @@ public class KmlFileCreator
 
 	public void createRoadFromStringCoords(List<String> coordinates, String name)
 	{
-		createRoadFromStringCoords(coordinates, name, "sh_ylw-pushpin00");
+		createRoadFromStringCoords(coordinates, name, LINE_STYLE);
 	}
 
 	public void createRoadFromStringCoords(List<String> coordinates, String name, String style)
@@ -142,7 +158,7 @@ public class KmlFileCreator
 
 	public void createBodyPlacemark(double lat, double lon, String name, String description)
 	{
-		createPlacemark(lat, lon, name, description, BODY_STYLE);
+		createPlacemark(lat, lon, name, description, ICON_STYLE);
 	}
 
 	public void createEventPlacemark(double lon, double lat, String name, String description)
@@ -193,7 +209,7 @@ public class KmlFileCreator
 	public void createPolygonFromStringCoords(String name, List<String> coordinates,
 			String description, boolean extruded)
 	{
-		createPolygonFromStringCoords(name, coordinates, description, extruded, "sh_ylw-pushpin00");
+		createPolygonFromStringCoords(name, coordinates, description, extruded, POLY_STYLE);
 	}
 
 	public void createPolygonFromStringCoords(String name, List<String> coordinates,
@@ -223,17 +239,14 @@ public class KmlFileCreator
 		folder.getAbstractFeatureGroup().add(clone);
 	}
 
-	/**
-	 * replace path for icons, replace external icon by local image, override
-	 * this method
-	 */
-	protected void editIconStyles(List<JAXBElement<? extends AbstractObjectType>> styles)
-	{
-	}
 
 	/** create new styles, override this method */
 	protected void createStyles()
 	{
+		//this is just an example, override this method
+		addLineStyle(LINE_STYLE, 2.0, Color.RED);		
+		addPolyStyle(POLY_STYLE, Color.GREEN);		
+		addIconStyle(ICON_STYLE, 1.5, "body.gif", Color.WHITE);		
 	}
 
 	/** replace text in the file before parsing, ovveride this method */
@@ -278,8 +291,8 @@ public class KmlFileCreator
 					styleMaps.add(el);
 				}
 			}
-
-			editIconStyles(styles);
+			
+			factory = new ObjectFactory();
 			createStyles();
 
 			List<JAXBElement<? extends AbstractFeatureType>> elements = type
@@ -288,6 +301,7 @@ public class KmlFileCreator
 			FolderType ft = (FolderType)element2.getValue();
 			folder = ft;
 			
+			//this exactly fits to origin.kml
 			polygonOrigin = ft.getAbstractFeatureGroup().get(0);
 			lineOrigin = ft.getAbstractFeatureGroup().get(1);
 			// modelOrign = ft.getAbstractFeatureGroup().get(2);
@@ -361,6 +375,85 @@ public class KmlFileCreator
 	{
 		folder.getAbstractFeatureGroup().clear();
 	}
+	
+	
+	
+	public void addLineStyle(String styleName, Double width, Color color)
+	{
+		// new StyleType() can be used
+		StyleType type = factory.createStyleType();
+		type.setId(styleName);
+		LineStyleType value = new LineStyleType();
+		if(color != null)
+			value.setColor(color2byte(color));
+		if(width != null)
+			value.setWidth(width);
+		type.setLineStyle(value);
+
+		// create JAXBElement
+		QName name = new QName("http://earth.google.com/kml/2.2", "Style");
+		JAXBElement<StyleType> element = new JAXBElement<StyleType>(name, StyleType.class,
+				JAXBElement.GlobalScope.class, type);
+
+		// add this element to the styleGroup
+		this.type.getAbstractStyleSelectorGroup().add(element);		
+	}
+	
+	public void addPolyStyle(String styleName, Color color)
+	{
+		// new StyleType() can be used
+		StyleType type = factory.createStyleType();
+		type.setId(styleName);
+		PolyStyleType value = new PolyStyleType();
+		if(color != null)
+			value.setColor(color2byte(color));
+		type.setPolyStyle(value);
+		
+		LineStyleType line = new LineStyleType();
+		line.setWidth(0.0);
+		type.setLineStyle(line);
+		
+		// create JAXBElement
+		QName name = new QName("http://earth.google.com/kml/2.2", "Style");
+		JAXBElement<StyleType> element = new JAXBElement<StyleType>(name, StyleType.class,
+				JAXBElement.GlobalScope.class, type);
+
+		// add this element to the styleGroup
+		this.type.getAbstractStyleSelectorGroup().add(element);		
+	}	
+	
+	public void addIconStyle(String styleName, Double scale, String iconPath, Color labelColor)
+	{
+		StyleType type = factory.createStyleType();
+		type.setId(styleName);
+		
+		//icon
+		IconStyleType value = new IconStyleType();
+		if(scale != null)
+			value.setScale(scale);
+		//url
+		BasicLinkType blt = new BasicLinkType();
+		blt.setHref(iconPath);
+		value.setIcon(blt);		
+		type.setIconStyle(value);
+		
+		if(labelColor != null)
+		{
+			LabelStyleType label = new LabelStyleType();
+			label.setColor(color2byte(labelColor));
+			type.setLabelStyle(label);
+		}
+		
+		// create JAXBElement
+		QName name = new QName("http://earth.google.com/kml/2.2", "Style");
+		JAXBElement<StyleType> element = new JAXBElement<StyleType>(name, StyleType.class,
+				JAXBElement.GlobalScope.class, type);
+
+		// add this element to the styleGroup
+		this.type.getAbstractStyleSelectorGroup().add(element);		
+		
+	}
+	
 
 	public static byte[] color2byte(Color color)
 	{
