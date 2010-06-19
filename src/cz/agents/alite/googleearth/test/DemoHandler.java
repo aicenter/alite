@@ -69,17 +69,17 @@ public class DemoHandler extends GoogleEarthHandler {
 		int counter = 0;
 		for(Point2d p: bodies) {
 			//create placemark
-			kmlCreator.createBodyPlacemark(p.x,p.y,"Prazak "+counter,"Prazak");
+			kmlCreator.createPlacemark(p.x,p.y,"Prazak "+counter,"Prazak", KmlFileCreator.ICON_STYLE);
 			counter++;
 		}
 		List<String> coords = new ArrayList<String>(); 
 		for(Point2d p : nodes) {
 			//convert points to set of coordinates
-			String coord = kmlCreator.createStringCoordinate(p.x, p.y, 0);
+			String coord = KmlFileCreator.createStringCoordinate(p.x, p.y, 0);
 			coords.add(coord);
 		}
 		//push the list of coordinates
-		kmlCreator.createRoadFromStringCoords(coords, "One fine Line");
+		kmlCreator.createRoadFromStringCoords(coords, "One fine Line", KmlFileCreator.LINE_STYLE);
 		
 		System.out.println("Content to KML: " + (System.currentTimeMillis() - time));
 		

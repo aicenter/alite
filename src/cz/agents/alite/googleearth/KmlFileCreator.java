@@ -13,7 +13,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.vecmath.Point2d;
@@ -26,8 +25,6 @@ import javax.xml.namespace.QName;
 
 import cz.agents.alite.googleearth.kml.AbstractFeatureType;
 import cz.agents.alite.googleearth.kml.AbstractGeometryType;
-import cz.agents.alite.googleearth.kml.AbstractObjectType;
-import cz.agents.alite.googleearth.kml.AbstractStyleSelectorType;
 import cz.agents.alite.googleearth.kml.AltitudeModeEnumType;
 import cz.agents.alite.googleearth.kml.BasicLinkType;
 import cz.agents.alite.googleearth.kml.BoundaryType;
@@ -40,12 +37,10 @@ import cz.agents.alite.googleearth.kml.LineStringType;
 import cz.agents.alite.googleearth.kml.LineStyleType;
 import cz.agents.alite.googleearth.kml.LookAtType;
 import cz.agents.alite.googleearth.kml.ObjectFactory;
-import cz.agents.alite.googleearth.kml.PairType;
 import cz.agents.alite.googleearth.kml.PlacemarkType;
 import cz.agents.alite.googleearth.kml.PointType;
 import cz.agents.alite.googleearth.kml.PolyStyleType;
 import cz.agents.alite.googleearth.kml.PolygonType;
-import cz.agents.alite.googleearth.kml.StyleMapType;
 import cz.agents.alite.googleearth.kml.StyleType;
 
 /**
@@ -68,10 +63,9 @@ public class KmlFileCreator
 
 	public static final String FILE_NAME2 = "tmp.kml";
 
-	private static final String ICON_STYLE = "body";
-	private static final String EVENT_STYLE = "event";
-	private static final String POLY_STYLE = "polygon1";
-	private static final String LINE_STYLE = "line1";
+	public static final String ICON_STYLE = "body";
+	public static final String POLY_STYLE = "polygon1";
+	public static final String LINE_STYLE = "line1";
 
 	protected FolderType folder;
 	
@@ -79,12 +73,8 @@ public class KmlFileCreator
 	protected JAXBElement<? extends AbstractFeatureType> lineOrigin;
 	protected JAXBElement<? extends AbstractFeatureType> modelOrigin;
 	protected JAXBElement<? extends AbstractFeatureType> placemarkOrigin;
-
-	
-	
+		
 	protected DocumentType type;
-	protected JAXBElement<? extends AbstractObjectType> placemarkStyleMapOrigin;
-	protected List<JAXBElement<? extends AbstractFeatureType>> placemarkStyleElements;
 
 	protected JAXBContext context;
 	protected JAXBElement<? extends AbstractFeatureType> rootElement;
@@ -119,12 +109,12 @@ public class KmlFileCreator
 		deleteFile(FILE_NAME2);
 	}
 
-	public String createStringCoordinate(double x, double y, double z)
+	public static String createStringCoordinate(double x, double y, double z)
 	{
 		return x + "," + y + "," + z;
 	}
 
-	public List<String> createStringCoordinateList(List<Point2d> coordinates)
+	public static List<String> createStringCoordinateList(List<Point2d> coordinates)
 	{
 		List<String> out = new ArrayList<String>(coordinates.size());
 		for(Point2d point: coordinates)
@@ -132,11 +122,6 @@ public class KmlFileCreator
 			out.add(createStringCoordinate(point.x, point.y, 0d));
 		}
 		return out;
-	}
-
-	public void createRoadFromStringCoords(List<String> coordinates, String name)
-	{
-		createRoadFromStringCoords(coordinates, name, LINE_STYLE);
 	}
 
 	public void createRoadFromStringCoords(List<String> coordinates, String name, String style)
@@ -154,16 +139,6 @@ public class KmlFileCreator
 		line.getCoordinates().addAll(coordinates);
 		placemark.setStyleUrl("#" + style);
 		folder.getAbstractFeatureGroup().add(clone);
-	}
-
-	public void createBodyPlacemark(double lat, double lon, String name, String description)
-	{
-		createPlacemark(lat, lon, name, description, ICON_STYLE);
-	}
-
-	public void createEventPlacemark(double lon, double lat, String name, String description)
-	{
-		createPlacemark(lon, lat, name, description, EVENT_STYLE);
 	}
 
 	/** creates icon */
@@ -204,12 +179,6 @@ public class KmlFileCreator
 		{
 			e.printStackTrace();
 		}
-	}
-
-	public void createPolygonFromStringCoords(String name, List<String> coordinates,
-			String description, boolean extruded)
-	{
-		createPolygonFromStringCoords(name, coordinates, description, extruded, POLY_STYLE);
 	}
 
 	public void createPolygonFromStringCoords(String name, List<String> coordinates,
@@ -273,6 +242,7 @@ public class KmlFileCreator
 			JAXBElement<? extends AbstractFeatureType> feature = t.getAbstractFeatureGroup();
 			type = (DocumentType)feature.getValue();
 
+			/*
 			List<JAXBElement<? extends AbstractObjectType>> styles = new LinkedList<JAXBElement<? extends AbstractObjectType>>();
 			List<JAXBElement<? extends AbstractStyleSelectorType>> styleMaps = new LinkedList<JAXBElement<? extends AbstractStyleSelectorType>>();
 
@@ -291,6 +261,7 @@ public class KmlFileCreator
 					styleMaps.add(el);
 				}
 			}
+			*/
 			
 			factory = new ObjectFactory();
 			createStyles();
@@ -308,6 +279,7 @@ public class KmlFileCreator
 			placemarkOrigin = ft.getAbstractFeatureGroup().get(3);
 			// predictionRoadOrigin = ft.getAbstractFeatureGroup().get(4);
 
+			/*
 			PlacemarkType placemark = (PlacemarkType)placemarkOrigin.getValue();
 			String style = placemark.getStyleUrl().substring(1);
 
@@ -343,7 +315,8 @@ public class KmlFileCreator
 					}
 				}
 			}
-
+			*/
+			
 			// remove origins from KML
 			folder.getAbstractFeatureGroup().clear();
 
