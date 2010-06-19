@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.vecmath.Point2d;
@@ -52,6 +53,10 @@ import cz.agents.alite.googleearth.kml.StyleType;
  * in inherited class override methods editIconStyles and createStyles method
  * replaceText could be also overrided
  * 
+ * first create folder,
+ * then add some objects,
+ * create another folder...
+ * 
  * 
  * under construction !
  * 
@@ -67,22 +72,21 @@ public class KmlFileCreator
 	public static final String POLY_STYLE = "polygon1";
 	public static final String LINE_STYLE = "line1";
 
-	protected FolderType folder;
-	
+	protected FolderType folderOrigin;
+	protected FolderType currentFolder;
+
 	protected JAXBElement<? extends AbstractFeatureType> polygonOrigin;
 	protected JAXBElement<? extends AbstractFeatureType> lineOrigin;
 	protected JAXBElement<? extends AbstractFeatureType> modelOrigin;
 	protected JAXBElement<? extends AbstractFeatureType> placemarkOrigin;
-		
+
 	protected DocumentType type;
 
 	protected JAXBContext context;
 	protected JAXBElement<? extends AbstractFeatureType> rootElement;
 
 	protected ObjectFactory factory;
-	
-	
-	
+
 	public KmlFileCreator(String fileName)
 	{
 		this(fileName, null);
@@ -109,11 +113,6 @@ public class KmlFileCreator
 		deleteFile(FILE_NAME2);
 	}
 
-	public static String createStringCoordinate(double x, double y, double z)
-	{
-		return x + "," + y + "," + z;
-	}
-
 	public static List<String> createStringCoordinateList(List<Point2d> coordinates)
 	{
 		List<String> out = new ArrayList<String>(coordinates.size());
@@ -138,10 +137,9 @@ public class KmlFileCreator
 		line.getCoordinates().clear();
 		line.getCoordinates().addAll(coordinates);
 		placemark.setStyleUrl("#" + style);
-		folder.getAbstractFeatureGroup().add(clone);
+		currentFolder.getAbstractFeatureGroup().add(clone);
 	}
 
-	/** creates icon */
 	public void createPlacemark(double lon, double lat, String name, String description,
 			String style)
 	{
@@ -174,7 +172,7 @@ public class KmlFileCreator
 			lookAt.setLatitude(lat);
 			lookAt.setLongitude(lon);
 
-			folder.getAbstractFeatureGroup().add(clone);
+			currentFolder.getAbstractFeatureGroup().add(clone);
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -205,17 +203,16 @@ public class KmlFileCreator
 		BoundaryType boundaries = polygon.getOuterBoundaryIs();
 		boundaries.getLinearRing().getCoordinates().clear();
 		boundaries.getLinearRing().getCoordinates().addAll(coordinates);
-		folder.getAbstractFeatureGroup().add(clone);
+		currentFolder.getAbstractFeatureGroup().add(clone);
 	}
-
 
 	/** create new styles, override this method */
 	protected void createStyles()
 	{
-		//this is just an example, override this method
-		addLineStyle(LINE_STYLE, 2.0, Color.RED);		
-		addPolyStyle(POLY_STYLE, Color.GREEN);		
-		addIconStyle(ICON_STYLE, 1.5, "body.gif", Color.WHITE);		
+		// this is just an example, override this method
+		addLineStyle(LINE_STYLE, 2.0, Color.RED);
+		addPolyStyle(POLY_STYLE, Color.GREEN);
+		addIconStyle(ICON_STYLE, 1.5, "body.gif", Color.WHITE);
 	}
 
 	/** replace text in the file before parsing, ovveride this method */
@@ -242,7 +239,6 @@ public class KmlFileCreator
 			JAXBElement<? extends AbstractFeatureType> feature = t.getAbstractFeatureGroup();
 			type = (DocumentType)feature.getValue();
 
-			
 			factory = new ObjectFactory();
 			createStyles();
 
@@ -250,17 +246,17 @@ public class KmlFileCreator
 					.getAbstractFeatureGroup();
 			JAXBElement<?> element2 = (JAXBElement<?>)elements.get(0);
 			FolderType ft = (FolderType)element2.getValue();
-			folder = ft;
+			folderOrigin = ft;
 			
-			//this exactly fits to origin.kml
+			// this exactly fits to origin.kml
 			polygonOrigin = ft.getAbstractFeatureGroup().get(0);
 			lineOrigin = ft.getAbstractFeatureGroup().get(1);
 			// modelOrign = ft.getAbstractFeatureGroup().get(2);
 			placemarkOrigin = ft.getAbstractFeatureGroup().get(3);
 			// predictionRoadOrigin = ft.getAbstractFeatureGroup().get(4);
-			
+
 			// remove origins from KML
-			folder.getAbstractFeatureGroup().clear();
+			folderOrigin.getAbstractFeatureGroup().clear();
 
 		} catch (Exception e)
 		{
@@ -288,11 +284,31 @@ public class KmlFileCreator
 
 	public void clear()
 	{
-		folder.getAbstractFeatureGroup().clear();
+		//remove all folders
+		for(Iterator<JAXBElement<? extends AbstractFeatureType>> el = type.getAbstractFeatureGroup().iterator(); el.hasNext(); )		
+		{
+			if(el.next().getDeclaredType() == FolderType.class)
+			{
+				System.out.println("lam");
+				el.remove();
+			}
+		}
 	}
+
 	
-	
-	
+	public void newFolder(String folderName)
+	{
+		FolderType type = factory.createFolderType();
+		type.setName(folderName);
+		
+		QName name = new QName("http://earth.google.com/kml/2.2", "Folder");
+		JAXBElement<FolderType> ft = new JAXBElement<FolderType>(name, FolderType.class,
+				JAXBElement.GlobalScope.class, type);
+		
+		this.type.getAbstractFeatureGroup().add(ft);
+		currentFolder = type;
+	}
+
 	public void addLineStyle(String styleName, Double width, Color color)
 	{
 		// new StyleType() can be used
@@ -311,9 +327,9 @@ public class KmlFileCreator
 				JAXBElement.GlobalScope.class, type);
 
 		// add this element to the styleGroup
-		this.type.getAbstractStyleSelectorGroup().add(element);		
+		this.type.getAbstractStyleSelectorGroup().add(element);
 	}
-	
+
 	public void addPolyStyle(String styleName, Color color)
 	{
 		// new StyleType() can be used
@@ -323,59 +339,55 @@ public class KmlFileCreator
 		if(color != null)
 			value.setColor(color2byte(color));
 		type.setPolyStyle(value);
-		
+
 		LineStyleType line = new LineStyleType();
 		line.setWidth(0.0);
 		type.setLineStyle(line);
-		
+
 		// create JAXBElement
 		QName name = new QName("http://earth.google.com/kml/2.2", "Style");
 		JAXBElement<StyleType> element = new JAXBElement<StyleType>(name, StyleType.class,
 				JAXBElement.GlobalScope.class, type);
 
 		// add this element to the styleGroup
-		this.type.getAbstractStyleSelectorGroup().add(element);		
-	}	
-	
+		this.type.getAbstractStyleSelectorGroup().add(element);
+	}
+
 	public void addIconStyle(String styleName, Double scale, String iconPath, Color labelColor)
 	{
 		StyleType type = factory.createStyleType();
 		type.setId(styleName);
-		
-		//icon
+
+		// icon
 		IconStyleType value = new IconStyleType();
 		if(scale != null)
 			value.setScale(scale);
-		//url
+		// url
 		BasicLinkType blt = new BasicLinkType();
 		blt.setHref(iconPath);
-		value.setIcon(blt);		
+		value.setIcon(blt);
 		type.setIconStyle(value);
-		
+
 		if(labelColor != null)
 		{
 			LabelStyleType label = new LabelStyleType();
 			label.setColor(color2byte(labelColor));
 			type.setLabelStyle(label);
 		}
-		
+
 		// create JAXBElement
 		QName name = new QName("http://earth.google.com/kml/2.2", "Style");
 		JAXBElement<StyleType> element = new JAXBElement<StyleType>(name, StyleType.class,
 				JAXBElement.GlobalScope.class, type);
 
 		// add this element to the styleGroup
-		this.type.getAbstractStyleSelectorGroup().add(element);		
-		
+		this.type.getAbstractStyleSelectorGroup().add(element);
+
 	}
-	
 
 	public static byte[] color2byte(Color color)
 	{
-		return new byte[] {
-				(byte)color.getAlpha(),
-				(byte)color.getBlue(),
-				(byte)color.getGreen(),
+		return new byte[] {(byte)color.getAlpha(), (byte)color.getBlue(), (byte)color.getGreen(),
 				(byte)color.getRed()};
 	}
 
@@ -416,6 +428,11 @@ public class KmlFileCreator
 			return null;
 		}
 		return ret;
+	}
+
+	public static String createStringCoordinate(double x, double y, double z)
+	{
+		return x + "," + y + "," + z;
 	}
 
 	/** save string to file */
