@@ -65,6 +65,7 @@ public class DemoHandler extends GoogleEarthHandler {
 			
 		}
 		
+		kmlCreator.newFolder("Agents");
 		//PUSH THE DATA INTO KML CREATOR 
 		int counter = 0;
 		for(Point2d p: bodies) {
@@ -78,6 +79,8 @@ public class DemoHandler extends GoogleEarthHandler {
 			String coord = KmlFileCreator.createStringCoordinate(p.x, p.y, 0);
 			coords.add(coord);
 		}
+		
+		kmlCreator.newFolder("Roads");
 		//push the list of coordinates
 		kmlCreator.createRoadFromStringCoords(coords, "One fine Line", KmlFileCreator.LINE_STYLE);
 		
