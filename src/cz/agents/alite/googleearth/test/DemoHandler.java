@@ -38,7 +38,7 @@ public class DemoHandler extends GoogleEarthHandler {
 	 * An instance of a {@link KmlFileCreator}, a wrapper that handles
 	 * the KML creation via JAXB.
 	 */
-	KmlFileCreator kmlCreator = new KmlFileCreator();
+	KmlFileCreator kmlCreator = new KmlFileCreator("origin.kml");
 	
 
 	@Override
