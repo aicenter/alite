@@ -4,7 +4,12 @@
  */
 package cz.agents.alite.googleearth;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -16,23 +21,17 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
-
-
-
 
 import cz.agents.alite.googleearth.kml.AbstractFeatureType;
 import cz.agents.alite.googleearth.kml.AbstractGeometryType;
 import cz.agents.alite.googleearth.kml.AbstractObjectType;
 import cz.agents.alite.googleearth.kml.AbstractStyleSelectorType;
 import cz.agents.alite.googleearth.kml.AltitudeModeEnumType;
-import cz.agents.alite.googleearth.kml.BasicLinkType;
 import cz.agents.alite.googleearth.kml.BoundaryType;
 import cz.agents.alite.googleearth.kml.DocumentType;
 import cz.agents.alite.googleearth.kml.FolderType;
 import cz.agents.alite.googleearth.kml.KmlType;
 import cz.agents.alite.googleearth.kml.LineStringType;
-import cz.agents.alite.googleearth.kml.LineStyleType;
 import cz.agents.alite.googleearth.kml.LookAtType;
 import cz.agents.alite.googleearth.kml.ObjectFactory;
 import cz.agents.alite.googleearth.kml.PairType;
@@ -43,7 +42,14 @@ import cz.agents.alite.googleearth.kml.StyleMapType;
 import cz.agents.alite.googleearth.kml.StyleType;
 
 /**
- * Basic wrapper for KML file creation.
+ * Basic wrapper for KML file creation. should be inherited
+ * 
+ * when replace array != null in contructor, it will replace text in array[i][0]
+ * by array[i][1] before parsing, save to file and this file will be new source
+ * 
+ * in inherited class override methods editIconStyles and createStyles method
+ * replaceText could be also overrided
+ * 
  * 
  * under construction !
  * 
@@ -53,40 +59,49 @@ import cz.agents.alite.googleearth.kml.StyleType;
 public class KmlFileCreator
 {
 
-	public static final String KML_ORIGIN_FILE = "resources/googleearth-origin/origin2.kml";
+	public static final String FILE_NAME = "origin2.kml";
+	public static final String FILE_NAME2 = "tmp.kml";
 
-	// private static final String BODY_STYLE = "body";
+	private static final String BODY_STYLE = "body";
 	private static final String EVENT_STYLE = "event";
-	public static final String STYLE_WALKER = "sn_walker";
-	public static final String STYLE_METRO = "sn_metro";
-	public static final String STYLE_CAR = "sn_car";
-	public static final String STYLE_STREET = "sh_ylw-pushpin00";
-
-	public static final int LINE_STYLE_STREET = 0;
-	public static final int LINE_STYLE_METROA = 1;
-	public static final int LINE_STYLE_METROB = 2;
-	public static final int LINE_STYLE_METROC = 3;
-
-	public static final int POLY_STYLE_GREEN = 0;
-	public static final int POLY_STYLE_YELLOW = 1;
-	public static final int POLY_STYLE_RED = 2;
-	public static final int POLY_STYLE_BLUE = 3;
 
 	protected FolderType folder;
 	protected ArrayList<JAXBElement<? extends AbstractFeatureType>> polygonsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
 	protected ArrayList<JAXBElement<? extends AbstractFeatureType>> roadsOrigin = new ArrayList<JAXBElement<? extends AbstractFeatureType>>();
 	protected JAXBElement<? extends AbstractFeatureType> placemarkOrigin;
 
-	DocumentType type;
-	JAXBElement<? extends AbstractObjectType> placemarkStyleMapOrigin;
-	List<JAXBElement<? extends AbstractFeatureType>> placemarkStyleElements;
+	protected DocumentType type;
+	protected JAXBElement<? extends AbstractObjectType> placemarkStyleMapOrigin;
+	protected List<JAXBElement<? extends AbstractFeatureType>> placemarkStyleElements;
 
-	JAXBContext context;
-	JAXBElement<? extends AbstractFeatureType> rootElement;
+	protected JAXBContext context;
+	protected JAXBElement<? extends AbstractFeatureType> rootElement;
 
 	public KmlFileCreator()
 	{
-		loadOrigins(KmlFileCreator.KML_ORIGIN_FILE);
+		this(FILE_NAME);
+	}
+
+	public KmlFileCreator(String fileName)
+	{
+		this(fileName, null);
+	}
+
+	public KmlFileCreator(String fileName, String[][] replaceArray)
+	{
+		// first replace some text in the file
+		String file2 = fileName;
+		if(replaceArray != null)
+			try
+			{
+				saveFile(FILE_NAME2, replaceText(loadFile(fileName), replaceArray));
+				file2 = FILE_NAME2;
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+		loadOrigins(file2);
+		deleteFile(FILE_NAME2);
 	}
 
 	public String createStringCoordinate(double x, double y, double z)
@@ -122,13 +137,13 @@ public class KmlFileCreator
 		LineStringType line = (LineStringType)geometry.getValue();
 		line.getCoordinates().clear();
 		line.getCoordinates().addAll(coordinates);
-		//placemark.setStyleUrl("#" + style);
+		// placemark.setStyleUrl("#" + style);
 		folder.getAbstractFeatureGroup().add(clone);
 	}
 
 	public void createBodyPlacemark(double lat, double lon, String name, String description)
 	{
-		createPlacemark(lat, lon, name, description, STYLE_WALKER);
+		createPlacemark(lat, lon, name, description, BODY_STYLE);
 	}
 
 	public void createEventPlacemark(double lon, double lat, String name, String description)
@@ -209,73 +224,27 @@ public class KmlFileCreator
 		folder.getAbstractFeatureGroup().add(clone);
 	}
 
-	/** replace path for icons, replace external icon by local image */
-	private void editIconStyles(List<JAXBElement<? extends AbstractObjectType>> styles)
+	/**
+	 * replace path for icons, replace external icon by local image, override
+	 * this method
+	 */
+	protected void editIconStyles(List<JAXBElement<? extends AbstractObjectType>> styles)
 	{
-		String iconPath = getCurrentPath() + "resources" + File.separator
-					+ "img" + File.separator;
-		
-		for(JAXBElement<? extends AbstractObjectType> style: styles)
-		{
-			// System.out.println(style.getName());
-			Object typeObject = style.getValue();
-			if(typeObject instanceof StyleType)
-			{
-				StyleType type = (StyleType)typeObject;
-				// System.out.println(type.getId());
-				if(type.getId().equals(STYLE_WALKER))
-				{
-					BasicLinkType linkType = type.getIconStyle().getIcon();
-					linkType.setHref(iconPath + "walker.gif");
-				} else if(type.getId().equals(STYLE_CAR))
-				{
-					BasicLinkType linkType = type.getIconStyle().getIcon();
-					linkType.setHref(iconPath + "car.gif");
-				} else if(type.getId().equals(STYLE_METRO))
-				{
-					BasicLinkType linkType = type.getIconStyle().getIcon();
-					linkType.setHref(iconPath + "metro.gif");
-				}
-			}
-		}
 	}
 
-	private void createStyles(List<JAXBElement<? extends AbstractObjectType>> styles)
+	/** create new styles, override this method */
+	protected void createStyles(List<JAXBElement<? extends AbstractObjectType>> styles)
 	{
-		ObjectFactory factory = new ObjectFactory(); // get factory
-		//create lines
-		/*
-		for(int i = 1; i <= 10; i++)
+	}
+
+	/** replace text in the file before parsing, ovveride this method */
+	protected String replaceText(String text, String[][] replaceArray)
+	{
+		for(int i = 0; i < replaceArray.length; i++)
 		{
-			StyleType type = factory.createStyleType(); // new StyleType() can be used
-			type.setId("line" + i);
-			LineStyleType value = new LineStyleType();
-			// value.setColor(null)
-			value.setWidth((double)i);
-			type.setLineStyle(value);
-	
-			// create JAXBElement
-			QName name = new QName("http://earth.google.com/kml/2.2", "Style");
-			JAXBElement<StyleType> element = new JAXBElement<StyleType>(name, StyleType.class, JAXBElement.GlobalScope.class, type);
-	
-			// add this element to the styleGroup
-			styles.add(element);
-		}*/
-		
-		StyleType type = factory.createStyleType(); // new StyleType() can be used
-		type.setId("grr");
-		LineStyleType value = new LineStyleType();
-		value.setColor(new byte[]{127, 127, 127, 127});
-		value.setWidth(2.0);
-		type.setLineStyle(value);
-
-		// create JAXBElement
-		QName name = new QName("http://earth.google.com/kml/2.2", "Style");
-		JAXBElement<StyleType> element = new JAXBElement<StyleType>(name, StyleType.class, JAXBElement.GlobalScope.class, type);
-
-		// add this element to the styleGroup
-		styles.add(element);
-		
+			text = text.replace(replaceArray[i][0], replaceArray[i][1]);
+		}
+		return text;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -312,7 +281,7 @@ public class KmlFileCreator
 			}
 
 			editIconStyles(styles);
-			createStyles(styles);
+			// createStyles(styles);
 
 			List<JAXBElement<? extends AbstractFeatureType>> elements = type
 					.getAbstractFeatureGroup();
@@ -404,7 +373,6 @@ public class KmlFileCreator
 		folder.getAbstractFeatureGroup().clear();
 	}
 
-	
 	public static String getCurrentPath()
 	{
 		String path = "";
@@ -417,6 +385,47 @@ public class KmlFileCreator
 			e.printStackTrace();
 		}
 		return path;
+	}
+
+	/** loads file to string */
+	public static String loadFile(String name)
+	{
+		String ret = "";
+		try
+		{
+			BufferedReader br = new BufferedReader(new FileReader(name));
+			while(true)
+			{
+				String line = br.readLine();
+				if(line == null)
+				{
+					break;
+				}
+				ret += line + "\n";
+			}
+			br.close();
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		return ret;
+	}
+
+	/** save string to file */
+	public static void saveFile(String name, String content) throws IOException
+	{
+		File f = new File(name);
+		BufferedWriter out = new BufferedWriter(new FileWriter(f));
+		out.write(content);
+		out.close();
+	}
+
+	/**deletes file*/
+	public static void deleteFile(String name)
+	{
+		File f = new File(name);
+		f.delete();
 	}
 	
 	
