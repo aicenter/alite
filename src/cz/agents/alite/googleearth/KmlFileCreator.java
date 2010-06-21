@@ -47,12 +47,13 @@ import cz.agents.alite.googleearth.kml.StyleType;
 /**
  * Basic wrapper for KML file creation. should be inherited
  * 
- * when replace array != null in contructor, it will replace text in array[i][0]
+ * if replace array != null in contructor, it will replace text in array[i][0]
  * by array[i][1] before parsing, save to file and this file will be new source
  * 
- * in inherited class override methods editIconStyles and createStyles method
+ * in inherited class override methods createStyles method
  * replaceText could be also overrided
  * 
+ * how to use:
  * first create folder,
  * then add some objects,
  * create another folder...
@@ -72,8 +73,6 @@ public class KmlFileCreator
 	public static final String POLY_STYLE = "polygon1";
 	public static final String LINE_STYLE = "line1";
 
-	protected FolderType folderOrigin;
-	protected FolderType currentFolder;
 
 	protected JAXBElement<? extends AbstractFeatureType> polygonOrigin;
 	protected JAXBElement<? extends AbstractFeatureType> lineOrigin;
@@ -81,6 +80,7 @@ public class KmlFileCreator
 	protected JAXBElement<? extends AbstractFeatureType> placemarkOrigin;
 
 	protected DocumentType type;
+	protected FolderType currentFolder;
 
 	protected JAXBContext context;
 	protected JAXBElement<? extends AbstractFeatureType> rootElement;
@@ -256,7 +256,6 @@ public class KmlFileCreator
 					.getAbstractFeatureGroup();
 			JAXBElement<?> element2 = (JAXBElement<?>)elements.get(0);
 			FolderType ft = (FolderType)element2.getValue();
-			folderOrigin = ft;
 			
 			// this exactly fits to origin.kml
 			polygonOrigin = ft.getAbstractFeatureGroup().get(0);
@@ -266,7 +265,7 @@ public class KmlFileCreator
 			// predictionRoadOrigin = ft.getAbstractFeatureGroup().get(4);
 
 			// remove origins from KML
-			folderOrigin.getAbstractFeatureGroup().clear();
+			ft.getAbstractFeatureGroup().clear();
 
 		} catch (Exception e)
 		{

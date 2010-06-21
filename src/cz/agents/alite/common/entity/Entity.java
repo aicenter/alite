@@ -19,6 +19,7 @@ public class Entity {
         return name;
     }
 
+    /**returns description in html*/
     public String getDescription() {
         return "Simple entity";
     }
