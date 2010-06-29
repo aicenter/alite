@@ -12,7 +12,13 @@ public class Demo {
 
 	public static void main(String[] args) {
 		Synthetiser synthetizer = new Synthetiser();
-		synthetizer.init();
-		synthetizer.addHandler(new DemoHandler(), DemoHandler.LINK);	
+		try
+		{
+		    synthetizer.init();
+		    synthetizer.addHandler(new DemoHandler(), DemoHandler.LINK);
+		} catch (Exception e)
+		{
+		    e.printStackTrace();
+		}
 	}
 }
