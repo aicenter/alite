@@ -34,14 +34,17 @@ import cz.agents.alite.googleearth.kml.FolderType;
 import cz.agents.alite.googleearth.kml.IconStyleType;
 import cz.agents.alite.googleearth.kml.KmlType;
 import cz.agents.alite.googleearth.kml.LabelStyleType;
+import cz.agents.alite.googleearth.kml.LatLonAltBoxType;
 import cz.agents.alite.googleearth.kml.LineStringType;
 import cz.agents.alite.googleearth.kml.LineStyleType;
+import cz.agents.alite.googleearth.kml.LodType;
 import cz.agents.alite.googleearth.kml.LookAtType;
 import cz.agents.alite.googleearth.kml.ObjectFactory;
 import cz.agents.alite.googleearth.kml.PlacemarkType;
 import cz.agents.alite.googleearth.kml.PointType;
 import cz.agents.alite.googleearth.kml.PolyStyleType;
 import cz.agents.alite.googleearth.kml.PolygonType;
+import cz.agents.alite.googleearth.kml.RegionType;
 import cz.agents.alite.googleearth.kml.StyleType;
 
 /**
@@ -303,7 +306,6 @@ public class KmlFileCreator
 		}
 	}
 
-	
 	public void newFolder(String folderName)
 	{
 		FolderType type = factory.createFolderType();
@@ -317,6 +319,29 @@ public class KmlFileCreator
 		currentFolder = type;
 	}
 
+	/**this method will set region for LOD to a folder*/
+	public void setFolderLOD(RegionBounds bounds, double min, double max)
+	{
+	    RegionType region = factory.createRegionType();
+        
+        LatLonAltBoxType box = factory.createLatLonAltBoxType();
+        box.setSouth(bounds.south);
+        box.setNorth(bounds.north);
+        box.setEast(bounds.east);
+        box.setWest(bounds.west);
+        
+        LodType lod = factory.createLodType();
+        lod.setMinLodPixels(min);
+        lod.setMaxLodPixels(max);
+        
+        region.setLatLonAltBox(box);
+        region.setLod(lod);
+        
+        currentFolder.setRegion(region);
+        
+	    
+	}
+	
 	public void addLineStyle(String styleName, Double width, Color color)
 	{
 		// new StyleType() can be used
