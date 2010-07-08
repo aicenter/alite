@@ -44,7 +44,7 @@ public class DemoHandler extends GoogleEarthHandler {
 	
 
 	@Override
-	protected String createContentFromEnvironment() {
+	protected String createContentFromEnvironment(String query) {
 		long time = System.currentTimeMillis();
 
 		// GENERATE SOME RANDOM DATA - gather it somewhere else.

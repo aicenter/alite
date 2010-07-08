@@ -46,7 +46,7 @@ public abstract class GoogleEarthHandler implements HttpHandler {
         "application/vnd.google-earth.kml+xml; charset=UTF-8");
         responseHeaders.add("Content-Encoding", "identity");
         String content = "";
-        content = createContentFromEnvironment();
+        content = createContentFromEnvironment(exchange.getRequestURI().getQuery());
 
         if (System.getProperty("os.name").toLowerCase().contains("win")) {
             exchange.sendResponseHeaders(200, content.length()); // content.length());
@@ -64,7 +64,7 @@ public abstract class GoogleEarthHandler implements HttpHandler {
      * to retrieve the KML String and return this String.
      * @return
      */
-    protected abstract String createContentFromEnvironment();
+    protected abstract String createContentFromEnvironment(String query);
 
 }
 
