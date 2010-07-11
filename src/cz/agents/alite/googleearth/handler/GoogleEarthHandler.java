@@ -34,9 +34,7 @@ public abstract class GoogleEarthHandler implements HttpHandler
         try
         {
             doResponse(exchange);
-        } catch (IOException ioe)
-        {}
-        catch (Exception e)
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -59,13 +57,18 @@ public abstract class GoogleEarthHandler implements HttpHandler
         String content = "";
         content = createContentFromEnvironment(exchange.getRequestURI().getQuery());
 
-        if(System.getProperty("os.name").toLowerCase().contains("win"))
+        try
         {
-            exchange.sendResponseHeaders(200, content.length()); // content.length());
-        } else
-        {
-            exchange.sendResponseHeaders(200, 0); // content.length());
-        }
+            if(System.getProperty("os.name").toLowerCase().contains("win"))
+            {
+                exchange.sendResponseHeaders(200, content.length()); // content.length());
+            } else
+            {
+                exchange.sendResponseHeaders(200, 0); // content.length());
+            }
+        } catch (IOException e)
+        {}
+        
         OutputStream output = exchange.getResponseBody();
         output.write(content.getBytes());
         output.close();
