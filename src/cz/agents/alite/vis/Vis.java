@@ -43,8 +43,8 @@ public class Vis extends Canvas {
     private static final long serialVersionUID = 1093434407555503398L;
 
     // TODO: refactor - conf
-    public static final int DIM_X = 900;
-    public static final int DIM_Y = 900;
+    public static final int DIM_X = 800;
+    public static final int DIM_Y = 600;
 
     // TODO: refactor - aggr
     private static final double SCALE_X = DIM_X / 1500.0;
