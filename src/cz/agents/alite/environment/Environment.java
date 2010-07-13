@@ -33,7 +33,7 @@ import cz.agents.alite.common.entity.Entity;
 public abstract class Environment {
 
     private final Handler handler;
-    private Random random = new Random();
+    private Random random;
 
     public Environment() {
         handler = new Handler();
@@ -44,9 +44,16 @@ public abstract class Environment {
     }
 
     public Random getRandom() {
+        if(random == null)
+            random = new Random();
         return random;
     }
 
+    public void setRandom(Random random)
+    {
+        this.random = random;
+    }
+    
     /**
      * The Environment.Handler provides an interface to the environment for the
      * entities (agents) behaving in the world.
