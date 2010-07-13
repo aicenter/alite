@@ -61,17 +61,16 @@ public abstract class GoogleEarthHandler implements HttpHandler
         {
             if(System.getProperty("os.name").toLowerCase().contains("win"))
             {
-                exchange.sendResponseHeaders(200, content.length()); // content.length());
+                exchange.sendResponseHeaders(200, content.length());
             } else
             {
-                exchange.sendResponseHeaders(200, 0); // content.length());
+                exchange.sendResponseHeaders(200, 0);
             }
+            OutputStream output = exchange.getResponseBody();
+            output.write(content.getBytes());
+            output.close();
         } catch (IOException e)
         {}
-        
-        OutputStream output = exchange.getResponseBody();
-        output.write(content.getBytes());
-        output.close();
     }
 
     /**
