@@ -33,7 +33,7 @@ import cz.agents.alite.common.entity.Entity;
 public abstract class Environment {
 
     private final Handler handler;
-    private Random random;
+    private Random random = new Random();
 
     public Environment() {
         handler = new Handler();
@@ -44,23 +44,20 @@ public abstract class Environment {
     }
 
     public Random getRandom() {
-        if(random == null)
-            random = new Random();
         return random;
     }
 
-    public void setRandom(Random random)
-    {
+    public void setRandom(Random random) {
         this.random = random;
     }
-    
+
     /**
      * The Environment.Handler provides an interface to the environment for the
      * entities (agents) behaving in the world.
      *
      * Since the entities are not typically allowed to access all the properties
      * of an environment, each environment provides its handler to enable the
-     * entities only create an instances of actions and sensors.
+     * entities only to create instances of actions and sensors.
      *
      * Additionally, the Handler also provides a shared environmental random
      * generator, which should be used for any randomization in the logic
