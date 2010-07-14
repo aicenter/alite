@@ -10,7 +10,7 @@ import cz.agents.alite.environment.Storage;
  * changes of the held data.
  *
  * An example can be a time ticker storage. The storage would repeatedly add an
- * event into the event processor and for each receiving of the message would
+ * event into the event processor and for each handling of the event would
  * increase a time tick counter in it.
  *
  *
