@@ -18,7 +18,8 @@ import cz.agents.alite.googleearth.KmlFileCreator;
  */
 public abstract class GoogleEarthHandler implements HttpHandler
 {
-
+    private boolean reports = false;
+    
     /**
      * For identification and logging purposes.
      * 
@@ -39,7 +40,8 @@ public abstract class GoogleEarthHandler implements HttpHandler
             e.printStackTrace();
         }
 
-        System.out.println(getName() + "> request served in " + (System.currentTimeMillis() - time)
+        if(reports)
+            System.out.println(getName() + "> request served in " + (System.currentTimeMillis() - time)
                 + "ms.");
     }
 
