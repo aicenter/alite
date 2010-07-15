@@ -46,6 +46,10 @@ public class Vis extends Canvas {
     public static final int DIM_X = 900;
     public static final int DIM_Y = 900;
 
+    private static String initTitle = "ALite Operator";
+    private static int initDimX = DIM_X;
+    private static int initDimY = DIM_Y;
+    
     // TODO: refactor - aggr
     private static final double SCALE_X = DIM_X / 1500.0;
     private static final double SCALE_Y = DIM_Y / 1500.0;
@@ -70,9 +74,9 @@ public class Vis extends Canvas {
         super();
 
         // canvas
-        setBounds(0, 0, DIM_X, DIM_Y);
+        setBounds(0, 0, initDimX, initDimY);
 
-        window = new JFrame("ALite Operator");
+        window = new JFrame(initTitle);
 
         final JPanel panel = (JPanel) window.getContentPane();
         panel.setBounds(0, 0, DIM_X, DIM_Y);
@@ -209,6 +213,14 @@ public class Vis extends Canvas {
         reinitializeBuffers();
     }
 
+    /** sets initial parameters of the window, call this before creating the window */
+    public static void setInitParam(String title, int dimX, int dimY)
+    {
+        initDimX = dimX;
+        initDimY = dimY;
+        initTitle = title;
+    }
+    
     private boolean reinitializeBuffers() {
         if (reinitializeBuffers) {
             reinitializeBuffers = false;

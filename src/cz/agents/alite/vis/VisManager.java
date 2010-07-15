@@ -71,6 +71,12 @@ public class VisManager {
         }).start();
     }
 
+    /** sets initial parameters of the window, call this before creating the window */
+    public static void setInitParam(String title, int dimX, int dimY)
+    {
+        Vis.setInitParam(title, dimX, dimY);
+    }
+    
     public static synchronized void init() {
         if (instance == null) {
             instance = new VisManager();
