@@ -486,6 +486,25 @@ public class KmlFileCreator
         return ret;
     }
 
+    /**
+     * finds first file that not exist, the file is [part1]+i+[part2]
+     * 
+     * Example: part1 = "report", initIndex = 1, part2 = ".txt"
+     * 
+     * tries filenames: report1.txt, report2.txt, report3.txt, ... when found first not existing file
+     * */
+    public static String findFirstNotExistingFile(String part1, int initIndex, String part2)
+    {
+        int i = initIndex;
+        while(true)
+        {
+            String s = part1 + i + part2;
+            if(!(new File(s).exists()))
+                return s;
+            i++;
+        }
+    }
+    
     public static String createStringCoordinate(double x, double y, double z)
     {
         return x + "," + y + "," + z;
