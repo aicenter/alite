@@ -437,6 +437,15 @@ public class KmlFileCreator
             return null;
         }
 	}
+
+    /** returns altitude from string */
+    public static double getAltFromString(String s)
+    {
+        String[] parts = s.split(" ");
+        if(parts.length >= 5)
+            return Double.parseDouble(parts[4]);
+        return -1;
+    }
     
     public static String getCurrentPath()
     {
