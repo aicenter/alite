@@ -513,7 +513,12 @@ public class KmlFileCreator
     /** save string to file */
     public static void saveFile(String name, String content) throws IOException
     {
-        File f = new File(name);
+        saveFile(new File(name), content);
+    }
+    
+    /** save string to file */
+    public static void saveFile(File f, String content) throws IOException
+    {
         BufferedWriter out = new BufferedWriter(new FileWriter(f));
         out.write(content);
         out.close();
