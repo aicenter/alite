@@ -388,6 +388,11 @@ public class KmlFileCreator
 
     public void addIconStyle(String styleName, Double scale, String iconPath, Color labelColor)
     {
+        addIconStyle(styleName, scale, iconPath, labelColor, Color.WHITE);
+    }
+    
+    public void addIconStyle(String styleName, Double scale, String iconPath, Color labelColor, Color iconColor)
+    {
         StyleType type = factory.createStyleType();
         type.setId(styleName);
 
@@ -395,6 +400,11 @@ public class KmlFileCreator
         IconStyleType value = new IconStyleType();
         if(scale != null)
             value.setScale(scale);
+        if(!iconColor.equals(Color.WHITE))
+        {
+            value.setColor(color2byte(iconColor));
+        }
+        
         // url
         BasicLinkType blt = new BasicLinkType();
         blt.setHref(iconPath);
