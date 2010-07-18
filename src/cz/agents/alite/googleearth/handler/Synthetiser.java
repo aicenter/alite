@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 /**
@@ -21,7 +22,7 @@ public class Synthetiser
     public static final int MAXIMUM_SIMULTANEOUS_CONNECTIONS = 1000;
     private boolean serverInitialized = false;
 
-    private final Map<String, GoogleEarthHandler> handlerMap = new HashMap<String, GoogleEarthHandler>();
+    private final Map<String, HttpHandler> handlerMap = new HashMap<String, HttpHandler>();
 
     /**
      * Initialization of the Synthetizer - initializes the HttpServer.
@@ -58,7 +59,7 @@ public class Synthetiser
             serverInitialized = true;
     }
 
-    public void addHandler(GoogleEarthHandler handler, String link) throws Exception
+    public void addHandler(HttpHandler handler, String link) throws Exception
     {
         if(!serverInitialized)
             initHttpServer();
