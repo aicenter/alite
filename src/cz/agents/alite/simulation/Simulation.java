@@ -24,6 +24,7 @@ public class Simulation extends EventProcessor {
     private double simulationSpeed = 0;
     private long eventCount = 0;
     private long runTime;
+    private int printouts = 10000;
 
     public void run() {
         runTime = System.currentTimeMillis();
@@ -49,11 +50,17 @@ public class Simulation extends EventProcessor {
     public double getSimulationSpeed() {
         return simulationSpeed;
     }
+    
+    /** print every n-th event */
+    public void setPrintouts(int n)
+    {
+        this.printouts = n;
+    }
 
     @Override
     protected void breforeRunningTest(Event event) {
         ++eventCount;
-        if (eventCount % 10000 == 0) {
+        if (eventCount % printouts == 0) {
             System.out.format(">>> TIME: %ds / RUNTIME: %.2fs / EVENTS: %d / QUEUE: %d \n", getCurrentTime() / 1000, (System.currentTimeMillis() - runTime) / 1000.0, eventCount, getCurrentQueueLength());
         }
 
