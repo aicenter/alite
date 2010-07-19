@@ -2215,7 +2215,7 @@ public class ObjectFactory implements java.io.Serializable {
      * {@link ItemIconStateEnumType }{@code >}{@code >}
      *
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @XmlElementDecl(namespace = "http://earth.google.com/kml/2.2", name = "state")
     public JAXBElement<List<ItemIconStateEnumType>> createState(
             List<ItemIconStateEnumType> value) {
@@ -2351,7 +2351,7 @@ public class ObjectFactory implements java.io.Serializable {
      * {@link String }{@code >}{@code >}
      *
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @XmlElementDecl(namespace = "http://earth.google.com/kml/2.2", name = "coordinates")
     public JAXBElement<List<String>> createCoordinates(List<String> value) {
         return new JAXBElement<List<String>>(_Coordinates_QNAME,
