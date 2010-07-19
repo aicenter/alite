@@ -2,7 +2,9 @@ package cz.agents.alite.environment.eventbased;
 
 import cz.agents.alite.common.entity.Entity;
 import cz.agents.alite.common.event.EventProcessor;
+import cz.agents.alite.environment.Action;
 import cz.agents.alite.environment.Environment;
+import cz.agents.alite.environment.Sensor;
 
 
 /**
@@ -39,11 +41,13 @@ public abstract class EventBasedEnvironment extends Environment {
         protected EventBasedHandler() {
         }
 
-        public <C extends EventBasedAction> C addAction(Class<C> clazz, Entity entity) {
+        @Override
+        public <C extends Action> C addAction(Class<C> clazz, Entity entity) {
             return instantiateEnvironmentClass(clazz, entity, new Class<?>[] {EventBasedEnvironment.class, Entity.class});
         }
 
-        public <C extends EventBasedSensor> C addSensor(Class<C> clazz, Entity entity) {
+        @Override
+        public <C extends Sensor> C addSensor(Class<C> clazz, Entity entity) {
             return instantiateEnvironmentClass(clazz, entity, new Class<?>[] {EventBasedEnvironment.class, Entity.class});
         }
 
