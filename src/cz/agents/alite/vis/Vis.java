@@ -49,7 +49,7 @@ public class Vis extends Canvas {
     private static String initTitle = "ALite Operator";
     private static int initDimX = DIM_X;
     private static int initDimY = DIM_Y;
-    
+
     // TODO: refactor - aggr
     private static final double SCALE_X = DIM_X / 1500.0;
     private static final double SCALE_Y = DIM_Y / 1500.0;
@@ -220,7 +220,7 @@ public class Vis extends Canvas {
         initDimY = dimY;
         initTitle = title;
     }
-    
+
     private boolean reinitializeBuffers() {
         if (reinitializeBuffers) {
             reinitializeBuffers = false;
@@ -245,6 +245,7 @@ public class Vis extends Canvas {
             // show window
             instance.window.setVisible(true);
             instance.window.requestFocus();
+            instance.requestFocus();
         }
 
         return instance;
