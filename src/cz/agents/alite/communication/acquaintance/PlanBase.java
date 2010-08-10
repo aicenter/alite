@@ -1,6 +1,7 @@
 package cz.agents.alite.communication.acquaintance;
 
 import cz.agents.alite.communication.acquaintance.Task.TaskListener;
+import java.util.List;
 
 /**
  *  Interface for the Plan Base definition
@@ -55,12 +56,12 @@ public interface PlanBase {
     PlanCost getTotalCost();
 
     /**
-     * Registeres the Executor to this PlanBase.
-     * PlanBase is responsible for creating the appropriate ExecutorFeedback and registration using Executor.registerExecutorFeedback
+     * Registeres the PlanExecutor to this PlanBase.
+     * PlanBase is responsible for creating the appropriate ExecutorFeedback and registration using PlanExecutor.registerExecutorFeedback
      *
      * @param executor
      */
-    public void registerExecutor(Executor executor);
+    public void registerExecutor(PlanExecutor executor);
 
     /**
      * Exception for planning failure
@@ -72,51 +73,5 @@ public interface PlanBase {
         TaskPlanError(String string) {
             super(string);
         }
-    }
-
-    /**
-     * Executor interface.
-     * Enrich the API of your implementation for capturing the specifics of your PlanBase to Executor interactions.
-     */
-    public interface Executor {
-
-        /**
-         * Binds the executor to the specific feedback (usually implemented by PlanBase).
-         * @param feedback
-         */
-        public void registerExecutorFeedback(ExecutorFeedback feedback);
-
-        /**
-         * Executes given plan.
-         *
-         * @param plan
-         */
-        public void executePlan(Plan plan);
-
-        /**
-         * Extends actual plan by given plan.
-         *
-         * @param plan
-         */
-        public void addPlan(Plan plan);
-
-        /**
-         * Invalidates curen plan and stops the execution.
-         */
-        public void scratchPlan();
-    }
-
-    /**
-     * The encapsulating interface for feedback from executor to PlanBase.
-     * Enrich the API of your implementation for capturing the specifics of your Executor to PlanBase interactions.
-     */
-    public interface ExecutorFeedback {
-    }
-
-    /**
-     * The encapsulating interface for Plan representation.
-     * Enrich the API of your implementation for capturing the specifics of your PlanBase and Executor.
-     */
-    public interface Plan {
     }
 }
