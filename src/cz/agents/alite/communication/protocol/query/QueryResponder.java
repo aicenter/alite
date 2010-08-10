@@ -1,4 +1,4 @@
-package cz.agents.alite.communication.protocol.queryif;
+package cz.agents.alite.communication.protocol.query;
 
 import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.Message;
@@ -13,11 +13,12 @@ import cz.agents.alite.communication.protocol.Performative;
  * is called when sender invokes a query.
  *
  * @author Jiri Vokrinek
+ * @author Antonin Komenda
  */
-public abstract class QueryIfReceiver extends QueryIf {
+public abstract class QueryResponder extends Query {
 
     private final MessageHandler messagehandler;
-    final String agentName;
+    final String entityAddress;
 
     /**
      *
@@ -25,10 +26,10 @@ public abstract class QueryIfReceiver extends QueryIf {
      * @param directory
      * @param name
      */
-    public QueryIfReceiver(final Communicator communicator, CapabilityRegister directory, String name) {
+    public QueryResponder(final Communicator communicator, CapabilityRegister directory, String name) {
         super(communicator, name);
-        this.agentName = communicator.getAddress();
-        directory.register(agentName, getName());
+        this.entityAddress = communicator.getAddress();
+        directory.register(entityAddress, getName());
         messagehandler = new ProtocolMessageHandler(this) {
 
             @Override
@@ -43,9 +44,9 @@ public abstract class QueryIfReceiver extends QueryIf {
         String session = content.getSession();
         Object body = content.getData();
         switch (content.getPerformative()) {
-            case QUERY_IF:
-                boolean answer = handleQuery(body);
-                Message msg = createReply(message, Performative.QUERY_REF, answer, session);
+            case QUERY:
+                Object answer = handleQuery(body);
+                Message msg = createReply(message, Performative.INFORM, answer, session);
                 communicator.sendMessage(msg);
                 break;
             default:
@@ -62,5 +63,5 @@ public abstract class QueryIfReceiver extends QueryIf {
      * @param query
      * @return true if the query answer is YES, false is query answer is NO
      */
-    abstract protected boolean handleQuery(Object query);
+    abstract protected Object handleQuery(Object query);
 }
