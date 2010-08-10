@@ -1,56 +1,24 @@
 package cz.agents.alite.communication.protocol.subscribe;
 
 import cz.agents.alite.communication.Communicator;
-import cz.agents.alite.communication.Message;
-import cz.agents.alite.communication.MessageHandler;
-import cz.agents.alite.communication.protocol.ProtocolContent;
-import cz.agents.alite.communication.protocol.ProtocolMessageHandler;
-import cz.agents.alite.common.capability.CapabilityRegister;
+import cz.agents.alite.communication.protocol.DefaultProtocol;
 
 /**
- * The general subscription protocol. For each subscribe instance the method {@link handleInform(Object inform)}
- * is called on all subscribers except the invoker.
+ * Subscribe protocol wrapper.
+
  *
  * @author Jiri Vokrinek
  */
-public abstract class SubscribeProtocol extends SubscribeProtocolSender {
+public class SubscribeProtocol extends DefaultProtocol {
 
-    private final MessageHandler messagehandler;
+    static final String SUBSCRIBE_PROTOCOL_NAME = "SUBSCRIBE_PROTOCOL";
 
     /**
      *
      * @param communicator
-     * @param directory
      * @param name
      */
-    public SubscribeProtocol(final Communicator communicator, CapabilityRegister directory, String name) {
-        super(communicator, directory, name);
-        directory.register(agentName, getName());
-        messagehandler = new ProtocolMessageHandler(this) {
-
-            @Override
-            public void handleMessage(Message message, ProtocolContent content) {
-                processMessage(content);
-            }
-        };
-        communicator.addMessageHandler(messagehandler);
+    public SubscribeProtocol(Communicator communicator, String name) {
+        super(communicator, SUBSCRIBE_PROTOCOL_NAME + ": " + name);
     }
-
-    private void processMessage(ProtocolContent content) {
-//        String session = content.getSession();
-        Object body = content.getData();
-        switch (content.getPerformative()) {
-            case INFORM:
-                handleInform(body);
-                break;
-            default:
-        }
-    }
-
-    /**
-     * This methods is called if some other agent sends the subscribed inform to this protocol.
-     *
-     * @param inform
-     */
-    abstract protected void handleInform(Object inform);
 }

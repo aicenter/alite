@@ -3,6 +3,7 @@ package cz.agents.alite.communication.acquaintance;
 import cz.agents.alite.communication.acquaintance.Task.TaskListener;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *  Default PlanBase for testing and basic operations.
@@ -17,18 +18,21 @@ import java.util.LinkedList;
  */
 public class DefaultPlanBase implements PlanBase {
 
-    private final MyPlan tasks = new MyPlan();
+    private final DefaultPlan tasks = new DefaultPlan();
     private final HashMap<Task, TaskListener> listeners = new HashMap<Task, TaskListener>();
-    private Executor executor;
+    private PlanExecutor executor;
 
+    @Override
     public PlanCost evaluateInsertion(Task task) {
         return new DefaultPlanCost(tasks.size());
     }
 
+    @Override
     public PlanCost evaluateRemoval(Task task) {
         return new DefaultPlanCost(tasks.size() - 1);
     }
 
+    @Override
     public PlanCost insertTask(Task task, TaskListener taskListener) {
         tasks.add(task);
         listeners.put(task, taskListener);
@@ -36,6 +40,7 @@ public class DefaultPlanBase implements PlanBase {
         return new DefaultPlanCost(tasks.size() - 1);
     }
 
+    @Override
     public PlanCost removeTask(Task task) {
         tasks.remove(task);
         listeners.remove(task);
@@ -43,11 +48,13 @@ public class DefaultPlanBase implements PlanBase {
         return new DefaultPlanCost(tasks.size());
     }
 
+    @Override
     public PlanCost getTotalCost() {
         return new DefaultPlanCost(tasks.size());
     }
 
-    public void registerExecutor(Executor executor) {
+    @Override
+    public void registerExecutor(PlanExecutor executor) {
         this.executor = executor;
         executor.registerExecutorFeedback(new MyExecutorFeedback(this));
     }
@@ -62,10 +69,18 @@ public class DefaultPlanBase implements PlanBase {
         listeners.remove(task).taskUnreachable();
     }
 
+    void planFailed() {
+        List<Task> oldPlan = (List<Task>) tasks.clone();
+        tasks.clear();
+        for (Task task : oldPlan) {
+            listeners.remove(task).taskUnreachable();
+        }
+    }
+
     /**
      * Execution feedback for DefaultPlanBase
      */
-    public static class MyExecutorFeedback implements ExecutorFeedback {
+    public class MyExecutorFeedback implements PlanExecutor.ExecutorFeedback {
 
         private final DefaultPlanBase pb;
 
@@ -77,84 +92,19 @@ public class DefaultPlanBase implements PlanBase {
             this.pb = pb;
         }
 
-        /**
-         * Call when Task execution is done.
-         *
-         * @param task
-         */
+        @Override
         public void done(Task task) {
             pb.taskDone(task);
         }
 
-        /**
-         * Call when Task execution fails.
-         *
-         * @param task
-         */
+        @Override
         public void failed(Task task) {
             pb.taskFailed(task);
         }
-    }
 
-    /**
-     * Basic Plan implementation.
-     * Only encaptulates LinkedList<Task>.
-     */
-    public static class MyPlan extends LinkedList<Task> implements Plan {
-
-        private static final long serialVersionUID = -5734327377766938273L;
-
-    }
-
-    /**
-     * Executor for DefaultPlanBase.
-     */
-    public static class MyExecutor implements Executor {
-
-        private DefaultPlanBase.MyExecutorFeedback feedback;
-        private DefaultPlanBase.MyPlan plan;
-
-        public void registerExecutorFeedback(ExecutorFeedback feedback) {
-            this.feedback = (MyExecutorFeedback) feedback;
-        }
-
-        public void executePlan(Plan plan) {
-            this.plan = (MyPlan) plan;
-        }
-
-        public void addPlan(Plan plan) {
-            this.plan = (MyPlan) plan;
-        }
-
-        public void scratchPlan() {
-            plan.clear();
-        }
-
-        /**
-         * Gets the current plan.
-         *
-         * @return plan
-         */
-        public MyPlan getPlan() {
-            return plan;
-        }
-
-        /**
-         * Reports successfull execution of the task.
-         *
-         * @param task
-         */
-        public void finalize(Task task) {
-            feedback.done(task);
-        }
-
-        /**
-         * Reports unsuccessfull execution of the task.
-         *
-         * @param task
-         */
-        public void fail(Task task) {
-            feedback.failed(task);
+        @Override
+        public void planUnreachable() {
+            pb.planFailed();
         }
     }
 }

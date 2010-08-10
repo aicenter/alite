@@ -2,7 +2,6 @@ package cz.agents.alite.communication.protocol.subscribe;
 
 import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.Message;
-import cz.agents.alite.communication.protocol.DefaultProtocol;
 import cz.agents.alite.communication.protocol.Performative;
 import cz.agents.alite.communication.protocol.ProtocolContent;
 import cz.agents.alite.common.capability.CapabilityRegister;
@@ -16,9 +15,8 @@ import java.util.Set;
  *
  * @author Jiri Vokrinek
  */
-public abstract class SubscribeProtocolSender extends DefaultProtocol {
+public abstract class SubscribeProtocolSender extends SubscribeProtocol {
 
-    static final String SUBSCRIBE_PROTOCOL_NAME = "SUBSCRIBE_PROTOCOL";
     final String agentName;
     private final CapabilityRegister directory;
 
@@ -29,7 +27,7 @@ public abstract class SubscribeProtocolSender extends DefaultProtocol {
      * @param name
      */
     public SubscribeProtocolSender(Communicator communicator, CapabilityRegister directory, String name) {
-        super(communicator, SUBSCRIBE_PROTOCOL_NAME + ": " + name);
+        super(communicator, name);
         this.directory = directory;
         this.agentName = communicator.getAddress();
     }
@@ -39,7 +37,7 @@ public abstract class SubscribeProtocolSender extends DefaultProtocol {
      *
      * @param inform a content object to be sent.
      */
-    public void snedInform(Object inform) {
+    public void sendInform(Object inform) {
         ProtocolContent content = new ProtocolContent(this, Performative.INFORM, inform, generateSession());
         Message message = communicator.createMessage(content);
         Set<String> addresses = directory.getIdentities(getName());

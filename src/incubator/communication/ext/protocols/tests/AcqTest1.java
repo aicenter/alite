@@ -10,6 +10,7 @@ import cz.agents.alite.communication.acquaintance.TaskBase.UnknownTaskTypeExcept
 import cz.agents.alite.communication.acquaintance.iterative.CNPTaskBaseSyncIterRA;
 import cz.agents.alite.common.capability.CapabilityRegister;
 import cz.agents.alite.communication.DefaultCommunicator;
+import cz.agents.alite.communication.acquaintance.DefaultPlanExecutor;
 import cz.agents.alite.communication.channel.DirectCommunicationChannelAsync;
 import cz.agents.alite.communication.directory.DirectoryFacilitatorSingleton;
 import cz.agents.alite.vis.VisManager;
@@ -32,10 +33,10 @@ public class AcqTest1 {
 
     static CNPTaskBase tb1;
     static CNPTaskBase tb2;
-    static DefaultPlanBase.MyExecutor ex1;
+    static DefaultPlanExecutor ex1;
     static DefaultPlanBase pb1;
     static DefaultPlanBase pb2;
-    static DefaultPlanBase.MyExecutor ex2;
+    static DefaultPlanExecutor ex2;
     static Task t1;
     static Task t2;
     static Task t3;
@@ -57,12 +58,12 @@ public class AcqTest1 {
         tb2 = new CNPTaskBaseSyncIterRA(c2, directory);
 
         pb1 = new DefaultPlanBase();
-        ex1 = new DefaultPlanBase.MyExecutor();
+        ex1 = new DefaultPlanExecutor();
         pb1.registerExecutor(ex1);
         tb1.registerType(AbstractTask.getTaskTypeName(), pb1);
 
         pb2 = new DefaultPlanBase();
-        ex2 = new DefaultPlanBase.MyExecutor();
+        ex2 = new DefaultPlanExecutor();
         pb2.registerExecutor(ex2);
         tb2.registerType(AbstractTask.getTaskTypeName(), pb2);
 
