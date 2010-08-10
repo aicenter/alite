@@ -1,4 +1,4 @@
-package cz.agents.alite.communication.protocol.queryif;
+package cz.agents.alite.communication.protocol.query;
 
 import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.Message;
@@ -16,17 +16,17 @@ import java.util.Set;
  * is called on all subscribers except the invoker.
  *
  * @author Jiri Vokrinek
+ * @author Antonin Komenda
  */
-public abstract class QueryIfSender extends QueryIf {
+public abstract class QueryInitiator extends Query {
 
-    final String agentName;
+    final String entityAddress;
     private final Object query;
-    private final Set<String> participantAddress;
-    private final HashSet<String> pendingParticipants;
+    private final Set<String> responderAddresses;
+    private final Set<String> pendingResponders;
     private final String session;
-    private boolean yesAnswerReceived = false;
-    private boolean noAnswerReceived = false;
-    //
+    private final Set<Object> answers = new HashSet<Object>();
+
     private MessageHandler messagehandler;
 
     /**
@@ -36,15 +36,15 @@ public abstract class QueryIfSender extends QueryIf {
      * @param name
      * @param query
      */
-    public QueryIfSender(Communicator communicator, CapabilityRegister directory, String name, Object query) {
+    public QueryInitiator(Communicator communicator, CapabilityRegister directory, String name, Object query) {
         super(communicator, name);
-        this.agentName = communicator.getAddress();
+        this.entityAddress = communicator.getAddress();
         this.query = query;
         this.session = generateSession();
         Set<String> addresses = directory.getIdentities(getName());
-        participantAddress = new LinkedHashSet<String>(addresses);
-        participantAddress.remove(agentName);
-        this.pendingParticipants = new LinkedHashSet<String>(participantAddress);
+        responderAddresses = new LinkedHashSet<String>(addresses);
+        responderAddresses.remove(entityAddress);
+        this.pendingResponders = new LinkedHashSet<String>(responderAddresses);
         initProtocol();
     }
 
@@ -58,39 +58,33 @@ public abstract class QueryIfSender extends QueryIf {
             }
         };
         communicator.addMessageHandler(messagehandler);
-        ProtocolContent content = new ProtocolContent(this, Performative.QUERY_IF, query, session);
+        ProtocolContent content = new ProtocolContent(this, Performative.QUERY, query, session);
         Message message = communicator.createMessage(content);
-        message.addReceivers(participantAddress);
+        message.addReceivers(responderAddresses);
         communicator.sendMessage(message);
     }
 
     private void processMessage(Message message, ProtocolContent content) {
         switch (content.getPerformative()) {
-            case QUERY_REF:
-                pendingParticipants.remove(message.getSender());
-                checkAnswers((Boolean) content.getData());
+            case INFORM:
+                pendingResponders.remove(message.getSender());
+                answers.add(content.getData());
+                checkAnswers();
                 break;
             default:
         }
     }
 
-    private void checkAnswers(boolean answer) {
-        if (answer) {
-            yesAnswerReceived = true;
-        } else {
-            noAnswerReceived = true;
-        }
-
-        if (pendingParticipants.isEmpty()) {
-            evaluateReplies(yesAnswerReceived, noAnswerReceived);
+    private void checkAnswers() {
+        if (pendingResponders.isEmpty()) {
+            evaluateReplies(answers);
+            communicator.removeMessageHandler(messagehandler);
         }
     }
 
     /**
      * Evaluates obtained reply.
-     *
-     * @param yesAnswer true if any responder answered YES, false otherwise
-     * @param noAnswer true if any responder answered NO, false otherwise
+     * @param answers
      */
-    abstract protected void evaluateReplies(boolean yesAnswer, boolean noAnswer);
+    abstract protected void evaluateReplies(Set<Object> answers);
 }

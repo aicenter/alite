@@ -2,13 +2,13 @@ package cz.agents.alite.communication.protocol;
 
 /**
  * Performatives for use in the protocols.
- * 
+ *
  * @author Jiri Vokrinek
  */
 public enum Performative {
 
     /**
-     * 
+     *
      */
     INFORM,
     /**
@@ -16,7 +16,7 @@ public enum Performative {
      */
     AGREE,
     /**
-     * 
+     *
      */
     REQUEST,
     /**
@@ -28,7 +28,7 @@ public enum Performative {
      */
     ACCEPT_PROPOSAL,
     /**
-     * 
+     *
      */
     CANCEL,
     /**
@@ -36,7 +36,7 @@ public enum Performative {
      */
     CALL_FOR_PROPOSAL,
     /**
-     * 
+     *
      */
     CONFIRM,
     /**
@@ -48,7 +48,7 @@ public enum Performative {
      */
     FAILURE,
     /**
-     * 
+     *
      */
     INFORM_IF,
     /**
@@ -56,7 +56,7 @@ public enum Performative {
      */
     INFORM_REF,
     /**
-     * 
+     *
      */
     NOT_UNDERSTOOD,
     /**
@@ -64,7 +64,7 @@ public enum Performative {
      */
     PROPAGATE,
     /**
-     * 
+     *
      */
     PROPOSE,
     /**
@@ -72,15 +72,11 @@ public enum Performative {
      */
     PROXY,
     /**
-     * 
-     */
-    QUERY_IF,
-    /**
      *
      */
-    QUERY_REF,
+    QUERY,
     /**
-     * 
+     *
      */
     REFUSE,
     /**
@@ -88,7 +84,7 @@ public enum Performative {
      */
     REJECT_PROPOSAL,
     /**
-     * 
+     *
      */
     REQUEST_WHEN,
     /**
@@ -96,7 +92,7 @@ public enum Performative {
      */
     REQUEST_WHENEVER,
     /**
-     * 
+     *
      */
     SUBSCRIBE,
     /**
