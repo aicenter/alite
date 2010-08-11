@@ -12,8 +12,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * The general QueryIf protocol. For each responder instance the method {@link sendQuery(Object query)}
- * is called on all subscribers except the invoker.
+ * The general Query protocol. For each responder instance the method {@link sendQuery(Object query)}
+ * is called on all subscribers except the initiator.
  *
  * @author Jiri Vokrinek
  * @author Antonin Komenda
@@ -83,8 +83,8 @@ public abstract class QueryInitiator extends Query {
     }
 
     /**
-     * Evaluates obtained reply.
-     * @param answers
+     * Evaluates obtained replied queries.
+     * @param answers a set of the answered queries from the responders
      */
     abstract protected void evaluateReplies(Set<Object> answers);
 }
