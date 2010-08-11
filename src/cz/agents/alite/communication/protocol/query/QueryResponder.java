@@ -9,8 +9,8 @@ import cz.agents.alite.common.capability.CapabilityRegister;
 import cz.agents.alite.communication.protocol.Performative;
 
 /**
- * The general QueryIf protocol. For each receiver instance the method {@link handleQuery(Object query)}
- * is called when sender invokes a query.
+ * The general Query protocol. For each receiver instance the method {@link handleQuery(Object query)}
+ * is called when initiator requests a query.
  *
  * @author Jiri Vokrinek
  * @author Antonin Komenda
@@ -58,10 +58,10 @@ public abstract class QueryResponder extends Query {
     }
 
     /**
-     * This methods is called if some other agent sends QueryIf.
+     * This methods is called if some other agent sends Query.
      *
-     * @param query
-     * @return true if the query answer is YES, false is query answer is NO
+     * @param query the data of the query send by the initiator
+     * @return the queried object to be returned to the initiator
      */
     abstract protected Object handleQuery(Object query);
 }

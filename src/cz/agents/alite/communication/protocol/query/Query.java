@@ -4,7 +4,7 @@ import cz.agents.alite.communication.Communicator;
 import cz.agents.alite.communication.protocol.DefaultProtocol;
 
 /**
- * Qerry-if protocol wrapper.
+ * Querry protocol wrapper.
  *
  * @author Jiri Vokrinek
  * @author Antonin Komenda
