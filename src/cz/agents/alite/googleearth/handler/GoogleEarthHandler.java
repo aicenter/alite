@@ -16,10 +16,9 @@ import cz.agents.alite.googleearth.KmlFileCreator;
  * @author Ondrej Vanek
  * 
  */
-public abstract class GoogleEarthHandler implements HttpHandler
-{
+public abstract class GoogleEarthHandler implements HttpHandler {
     private boolean reports = false;
-    
+
     /**
      * For identification and logging purposes.
      * 
@@ -32,17 +31,16 @@ public abstract class GoogleEarthHandler implements HttpHandler
     {
 
         long time = System.currentTimeMillis();
-        try
-        {
+        try {
             doResponse(exchange);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if(reports)
-            System.out.println(getName() + "> request served in " + (System.currentTimeMillis() - time)
-                + "ms.");
+        if(reports) {
+            System.out.println(getName() + "> request served in "
+                    + (System.currentTimeMillis() - time) + "ms.");
+        }
     }
 
     /**
@@ -59,20 +57,17 @@ public abstract class GoogleEarthHandler implements HttpHandler
         String content = "";
         content = createContentFromEnvironment(exchange.getRequestURI().getQuery());
 
-        try
-        {
-            if(System.getProperty("os.name").toLowerCase().contains("win"))
-            {
+        try {
+            if(System.getProperty("os.name").toLowerCase().contains("win")) {
                 exchange.sendResponseHeaders(200, content.length());
-            } else
-            {
+            } else {
                 exchange.sendResponseHeaders(200, 0);
             }
             OutputStream output = exchange.getResponseBody();
             output.write(content.getBytes());
             output.close();
-        } catch (IOException e)
-        {}
+        } catch (IOException e) {
+        }
     }
 
     /**
