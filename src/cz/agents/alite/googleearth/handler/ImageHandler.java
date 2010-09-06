@@ -18,11 +18,10 @@ import cz.agents.alite.googleearth.KmlFileCreator;
  * @author Ondrej Milenovsky
  * 
  */
-public abstract class ImageHandler implements HttpHandler
-{
+public abstract class ImageHandler implements HttpHandler {
     private boolean reports = false;
     private String imageType = "png";
-    
+
     /**
      * For identification and logging purposes.
      * 
@@ -35,17 +34,16 @@ public abstract class ImageHandler implements HttpHandler
     {
 
         long time = System.currentTimeMillis();
-        try
-        {
+        try {
             doResponse(exchange);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if(reports)
-            System.out.println(getName() + "> request served in " + (System.currentTimeMillis() - time)
-                + "ms.");
+        if(reports) {
+            System.out.println(getName() + "> request served in "
+                    + (System.currentTimeMillis() - time) + "ms.");
+        }
     }
 
     /**
@@ -60,15 +58,14 @@ public abstract class ImageHandler implements HttpHandler
         responseHeaders.add("Content-Type", "image/" + imageType);
         responseHeaders.add("Content-Encoding", "identity");
         BufferedImage content = createContentFromEnvironment(exchange.getRequestURI().getQuery());
-        
-        try
-        {
+
+        try {
             exchange.sendResponseHeaders(200, 0);
             OutputStream output = exchange.getResponseBody();
             ImageIO.write(content, imageType, output);
             output.close();
-        } catch (IOException e)
-        {}
+        } catch (IOException e) {
+        }
     }
 
     /**
@@ -85,10 +82,10 @@ public abstract class ImageHandler implements HttpHandler
     {
         this.imageType = imageType;
     }
-    
+
     public String getImageType()
     {
         return imageType;
     }
-    
+
 }

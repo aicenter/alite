@@ -65,8 +65,7 @@ import cz.agents.alite.googleearth.kml.StyleType;
  * @author Petr Benda
  * @author Ondrej Milenovsky
  */
-public class KmlFileCreator
-{
+public class KmlFileCreator {
 
     public static final String FILE_NAME2 = "tmp.kml";
 
@@ -87,23 +86,18 @@ public class KmlFileCreator
 
     protected ObjectFactory factory;
 
-    public KmlFileCreator(String fileName)
-    {
+    public KmlFileCreator(String fileName) {
         this(fileName, null);
     }
 
-    public KmlFileCreator(String fileName, String[][] replaceArray)
-    {
+    public KmlFileCreator(String fileName, String[][] replaceArray) {
         // first replace some text in the file
         String file2 = fileName;
-        if(replaceArray != null)
-        {
-            try
-            {
+        if(replaceArray != null) {
+            try {
                 saveFile(FILE_NAME2, replaceText(loadFile(fileName), replaceArray));
                 file2 = FILE_NAME2;
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -116,8 +110,7 @@ public class KmlFileCreator
     public static List<String> createStringCoordinateList(List<Point2d> coordinates)
     {
         List<String> out = new ArrayList<String>(coordinates.size());
-        for(Point2d point: coordinates)
-        {
+        for(Point2d point: coordinates) {
             out.add(createStringCoordinate(point.x, point.y, 0d));
         }
         return out;
@@ -150,8 +143,7 @@ public class KmlFileCreator
     public void createPlacemark(double lon, double lat, String name, String description,
             String style)
     {
-        try
-        {
+        try {
             @SuppressWarnings("unchecked")
             JAXBElement<? extends AbstractFeatureType> clone = (JAXBElement<? extends AbstractFeatureType>)SerializableObjectCloner
                     .clone(placemarkOrigin);
@@ -159,8 +151,7 @@ public class KmlFileCreator
             PlacemarkType placemark = (PlacemarkType)ob;
 
             placemark.setName(name);
-            if(description != null)
-            {
+            if(description != null) {
                 placemark.setDescription(description);
             }
 
@@ -180,8 +171,7 @@ public class KmlFileCreator
             lookAt.setLongitude(lon);
 
             currentFolder.getAbstractFeatureGroup().add(clone);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -205,8 +195,7 @@ public class KmlFileCreator
         placemark.setStyleUrl("#" + style);
         JAXBElement<? extends AbstractGeometryType> geometry = placemark.getAbstractGeometryGroup();
         PolygonType polygon = (PolygonType)geometry.getValue();
-        if(extruded)
-        {
+        if(extruded) {
             polygon.setExtrude(true);
             polygon.setTessellate(true);
             ObjectFactory factory = new ObjectFactory();
@@ -231,8 +220,7 @@ public class KmlFileCreator
     /** replace text in the file before parsing, ovveride this method */
     protected String replaceText(String text, String[][] replaceArray)
     {
-        for(int i = 0; i < replaceArray.length; i++)
-        {
+        for(int i = 0; i < replaceArray.length; i++) {
             text = text.replace(replaceArray[i][0], replaceArray[i][1]);
         }
         return text;
@@ -241,8 +229,7 @@ public class KmlFileCreator
     @SuppressWarnings("unchecked")
     public void loadOrigins(String fileName)
     {
-        try
-        {
+        try {
             context = JAXBContext.newInstance("cz.agents.alite.googleearth.kml");
             Unmarshaller um = context.createUnmarshaller();
             rootElement = (JAXBElement<? extends AbstractFeatureType>)um.unmarshal(new File(
@@ -270,8 +257,7 @@ public class KmlFileCreator
             // remove origins from KML
             ft.getAbstractFeatureGroup().clear();
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -279,16 +265,14 @@ public class KmlFileCreator
     public String getKML()
     {
         Marshaller m;
-        try
-        {
+        try {
             m = context.createMarshaller();
 
             StringWriter stringWriter = new StringWriter();
             m.marshal(rootElement, stringWriter);
             String s = stringWriter.toString();
             return s;
-        } catch (JAXBException e)
-        {
+        } catch (JAXBException e) {
             e.printStackTrace();
         }
         return null;
@@ -298,10 +282,8 @@ public class KmlFileCreator
     {
         // remove all folders
         for(Iterator<JAXBElement<? extends AbstractFeatureType>> el = type
-                .getAbstractFeatureGroup().iterator(); el.hasNext();)
-        {
-            if(el.next().getDeclaredType() == FolderType.class)
-            {
+                .getAbstractFeatureGroup().iterator(); el.hasNext();) {
+            if(el.next().getDeclaredType() == FolderType.class) {
                 el.remove();
             }
         }
@@ -390,8 +372,9 @@ public class KmlFileCreator
     {
         addIconStyle(styleName, scale, iconPath, labelColor, Color.WHITE);
     }
-    
-    public void addIconStyle(String styleName, Double scale, String iconPath, Color labelColor, Color iconColor)
+
+    public void addIconStyle(String styleName, Double scale, String iconPath, Color labelColor,
+            Color iconColor)
     {
         StyleType type = factory.createStyleType();
         type.setId(styleName);
@@ -400,19 +383,17 @@ public class KmlFileCreator
         IconStyleType value = new IconStyleType();
         if(scale != null)
             value.setScale(scale);
-        if(!iconColor.equals(Color.WHITE))
-        {
+        if(!iconColor.equals(Color.WHITE)) {
             value.setColor(color2byte(iconColor));
         }
-        
+
         // url
         BasicLinkType blt = new BasicLinkType();
         blt.setHref(iconPath);
         value.setIcon(blt);
         type.setIconStyle(value);
 
-        if(labelColor != null)
-        {
+        if(labelColor != null) {
             LabelStyleType label = new LabelStyleType();
             label.setColor(color2byte(labelColor));
             type.setLabelStyle(label);
@@ -434,19 +415,18 @@ public class KmlFileCreator
                 (byte)color.getRed()};
     }
 
-    /**create RegionBounds from string "north south east west"*/
+    /** create RegionBounds from string "north south east west" */
     public static RegionBounds getBoundsFromString(String s)
-	{
+    {
         String[] parts = s.split(" ");
-        try
-        {
-            return new RegionBounds(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]));
-        } catch (Exception e)
-        {
+        try {
+            return new RegionBounds(Double.parseDouble(parts[0]), Double.parseDouble(parts[1]),
+                    Double.parseDouble(parts[2]), Double.parseDouble(parts[3]));
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-	}
+    }
 
     /** returns altitude from string */
     public static double getAltFromString(String s)
@@ -456,16 +436,14 @@ public class KmlFileCreator
             return Double.parseDouble(parts[4]);
         return -1;
     }
-    
+
     public static String getCurrentPath()
     {
         String path = "";
-        try
-        {
+        try {
             File currDir = new File(".");
             path = currDir.getCanonicalPath() + File.separator;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return path;
@@ -475,21 +453,17 @@ public class KmlFileCreator
     public static String loadFile(String name)
     {
         String ret = "";
-        try
-        {
+        try {
             BufferedReader br = new BufferedReader(new FileReader(name));
-            while(true)
-            {
+            while(true) {
                 String line = br.readLine();
-                if(line == null)
-                {
+                if(line == null) {
                     break;
                 }
                 ret += line + "\n";
             }
             br.close();
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -501,20 +475,20 @@ public class KmlFileCreator
      * 
      * Example: part1 = "report", initIndex = 1, part2 = ".txt"
      * 
-     * tries filenames: report1.txt, report2.txt, report3.txt, ... when found first not existing file
+     * tries filenames: report1.txt, report2.txt, report3.txt, ... when found
+     * first not existing file
      * */
     public static String findFirstNotExistingFile(String part1, int initIndex, String part2)
     {
         int i = initIndex;
-        while(true)
-        {
+        while(true) {
             String s = part1 + i + part2;
             if(!(new File(s).exists()))
                 return s;
             i++;
         }
     }
-    
+
     public static String createStringCoordinate(double x, double y, double z)
     {
         return x + "," + y + "," + z;
@@ -525,7 +499,7 @@ public class KmlFileCreator
     {
         saveFile(new File(name), content);
     }
-    
+
     /** save string to file */
     public static void saveFile(File f, String content) throws IOException
     {

@@ -14,8 +14,7 @@ import com.sun.net.httpserver.HttpServer;
  * @author Ondrej Vanek
  * @author Ondrej Milenovsky
  */
-public class Synthetiser
-{
+public class Synthetiser {
 
     private HttpServer server;
     public static final int PORT = 8080;
@@ -46,8 +45,7 @@ public class Synthetiser
      */
     private void initHttpServer() throws Exception
     {
-        if(server == null)
-        {
+        if(server == null) {
             // Set up server on port with max connections.
             server = HttpServer.create(new InetSocketAddress(PORT),
                     MAXIMUM_SIMULTANEOUS_CONNECTIONS);
@@ -55,14 +53,16 @@ public class Synthetiser
             server.setExecutor(null);
             server.start(); // START!
             serverInitialized = true;
-        } else
+        } else {
             serverInitialized = true;
+        }
     }
 
     public void addHandler(HttpHandler handler, String link) throws Exception
     {
-        if(!serverInitialized)
+        if(!serverInitialized) {
             initHttpServer();
+        }
         server.createContext("/" + link, handler);
         // store link and handler (will be readded when server restart)
         handlerMap.put(link, handler);
@@ -70,22 +70,21 @@ public class Synthetiser
 
     public void startServer() throws Exception
     {
-        if(server == null)
+        if(server == null) {
             init();
-        else
+        } else {
             server.start();
+        }
 
         // now readd handlers (used when server restart)
-        for(String link: handlerMap.keySet())
-        {
+        for(String link: handlerMap.keySet()) {
             server.createContext("/" + link, handlerMap.get(link));
         }
     }
 
     public void stopServer()
     {
-        if(server != null)
-        {
+        if(server != null) {
             server.stop(0);
             server = null;
         }
