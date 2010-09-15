@@ -23,7 +23,7 @@ public class DirectCommunicationChannelAsync extends DirectCommunicationChannel 
      *
      * @param communicator
      */
-    public DirectCommunicationChannelAsync(CommunicationReceiver communicator) {
+    public DirectCommunicationChannelAsync(CommunicationReceiver communicator) throws CommunicationChannelException {
         super(communicator);
     }
 
@@ -37,6 +37,7 @@ public class DirectCommunicationChannelAsync extends DirectCommunicationChannel 
     protected void callDirectReceive(final CommunicationReceiver receiver, final Message message) {
         executor.submit(new Runnable() {
 
+            @Override
             public void run() {
                 receiver.receiveMessage(message);
             }

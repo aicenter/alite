@@ -22,9 +22,11 @@ public class DirectCommunicationChannel extends DefaultCommunicationChannel {
      *
      * @param communicator
      */
-    public DirectCommunicationChannel(CommunicationReceiver communicator) {
+    public DirectCommunicationChannel(CommunicationReceiver communicator) throws CommunicationChannelException {
         super(communicator);
-        channelReceivers.put(communicator.getAddress(), communicator);
+        if (null!=channelReceivers.put(communicator.getAddress(), communicator)) {
+            throw new DuplicateReceiverAddressException(communicator.getAddress());
+        }
     }
 
 

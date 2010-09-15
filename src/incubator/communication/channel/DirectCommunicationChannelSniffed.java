@@ -2,6 +2,7 @@ package incubator.communication.channel;
 
 import cz.agents.alite.communication.CommunicationReceiver;
 import cz.agents.alite.communication.Message;
+import cz.agents.alite.communication.channel.CommunicationChannelException;
 import cz.agents.alite.communication.channel.DirectCommunicationChannel;
 import incubator.communication.channel.sniffer.SnifferWrapper;
 
@@ -17,7 +18,7 @@ public class DirectCommunicationChannelSniffed extends DirectCommunicationChanne
      *
      * @param communicator
      */
-    public DirectCommunicationChannelSniffed(CommunicationReceiver communicator) {
+    public DirectCommunicationChannelSniffed(CommunicationReceiver communicator) throws CommunicationChannelException {
         super(communicator);
     }
 
