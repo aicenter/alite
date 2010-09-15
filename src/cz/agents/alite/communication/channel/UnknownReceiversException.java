@@ -9,7 +9,6 @@ import java.util.Set;
 public class UnknownReceiversException extends CommunicationChannelException {
 
     private static final long serialVersionUID = 8896341303688182411L;
-
     private final Set<String> unknownReceivers;
 
     /**
@@ -28,4 +27,8 @@ public class UnknownReceiversException extends CommunicationChannelException {
         return unknownReceivers;
     }
 
+    @Override
+    public String getMessage() {
+        return "Unknown receivers in communication channel: " + unknownReceivers;
+    }
 }

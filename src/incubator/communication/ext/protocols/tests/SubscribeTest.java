@@ -1,11 +1,14 @@
 package incubator.communication.ext.protocols.tests;
 
+import cz.agents.alite.communication.channel.CommunicationChannelException;
 import cz.agents.alite.communication.protocol.subscribe.SubscribeProtocolReceiver;
 import cz.agents.alite.communication.protocol.subscribe.SubscribeProtocolSender;
 import cz.agents.alite.communication.DefaultCommunicator;
 import incubator.communication.channel.DirectCommunicationChannelSniffed;
 import cz.agents.alite.common.capability.CapabilityRegister;
 import cz.agents.alite.communication.directory.DirectoryFacilitatorSingleton;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -21,7 +24,11 @@ public class SubscribeTest {
         String subscribThing2 = "mySubscription2";
 
         DefaultCommunicator c1 = new DefaultCommunicator("A1");
-        c1.addChannel(new DirectCommunicationChannelSniffed(c1));
+        try {
+            c1.addChannel(new DirectCommunicationChannelSniffed(c1));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(SubscribeTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         SubscribeProtocolReceiver agent1a = new SubscribeProtocolReceiver(c1, directory, subscribThing1) {
 
             @Override
@@ -38,7 +45,11 @@ public class SubscribeTest {
         };
 
         DefaultCommunicator c2 = new DefaultCommunicator("A2");
-        c2.addChannel(new DirectCommunicationChannelSniffed(c2));
+        try {
+            c2.addChannel(new DirectCommunicationChannelSniffed(c2));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(SubscribeTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         SubscribeProtocolReceiver agent2 = new SubscribeProtocolReceiver(c2, directory, subscribThing2) {
 
@@ -50,7 +61,11 @@ public class SubscribeTest {
 
 
         DefaultCommunicator c3 = new DefaultCommunicator("A3");
-        c3.addChannel(new DirectCommunicationChannelSniffed(c3));
+        try {
+            c3.addChannel(new DirectCommunicationChannelSniffed(c3));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(SubscribeTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
 
         SubscribeProtocolReceiver agent3 = new SubscribeProtocolReceiver(c3, directory, subscribThing1) {
@@ -62,7 +77,11 @@ public class SubscribeTest {
         };
 
         DefaultCommunicator c4 = new DefaultCommunicator("A4");
-        c4.addChannel(new DirectCommunicationChannelSniffed(c4));
+        try {
+            c4.addChannel(new DirectCommunicationChannelSniffed(c4));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(SubscribeTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         SubscribeProtocolSender agent4 = new SubscribeProtocolSender(c4, directory, subscribThing1) {
         };

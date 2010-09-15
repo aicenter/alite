@@ -1,5 +1,6 @@
 package incubator.communication.ext.protocols.tests;
 
+import cz.agents.alite.communication.channel.CommunicationChannelException;
 import cz.agents.alite.communication.protocol.tokenring.TokenRing;
 import cz.agents.alite.communication.protocol.tokenring.MasteredTokenRing;
 import cz.agents.alite.communication.DefaultCommunicator;
@@ -32,7 +33,11 @@ public class TokenRingTest {
     private static void tokenRing() {
         String RING = "myRing";
         DefaultCommunicator c1 = new DefaultCommunicator("A1");
-        c1.addChannel(new DirectCommunicationChannelAsync(c1));
+        try {
+            c1.addChannel(new DirectCommunicationChannelAsync(c1));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(TokenRingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         TokenRing agent1 = new TokenRing(c1, directory, RING) {
 
             @Override
@@ -42,7 +47,11 @@ public class TokenRingTest {
             }
         };
         DefaultCommunicator c2 = new DefaultCommunicator("A2");
-        c2.addChannel(new DirectCommunicationChannelAsync(c2));
+        try {
+            c2.addChannel(new DirectCommunicationChannelAsync(c2));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(TokenRingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         TokenRing agent2 = new TokenRing(c2, directory, RING) {
 
             @Override
@@ -64,7 +73,11 @@ public class TokenRingTest {
             }
         };
         DefaultCommunicator c3 = new DefaultCommunicator("A3");
-        c3.addChannel(new DirectCommunicationChannelAsync(c3));
+        try {
+            c3.addChannel(new DirectCommunicationChannelAsync(c3));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(TokenRingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         TokenRing agent3 = new TokenRing(c3, directory, RING) {
 
             @Override
@@ -107,7 +120,11 @@ public class TokenRingTest {
     private static void masteredTokenRing() {
         String RING = "myRing";
         DefaultCommunicator c1 = new DefaultCommunicator("A1");
-        c1.addChannel(new DirectCommunicationChannelAsync(c1));
+        try {
+            c1.addChannel(new DirectCommunicationChannelAsync(c1));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(TokenRingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         MasteredTokenRing agent1 = new MasteredTokenRing(c1, directory, RING) {
 
             @Override
@@ -117,7 +134,11 @@ public class TokenRingTest {
             }
         };
         DefaultCommunicator c2 = new DefaultCommunicator("A2");
-        c2.addChannel(new DirectCommunicationChannelAsync(c2));
+        try {
+            c2.addChannel(new DirectCommunicationChannelAsync(c2));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(TokenRingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         TokenRing agent2 = new MasteredTokenRing(c2, directory, RING) {
 
             @Override
@@ -136,7 +157,11 @@ public class TokenRingTest {
             }
         };
         DefaultCommunicator c3 = new DefaultCommunicator("A3");
-        c3.addChannel(new DirectCommunicationChannelAsync(c3));
+        try {
+            c3.addChannel(new DirectCommunicationChannelAsync(c3));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(TokenRingTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         TokenRing agent3 = new MasteredTokenRing(c3, directory, RING) {
 
             @Override

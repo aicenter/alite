@@ -11,6 +11,7 @@ import cz.agents.alite.communication.acquaintance.iterative.CNPTaskBaseSyncIterR
 import cz.agents.alite.common.capability.CapabilityRegister;
 import cz.agents.alite.communication.DefaultCommunicator;
 import cz.agents.alite.communication.acquaintance.DefaultPlanExecutor;
+import cz.agents.alite.communication.channel.CommunicationChannelException;
 import cz.agents.alite.communication.channel.DirectCommunicationChannelAsync;
 import cz.agents.alite.communication.directory.DirectoryFacilitatorSingleton;
 import cz.agents.alite.vis.VisManager;
@@ -50,11 +51,19 @@ public class AcqTest1 {
         CapabilityRegister directory = DirectoryFacilitatorSingleton.getInstance();
 
         DefaultCommunicator c1 = new DefaultCommunicator("A1");
-        c1.addChannel(new DirectCommunicationChannelAsync(c1));
+        try {
+            c1.addChannel(new DirectCommunicationChannelAsync(c1));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(AcqTest1.class.getName()).log(Level.SEVERE, null, ex);
+        }
         tb1 = new CNPTaskBaseSyncIterRA(c1, directory);
 
         DefaultCommunicator c2 = new DefaultCommunicator("A2");
-        c2.addChannel(new DirectCommunicationChannelAsync(c2));
+        try {
+            c2.addChannel(new DirectCommunicationChannelAsync(c2));
+        } catch (CommunicationChannelException ex) {
+            Logger.getLogger(AcqTest1.class.getName()).log(Level.SEVERE, null, ex);
+        }
         tb2 = new CNPTaskBaseSyncIterRA(c2, directory);
 
         pb1 = new DefaultPlanBase();
