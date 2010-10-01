@@ -86,7 +86,7 @@ public class DefaultCommunicator implements Communicator {
 
 
     @Override
-    public void receiveMessage(Message message) {
+    public synchronized void receiveMessage(Message message) {
         for (MessageHandler messageHandler : messageHandlers) {
             messageHandler.notify(message);
         }
