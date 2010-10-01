@@ -19,12 +19,11 @@ public abstract class DefaultCommunicationChannel implements CommunicationChanne
         this.communicationReceiver = communicator;
     }
 
-
+    @Override
     public abstract void sendMessage(Message message) throws CommunicationChannelException;
 
-
+    @Override
     public void receiveMessage(Message message) {
         communicationReceiver.receiveMessage(message);
     }
-
 }
