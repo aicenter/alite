@@ -24,7 +24,7 @@ public abstract class SimpleProtocol extends DefaultProtocol {
     /**
      *
      * @param communicator
-     * @param name
+     * @param name unique identification of protocol instance
      */
     public SimpleProtocol(Communicator communicator, String name) {
         super(communicator, SIMPLE_PROTOCOL_NAME + ": " + name);
@@ -65,7 +65,7 @@ public abstract class SimpleProtocol extends DefaultProtocol {
      * @param content the content to be sent
      * @param receivers addresses of the receivers
      */
-    public void snedMessage(Object content, Collection<String> receivers) {
+    public void sendMessage(Object content, Collection<String> receivers) {
         ProtocolContent pC = new ProtocolContent(this, Performative.PROPAGATE, content, generateSession());
         Message message = communicator.createMessage(pC);
         message.addReceivers(receivers);
