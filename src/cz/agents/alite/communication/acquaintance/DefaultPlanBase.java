@@ -1,9 +1,9 @@
 package cz.agents.alite.communication.acquaintance;
 
-import cz.agents.alite.communication.acquaintance.Task.TaskListener;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+
+import cz.agents.alite.communication.acquaintance.Task.TaskListener;
 
 /**
  *  Default PlanBase for testing and basic operations.
@@ -69,7 +69,8 @@ public class DefaultPlanBase implements PlanBase {
         listeners.remove(task).taskUnreachable();
     }
 
-    void planFailed() {
+    @SuppressWarnings("unchecked")
+	void planFailed() {
         List<Task> oldPlan = (List<Task>) tasks.clone();
         tasks.clear();
         for (Task task : oldPlan) {

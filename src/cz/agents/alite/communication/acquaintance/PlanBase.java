@@ -1,7 +1,6 @@
 package cz.agents.alite.communication.acquaintance;
 
 import cz.agents.alite.communication.acquaintance.Task.TaskListener;
-import java.util.List;
 
 /**
  *  Interface for the Plan Base definition
