@@ -1,7 +1,7 @@
 package cz.agents.alite.simulation;
 
 /**
- * This interface is used for Simulation. Add this listener, then call
+ * This interface is used for Simulation. Add this listener, then call requestDraw().
  * 
  * @author Ondrej Milenovsky
  * */
