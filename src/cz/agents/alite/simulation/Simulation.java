@@ -28,7 +28,7 @@ public class Simulation extends EventProcessor {
 
     private boolean drawFrame = false;
     private DrawListener drawListener;
-    private long timeout = -1;
+    private long timeout = 1000;
     private long tout;
 
     public void run() {
@@ -72,7 +72,7 @@ public class Simulation extends EventProcessor {
      * sets draw timeout, 0 means delay betveen events caused by simulaiton
      * speed
      */
-    public void setTimeout(long timeout) {
+    public void setDrawTimeout(long timeout) {
 	if (timeout < 0) {
 	    throw new IllegalArgumentException("Timeout must >= 0");
 	}
