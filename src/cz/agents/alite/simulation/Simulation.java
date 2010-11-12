@@ -55,14 +55,16 @@ public class Simulation extends EventProcessor {
     }
 
     /**
-     * request drawing frame, if not running, draw now with no timeout,
+     * request drawing frame, if not running, draw now with no timeout and return true,
      * immediate simulation start can cause problems
      */
-    public void requestDraw() {
+    public boolean requestDraw() {
 	if (!isRunning()) {
 	    drawListener.drawFrame(Long.MAX_VALUE);
+	    return true;
 	} else {
 	    drawFrame = true;
+	    return false;
 	}
     }
 
