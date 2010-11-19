@@ -79,7 +79,7 @@ public class Vis extends Canvas {
         window = new JFrame(initTitle);
 
         final JPanel panel = (JPanel) window.getContentPane();
-        panel.setBounds(0, 0, DIM_X, DIM_Y);
+        panel.setBounds(0, 0, initDimX, initDimY);
         panel.add(this);
 
         window.addWindowListener(new WindowAdapter() {
@@ -128,8 +128,8 @@ public class Vis extends Canvas {
                 } else {
                     zoomFactor /= zoomStep;
 
-                    offset.x += transInvX(DIM_X / 2) * SCALE_X * zoomFactor * (zoomStep - 1.0);
-                    offset.y += transInvY(DIM_Y / 2) * SCALE_Y * zoomFactor * (zoomStep - 1.0);
+                    offset.x += transInvX(getWidth() / 2) * SCALE_X * zoomFactor * (zoomStep - 1.0);
+                    offset.y += transInvY(getHeight() / 2) * SCALE_Y * zoomFactor * (zoomStep - 1.0);
                 }
 
                 limitTransformation();
@@ -299,11 +299,11 @@ public class Vis extends Canvas {
     }
 
     public static int getWorldDimX() {
-        return (int) (DIM_X / SCALE_X);
+        return (int) (getInstance().getWidth() / SCALE_X);
     }
 
     public static int getWorldDimY() {
-        return (int) (DIM_Y / SCALE_Y);
+        return (int) (getInstance().getHeight() / SCALE_Y);
     }
 
     public static double getZoomFactor() {
