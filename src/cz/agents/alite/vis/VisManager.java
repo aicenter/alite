@@ -131,8 +131,6 @@ public class VisManager {
 	    try {
 		visLayer.paint(graphics);
 	    } catch (Exception e) {
-		//e.printStackTrace();
-		// TODO this logger does not show anything !
 		Logger.getLogger(VisManager.class.getName()).log(Level.SEVERE,
 			"Skipped layer drawing during file save.");
 	    }
@@ -145,13 +143,9 @@ public class VisManager {
 	    try {
 		visLayer.paint(Vis.getCanvas());
 	    } catch (ConcurrentModificationException e) {
-		//e.printStackTrace();
-		// TODO this logger does not show anything !
 		Logger.getLogger(VisManager.class.getName()).log(Level.FINEST,
 			"Skipped layer drawing.");
 	    } catch (Exception e) {
-		//e.printStackTrace();
-		// TODO this logger does not show anything !
 		Logger.getLogger(VisManager.class.getName()).log(Level.FINEST,
 			"Skipped layer drawing.");
 	    }
