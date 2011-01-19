@@ -5,7 +5,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- *
+ * Provides basic implementation of @CapabilityRegister using @HashMap
+ * 
  * @author Jiri Vokrinek
  */
 public class CapabilityRegisterImpl implements CapabilityRegister {
