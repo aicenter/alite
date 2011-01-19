@@ -4,7 +4,8 @@ import cz.agents.alite.common.capability.CapabilityRegister;
 import cz.agents.alite.common.capability.CapabilityRegisterImpl;
 
 /**
- *
+ * Singleton for encapsulation of @CapabilityRegisterImpl
+ * 
  * @author Jiri Vokrinek
  */
 public class DirectoryFacilitatorSingleton extends CapabilityRegisterImpl {
