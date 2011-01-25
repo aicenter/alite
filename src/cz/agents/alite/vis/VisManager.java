@@ -143,11 +143,9 @@ public class VisManager {
 	    try {
 		visLayer.paint(Vis.getCanvas());
 	    } catch (ConcurrentModificationException e) {
-		Logger.getLogger(VisManager.class.getName()).log(Level.FINEST,
-			"Skipped layer drawing.");
+	    	Logger.getLogger(VisManager.class.getName()).log(Level.FINEST, "Skipped layer drawing.");
 	    } catch (Exception e) {
-		Logger.getLogger(VisManager.class.getName()).log(Level.FINEST,
-			"Skipped layer drawing.");
+	    	Logger.getLogger(VisManager.class.getName()).log(Level.WARNING, "Vis layer " + visLayer + " has thrown the following exception:\n"+e);
 	    }
 	}
 	Vis.flip();
