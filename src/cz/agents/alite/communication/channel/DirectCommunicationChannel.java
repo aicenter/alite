@@ -11,12 +11,13 @@ import cz.agents.alite.communication.Message;
 /**
  * Direct Call communication channel.
  * Uses direct calling of the receiveMessage method.
+ * By default it uses static capability register for communication channels maintaining.
  *
  * @author Jiri Vokrinek
  */
 public class DirectCommunicationChannel extends DefaultCommunicationChannelBroadcast {
 
-    private static final HashMap<String, CommunicationReceiver> channelReceivers = new HashMap<String, CommunicationReceiver>();
+    private static HashMap<String, CommunicationReceiver> channelReceivers = null;// = new HashMap<String, CommunicationReceiver>();
 
     /**
      *
@@ -24,6 +25,7 @@ public class DirectCommunicationChannel extends DefaultCommunicationChannelBroad
      */
     public DirectCommunicationChannel(CommunicationReceiver communicator) throws CommunicationChannelException {
         super(communicator);
+
         if (null != channelReceivers.put(communicator.getAddress(), communicator)) {
             throw new DuplicateReceiverAddressException(communicator.getAddress());
         }
