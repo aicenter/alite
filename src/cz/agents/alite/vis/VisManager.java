@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -144,8 +146,11 @@ public class VisManager {
 		visLayer.paint(Vis.getCanvas());
 	    } catch (ConcurrentModificationException e) {
 	    	Logger.getLogger(VisManager.class.getName()).log(Level.FINEST, "Skipped layer drawing.");
-	    } catch (Exception e) {
-	    	Logger.getLogger(VisManager.class.getName()).log(Level.WARNING, "Vis layer " + visLayer + " has thrown the following exception:\n"+e);
+	    } catch (Exception e) {	    	
+	    	StringWriter sw = new StringWriter();
+	    	e.printStackTrace(new PrintWriter(sw));
+	    	String stacktrace = sw.toString();	    	
+	    	Logger.getLogger(VisManager.class.getName()).log(Level.WARNING, "Vis layer " + visLayer + " has thrown the following exception:\n" + stacktrace);
 	    }
 	}
 	Vis.flip();
