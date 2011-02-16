@@ -14,8 +14,6 @@ import cz.agents.alite.vis.Vis;
 public class GroupLayer extends AbstractLayer implements GroupVisLayer {
 
     private final LinkedList<VisLayer> subLayers = new LinkedList<VisLayer>();
-
-    private List<VisLayer> sublayersToRemove = new LinkedList<VisLayer>();
     
     protected GroupLayer() {
     }
@@ -38,27 +36,16 @@ public class GroupLayer extends AbstractLayer implements GroupVisLayer {
 
     @Override
     public void removeSubLayer(VisLayer layer) {
-//        synchronized (this) {
-//        	subLayers.remove(layer);
-//		}
-    	sublayersToRemove.add(layer);
+        subLayers.remove(layer);
     }
 
     @Override
     public void paint(Graphics2D canvas) {
-    	removeSubLayers();
     	List<VisLayer> toIterateThrough = (List<VisLayer>)subLayers.clone();
 		for (VisLayer layer : toIterateThrough) {
             layer.paint(canvas);
         }
     }
-    
-    private void removeSubLayers() {
-   		for(VisLayer visLayer: sublayersToRemove){
-        	subLayers.remove(visLayer);
-        }
-   		sublayersToRemove.clear();
-	}
 
     @Override
     public String getLayerDescription() {
