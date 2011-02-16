@@ -30,6 +30,8 @@ public class StyledPointLayer extends TerminalLayer {
         int radius = 10;
 
         for(StyledPoint point: pointElements.getPoints()) {
+        	
+        	
             canvas.setColor(point.getColor());
             radius = (int) (point.getWidth() / 2.0);
 
