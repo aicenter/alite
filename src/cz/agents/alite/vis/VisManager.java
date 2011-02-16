@@ -68,6 +68,7 @@ public class VisManager {
 		    try {
 			Thread.sleep(sleepMillis, (int) sleepNanos);
 		    } catch (InterruptedException ex) {
+		    	
 		    }
 		}
 	    }
@@ -143,7 +144,7 @@ public class VisManager {
     private static void update() {
 	for (VisLayer visLayer : layers) {
 	    try {
-		visLayer.paint(Vis.getCanvas());
+	    	visLayer.paint(Vis.getCanvas());
 	    } catch (ConcurrentModificationException e) {
 	    	Logger.getLogger(VisManager.class.getName()).log(Level.FINEST, "Skipped layer drawing.");
 	    } catch (Exception e) {	    	
