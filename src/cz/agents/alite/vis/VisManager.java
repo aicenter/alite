@@ -39,6 +39,7 @@ import cz.agents.alite.vis.layer.VisLayer;
  * 
  * @author Jiri Vokrinek
  * @author Antonin Komenda
+ * @author Ondrej Milenovsky
  */
 public class VisManager {
 
@@ -68,7 +69,7 @@ public class VisManager {
 		    try {
 			Thread.sleep(sleepMillis, (int) sleepNanos);
 		    } catch (InterruptedException ex) {
-		    	
+
 		    }
 		}
 	    }
@@ -127,34 +128,40 @@ public class VisManager {
     }
 
     public static Image renderImage() {
+	// TODO magic numbers, should it be actual window size ?
 	Image image = Vis.getInstance().createImage(1000, 1000);
 	Graphics2D graphics = (Graphics2D) image.getGraphics();
 
 	for (VisLayer visLayer : layers) {
-	    try {
-		visLayer.paint(graphics);
-	    } catch (Exception e) {
-		Logger.getLogger(VisManager.class.getName()).log(Level.SEVERE,
-			"Skipped layer drawing during file save.");
-	    }
+	    drawLayer(visLayer, graphics);
 	}
 	return image;
     }
 
     private static void update() {
+	Graphics2D graphics = Vis.getCanvas();
 	for (VisLayer visLayer : layers) {
-	    try {
-	    	visLayer.paint(Vis.getCanvas());
-	    } catch (ConcurrentModificationException e) {
-	    	Logger.getLogger(VisManager.class.getName()).log(Level.FINEST, "Skipped layer drawing.");
-	    } catch (Exception e) {	    	
-	    	StringWriter sw = new StringWriter();
-	    	e.printStackTrace(new PrintWriter(sw));
-	    	String stacktrace = sw.toString();	    	
-	    	Logger.getLogger(VisManager.class.getName()).log(Level.WARNING, "Vis layer " + visLayer + " has thrown the following exception:\n" + stacktrace);
-	    }
+	    drawLayer(visLayer, graphics);
 	}
 	Vis.flip();
+    }
+
+    private static void drawLayer(VisLayer visLayer, Graphics2D graphics) {
+	try {
+	    visLayer.paint(graphics);
+	} catch (ConcurrentModificationException e) {
+	    Logger.getLogger(VisManager.class.getName()).log(Level.FINEST,
+		    "Skipped layer drawing.");
+	} catch (Exception e) {
+	    StringWriter sw = new StringWriter();
+	    e.printStackTrace(new PrintWriter(sw));
+	    String stacktrace = sw.toString();
+	    Logger.getLogger(VisManager.class.getName()).log(
+		    Level.WARNING,
+		    "Vis layer " + visLayer
+			    + " has thrown the following exception:\n"
+			    + stacktrace);
+	}
     }
 
 }
