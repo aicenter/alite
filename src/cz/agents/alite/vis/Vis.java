@@ -23,19 +23,19 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
 
-
 /**
  * Vis is a singleton holding the visualization window and the drawing canvas.
- *
+ * 
  * Additionally, it also provides panning and zooming functionality for all
- * visual elements drawn using the transformation methods
- * (transX(), transY(), transW(), transH()).
- *
+ * visual elements drawn using the transformation methods (transX(), transY(),
+ * transW(), transH()).
+ * 
  * The Vis singleton do not need to be explicitly initialized. The static calls
- * do the initialization automatically. But also, it can be explicitly initialized
- * with specified window bounds (position and size) by the initWithBounds method.
- *
- *
+ * do the initialization automatically. But also, it can be explicitly
+ * initialized with specified window bounds (position and size) by the
+ * initWithBounds method.
+ * 
+ * 
  * @author Antonin Komneda
  */
 public class Vis extends Canvas {
@@ -71,314 +71,321 @@ public class Vis extends Canvas {
     private Graphics2D graphics;
 
     private Vis() {
-        super();
+	super();
 
-        // canvas
-        setBounds(0, 0, initDimX, initDimY);
+	// canvas
+	setBounds(0, 0, initDimX, initDimY);
 
-        window = new JFrame(initTitle);
+	window = new JFrame(initTitle);
 
-        final JPanel panel = (JPanel) window.getContentPane();
-        panel.setBounds(0, 0, initDimX, initDimY);
-        panel.add(this);
+	final JPanel panel = (JPanel) window.getContentPane();
+	panel.setBounds(0, 0, initDimX, initDimY);
+	panel.add(this);
 
-        window.addWindowListener(new WindowAdapter() {
+	window.addWindowListener(new WindowAdapter() {
 
-            public void windowClosing(WindowEvent evt) {
-                System.exit(0);
-            }
+	    public void windowClosing(WindowEvent evt) {
+		System.exit(0);
+	    }
 
-        });
-        window.addComponentListener(new ComponentListener() {
+	});
+	window.addComponentListener(new ComponentListener() {
 
-            @Override
-            public void componentShown(ComponentEvent e) {
-            }
+	    @Override
+	    public void componentShown(ComponentEvent e) {
+	    }
 
-            @Override
-            public void componentResized(ComponentEvent e) {
-                reinitializeBuffers = true;
-            }
+	    @Override
+	    public void componentResized(ComponentEvent e) {
+		reinitializeBuffers = true;
+	    }
 
-            @Override
-            public void componentMoved(ComponentEvent e) {
-            }
+	    @Override
+	    public void componentMoved(ComponentEvent e) {
+	    }
 
-            @Override
-            public void componentHidden(ComponentEvent e) {
-            }
+	    @Override
+	    public void componentHidden(ComponentEvent e) {
+	    }
 
-        });
+	});
 
-        window.pack();
+	window.pack();
 
-        // listeners
-        addMouseWheelListener(new MouseWheelListener() {
+	// listeners
+	addMouseWheelListener(new MouseWheelListener() {
 
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-                final double zoomStep = 1.1;
+	    @Override
+	    public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+		final double zoomStep = 1.1;
 
-                int rotation = mouseWheelEvent.getWheelRotation() * mouseWheelEvent.getScrollAmount();
-                if (rotation < 0) {
-                    offset.x -= transInvX(mouseWheelEvent.getX()) * SCALE_X * zoomFactor * (zoomStep - 1.0);
-                    offset.y -= transInvY(mouseWheelEvent.getY()) * SCALE_Y * zoomFactor * (zoomStep - 1.0);
+		int rotation = mouseWheelEvent.getWheelRotation()
+			* mouseWheelEvent.getScrollAmount();
+		if (rotation < 0) {
+		    offset.x -= transInvX(mouseWheelEvent.getX()) * SCALE_X
+			    * zoomFactor * (zoomStep - 1.0);
+		    offset.y -= transInvY(mouseWheelEvent.getY()) * SCALE_Y
+			    * zoomFactor * (zoomStep - 1.0);
 
-                    zoomFactor *= zoomStep;
-                } else {
-                    zoomFactor /= zoomStep;
+		    zoomFactor *= zoomStep;
+		} else {
+		    zoomFactor /= zoomStep;
 
-                    offset.x += transInvX(getWidth() / 2) * SCALE_X * zoomFactor * (zoomStep - 1.0);
-                    offset.y += transInvY(getHeight() / 2) * SCALE_Y * zoomFactor * (zoomStep - 1.0);
-                }
+		    offset.x += transInvX(getWidth() / 2) * SCALE_X
+			    * zoomFactor * (zoomStep - 1.0);
+		    offset.y += transInvY(getHeight() / 2) * SCALE_Y
+			    * zoomFactor * (zoomStep - 1.0);
+		}
 
-                limitTransformation();
-            }
+		limitTransformation();
+	    }
 
-        });
-        addMouseListener(new MouseListener() {
+	});
+	addMouseListener(new MouseListener() {
 
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                    panning = false;
-                }
-            }
+	    @Override
+	    public void mouseReleased(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON3) {
+		    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		    panning = false;
+		}
+	    }
 
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    panning = true;
-                }
-            }
+	    @Override
+	    public void mousePressed(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON3) {
+		    setCursor(new Cursor(Cursor.HAND_CURSOR));
+		    panning = true;
+		}
+	    }
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-            }
+	    @Override
+	    public void mouseExited(MouseEvent e) {
+	    }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
+	    @Override
+	    public void mouseEntered(MouseEvent e) {
+	    }
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
+	    @Override
+	    public void mouseClicked(MouseEvent e) {
+	    }
 
-        });
-        addMouseMotionListener(new MouseMotionListener() {
+	});
+	addMouseMotionListener(new MouseMotionListener() {
 
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (panning) {
-                    offset.x -= lastOffset.x - e.getX();
-                    offset.y -= lastOffset.y - e.getY();
+	    @Override
+	    public void mouseDragged(MouseEvent e) {
+		if (panning) {
+		    offset.x -= lastOffset.x - e.getX();
+		    offset.y -= lastOffset.y - e.getY();
 
-                    limitTransformation();
-                }
+		    limitTransformation();
+		}
 
-                lastOffset.x = e.getX();
-                lastOffset.y = e.getY();
-            }
+		lastOffset.x = e.getX();
+		lastOffset.y = e.getY();
+	    }
 
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                lastOffset.x = e.getX();
-                lastOffset.y = e.getY();
-            }
+	    @Override
+	    public void mouseMoved(MouseEvent e) {
+		lastOffset.x = e.getX();
+		lastOffset.y = e.getY();
+	    }
 
-        });
-        addKeyListener(new KeyListener() {
+	});
+	addKeyListener(new KeyListener() {
 
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+	    @Override
+	    public void keyTyped(KeyEvent e) {
+	    }
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
+	    @Override
+	    public void keyReleased(KeyEvent e) {
+	    }
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_HOME) {
-                    offset.x = 0;
-                    offset.y = 0;
-                    zoomFactor = 1;
-                }
-            }
-        });
+	    @Override
+	    public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_HOME) {
+		    offset.x = 0;
+		    offset.y = 0;
+		    zoomFactor = 1;
+		}
+	    }
+	});
 
-        //buffers
-        reinitializeBuffers();
+	// buffers
+	reinitializeBuffers();
     }
 
-    /** sets initial parameters of the window, call this before creating the window */
-    public static void setInitParam(String title, int dimX, int dimY)
-    {
-        initDimX = dimX;
-        initDimY = dimY;
-        initTitle = title;
+    /**
+     * sets initial parameters of the window, call this before creating the
+     * window
+     */
+    public static void setInitParam(String title, int dimX, int dimY) {
+	initDimX = dimX;
+	initDimY = dimY;
+	initTitle = title;
     }
 
     private boolean reinitializeBuffers() {
-        if (reinitializeBuffers) {
-            reinitializeBuffers = false;
+	if (reinitializeBuffers) {
+	    reinitializeBuffers = false;
 
-            createBufferStrategy(2);
-            strategy = getBufferStrategy();
+	    createBufferStrategy(2);
+	    strategy = getBufferStrategy();
 
-            graphics = (Graphics2D) strategy.getDrawGraphics();
-            graphics.setColor(Color.WHITE);
-            graphics.setBackground(Color.BLACK);
+	    graphics = (Graphics2D) strategy.getDrawGraphics();
+	    graphics.setColor(Color.WHITE);
+	    graphics.setBackground(Color.BLACK);
 
-            return true;
-        }
+	    return true;
+	}
 
-        return false;
+	return false;
     }
 
     public static synchronized Vis getInstance() {
-        if (instance == null) {
-            instance = new Vis();
+	if (instance == null) {
+	    instance = new Vis();
 
-            // show window
-            instance.window.setVisible(true);
-            instance.window.requestFocus();
-            instance.requestFocus();
-        }
+	    // show window
+	    instance.window.setVisible(true);
+	    instance.window.requestFocus();
+	    instance.requestFocus();
+	}
 
-        return instance;
+	return instance;
     }
 
     public static Graphics2D getCanvas() {
-        return getInstance().graphics;
+	return getInstance().graphics;
     }
 
     public static void flip() {
-        getInstance().strategy.show();
+	getInstance().strategy.show();
 
-        if (getInstance().reinitializeBuffers()) {
-            limitTransformation();
-        }
+	if (getInstance().reinitializeBuffers()) {
+	    limitTransformation();
+	}
 
-        zoomFactorBack = zoomFactor;
-        offsetBack.set(offset);
+	zoomFactorBack = zoomFactor;
+	offsetBack.set(offset);
     }
 
     public static int transX(double x) {
-        return (int) (offsetBack.x + x * zoomFactorBack * SCALE_X);
+	return (int) (offsetBack.x + x * zoomFactorBack * SCALE_X);
     }
 
     public static int transY(double y) {
-        return (int) (offsetBack.y + y * zoomFactorBack * SCALE_Y);
+	return (int) (offsetBack.y + y * zoomFactorBack * SCALE_Y);
     }
 
     public static int transW(double w) {
-        return (int) (w * zoomFactorBack * SCALE_X);
+	return (int) (w * zoomFactorBack * SCALE_X);
     }
 
     public static int transH(double h) {
-        return (int) (h * zoomFactorBack * SCALE_Y);
+	return (int) (h * zoomFactorBack * SCALE_Y);
     }
 
     public static double transInvX(int x) {
-        return (x - offsetBack.x) / zoomFactorBack / SCALE_X;
+	return (x - offsetBack.x) / zoomFactorBack / SCALE_X;
     }
 
     public static double transInvY(int y) {
-        return (y - offsetBack.y) / zoomFactorBack / SCALE_Y;
+	return (y - offsetBack.y) / zoomFactorBack / SCALE_Y;
     }
 
     public static double transInvW(int w) {
-        return w / zoomFactorBack / SCALE_X;
+	return w / zoomFactorBack / SCALE_X;
     }
 
     public static double transInvH(int h) {
-        return h / zoomFactorBack / SCALE_Y;
+	return h / zoomFactorBack / SCALE_Y;
     }
 
     public static int getWorldDimX() {
-        return (int) (getInstance().getWidth() / SCALE_X);
+	return (int) (getInstance().getWidth() / SCALE_X);
     }
 
     public static int getWorldDimY() {
-        return (int) (getInstance().getHeight() / SCALE_Y);
+	return (int) (getInstance().getHeight() / SCALE_Y);
     }
 
     public static double getZoomFactor() {
-        return zoomFactorBack;
+	return zoomFactorBack;
     }
 
     public static Point2d getOffset() {
-        return offsetBack;
+	return offsetBack;
     }
 
     public static Point2d getCursorPosition() {
-        return lastOffset;
+	return lastOffset;
     }
 
     public static Dimension getDrawingDimension() {
-        return getInstance().window.getContentPane().getSize();
+	return getInstance().window.getContentPane().getSize();
     }
 
     public static void setWindowBounds(Rectangle rect) {
-        getInstance().window.setBounds(rect);
+	getInstance().window.setBounds(rect);
     }
 
     public static void setWindowTitle(String title) {
-        getInstance().window.setTitle(title);
+	getInstance().window.setTitle(title);
     }
 
     public static void initWithBounds(Rectangle rect) {
-        if (instance == null) {
-            instance = new Vis();
+	if (instance == null) {
+	    instance = new Vis();
 
-            // show window
-            getInstance().window.setBounds(rect);
-            instance.window.setVisible(true);
-            instance.requestFocus();
-        }
+	    // show window
+	    getInstance().window.setBounds(rect);
+	    instance.window.setVisible(true);
+	    instance.requestFocus();
+	}
     }
 
     private static double transInvXCurrent(int x) {
-        return (x - offset.x) / zoomFactor;
+	return (x - offset.x) / zoomFactor;
     }
 
     private static double transInvYCurrent(int y) {
-        return (y - offset.y) / zoomFactor;
+	return (y - offset.y) / zoomFactor;
     }
 
     private static int transSCurrent(int s) {
-        return (int) (s * zoomFactor);
+	return (int) (s * zoomFactor);
     }
 
     private static void limitTransformation() {
-        int windowWidth = getInstance().window.getContentPane().getWidth();
-        int windowHeight = getInstance().window.getContentPane().getHeight();
+	int windowWidth = getInstance().window.getContentPane().getWidth();
+	int windowHeight = getInstance().window.getContentPane().getHeight();
 
-        if (windowWidth > windowHeight) {
-            if (zoomFactor < (double) windowWidth / DIM_X) {
-                zoomFactor = (double) windowWidth / DIM_X;
-            }
-        } else {
-            if (zoomFactor < (double) windowHeight / DIM_Y) {
-                zoomFactor = (double) windowHeight / DIM_Y;
-            }
-        }
+	if (windowWidth > windowHeight) {
+	    if (zoomFactor < (double) windowWidth / DIM_X) {
+		zoomFactor = (double) windowWidth / DIM_X;
+	    }
+	} else {
+	    if (zoomFactor < (double) windowHeight / DIM_Y) {
+		zoomFactor = (double) windowHeight / DIM_Y;
+	    }
+	}
 
-        if (offset.x > 0) {
-            offset.x = 0;
-        }
-        if (offset.y > 0) {
-            offset.y = 0;
-        }
-        if (transInvXCurrent(windowWidth) > DIM_X) {
-            offset.x = -transSCurrent(DIM_X) + windowWidth;
-        }
-        if (transInvYCurrent(windowHeight) > DIM_Y) {
-            offset.y = -transSCurrent(DIM_Y) + windowHeight;
-        }
+	if (offset.x > 0) {
+	    offset.x = 0;
+	}
+	if (offset.y > 0) {
+	    offset.y = 0;
+	}
+	if (transInvXCurrent(windowWidth) > DIM_X) {
+	    offset.x = -transSCurrent(DIM_X) + windowWidth;
+	}
+	if (transInvYCurrent(windowHeight) > DIM_Y) {
+	    offset.y = -transSCurrent(DIM_Y) + windowHeight;
+	}
     }
 
 }

@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -37,6 +38,7 @@ import cz.agents.alite.vis.layer.VisLayer;
  * 
  * @author Jiri Vokrinek
  * @author Antonin Komenda
+ * @author Ondrej Milenovsky
  */
 public class VisManager {
 
@@ -45,6 +47,8 @@ public class VisManager {
 
     private static final List<VisLayer> layers = new CopyOnWriteArrayList<VisLayer>();
     private static VisManager instance = null;
+
+    private static boolean printingErrors = false;
 
     private VisManager() {
 	new Thread(new Runnable() {
@@ -78,6 +82,10 @@ public class VisManager {
      */
     public static void setInitParam(String title, int dimX, int dimY) {
 	Vis.setInitParam(title, dimX, dimY);
+    }
+
+    public static void setPrintingErrors(boolean printingErrors) {
+	VisManager.printingErrors = printingErrors;
     }
 
     public static synchronized void init() {
@@ -124,31 +132,46 @@ public class VisManager {
     }
 
     public static Image renderImage() {
+	// TODO magic numbers, should it be actual window size ?
 	Image image = Vis.getInstance().createImage(1000, 1000);
 	Graphics2D graphics = (Graphics2D) image.getGraphics();
 
 	for (VisLayer visLayer : layers) {
-	    try {
-		visLayer.paint(graphics);
-	    } catch (Exception e) {
-		Logger.getLogger(VisManager.class.getName()).log(Level.SEVERE,
-			"Skipped layer drawing during file save.");
-	    }
+	    drawLayerNow(visLayer, graphics);
 	}
 	return image;
     }
 
     private static void update() {
+	Graphics2D graphics = Vis.getCanvas();
 	for (VisLayer visLayer : layers) {
-	    try {
-		visLayer.paint(Vis.getCanvas());
-	    } catch (ConcurrentModificationException e) {
-	    	Logger.getLogger(VisManager.class.getName()).log(Level.FINEST, "Skipped layer drawing.");
-	    } catch (Exception e) {
-	    	Logger.getLogger(VisManager.class.getName()).log(Level.WARNING, "Vis layer " + visLayer + " has thrown the following exception:\n"+e);
-	    }
+	    drawLayerNow(visLayer, graphics);
 	}
 	Vis.flip();
+    }
+
+    private static void drawLayerNow(VisLayer visLayer, Graphics2D graphics) {
+	try {
+	    visLayer.paint(graphics);
+	} catch (ConcurrentModificationException e) {
+	    String text = "Skipped layer drawing.";
+	    Logger.getLogger(VisManager.class.getName())
+		    .log(Level.FINEST, text);
+	    printError(text);
+	} catch (Exception e) {
+	    String text = "Vis layer " + visLayer.getLayerDescription()
+		    + " has thrown the following exception:\n"
+		    + Arrays.toString(e.getStackTrace());
+	    Logger.getLogger(VisManager.class.getName()).log(Level.WARNING,
+		    text);
+	    printError(text);
+	}
+    }
+
+    private static void printError(String text) {
+	if (printingErrors) {
+	    System.err.println(text);
+	}
     }
 
 }

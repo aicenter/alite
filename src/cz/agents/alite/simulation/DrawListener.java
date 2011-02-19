@@ -1,14 +1,16 @@
 package cz.agents.alite.simulation;
 
 /**
- * This interface is used for Simulation. Add this listener, then call requestDraw().
+ * Interface for all synchronized drawing objects in simulation.
  * 
  * @author Ondrej Milenovsky
  * */
 public interface DrawListener {
     /**
-     * method called in new thread, limited by timeout, then the simulation
-     * starts and any reading of shared object can cause errors
+     * Method called in new thread, limited by deadline. After the deatline the simulation
+     * starts and any reading of shared object can cause errors.
+     * 
+     * @return true if drawed everything in until deadline or not known
      */
-    public void drawFrame(long timeOut);
+    public boolean drawFrame(long deadline);
 }
