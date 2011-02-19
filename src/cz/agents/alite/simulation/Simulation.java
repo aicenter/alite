@@ -29,7 +29,7 @@ public class Simulation extends EventProcessor {
     private boolean drawFrame = false;
     private DrawListener drawListener;
     private long timeout = 1000;
-    private long tout;
+    private long deadline;
 
     public void run() {
 	runTime = System.currentTimeMillis();
@@ -54,9 +54,13 @@ public class Simulation extends EventProcessor {
 	drawListener = listener;
     }
 
+    public DrawListener getDrawListener() {
+	return drawListener;
+    }
+
     /**
-     * request drawing frame, if not running, draw now with no timeout and return true,
-     * immediate simulation start can cause problems
+     * request drawing frame, if not running, draw now with no timeout and
+     * return true, immediate simulation start can cause problems
      */
     public boolean requestDraw() {
 	if (!isRunning()) {
@@ -109,21 +113,19 @@ public class Simulation extends EventProcessor {
 	if (drawFrame && (drawListener != null)) {
 	    drawFrame = false;
 	    long actualTime = System.currentTimeMillis();
-	    tout = timeout;
-	    if (tout == 0) {
-		tout = timeToSleep;
-	    }
+	    deadline = System.currentTimeMillis()
+		    + Math.max(timeToSleep, timeout);
 	    // start drawing thread
 	    Thread thread2 = new Thread(new Runnable() {
 		@Override
 		public void run() {
-		    drawListener.drawFrame(tout);
+		    drawListener.drawFrame(deadline);
 		}
 	    });
 	    thread2.start();
 	    // wait
 	    try {
-		thread2.join(tout);
+		thread2.join(deadline - System.currentTimeMillis());
 	    } catch (InterruptedException e) {
 		Logger.getLogger(EventProcessor.class.getName()).log(
 			Level.INFO, null, e);
