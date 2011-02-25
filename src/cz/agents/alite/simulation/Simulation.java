@@ -125,7 +125,8 @@ public class Simulation extends EventProcessor {
 	    thread2.start();
 	    // wait
 	    try {
-		thread2.join(deadline - System.currentTimeMillis());
+		long time = Math.max(deadline - System.currentTimeMillis(), 1);
+		thread2.join(time);
 	    } catch (InterruptedException e) {
 		Logger.getLogger(EventProcessor.class.getName()).log(
 			Level.INFO, null, e);

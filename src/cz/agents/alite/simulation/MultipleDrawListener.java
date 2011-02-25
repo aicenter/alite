@@ -19,12 +19,18 @@ public class MultipleDrawListener implements DrawListener {
 
     private final List<DrawListener> listeners;
     private final Simulation simulation;
+    private final String name;
 
     /** create and set pointer to simulation, also set to simulation */
-    public MultipleDrawListener(Simulation sim) {
+    public MultipleDrawListener(Simulation sim, String name) {
 	listeners = new LinkedList<DrawListener>();
 	simulation = sim;
 	simulation.setDrawListener(this);
+	this.name = name;
+    }
+
+    public MultipleDrawListener(Simulation sim) {
+	this(sim, "Multiple draw listener");
     }
 
     /**
@@ -81,7 +87,8 @@ public class MultipleDrawListener implements DrawListener {
 	    }
 	    // check timeout
 	    if (System.currentTimeMillis() >= deadline) {
-		String text = "Drawing frame exceeted timeout. "
+		String text = listener.getName()
+			+ ": Drawing frame exceeted timeout. "
 			+ "Each implementation of DrawListener must not exceet the timeout! "
 			+ "Exceeted " + (System.currentTimeMillis() - deadline)
 			+ "ms";
@@ -92,6 +99,11 @@ public class MultipleDrawListener implements DrawListener {
 	    }
 	}
 	return true;
+    }
+
+    @Override
+    public String getName() {
+	return name;
     }
 
 }
