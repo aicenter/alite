@@ -13,4 +13,6 @@ public interface DrawListener {
      * @return true if drawed everything in until deadline or not known
      */
     public boolean drawFrame(long deadline);
+    
+    public String getName();
 }
