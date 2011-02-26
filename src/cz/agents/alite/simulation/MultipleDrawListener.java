@@ -35,11 +35,12 @@ public class MultipleDrawListener implements DrawListener {
 
     /**
      * create and set pointer to simulation, also set to simulation, sets
-     * timeout to simulation
+     * timeout and reload to simulation
      */
-    public MultipleDrawListener(Simulation sim, int timeout) {
+    public MultipleDrawListener(Simulation sim, long timeout, long reload) {
 	this(sim);
 	simulation.setDrawTimeout(timeout);
+	simulation.setDrawReload(reload);
     }
 
     /**

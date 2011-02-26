@@ -26,10 +26,17 @@ public class Simulation extends EventProcessor {
     private long runTime;
     private int printouts = 10000;
 
+    /** drawing frame requested */
     private boolean drawFrame = false;
     private DrawListener drawListener;
-    private long timeout = 1000;
-    private long deadline;
+    /** timeout for draw listener */
+    private long drawTimeout = 1000;
+    /** min delay between drawings */
+    private long drawReload = 40;
+    /** last time drawed */
+    private long lastDrawed = 0;
+    /** this is not used as class variable but it must be */
+    private long drawDeadline;
 
     public void run() {
 	runTime = System.currentTimeMillis();
@@ -59,7 +66,7 @@ public class Simulation extends EventProcessor {
     }
 
     /**
-     * request drawing frame, if not running, draw now with no timeout and
+     * request drawing frame, if not running, draws now with inf deadline and
      * return true, immediate simulation start can cause problems
      */
     public boolean requestDraw() {
@@ -73,14 +80,24 @@ public class Simulation extends EventProcessor {
     }
 
     /**
-     * sets draw timeout, 0 means delay betveen events caused by simulaiton
-     * speed
+     * sets draw timeout, 0 means timeout is given by simulaiton speed
      */
     public void setDrawTimeout(long timeout) {
 	if (timeout < 0) {
-	    throw new IllegalArgumentException("Timeout must >= 0");
+	    throw new IllegalArgumentException("Timeout must be >= 0");
 	}
-	this.timeout = timeout;
+	this.drawTimeout = timeout;
+    }
+
+    /**
+     * sets min interval between drawings, time for simulation to reload for new
+     * drawing
+     */
+    public void setDrawReload(long drawReload) {
+	if (drawReload < 0) {
+	    throw new IllegalArgumentException("Reload time must be >= 0");
+	}
+	this.drawReload = drawReload;
     }
 
     public void setSimulationSpeed(final double simulationSpeed) {
@@ -110,29 +127,9 @@ public class Simulation extends EventProcessor {
 
 	long timeToSleep = (long) ((event.getTime() - getCurrentTime()) * simulationSpeed);
 	// draws frame for vis
-	if (drawFrame && (drawListener != null)) {
-	    drawFrame = false;
-	    long actualTime = System.currentTimeMillis();
-	    deadline = System.currentTimeMillis()
-		    + Math.max(timeToSleep, timeout);
-	    // start drawing thread
-	    Thread thread2 = new Thread(new Runnable() {
-		@Override
-		public void run() {
-		    drawListener.drawFrame(deadline);
-		}
-	    });
-	    thread2.start();
-	    // wait
-	    try {
-		long time = Math.max(deadline - System.currentTimeMillis(), 1);
-		thread2.join(time);
-	    } catch (InterruptedException e) {
-		Logger.getLogger(EventProcessor.class.getName()).log(
-			Level.INFO, null, e);
-	    }
-	    // recompute event delay
-	    timeToSleep -= System.currentTimeMillis() - actualTime;
+	if (drawFrame && (drawListener != null)
+		&& (System.currentTimeMillis() > lastDrawed + drawReload)) {
+	    timeToSleep = drawFrame(timeToSleep);
 	}
 
 	if ((simulationSpeed > 0) && (timeToSleep > 0)) {
@@ -144,4 +141,31 @@ public class Simulation extends EventProcessor {
 	    }
 	}
     }
+
+    private long drawFrame(long timeToSleep) {
+	drawFrame = false;
+	long startTime = System.currentTimeMillis();
+	drawDeadline = System.currentTimeMillis()
+		+ Math.max(timeToSleep, drawTimeout);
+	// start drawing thread
+	Thread thread2 = new Thread(new Runnable() {
+	    @Override
+	    public void run() {
+		drawListener.drawFrame(drawDeadline);
+	    }
+	});
+	thread2.start();
+	// wait
+	try {
+	    long time = Math.max(drawDeadline - System.currentTimeMillis(), 1);
+	    thread2.join(time);
+	} catch (InterruptedException e) {
+	    Logger.getLogger(EventProcessor.class.getName()).log(Level.INFO,
+		    null, e);
+	}
+	lastDrawed = System.currentTimeMillis();
+	// recompute event delay
+	return timeToSleep + startTime - System.currentTimeMillis();
+    }
+
 }
