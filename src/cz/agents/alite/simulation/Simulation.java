@@ -37,6 +37,8 @@ public class Simulation extends EventProcessor {
     private long lastDrawed = 0;
     /** this is not used as class variable but it must be */
     private long drawDeadline;
+    /** draw when not running */
+    private boolean drawNotRunning = false;
 
     public void run() {
 	runTime = System.currentTimeMillis();
@@ -65,12 +67,17 @@ public class Simulation extends EventProcessor {
 	return drawListener;
     }
 
+    /** if simulation not running, draw or not ? */
+    public void setDrawNotRunning(boolean drawNotRunning) {
+	this.drawNotRunning = drawNotRunning;
+    }
+
     /**
      * request drawing frame, if not running, draws now with inf deadline and
      * return true, immediate simulation start can cause problems
      */
     public boolean requestDraw() {
-	if (!isRunning()) {
+	if (!isRunning() && drawNotRunning) {
 	    drawListener.drawFrame(Long.MAX_VALUE);
 	    return true;
 	} else {
