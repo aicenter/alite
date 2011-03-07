@@ -44,7 +44,7 @@ public class MultipleDrawListener implements DrawListener {
     }
 
     /**
-     * adds listener, if simulation not running and return true and draw now, if
+     * adds listener, if simulation not running and return true and not draw it, if
      * running, waits and returns false
      */
     public synchronized boolean addListener(DrawListener listener) {
