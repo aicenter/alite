@@ -44,17 +44,17 @@ public class MultipleDrawListener implements DrawListener {
     }
 
     /**
-     * adds listener, if simulation not running and return true and not draw it, if
-     * running, waits and returns false
+     * if simulation running adds it to queue and returns true, else only
+     * returns false
      */
-    public synchronized boolean addListener(DrawListener listener) {
-	if (!simulation.requestDraw()) {
+    public synchronized boolean requestDraw(DrawListener listener) {
+	if (simulation.requestDraw()) {
 	    if (!listeners.contains(listener)) {
 		listeners.add(listener);
 	    }
-	    return false;
+	    return true;
 	}
-	return true;
+	return false;
     }
 
     public synchronized boolean removeListener(DrawListener listener) {

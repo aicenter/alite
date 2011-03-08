@@ -66,15 +66,15 @@ public class Simulation extends EventProcessor {
     }
 
     /**
-     * request drawing frame, if not running, returns true but not draws it ! if
+     * request drawing frame, if not running, returns false and not draws it ! if
      * running, draws after some time
      */
     public boolean requestDraw() {
 	if (!isRunning()) {
-	    return true;
+	    return false;
 	} else {
 	    drawFrame = true;
-	    return false;
+	    return true;
 	}
     }
 
