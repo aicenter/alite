@@ -3,11 +3,10 @@ package cz.agents.alite.vis.layer.common;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import cz.agents.alite.vis.layer.AbstractLayer;
 import cz.agents.alite.vis.layer.VisLayer;
 import cz.agents.alite.vis.layer.toggle.KeyToggleLayer;
 
-public class FpsLayer extends AbstractLayer {
+public class FpsLayer extends CommonLayer {
 
     private int fps;
     private int fpsCount = 0;

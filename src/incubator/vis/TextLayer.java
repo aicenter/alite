@@ -10,8 +10,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
 import javax.vecmath.Point3d;
+import cz.agents.alite.vis.layer.common.CommonLayer;
 
-public class TextLayer extends AbstractLayer {
+public class TextLayer extends CommonLayer {
 
     public static final char SPACING_CHARACTER = 'H';
     private final TextInfoBox texts;

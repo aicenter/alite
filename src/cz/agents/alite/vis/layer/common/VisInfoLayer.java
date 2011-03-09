@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 
 import cz.agents.alite.vis.Vis;
-import cz.agents.alite.vis.layer.AbstractLayer;
 import cz.agents.alite.vis.layer.VisLayer;
 import cz.agents.alite.vis.layer.toggle.KeyToggleLayer;
 
@@ -15,7 +14,7 @@ import cz.agents.alite.vis.layer.toggle.KeyToggleLayer;
  * @author Antonin Komenda
  *
  */
-public class VisInfoLayer extends AbstractLayer {
+public class VisInfoLayer extends CommonLayer {
 
     protected VisInfoLayer() {
     }
