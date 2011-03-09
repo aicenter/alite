@@ -35,5 +35,4 @@ public abstract class MaxFPSRealTimeSampler implements Sampler {
     }
 
     protected abstract void sample();
-
 }
