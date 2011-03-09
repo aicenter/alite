@@ -22,6 +22,7 @@ public class TestCreator implements Creator {
 
     private static final int DELAY = 100;
     private ExampleEnvironment exampleEnvironment;
+    private Vis2DOutput vis2d;
 
     @Override
     public void init(String[] args) {
@@ -39,6 +40,7 @@ public class TestCreator implements Creator {
     }
 
     private void createAndRunVis() {
+	vis2d = new Vis2DOutput();
 	// layers
 	final RootProxyLayer rootProxyLayer = new RootProxyLayer();
 	// using the PersonLayer (similarly to the old vis) create a
@@ -58,8 +60,7 @@ public class TestCreator implements Creator {
 	final RootPainter rootPainter = new RootPainter();
 	// create a Painter drawing the visual elements (Points) using the
 	// Vis2DOutput (2D output based on old Vis class)
-	rootPainter
-		.addPainter(new PointPainterVis2D(Vis2DOutput.getInstance()));
+	rootPainter.addPainter(new PointPainterVis2D(vis2d));
 	// create a Painter drawing the visual elements (Points) using sysout
 	// (for demonstarion of multi-output use)
 	// TODO: generalize the painter to string painter (it can be used as
@@ -75,7 +76,7 @@ public class TestCreator implements Creator {
 	    protected void sample() {
 		// TODO: should be BackgroundProxyLayer with Vis2D painter and
 		// probably even sysout painter
-		Graphics graphics = Vis2DOutput.getInstance().getGraphics2D();
+		Graphics graphics = vis2d.getGraphics2D();
 		graphics.setColor(Color.WHITE);
 		graphics.fillRect(0, 0, 1000, 1000);
 
@@ -91,7 +92,7 @@ public class TestCreator implements Creator {
 		// asynchronous, network, ...)
 
 		// TODO: should be done probably by painter
-		Vis2DOutput.flip();
+		vis2d.flip();
 	    }
 
 	};
