@@ -23,32 +23,25 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
 
-// TODO: rewrite into regular instance (not singleton)
 public class Vis2DOutput extends Canvas {
 
-    private static final long serialVersionUID = 1093434407555503398L;
+    private static final long serialVersionUID = -4597445627896905949L;
 
-    // TODO: refactor - create configuration object for the Output and add it as a parameter in constructor
-    public static final int DIM_X = 900;
-    public static final int DIM_Y = 900;
+    private static final int MAGIC_NUMBER = 900;
 
-    private static String initTitle = "ALite Operator";
-    private static int initDimX = DIM_X;
-    private static int initDimY = DIM_Y;
+    // TODO: refactor - create pluggable transformations and create scale as one
+    // of the transformation pluggins
+    private final double SCALE_X = 900 / 1500.0;
+    private final double SCALE_Y = 900 / 1500.0;
 
-    // TODO: refactor - create pluggable transformations and create scale as one of the transformation pluggins
-    private static final double SCALE_X = DIM_X / 1500.0;
-    private static final double SCALE_Y = DIM_Y / 1500.0;
-
-    private static Vis2DOutput instance = null;
-
-    // TODO: refactor - create pluggable transformations and create zoom and pan as one of the transformation pluggins
-    private static double zoomFactor = 1.0;
-    private static final Point2d offset = new Point2d(0, 0);
-    private static final Point2d lastOffset = new Point2d(0, 0);
-    private static boolean panning = false;
-    private static double zoomFactorBack = 1.0;
-    private static final Point2d offsetBack = new Point2d(0, 0);
+    // TODO: refactor - create pluggable transformations and create zoom and pan
+    // as one of the transformation pluggins
+    private double zoomFactor;
+    private final Point2d offset;
+    private final Point2d lastOffset;
+    private boolean panning = false;
+    private double zoomFactorBack = 1.0;
+    private final Point2d offsetBack = new Point2d(0, 0);
 
     private JFrame window;
 
@@ -56,327 +49,305 @@ public class Vis2DOutput extends Canvas {
     private BufferStrategy strategy;
     private Graphics2D graphics;
 
-    private Vis2DOutput() {
-        super();
-
-        // canvas
-        setBounds(0, 0, initDimX, initDimY);
-
-        window = new JFrame(initTitle);
-
-        final JPanel panel = (JPanel) window.getContentPane();
-        panel.setBounds(0, 0, initDimX, initDimY);
-        panel.add(this);
-
-        window.addWindowListener(new WindowAdapter() {
-
-            public void windowClosing(WindowEvent evt) {
-                System.exit(0);
-            }
-
-        });
-        window.addComponentListener(new ComponentListener() {
-
-            @Override
-            public void componentShown(ComponentEvent e) {
-            }
-
-            @Override
-            public void componentResized(ComponentEvent e) {
-                reinitializeBuffers = true;
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent e) {
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent e) {
-            }
-
-        });
-
-        window.pack();
-
-        // listeners
-        addMouseWheelListener(new MouseWheelListener() {
-
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-                final double zoomStep = 1.1;
-
-                int rotation = mouseWheelEvent.getWheelRotation()
-                        * mouseWheelEvent.getScrollAmount();
-                if (rotation < 0) {
-                    offset.x -= transInvX(mouseWheelEvent.getX()) * SCALE_X
-                            * zoomFactor * (zoomStep - 1.0);
-                    offset.y -= transInvY(mouseWheelEvent.getY()) * SCALE_Y
-                            * zoomFactor * (zoomStep - 1.0);
-
-                    zoomFactor *= zoomStep;
-                } else {
-                    zoomFactor /= zoomStep;
-
-                    offset.x += transInvX(getWidth() / 2) * SCALE_X
-                            * zoomFactor * (zoomStep - 1.0);
-                    offset.y += transInvY(getHeight() / 2) * SCALE_Y
-                            * zoomFactor * (zoomStep - 1.0);
-                }
-
-                limitTransformation();
-            }
-
-        });
-        addMouseListener(new MouseListener() {
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-                    panning = false;
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    setCursor(new Cursor(Cursor.HAND_CURSOR));
-                    panning = true;
-                }
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-            }
-
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            }
-
-        });
-        addMouseMotionListener(new MouseMotionListener() {
-
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (panning) {
-                    offset.x -= lastOffset.x - e.getX();
-                    offset.y -= lastOffset.y - e.getY();
-
-                    limitTransformation();
-                }
-
-                lastOffset.x = e.getX();
-                lastOffset.y = e.getY();
-            }
-
-            @Override
-            public void mouseMoved(MouseEvent e) {
-                lastOffset.x = e.getX();
-                lastOffset.y = e.getY();
-            }
-
-        });
-        addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_HOME) {
-                    offset.x = 0;
-                    offset.y = 0;
-                    zoomFactor = 1;
-                }
-            }
-        });
-
-        // buffers
-        reinitializeBuffers();
+    public Vis2DOutput() {
+	this(new Vis2DParams());
     }
 
-    /**
-     * sets initial parameters of the window, call this before creating the
-     * window
-     */
-    public static void setInitParam(String title, int dimX, int dimY) {
-        initDimX = dimX;
-        initDimY = dimY;
-        initTitle = title;
+    public Vis2DOutput(Vis2DParams params) {
+	super();
+
+	// canvas
+	setBounds(0, 0, params.size.width, params.size.height);
+
+	window = new JFrame(params.title);
+	zoomFactor = params.zoomFactor;
+	offset = new Point2d(params.offset);
+	lastOffset = new Point2d(params.offset);
+
+	final JPanel panel = (JPanel) window.getContentPane();
+	panel.setBounds(0, 0, params.size.width, params.size.height);
+	panel.add(this);
+
+	window.addWindowListener(new WindowAdapter() {
+
+	    public void windowClosing(WindowEvent evt) {
+		System.exit(0);
+	    }
+
+	});
+	window.addComponentListener(new ComponentListener() {
+
+	    @Override
+	    public void componentShown(ComponentEvent e) {
+	    }
+
+	    @Override
+	    public void componentResized(ComponentEvent e) {
+		reinitializeBuffers = true;
+	    }
+
+	    @Override
+	    public void componentMoved(ComponentEvent e) {
+	    }
+
+	    @Override
+	    public void componentHidden(ComponentEvent e) {
+	    }
+
+	});
+
+	window.pack();
+
+	// listeners
+	addMouseWheelListener(new MouseWheelListener() {
+
+	    @Override
+	    public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
+		final double zoomStep = 1.1;
+
+		int rotation = mouseWheelEvent.getWheelRotation()
+			* mouseWheelEvent.getScrollAmount();
+		if (rotation < 0) {
+		    offset.x -= transInvX(mouseWheelEvent.getX()) * SCALE_X
+			    * zoomFactor * (zoomStep - 1.0);
+		    offset.y -= transInvY(mouseWheelEvent.getY()) * SCALE_Y
+			    * zoomFactor * (zoomStep - 1.0);
+
+		    zoomFactor *= zoomStep;
+		} else {
+		    zoomFactor /= zoomStep;
+
+		    offset.x += transInvX(getWidth() / 2) * SCALE_X
+			    * zoomFactor * (zoomStep - 1.0);
+		    offset.y += transInvY(getHeight() / 2) * SCALE_Y
+			    * zoomFactor * (zoomStep - 1.0);
+		}
+
+		limitTransformation();
+	    }
+
+	});
+	addMouseListener(new MouseListener() {
+
+	    @Override
+	    public void mouseReleased(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON3) {
+		    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		    panning = false;
+		}
+	    }
+
+	    @Override
+	    public void mousePressed(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON3) {
+		    setCursor(new Cursor(Cursor.HAND_CURSOR));
+		    panning = true;
+		}
+	    }
+
+	    @Override
+	    public void mouseExited(MouseEvent e) {
+	    }
+
+	    @Override
+	    public void mouseEntered(MouseEvent e) {
+	    }
+
+	    @Override
+	    public void mouseClicked(MouseEvent e) {
+	    }
+
+	});
+	addMouseMotionListener(new MouseMotionListener() {
+
+	    @Override
+	    public void mouseDragged(MouseEvent e) {
+		if (panning) {
+		    offset.x -= lastOffset.x - e.getX();
+		    offset.y -= lastOffset.y - e.getY();
+
+		    limitTransformation();
+		}
+
+		lastOffset.x = e.getX();
+		lastOffset.y = e.getY();
+	    }
+
+	    @Override
+	    public void mouseMoved(MouseEvent e) {
+		lastOffset.x = e.getX();
+		lastOffset.y = e.getY();
+	    }
+
+	});
+	addKeyListener(new KeyListener() {
+
+	    @Override
+	    public void keyTyped(KeyEvent e) {
+	    }
+
+	    @Override
+	    public void keyReleased(KeyEvent e) {
+	    }
+
+	    @Override
+	    public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_HOME) {
+		    offset.x = 0;
+		    offset.y = 0;
+		    zoomFactor = 1;
+		}
+	    }
+	});
+
+	// buffers
+	reinitializeBuffers();
+
+	window.setVisible(true);
     }
 
     public Graphics2D getGraphics2D() {
-        return graphics;
+	return graphics;
     }
 
     private boolean reinitializeBuffers() {
-        if (reinitializeBuffers) {
-            reinitializeBuffers = false;
+	if (reinitializeBuffers) {
+	    reinitializeBuffers = false;
 
-            createBufferStrategy(2);
-            strategy = getBufferStrategy();
+	    createBufferStrategy(2);
+	    strategy = getBufferStrategy();
 
-            graphics = (Graphics2D) strategy.getDrawGraphics();
-            graphics.setColor(Color.WHITE);
-            graphics.setBackground(Color.BLACK);
+	    graphics = (Graphics2D) strategy.getDrawGraphics();
+	    graphics.setColor(Color.WHITE);
+	    graphics.setBackground(Color.BLACK);
 
-            return true;
-        }
+	    return true;
+	}
 
-        return false;
+	return false;
     }
 
-    public static synchronized Vis2DOutput getInstance() {
-        if (instance == null) {
-            instance = new Vis2DOutput();
+    public void flip() {
+	strategy.show();
 
-            // show window
-            instance.window.setVisible(true);
-            instance.window.requestFocus();
-            instance.requestFocus();
-        }
+	if (reinitializeBuffers()) {
+	    limitTransformation();
+	}
 
-        return instance;
+	zoomFactorBack = zoomFactor;
+	offsetBack.set(offset);
     }
 
-    // TODO: remove
-    public static Graphics2D getCanvas() {
-        return getInstance().graphics;
+    public int transX(double x) {
+	return (int) (offsetBack.x + x * zoomFactorBack * SCALE_X);
     }
 
-    public static void flip() {
-        getInstance().strategy.show();
-
-        if (getInstance().reinitializeBuffers()) {
-            limitTransformation();
-        }
-
-        zoomFactorBack = zoomFactor;
-        offsetBack.set(offset);
+    public int transY(double y) {
+	return (int) (offsetBack.y + y * zoomFactorBack * SCALE_Y);
     }
 
-    public static int transX(double x) {
-        return (int) (offsetBack.x + x * zoomFactorBack * SCALE_X);
+    public int transW(double w) {
+	return (int) (w * zoomFactorBack * SCALE_X);
     }
 
-    public static int transY(double y) {
-        return (int) (offsetBack.y + y * zoomFactorBack * SCALE_Y);
+    public int transH(double h) {
+	return (int) (h * zoomFactorBack * SCALE_Y);
     }
 
-    public static int transW(double w) {
-        return (int) (w * zoomFactorBack * SCALE_X);
+    public double transInvX(int x) {
+	return (x - offsetBack.x) / zoomFactorBack / SCALE_X;
     }
 
-    public static int transH(double h) {
-        return (int) (h * zoomFactorBack * SCALE_Y);
+    public double transInvY(int y) {
+	return (y - offsetBack.y) / zoomFactorBack / SCALE_Y;
     }
 
-    public static double transInvX(int x) {
-        return (x - offsetBack.x) / zoomFactorBack / SCALE_X;
+    public double transInvW(int w) {
+	return w / zoomFactorBack / SCALE_X;
     }
 
-    public static double transInvY(int y) {
-        return (y - offsetBack.y) / zoomFactorBack / SCALE_Y;
+    public double transInvH(int h) {
+	return h / zoomFactorBack / SCALE_Y;
     }
 
-    public static double transInvW(int w) {
-        return w / zoomFactorBack / SCALE_X;
+    public int getWorldDimX() {
+	return (int) (getWidth() / SCALE_X);
     }
 
-    public static double transInvH(int h) {
-        return h / zoomFactorBack / SCALE_Y;
+    public int getWorldDimY() {
+	return (int) (getHeight() / SCALE_Y);
     }
 
-    public static int getWorldDimX() {
-        return (int) (getInstance().getWidth() / SCALE_X);
+    public double getZoomFactor() {
+	return zoomFactorBack;
     }
 
-    public static int getWorldDimY() {
-        return (int) (getInstance().getHeight() / SCALE_Y);
+    public Point2d getOffset() {
+	return offsetBack;
     }
 
-    public static double getZoomFactor() {
-        return zoomFactorBack;
+    public Point2d getCursorPosition() {
+	return lastOffset;
     }
 
-    public static Point2d getOffset() {
-        return offsetBack;
+    public Dimension getDrawingDimension() {
+	return window.getContentPane().getSize();
     }
 
-    public static Point2d getCursorPosition() {
-        return lastOffset;
+    public void setWindowBounds(Rectangle rect) {
+	window.setBounds(rect);
     }
 
-    public static Dimension getDrawingDimension() {
-        return getInstance().window.getContentPane().getSize();
+    public void setWindowTitle(String title) {
+	window.setTitle(title);
     }
 
-    public static void setWindowBounds(Rectangle rect) {
-        getInstance().window.setBounds(rect);
+    private double transInvXCurrent(int x) {
+	return (x - offset.x) / zoomFactor;
     }
 
-    public static void setWindowTitle(String title) {
-        getInstance().window.setTitle(title);
+    private double transInvYCurrent(int y) {
+	return (y - offset.y) / zoomFactor;
     }
 
-    public static void initWithBounds(Rectangle rect) {
-        if (instance == null) {
-            instance = new Vis2DOutput();
-
-            // show window
-            getInstance().window.setBounds(rect);
-            instance.window.setVisible(true);
-            instance.requestFocus();
-        }
+    private int transSCurrent(int s) {
+	return (int) (s * zoomFactor);
     }
 
-    private static double transInvXCurrent(int x) {
-        return (x - offset.x) / zoomFactor;
+    private void limitTransformation() {
+	int windowWidth = getWidth();
+	int windowHeight = getHeight();
+
+	if (windowWidth > windowHeight) {
+	    if (zoomFactor < (double) windowWidth / MAGIC_NUMBER) {
+		zoomFactor = (double) windowWidth / MAGIC_NUMBER;
+	    }
+	} else {
+	    if (zoomFactor < (double) windowHeight / MAGIC_NUMBER) {
+		zoomFactor = (double) windowHeight / MAGIC_NUMBER;
+	    }
+	}
+
+	if (offset.x > 0) {
+	    offset.x = 0;
+	}
+	if (offset.y > 0) {
+	    offset.y = 0;
+	}
+	if (transInvXCurrent(windowWidth) > MAGIC_NUMBER) {
+	    offset.x = -transSCurrent(MAGIC_NUMBER) + windowWidth;
+	}
+	if (transInvYCurrent(windowHeight) > MAGIC_NUMBER) {
+	    offset.y = -transSCurrent(MAGIC_NUMBER) + windowHeight;
+	}
     }
 
-    private static double transInvYCurrent(int y) {
-        return (y - offset.y) / zoomFactor;
+    public int getWidth() {
+	return window.getContentPane().getWidth();
     }
 
-    private static int transSCurrent(int s) {
-        return (int) (s * zoomFactor);
-    }
-
-    private static void limitTransformation() {
-        int windowWidth = getInstance().window.getContentPane().getWidth();
-        int windowHeight = getInstance().window.getContentPane().getHeight();
-
-        if (windowWidth > windowHeight) {
-            if (zoomFactor < (double) windowWidth / DIM_X) {
-                zoomFactor = (double) windowWidth / DIM_X;
-            }
-        } else {
-            if (zoomFactor < (double) windowHeight / DIM_Y) {
-                zoomFactor = (double) windowHeight / DIM_Y;
-            }
-        }
-
-        if (offset.x > 0) {
-            offset.x = 0;
-        }
-        if (offset.y > 0) {
-            offset.y = 0;
-        }
-        if (transInvXCurrent(windowWidth) > DIM_X) {
-            offset.x = -transSCurrent(DIM_X) + windowWidth;
-        }
-        if (transInvYCurrent(windowHeight) > DIM_Y) {
-            offset.y = -transSCurrent(DIM_Y) + windowHeight;
-        }
+    public int getHeight() {
+	return window.getContentPane().getHeight();
     }
 
 }
