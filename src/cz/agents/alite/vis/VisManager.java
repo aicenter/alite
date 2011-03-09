@@ -21,22 +21,22 @@ import cz.agents.alite.vis.layer.VisLayer;
 /**
  * The VisManager is a singleton holding the visualization layers and providing
  * the drawing cycle of them.
- * 
+ *
  * The VisManager has to be explicitly initialized by the init() method. Without
  * its calling, the registered layers will be held, but the Vis singleton will
  * not be used, so the visualization window will not be created and shown. This
  * feature enables to use a live code for registering of the layers, but with
  * conditioned turning on of the visualization window only by the
  * VisManager.init() call.
- * 
+ *
  * If the manager is not initialized, the drawing cycle is not started, so the
  * layers do not request any data from the visualized elements.
- * 
+ *
  * Besides the registration and un-registration of the layers, the manager also
  * provides saving of a visualization state into a image file (the saveToFile()
  * method).
- * 
- * 
+ *
+ *
  * @author Jiri Vokrinek
  * @author Antonin Komenda
  * @author Ondrej Milenovsky
@@ -50,30 +50,30 @@ public class VisManager {
     private static VisManager instance = null;
 
     private VisManager() {
-	new Thread(new Runnable() {
+        new Thread(new Runnable() {
 
-	    @Override
-	    public void run() {
-		Thread.currentThread().setPriority(VIS_THREAD_PRIORITY);
-		while (true) {
-		    long startNanos = System.nanoTime();
-		    update();
-		    long endNanos = System.nanoTime();
+            @Override
+            public void run() {
+                Thread.currentThread().setPriority(VIS_THREAD_PRIORITY);
+                while (true) {
+                    long startNanos = System.nanoTime();
+                    update();
+                    long endNanos = System.nanoTime();
 
-		    long sleepNanos = (long) (1.0 / FPS_MAX * 1000000000.0)
-			    - (endNanos - startNanos);
-		    sleepNanos = sleepNanos < 0 ? 0 : sleepNanos;
-		    long sleepMillis = sleepNanos / 1000000;
-		    sleepNanos -= sleepMillis * 1000000;
+                    long sleepNanos = (long) (1.0 / FPS_MAX * 1000000000.0)
+                            - (endNanos - startNanos);
+                    sleepNanos = sleepNanos < 0 ? 0 : sleepNanos;
+                    long sleepMillis = sleepNanos / 1000000;
+                    sleepNanos -= sleepMillis * 1000000;
 
-		    try {
-			Thread.sleep(sleepMillis, (int) sleepNanos);
-		    } catch (InterruptedException ex) {
+                    try {
+                        Thread.sleep(sleepMillis, (int) sleepNanos);
+                    } catch (InterruptedException ex) {
 
-		    }
-		}
-	    }
-	}).start();
+                    }
+                }
+            }
+        }).start();
     }
 
     /**
@@ -81,87 +81,85 @@ public class VisManager {
      * window
      */
     public static void setInitParam(String title, int dimX, int dimY) {
-	Vis.setInitParam(title, dimX, dimY);
+        Vis.setInitParam(title, dimX, dimY);
     }
 
     public static synchronized void init() {
-	if (instance == null) {
-	    instance = new VisManager();
+        if (instance == null) {
+            instance = new VisManager();
 
-	    for (VisLayer visLayer : layers) {
-		visLayer.init(Vis.getInstance());
-	    }
-	}
+            for (VisLayer visLayer : layers) {
+                visLayer.init(Vis.getInstance());
+            }
+        }
     }
 
     public static void registerLayer(VisLayer layer) {
-	if (layers.contains(layer)) {
-	    return;
-	}
-	layers.add(layer);
-	if (instance != null) {
-	    layer.init(Vis.getInstance());
-	}
+        if (layers.contains(layer)) {
+            return;
+        }
+        layers.add(layer);
+        if (instance != null) {
+            layer.init(Vis.getInstance());
+        }
     }
 
     public static void unregisterLayer(VisLayer layer) {
-	layers.remove(layer);
+        layers.remove(layer);
     }
 
     public static List<VisLayer> getLayers() {
-	return Collections.unmodifiableList(layers);
+        return Collections.unmodifiableList(layers);
     }
 
     public static void unregisterLayers() {
-	for (VisLayer layer : layers) {
-	    layers.remove(layer);
-	}
+        for (VisLayer layer : layers) {
+            layers.remove(layer);
+        }
     }
 
-    public static void saveToFile(String fileName) {
-	try {
-	    ImageIO.write((RenderedImage) renderImage(), "png", new File(
-		    fileName));
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
+    public static void saveToFile(String fileName, int width, int height) {
+        try {
+            ImageIO.write((RenderedImage) renderImage(width, height), "png", new File(fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static Image renderImage() {
-	// TODO magic numbers, should it be actual window size ?
-	Image image = Vis.getInstance().createImage(1000, 1000);
-	Graphics2D graphics = (Graphics2D) image.getGraphics();
+    public static Image renderImage(int width, int height) {
+        Image image = Vis.getInstance().createImage(width, height);
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
 
-	for (VisLayer visLayer : layers) {
-	    drawLayer(visLayer, graphics);
-	}
-	return image;
+        for (VisLayer visLayer : layers) {
+            drawLayer(visLayer, graphics);
+        }
+        return image;
     }
 
     private static void update() {
-	Graphics2D graphics = Vis.getCanvas();
-	for (VisLayer visLayer : layers) {
-	    drawLayer(visLayer, graphics);
-	}
-	Vis.flip();
+        Graphics2D graphics = Vis.getCanvas();
+        for (VisLayer visLayer : layers) {
+            drawLayer(visLayer, graphics);
+        }
+        Vis.flip();
     }
 
     private static void drawLayer(VisLayer visLayer, Graphics2D graphics) {
-	try {
-	    visLayer.paint(graphics);
-	} catch (ConcurrentModificationException e) {
-	    Logger.getLogger(VisManager.class.getName()).log(Level.FINEST,
-		    "Skipped layer drawing.");
-	} catch (Exception e) {
-	    StringWriter sw = new StringWriter();
-	    e.printStackTrace(new PrintWriter(sw));
-	    String stacktrace = sw.toString();
-	    Logger.getLogger(VisManager.class.getName()).log(
-		    Level.WARNING,
-		    "Vis layer " + visLayer
-			    + " has thrown the following exception:\n"
-			    + stacktrace);
-	}
+        try {
+            visLayer.paint(graphics);
+        } catch (ConcurrentModificationException e) {
+            Logger.getLogger(VisManager.class.getName()).log(Level.FINEST,
+                    "Skipped layer drawing.");
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            String stacktrace = sw.toString();
+            Logger.getLogger(VisManager.class.getName()).log(
+                    Level.WARNING,
+                    "Vis layer " + visLayer
+                            + " has thrown the following exception:\n"
+                            + stacktrace);
+        }
     }
 
 }

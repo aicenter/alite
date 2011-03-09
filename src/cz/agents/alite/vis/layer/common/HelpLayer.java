@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 
 import cz.agents.alite.vis.Vis;
 import cz.agents.alite.vis.VisManager;
-import cz.agents.alite.vis.layer.AbstractLayer;
 import cz.agents.alite.vis.layer.VisLayer;
 import cz.agents.alite.vis.layer.terminal.SpriteLayer;
 import cz.agents.alite.vis.layer.toggle.KeyToggleLayer;
@@ -25,7 +24,7 @@ import cz.agents.alite.vis.layer.toggle.ToggleLayer;
  * @author Antonin Komenda
  *
  */
-public class HelpLayer extends AbstractLayer {
+public class HelpLayer extends CommonLayer {
 
     private final ToggleLayer toggleLayer;
     private int offsetPages = 0;
