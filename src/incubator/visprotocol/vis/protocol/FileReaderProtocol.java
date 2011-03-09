@@ -5,19 +5,19 @@ public class FileReaderProtocol implements Protocol {
 
     @Override
     public <T> void push(T elements) {
-        // TODO Auto-generated method stub
+	// TODO Auto-generated method stub
 
     }
 
     @Override
     public <T> T pull(Class<T> clazz) {
-        // TODO Auto-generated method stub
-        return null;
+	// TODO Auto-generated method stub
+	return null;
     }
 
     @Override
     public void nextStep() {
-        // TODO Auto-generated method stub
+	// TODO Auto-generated method stub
 
     }
 

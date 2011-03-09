@@ -26,5 +26,4 @@ public abstract class RegularRealTimeSampler implements Sampler {
     }
 
     protected abstract void sample();
-
 }
