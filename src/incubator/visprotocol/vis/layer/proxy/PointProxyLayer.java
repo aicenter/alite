@@ -9,12 +9,12 @@ public class PointProxyLayer implements ProxyLayer {
     private PointElements pointElements;
 
     public PointProxyLayer(PointElements pointElements) {
-        this.pointElements = pointElements;
+	this.pointElements = pointElements;
     }
 
     @Override
     public void fillProtocol(Protocol protocol) {
-        protocol.push(new Points(pointElements));
+	protocol.push(new Points(pointElements));
     }
 
 }

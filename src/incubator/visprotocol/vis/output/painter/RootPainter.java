@@ -5,17 +5,24 @@ import java.util.List;
 
 import incubator.visprotocol.vis.protocol.Protocol;
 
-// TODO: new GroupPainter has to be created, only it can have subPainters
-//TODO: RootPainter should extend GroupPainter
-public class RootPainter implements Painter {
+public class RootPainter implements GroupPainter {
 
-    public List<Painter> subPainters = new LinkedList<Painter>();
+    private final List<Painter> subPainters;
+
+    public RootPainter() {
+	subPainters = new LinkedList<Painter>();
+    }
+
+    @Override
+    public void addPainter(Painter painter) {
+	subPainters.add(painter);
+    }
 
     @Override
     public void paint(Protocol protocol) {
-        for (Painter painter : subPainters) {
-            painter.paint(protocol);
-        }
+	for (Painter painter : subPainters) {
+	    painter.paint(protocol);
+	}
     }
 
 }
