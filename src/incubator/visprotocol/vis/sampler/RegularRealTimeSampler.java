@@ -1,28 +1,28 @@
 package incubator.visprotocol.vis.sampler;
 
-//TODO: create sampler interface
-public abstract class RegularRealTimeSampler {
+public abstract class RegularRealTimeSampler implements Sampler {
 
     private static final int PERIOD_MILLIS = 1000;
     private static final int THREAD_PRIORITY = Thread.MIN_PRIORITY;
 
+    @Override
     public void start() {
-        new Thread(new Runnable() {
+	new Thread(new Runnable() {
 
-            @Override
-            public void run() {
-                Thread.currentThread().setPriority(THREAD_PRIORITY);
-                while (true) {
-                    sample();
-                    try {
-                        Thread.sleep(PERIOD_MILLIS);
-                    } catch (InterruptedException ex) {
+	    @Override
+	    public void run() {
+		Thread.currentThread().setPriority(THREAD_PRIORITY);
+		while (true) {
+		    sample();
+		    try {
+			Thread.sleep(PERIOD_MILLIS);
+		    } catch (InterruptedException ex) {
 
-                    }
-                }
-            }
+		    }
+		}
+	    }
 
-        }).start();
+	}).start();
     }
 
     protected abstract void sample();
