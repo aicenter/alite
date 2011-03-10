@@ -8,6 +8,12 @@ import java.awt.event.MouseWheelListener;
 
 import javax.vecmath.Point2d;
 
+/**
+ * Zooming by mouse wheel. Just create with pointer to vis, no need to add it
+ * somewhere, you can forget pointer to this instance.
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class ZoomTransformator implements MouseWheelListener {
 
     private double zoomStep = 1.1;
@@ -54,6 +60,7 @@ public class ZoomTransformator implements MouseWheelListener {
 		* mouseWheelEvent.getScrollAmount();
 	// TODO bugged
 	if (rotation < 0) {
+	    // zoom in
 	    if (zoomInCenter) {
 		// TODO not working
 		computeCenterMiddle(offset, zoomFactor);
@@ -63,6 +70,7 @@ public class ZoomTransformator implements MouseWheelListener {
 	    }
 	    zoomFactor *= zoomStep;
 	} else {
+	    // zoom out
 	    zoomFactor /= zoomStep;
 	    if (zoomOutCenter) {
 		computeCenterMiddle(offset, zoomFactor);
@@ -72,8 +80,8 @@ public class ZoomTransformator implements MouseWheelListener {
 			.getPoint());
 	    }
 	}
-	vis2d.setOffset(offset);
 	vis2d.setZoomFactor(zoomFactor);
+	vis2d.setOffset(offset);
     }
 
     private void computeCenterMouse(Point2d offset, double zoomFactor,

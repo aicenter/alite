@@ -9,6 +9,12 @@ import java.awt.event.MouseMotionListener;
 
 import javax.vecmath.Point2d;
 
+/**
+ * Moving camera by holding right mouse button. Just create with pointer to vis,
+ * no need to add it somewhere, you can forget pointer to this instance.
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class MoveTransformator implements MouseListener, MouseMotionListener {
 
     private final Vis2DOutput vis2d;

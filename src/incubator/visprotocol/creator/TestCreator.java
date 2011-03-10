@@ -45,8 +45,8 @@ public class TestCreator implements Creator {
 
     private void createAndRunVis() {
 	Vis2DParams params = new Vis2DParams();
-	params.bounds = new Rectangle2D.Double(-100, -100, 10100, 10100);
-	vis2d = new Vis2DOutput();
+	params.worldBounds = new Rectangle2D.Double(-400, -600, 11000, 11000);
+	vis2d = new Vis2DOutput(params);
 	new ZoomTransformator(vis2d);
 	new MoveTransformator(vis2d);
 

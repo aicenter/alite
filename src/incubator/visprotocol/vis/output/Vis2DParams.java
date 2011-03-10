@@ -6,9 +6,10 @@ import java.awt.geom.Rectangle2D;
 import javax.vecmath.Point2d;
 
 public class Vis2DParams {
-    public String title = "Vis2D output";
-    public Dimension size = new Dimension(600, 600);
-    public Point2d offset = new Point2d(0, 0);
-    public double zoomFactor = 1;
-    public Rectangle2D bounds = new Rectangle2D.Double(0, 0, 10000, 1000);
+    public String windowTitle = "Vis2D output";
+    public Dimension windowSize = new Dimension(600, 600);
+    public Point2d viewOffset = new Point2d(0, 0);
+    public double viewZoom = 1;
+    public Rectangle2D worldBounds = new Rectangle2D.Double(0, 0, 1000, 1000);
+    public double viewMaxZoom = 1;
 }

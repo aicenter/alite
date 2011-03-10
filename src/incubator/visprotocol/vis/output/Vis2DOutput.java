@@ -10,6 +10,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
@@ -23,15 +25,15 @@ public class Vis2DOutput extends Canvas {
 
     private static final long serialVersionUID = -4597445627896905949L;
 
-    // TODO remove
-    private static final int MAGIC_NUMBER = 9000;
-
     private double zoomFactor;
     private final Point2d offset;
     private double zoomFactorBack;
     private final Point2d offsetBack;
 
-    private Rectangle2D bounds;
+    private final Point2d cursorPosition = new Point2d();
+
+    private final Rectangle2D bounds;
+    private final double maxZoom;
 
     private JFrame window;
 
@@ -47,17 +49,20 @@ public class Vis2DOutput extends Canvas {
 	super();
 
 	// canvas
-	setBounds(0, 0, params.size.width, params.size.height);
+	setBounds(0, 0, params.windowSize.width, params.windowSize.height);
 
-	window = new JFrame(params.title);
-	zoomFactor = params.zoomFactor;
+	window = new JFrame(params.windowTitle);
+	zoomFactor = params.viewZoom;
 	zoomFactorBack = zoomFactor;
-	offset = new Point2d(params.offset);
-	offsetBack = new Point2d(params.offset);
-	bounds = params.bounds;
+	offset = new Point2d(params.viewOffset);
+	offsetBack = new Point2d(params.viewOffset);
+	bounds = params.worldBounds;
+	maxZoom = params.viewMaxZoom;
 
 	final JPanel panel = (JPanel) window.getContentPane();
-	panel.setBounds(0, 0, params.size.width, params.size.height);
+	panel
+		.setBounds(0, 0, params.windowSize.width,
+			params.windowSize.height);
 	panel.add(this);
 
 	window.addWindowListener(new WindowAdapter() {
@@ -91,6 +96,19 @@ public class Vis2DOutput extends Canvas {
 	window.pack();
 
 	// listeners
+	addMouseMotionListener(new MouseMotionListener() {
+	    @Override
+	    public void mouseMoved(MouseEvent e) {
+		cursorPosition.set(transInvXCurrent(e.getX()),
+			transInvYCurrent(e.getY()));
+	    }
+
+	    @Override
+	    public void mouseDragged(MouseEvent e) {
+		cursorPosition.set(transInvXCurrent(e.getX()),
+			transInvYCurrent(e.getY()));
+	    }
+	});
 	addKeyListener(new KeyListener() {
 
 	    @Override
@@ -166,6 +184,14 @@ public class Vis2DOutput extends Canvas {
 	return (int) (offsetBack.y + y * zoomFactorBack);
     }
 
+    public int transXCurrent(double x) {
+	return (int) (offset.x + x * zoomFactor);
+    }
+
+    public int transYCurrent(double y) {
+	return (int) (offset.y + y * zoomFactor);
+    }
+
     public int transW(double w) {
 	return (int) (w * zoomFactorBack);
     }
@@ -218,10 +244,6 @@ public class Vis2DOutput extends Canvas {
 	return (y - offset.y) / zoomFactor;
     }
 
-    private int transSCurrent(int s) {
-	return (int) (s * zoomFactor);
-    }
-
     public Point2d getOffsetBack() {
 	return new Point2d(offsetBack);
     }
@@ -235,32 +257,39 @@ public class Vis2DOutput extends Canvas {
 	limitTransformation();
     }
 
+    public Point2d getCursorPosition() {
+	return cursorPosition;
+    }
+
     private void limitTransformation() {
-	int windowWidth = getWidth();
-	int windowHeight = getHeight();
+	zoomFactor = Math.min(zoomFactor, maxZoom);
 
-	if (windowWidth > windowHeight) {
-	    if (zoomFactor < (double) windowWidth / MAGIC_NUMBER) {
-		zoomFactor = (double) windowWidth / MAGIC_NUMBER;
-	    }
-	} else {
-	    if (zoomFactor < (double) windowHeight / MAGIC_NUMBER) {
-		zoomFactor = (double) windowHeight / MAGIC_NUMBER;
-	    }
+	int bMinX = transXCurrent(bounds.getMinX());
+	int bMinY = transYCurrent(bounds.getMinY());
+	int bMaxX = transXCurrent(bounds.getMaxX());
+	int bMaxY = transYCurrent(bounds.getMaxY());
+	int bW = transXCurrent(bounds.getMaxX() - bounds.getMinX());
+	int bH = transYCurrent(bounds.getMaxY() - bounds.getMinY());
+
+	// TODO limiting zoom is not working well
+	if (bMaxX - bMinX < getWidth()) {
+	    zoomFactor *= getWidth() / (double) (bMaxX - bMinX);
+	}
+	if (bMaxY - bMinY < getHeight()) {
+	    zoomFactor *= getHeight() / (double) (bMaxY - bMinY);
 	}
 
-	// TODO use bounds
-	if (offset.x > 0) {
-	    offset.x = 0;
+	if (bMinX > 0) {
+	    offset.x -= bMinX;
 	}
-	if (offset.y > 0) {
-	    offset.y = 0;
+	if (bMinY > 0) {
+	    offset.y -= bMinY;
 	}
-	if (transInvXCurrent(windowWidth) > MAGIC_NUMBER) {
-	    offset.x = -transSCurrent(MAGIC_NUMBER) + windowWidth;
+	if (bW < getWidth()) {
+	    offset.x += -bW + getWidth();
 	}
-	if (transInvYCurrent(windowHeight) > MAGIC_NUMBER) {
-	    offset.y = -transSCurrent(MAGIC_NUMBER) + windowHeight;
+	if (bH < getHeight()) {
+	    offset.y += -bH + getHeight();
 	}
     }
 
