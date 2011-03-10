@@ -1,7 +1,7 @@
 package incubator.visprotocol.vis.output.painter.vis2d;
 
 import incubator.visprotocol.vis.element.Points;
-import incubator.visprotocol.vis.output.Vis2D;
+import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.painter.Painter;
 import incubator.visprotocol.vis.protocol.Protocol;
 
@@ -12,9 +12,9 @@ import cz.agents.alite.vis.element.Point;
 
 public class PointPainterVis2D implements Painter {
 
-    private Vis2D vis2dOutput;
+    private Vis2DOutput vis2dOutput;
 
-    public PointPainterVis2D(Vis2D vis2dOutput) {
+    public PointPainterVis2D(Vis2DOutput vis2dOutput) {
 	this.vis2dOutput = vis2dOutput;
     }
 
