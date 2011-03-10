@@ -23,6 +23,7 @@ public class Vis2DOutput extends Canvas {
 
     private static final long serialVersionUID = -4597445627896905949L;
 
+    // TODO remove
     private static final int MAGIC_NUMBER = 9000;
 
     private double zoomFactor;
