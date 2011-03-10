@@ -6,7 +6,6 @@ import incubator.visprotocol.vis.layer.proxy.RootProxyLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.RootPainter;
-import incubator.visprotocol.vis.output.painter.sysout.PointPainterSysout;
 import incubator.visprotocol.vis.output.painter.vis2d.PointPainterVis2D;
 import incubator.visprotocol.vis.output.vis2d.MoveTransformator;
 import incubator.visprotocol.vis.output.vis2d.ZoomTransformator;
