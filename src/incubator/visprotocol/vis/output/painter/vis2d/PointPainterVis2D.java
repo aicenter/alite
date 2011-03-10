@@ -1,7 +1,7 @@
 package incubator.visprotocol.vis.output.painter.vis2d;
 
 import incubator.visprotocol.vis.element.Points;
-import incubator.visprotocol.vis.output.Vis2DOutput;
+import incubator.visprotocol.vis.output.Vis2D;
 import incubator.visprotocol.vis.output.painter.Painter;
 import incubator.visprotocol.vis.protocol.Protocol;
 
@@ -12,9 +12,9 @@ import cz.agents.alite.vis.element.Point;
 
 public class PointPainterVis2D implements Painter {
 
-    private Vis2DOutput vis2dOutput;
+    private Vis2D vis2dOutput;
 
-    public PointPainterVis2D(Vis2DOutput vis2dOutput) {
+    public PointPainterVis2D(Vis2D vis2dOutput) {
 	this.vis2dOutput = vis2dOutput;
     }
 
@@ -33,8 +33,8 @@ public class PointPainterVis2D implements Painter {
 	    int y1 = vis2dOutput.transY(point.getPosition().y) - radius;
 	    int x2 = vis2dOutput.transX(point.getPosition().x) + radius;
 	    int y2 = vis2dOutput.transY(point.getPosition().y) + radius;
-	    if (x2 > 0 && x1 < vis2dOutput.getDrawingDimension().width
-		    && y2 > 0 && y1 < vis2dOutput.getDrawingDimension().height) {
+	    if ((x2 > 0) && (x1 < vis2dOutput.getWidth())
+		    && (y2 > 0) && (y1 < vis2dOutput.getHeight())) {
 		graphics2d.fillOval(x1, y1, radius * 2, radius * 2);
 	    }
 	}

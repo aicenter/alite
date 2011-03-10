@@ -1,17 +1,21 @@
 package incubator.visprotocol.creator;
 
 import incubator.visprotocol.vis.layer.PersonLayer;
+import incubator.visprotocol.vis.layer.RandomPointsLayer;
 import incubator.visprotocol.vis.layer.proxy.RootProxyLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
+import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.RootPainter;
 import incubator.visprotocol.vis.output.painter.sysout.PointPainterSysout;
 import incubator.visprotocol.vis.output.painter.vis2d.PointPainterVis2D;
+import incubator.visprotocol.vis.output.vis2d.ZoomTransformator;
 import incubator.visprotocol.vis.protocol.MemoryProtocol;
 import incubator.visprotocol.vis.protocol.Protocol;
 import incubator.visprotocol.vis.sampler.MaxFPSRealTimeSampler;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 import javax.vecmath.Point3d;
@@ -40,12 +44,18 @@ public class TestCreator implements Creator {
     }
 
     private void createAndRunVis() {
+	Vis2DParams params = new Vis2DParams();
+	params.bounds = new Rectangle2D.Double(-100, -100, 10100, 10100);
 	vis2d = new Vis2DOutput();
+	new ZoomTransformator(vis2d);
+
 	// layers
 	final RootProxyLayer rootProxyLayer = new RootProxyLayer();
 	// using the PersonLayer (similarly to the old vis) create a
 	// PointProxyLayer building the Points for the visualization protocol
+	// TODO works only the last layer
 	rootProxyLayer.addLayer(PersonLayer.create(exampleEnvironment));
+	rootProxyLayer.addLayer(RandomPointsLayer.create(1000));
 	// XXX: in future all the layers of the old vis should be replicated
 	// using the proxies here
 
@@ -65,7 +75,7 @@ public class TestCreator implements Creator {
 	// (for demonstarion of multi-output use)
 	// TODO: generalize the painter to string painter (it can be used as
 	// logger with different outputs - sysout, errlog, ...)
-	rootPainter.addPainter(new PointPainterSysout());
+	// rootPainter.addPainter(new PointPainterSysout());
 	// XXX: in the future there can be other Outputs: GoogleEarth, 3D jME,
 	// Aglobe Visio, etc
 
