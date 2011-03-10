@@ -2,6 +2,7 @@ package incubator.visprotocol.vis.output;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -13,26 +14,20 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
 
-public class Vis2DOutput extends Canvas {
+public class Vis2DOutput extends Canvas implements Vis2D {
 
     private static final long serialVersionUID = -4597445627896905949L;
 
-    private static final int MAGIC_NUMBER = 900;
-
-    // TODO: refactor - create pluggable transformations and create scale as one
-    // of the transformation pluggins
-    private final double SCALE_X = 900 / 1500.0;
-    private final double SCALE_Y = 900 / 1500.0;
+    private static final int MAGIC_NUMBER = 9000;
 
     // TODO: refactor - create pluggable transformations and create zoom and pan
     // as one of the transformation pluggins
@@ -42,6 +37,8 @@ public class Vis2DOutput extends Canvas {
     private boolean panning = false;
     private double zoomFactorBack = 1.0;
     private final Point2d offsetBack = new Point2d(0, 0);
+
+    private Rectangle2D bounds;
 
     private JFrame window;
 
@@ -63,6 +60,7 @@ public class Vis2DOutput extends Canvas {
 	zoomFactor = params.zoomFactor;
 	offset = new Point2d(params.offset);
 	lastOffset = new Point2d(params.offset);
+	bounds = params.bounds;
 
 	final JPanel panel = (JPanel) window.getContentPane();
 	panel.setBounds(0, 0, params.size.width, params.size.height);
@@ -99,34 +97,6 @@ public class Vis2DOutput extends Canvas {
 	window.pack();
 
 	// listeners
-	addMouseWheelListener(new MouseWheelListener() {
-
-	    @Override
-	    public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
-		final double zoomStep = 1.1;
-
-		int rotation = mouseWheelEvent.getWheelRotation()
-			* mouseWheelEvent.getScrollAmount();
-		if (rotation < 0) {
-		    offset.x -= transInvX(mouseWheelEvent.getX()) * SCALE_X
-			    * zoomFactor * (zoomStep - 1.0);
-		    offset.y -= transInvY(mouseWheelEvent.getY()) * SCALE_Y
-			    * zoomFactor * (zoomStep - 1.0);
-
-		    zoomFactor *= zoomStep;
-		} else {
-		    zoomFactor /= zoomStep;
-
-		    offset.x += transInvX(getWidth() / 2) * SCALE_X
-			    * zoomFactor * (zoomStep - 1.0);
-		    offset.y += transInvY(getHeight() / 2) * SCALE_Y
-			    * zoomFactor * (zoomStep - 1.0);
-		}
-
-		limitTransformation();
-	    }
-
-	});
 	addMouseListener(new MouseListener() {
 
 	    @Override
@@ -206,6 +176,11 @@ public class Vis2DOutput extends Canvas {
 	window.setVisible(true);
     }
 
+    @Override
+    public Component getComponent() {
+	return this;
+    }
+
     public Graphics2D getGraphics2D() {
 	return graphics;
     }
@@ -238,52 +213,49 @@ public class Vis2DOutput extends Canvas {
 	offsetBack.set(offset);
     }
 
+    public void setZoomFactor(double zoom) {
+	zoomFactor = zoom;
+	limitTransformation();
+    }
+
     public int transX(double x) {
-	return (int) (offsetBack.x + x * zoomFactorBack * SCALE_X);
+	return (int) (offsetBack.x + x * zoomFactorBack);
     }
 
     public int transY(double y) {
-	return (int) (offsetBack.y + y * zoomFactorBack * SCALE_Y);
+	return (int) (offsetBack.y + y * zoomFactorBack);
     }
 
     public int transW(double w) {
-	return (int) (w * zoomFactorBack * SCALE_X);
+	return (int) (w * zoomFactorBack);
     }
 
     public int transH(double h) {
-	return (int) (h * zoomFactorBack * SCALE_Y);
+	return (int) (h * zoomFactorBack);
     }
 
     public double transInvX(int x) {
-	return (x - offsetBack.x) / zoomFactorBack / SCALE_X;
+	return (x - offsetBack.x) / zoomFactorBack;
     }
 
     public double transInvY(int y) {
-	return (y - offsetBack.y) / zoomFactorBack / SCALE_Y;
+	return (y - offsetBack.y) / zoomFactorBack;
     }
 
     public double transInvW(int w) {
-	return w / zoomFactorBack / SCALE_X;
+	return w / zoomFactorBack;
     }
 
     public double transInvH(int h) {
-	return h / zoomFactorBack / SCALE_Y;
-    }
-
-    public int getWorldDimX() {
-	return (int) (getWidth() / SCALE_X);
-    }
-
-    public int getWorldDimY() {
-	return (int) (getHeight() / SCALE_Y);
+	return h / zoomFactorBack;
     }
 
     public double getZoomFactor() {
-	return zoomFactorBack;
+	return zoomFactor;
     }
 
     public Point2d getOffset() {
-	return offsetBack;
+	return new Point2d(offset);
     }
 
     public Point2d getCursorPosition() {
@@ -314,6 +286,22 @@ public class Vis2DOutput extends Canvas {
 	return (int) (s * zoomFactor);
     }
 
+    @Override
+    public Point2d getOffsetBack() {
+	return new Point2d(offsetBack);
+    }
+
+    @Override
+    public double getZoomFactorBack() {
+	return zoomFactorBack;
+    }
+
+    @Override
+    public void setOffset(Point2d offset) {
+	this.offset.set(offset);
+	limitTransformation();
+    }
+
     private void limitTransformation() {
 	int windowWidth = getWidth();
 	int windowHeight = getHeight();
@@ -328,6 +316,7 @@ public class Vis2DOutput extends Canvas {
 	    }
 	}
 
+	// TODO use bounds
 	if (offset.x > 0) {
 	    offset.x = 0;
 	}
@@ -340,14 +329,6 @@ public class Vis2DOutput extends Canvas {
 	if (transInvYCurrent(windowHeight) > MAGIC_NUMBER) {
 	    offset.y = -transSCurrent(MAGIC_NUMBER) + windowHeight;
 	}
-    }
-
-    public int getWidth() {
-	return window.getContentPane().getWidth();
-    }
-
-    public int getHeight() {
-	return window.getContentPane().getHeight();
     }
 
 }
