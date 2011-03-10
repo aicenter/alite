@@ -1,12 +1,12 @@
 package incubator.visprotocol.vis.output.vis2d;
 
+import incubator.visprotocol.vis.output.Vis2DOutput;
+
 import java.awt.Point;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import javax.vecmath.Point2d;
-
-import incubator.visprotocol.vis.output.Vis2D;
 
 public class ZoomTransformator implements MouseWheelListener {
 
@@ -14,9 +14,9 @@ public class ZoomTransformator implements MouseWheelListener {
     private boolean zoomInCenter = false;
     private boolean zoomOutCenter = true;
 
-    private final Vis2D vis2d;
+    private final Vis2DOutput vis2d;
 
-    public ZoomTransformator(Vis2D vis2d) {
+    public ZoomTransformator(Vis2DOutput vis2d) {
 	this.vis2d = vis2d;
 	vis2d.getComponent().addMouseWheelListener(this);
     }
@@ -33,7 +33,7 @@ public class ZoomTransformator implements MouseWheelListener {
 	this.zoomOutCenter = zoomOutCenter;
     }
 
-    public boolean getZoomOutCenter() {
+    public boolean isZoomOutCenter() {
 	return zoomOutCenter;
     }
 
@@ -41,7 +41,7 @@ public class ZoomTransformator implements MouseWheelListener {
 	this.zoomInCenter = zoomInCenter;
     }
 
-    public boolean getZoomInCenter() {
+    public boolean isZoomInCenter() {
 	return zoomInCenter;
     }
 

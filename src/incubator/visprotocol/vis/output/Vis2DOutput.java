@@ -3,7 +3,6 @@ package incubator.visprotocol.vis.output;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -11,9 +10,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
@@ -23,20 +19,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
 
-public class Vis2DOutput extends Canvas implements Vis2D {
+public class Vis2DOutput extends Canvas {
 
     private static final long serialVersionUID = -4597445627896905949L;
 
     private static final int MAGIC_NUMBER = 9000;
 
-    // TODO: refactor - create pluggable transformations and create zoom and pan
-    // as one of the transformation pluggins
     private double zoomFactor;
     private final Point2d offset;
-    private final Point2d lastOffset;
-    private boolean panning = false;
-    private double zoomFactorBack = 1.0;
-    private final Point2d offsetBack = new Point2d(0, 0);
+    private double zoomFactorBack;
+    private final Point2d offsetBack;
 
     private Rectangle2D bounds;
 
@@ -58,8 +50,9 @@ public class Vis2DOutput extends Canvas implements Vis2D {
 
 	window = new JFrame(params.title);
 	zoomFactor = params.zoomFactor;
+	zoomFactorBack = zoomFactor;
 	offset = new Point2d(params.offset);
-	lastOffset = new Point2d(params.offset);
+	offsetBack = new Point2d(params.offset);
 	bounds = params.bounds;
 
 	final JPanel panel = (JPanel) window.getContentPane();
@@ -97,59 +90,6 @@ public class Vis2DOutput extends Canvas implements Vis2D {
 	window.pack();
 
 	// listeners
-	addMouseListener(new MouseListener() {
-
-	    @Override
-	    public void mouseReleased(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON3) {
-		    setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-		    panning = false;
-		}
-	    }
-
-	    @Override
-	    public void mousePressed(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON3) {
-		    setCursor(new Cursor(Cursor.HAND_CURSOR));
-		    panning = true;
-		}
-	    }
-
-	    @Override
-	    public void mouseExited(MouseEvent e) {
-	    }
-
-	    @Override
-	    public void mouseEntered(MouseEvent e) {
-	    }
-
-	    @Override
-	    public void mouseClicked(MouseEvent e) {
-	    }
-
-	});
-	addMouseMotionListener(new MouseMotionListener() {
-
-	    @Override
-	    public void mouseDragged(MouseEvent e) {
-		if (panning) {
-		    offset.x -= lastOffset.x - e.getX();
-		    offset.y -= lastOffset.y - e.getY();
-
-		    limitTransformation();
-		}
-
-		lastOffset.x = e.getX();
-		lastOffset.y = e.getY();
-	    }
-
-	    @Override
-	    public void mouseMoved(MouseEvent e) {
-		lastOffset.x = e.getX();
-		lastOffset.y = e.getY();
-	    }
-
-	});
 	addKeyListener(new KeyListener() {
 
 	    @Override
@@ -176,7 +116,6 @@ public class Vis2DOutput extends Canvas implements Vis2D {
 	window.setVisible(true);
     }
 
-    @Override
     public Component getComponent() {
 	return this;
     }
@@ -258,10 +197,6 @@ public class Vis2DOutput extends Canvas implements Vis2D {
 	return new Point2d(offset);
     }
 
-    public Point2d getCursorPosition() {
-	return lastOffset;
-    }
-
     public Dimension getDrawingDimension() {
 	return window.getContentPane().getSize();
     }
@@ -286,17 +221,14 @@ public class Vis2DOutput extends Canvas implements Vis2D {
 	return (int) (s * zoomFactor);
     }
 
-    @Override
     public Point2d getOffsetBack() {
 	return new Point2d(offsetBack);
     }
 
-    @Override
     public double getZoomFactorBack() {
 	return zoomFactorBack;
     }
 
-    @Override
     public void setOffset(Point2d offset) {
 	this.offset.set(offset);
 	limitTransformation();

@@ -8,6 +8,7 @@ import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.RootPainter;
 import incubator.visprotocol.vis.output.painter.sysout.PointPainterSysout;
 import incubator.visprotocol.vis.output.painter.vis2d.PointPainterVis2D;
+import incubator.visprotocol.vis.output.vis2d.MoveTransformator;
 import incubator.visprotocol.vis.output.vis2d.ZoomTransformator;
 import incubator.visprotocol.vis.protocol.MemoryProtocol;
 import incubator.visprotocol.vis.protocol.Protocol;
@@ -48,6 +49,7 @@ public class TestCreator implements Creator {
 	params.bounds = new Rectangle2D.Double(-100, -100, 10100, 10100);
 	vis2d = new Vis2DOutput();
 	new ZoomTransformator(vis2d);
+	new MoveTransformator(vis2d);
 
 	// layers
 	final RootProxyLayer rootProxyLayer = new RootProxyLayer();
