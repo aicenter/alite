@@ -1,8 +1,7 @@
-package incubator.visprotocol.structure;
+package incubator.visprotocol.vis.structure;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.Set;
 
 /**
  * Folder in the structure. Has one collection for elements and one for folders.
@@ -68,7 +67,7 @@ public class Folder extends Element {
         return e;
     }
 
-    public Set<String> getFolderIds() {
+    public Collection<String> getFolderIds() {
         return folders.keySet();
     }
 
@@ -76,7 +75,7 @@ public class Folder extends Element {
         return folders.values();
     }
 
-    public Set<String> getElementIds() {
+    public Collection<String> getElementIds() {
         return elements.keySet();
     }
 

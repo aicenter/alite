@@ -1,10 +1,9 @@
-package incubator.visprotocol.structure;
+package incubator.visprotocol.vis.structure;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Leaf element in structure. Type is used to determine painter. Change flag is
@@ -59,7 +58,7 @@ public class Element implements Serializable {
         parameters.put(id, value);
     }
 
-    public Set<String> getParamIds() {
+    public Collection<String> getParamIds() {
         return parameters.keySet();
     }
 

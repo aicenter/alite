@@ -1,4 +1,4 @@
-package incubator.visprotocol.structure;
+package incubator.visprotocol.vis.structure;
 
 /**
  * type of change in element
