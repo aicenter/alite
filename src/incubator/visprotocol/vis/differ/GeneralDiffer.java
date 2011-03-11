@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO test regular use and all exception cases
+// TODO deleting
 /**
- * Stores last state and structure to send. When pushed new part, updates last
- * state and differences are added to the structure to send. When pulled,
- * structure to send is returned and cleared.
+ * Stores last state and structure to send. When pushed new part, updates last state and differences
+ * are added to the structure to send. When pulled, structure to send is returned and cleared.
  * 
  * @author Ondrej Milenovsky
  */
@@ -40,12 +40,13 @@ public class GeneralDiffer implements Differ {
     }
 
     /**
-     * Update deeper from current folder. New and current folders must be on
-     * same path, path is stored in the list excluding current folder id
+     * Update deeper from current folder. New and current folders must be on same path, path is
+     * stored in the list excluding current folder id
      */
     private void update(Folder newF, Folder current, List<String> path) {
         if (newF.equals(current)) {
-            throw new RuntimeException("New folder " + newF.getId() + " is not same id as folder " + current.getId());
+            throw new RuntimeException("New folder " + newF.getId() + " is not same id as folder "
+                    + current.getId());
         }
         path.add(newF.getId());
         Folder updateFolder = null;
@@ -81,14 +82,15 @@ public class GeneralDiffer implements Differ {
     /** update element */
     private void update(Element newE, Element current, List<String> path) {
         if (newE.equals(current)) {
-            throw new RuntimeException("New element " + newE.getId() + " is not same type and id as element "
-                    + current.getId());
+            throw new RuntimeException("New element " + newE.getId()
+                    + " is not same type and id as element " + current.getId());
         }
         Element updateElement = null;
         for (String id : newE.getParamIds()) {
             Object value = newE.getParameter(id);
             Object currVal = current.getParameter(id);
-            if (((value == null) && (currVal != null)) || ((value != currVal) && !value.equals(currVal))) {
+            if (((value == null) && (currVal != null))
+                    || ((value != currVal) && !value.equals(currVal))) {
                 current.setParameter(id, value);
                 if (updateElement == null) {
                     updateElement = getFolderFromUpdate(path).getElement(newE);
@@ -100,8 +102,7 @@ public class GeneralDiffer implements Differ {
     }
 
     /**
-     * returns folder from update struct on specified path (folders created if
-     * not exist)
+     * returns folder from update struct on specified path (folders created if not exist)
      */
     private Folder getFolderFromUpdate(List<String> path) {
         Folder f = newState.getRoot(path.get(0));

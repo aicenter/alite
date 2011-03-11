@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 
 /**
- * Folder in the structure. Has one collection for elements and one for folders.
- * Type is not necessary.
+ * Folder in the structure. Has one collection for elements and one for folders. Type is not
+ * necessary.
  * 
  * @author Ondrej Milenovsky
  * */
@@ -55,9 +55,16 @@ public class Folder extends Element {
         return getFolder(f.getId());
     }
 
+    /** if the element does not exists, throw exception */
+    public Element getElement(String id) {
+        if (!elements.containsKey(id)) {
+            throw new RuntimeException("Folder " + getId() + " does not contain element " + id);
+        }
+        return elements.get(id);
+    }
+
     /**
-     * returns element, if not exists, creates it, type is used only when
-     * creating new element
+     * returns element, if not exists, creates it, type is used only when creating new element
      */
     public Element getElement(String id, String type) {
         if (elements.containsKey(id)) {
@@ -69,8 +76,7 @@ public class Folder extends Element {
     }
 
     /**
-     * returns element, if not exists, creates it, type is will be same as
-     * requested element
+     * returns element, if not exists, creates it, type is will be same as requested element
      */
     public Element getElement(Element e) {
         return getElement(e.getId(), e.getType());
@@ -107,14 +113,51 @@ public class Folder extends Element {
     @Override
     public void update(Element e) {
         super.update(e);
-        Folder f = (Folder) e;
-        folders.putAll(f.folders);
-        elements.putAll(f.elements);
+        if (e instanceof Folder) {
+            Folder f = (Folder) e;
+            folders.putAll(f.folders);
+            elements.putAll(f.elements);
+        }
     }
 
     @Override
     public String getType() {
         return DEFAULT_TYPE;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Folder)) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        return getId().equals(((Folder) obj).getId());
+    }
+
+    public String print() {
+        return print(0);
+    }
+
+    public String print(int spaces) {
+        String ret = super.print(spaces);
+        String s = getSpaces(spaces);
+        if (!getElements().isEmpty()) {
+            ret += s + "---elements---\n";
+            for (String ed : getElementIds()) {
+                Element e = getElement(ed);
+                ret += e.print(spaces + 2);
+            }
+        }
+        if (!getFolders().isEmpty()) {
+            ret += s + "---folders---\n";
+            for (String fd : getFolderIds()) {
+                Folder f = getFolder(fd);
+                ret += f.print(spaces + 2);
+            }
+        }
+        return ret;
     }
 
 }
