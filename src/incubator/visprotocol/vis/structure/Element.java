@@ -18,12 +18,10 @@ public class Element implements Serializable {
     private final String id;
     private final String type;
     private final Map<String, Object> parameters;
-    private ChangeFlag changeFlag;
 
     public Element(String id, String type) {
         this.id = id;
         this.type = type;
-        changeFlag = ChangeFlag.NONE;
         parameters = new HashMap<String, Object>(2);
     }
 
@@ -35,16 +33,12 @@ public class Element implements Serializable {
         return type;
     }
 
-    public ChangeFlag getChangeFlag() {
-        return changeFlag;
-    }
-
-    public void setChangeFlag(ChangeFlag changeFlag) {
-        this.changeFlag = changeFlag;
-    }
-
     public boolean containsParameter(String id) {
         return parameters.containsKey(id);
+    }
+
+    public Object getParameter(String id) {
+        return parameters.get(id);
     }
 
     /** returns parameter, if not contains, returns null */
@@ -54,7 +48,6 @@ public class Element implements Serializable {
     }
 
     public void setParameter(String id, Object value) {
-        updated();
         parameters.put(id, value);
     }
 
@@ -66,10 +59,28 @@ public class Element implements Serializable {
         return parameters.values();
     }
 
-    protected void updated() {
-        if ((changeFlag == ChangeFlag.NONE) || (changeFlag == ChangeFlag.NO_CHANGE)) {
-            changeFlag = ChangeFlag.UPDATE;
+    /**
+     * elements must equal ! taken all parameters and change flag and updated
+     * current state
+     */
+    public void update(Element e) {
+        if (!equals(e)) {
+            throw new RuntimeException("Merging " + getId() + " and " + e.getId() + " different elements");
         }
+        parameters.putAll(e.parameters);
+    }
+
+    public boolean isEmpty() {
+        return parameters.isEmpty();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        Element e2 = (Element) obj;
+        return id.equals(e2.getId()) && type.equals(e2.getType());
     }
 
 }

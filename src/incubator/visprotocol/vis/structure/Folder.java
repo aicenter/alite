@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 
 /**
  * Folder in the structure. Has one collection for elements and one for folders.
- * There are no methods such as addFolder, folder is created when asking for it.
  * Type is not necessary.
  * 
  * @author Ondrej Milenovsky
@@ -20,11 +19,7 @@ public class Folder extends Element {
     private final LinkedHashMap<String, Folder> folders;
 
     public Folder(String id) {
-        this(id, DEFAULT_TYPE);
-    }
-
-    public Folder(String id, String type) {
-        super(id, type);
+        super(id, null);
         elements = new LinkedHashMap<String, Element>();
         folders = new LinkedHashMap<String, Folder>();
     }
@@ -33,24 +28,31 @@ public class Folder extends Element {
         return folders.containsKey(id);
     }
 
+    public boolean containsFolder(Folder f) {
+        return folders.containsKey(f.getId());
+    }
+
     public boolean containsElement(String id) {
         return elements.containsKey(id);
     }
 
-    /** returns folder, if not exists, creates it */
-    public Folder getFolder(String id) {
-        return getFolder(id, DEFAULT_TYPE);
+    public boolean containsElement(Element e) {
+        return elements.containsKey(e.getId());
     }
 
-    /** returns folder, if not exists, creates it, type is used when creating */
-    public Folder getFolder(String id, String type) {
+    /** returns folder, if not exists, creates it */
+    public Folder getFolder(String id) {
         if (folders.containsKey(id)) {
             return folders.get(id);
         }
-        updated();
         Folder f = new Folder(id);
         folders.put(id, f);
         return f;
+    }
+
+    /** returns folder, if not exists, creates it */
+    public Folder getFolder(Folder f) {
+        return getFolder(f.getId());
     }
 
     /**
@@ -61,10 +63,17 @@ public class Folder extends Element {
         if (elements.containsKey(id)) {
             return elements.get(id);
         }
-        updated();
         Element e = new Element(id, type);
         elements.put(id, e);
         return e;
+    }
+
+    /**
+     * returns element, if not exists, creates it, type is will be same as
+     * requested element
+     */
+    public Element getElement(Element e) {
+        return getElement(e.getId(), e.getType());
     }
 
     public Collection<String> getFolderIds() {
@@ -81,6 +90,31 @@ public class Folder extends Element {
 
     public Collection<Element> getElements() {
         return elements.values();
+    }
+
+    public void addFolder(Folder f) {
+        folders.put(f.getId(), f);
+    }
+
+    public void addElement(Element e) {
+        elements.put(e.getId(), e);
+    }
+
+    public boolean isEmpty() {
+        return elements.isEmpty() && folders.isEmpty() && super.isEmpty();
+    }
+
+    @Override
+    public void update(Element e) {
+        super.update(e);
+        Folder f = (Folder) e;
+        folders.putAll(f.folders);
+        elements.putAll(f.elements);
+    }
+
+    @Override
+    public String getType() {
+        return DEFAULT_TYPE;
     }
 
 }
