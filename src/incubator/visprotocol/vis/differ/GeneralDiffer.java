@@ -87,7 +87,8 @@ public class GeneralDiffer implements Differ {
         Element updateElement = null;
         for (String id : newE.getParamIds()) {
             Object value = newE.getParameter(id);
-            if (!value.equals(current.containsParameter(id))) {
+            Object currVal = current.getParameter(id);
+            if (((value == null) && (currVal != null)) || ((value != currVal) && !value.equals(currVal))) {
                 current.setParameter(id, value);
                 if (updateElement == null) {
                     updateElement = getFolderFromUpdate(path).getElement(newE);
