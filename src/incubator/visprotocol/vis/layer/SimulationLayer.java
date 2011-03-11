@@ -8,7 +8,7 @@ public class SimulationLayer implements Layer {
 
     @Override
     public String getName() {
-	return "Simulation layer";
+        return "Simulation layer";
     }
 
 }

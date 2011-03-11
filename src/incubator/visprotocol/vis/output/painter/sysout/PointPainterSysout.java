@@ -7,9 +7,15 @@ import cz.agents.alite.vis.element.Point;
 
 public class PointPainterSysout implements Painter {
 
+    private final String id;
+
+    public PointPainterSysout(String id) {
+        this.id = id;
+    }
+
     @Override
     public void paint(Protocol protocol) {
-        Points points = protocol.pull(Points.class);
+        Points points = (Points) protocol.pull(id);
 
         String output = "";
         for (Point point : points.points) {

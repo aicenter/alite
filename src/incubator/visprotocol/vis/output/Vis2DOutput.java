@@ -42,255 +42,251 @@ public class Vis2DOutput extends Canvas {
     private Graphics2D graphics;
 
     public Vis2DOutput() {
-	this(new Vis2DParams());
+        this(new Vis2DParams());
     }
 
     public Vis2DOutput(Vis2DParams params) {
-	super();
+        super();
 
-	// canvas
-	setBounds(0, 0, params.windowSize.width, params.windowSize.height);
+        // canvas
+        setBounds(0, 0, params.windowSize.width, params.windowSize.height);
 
-	window = new JFrame(params.windowTitle);
-	zoomFactor = params.viewZoom;
-	zoomFactorBack = zoomFactor;
-	offset = new Point2d(params.viewOffset);
-	offsetBack = new Point2d(params.viewOffset);
-	bounds = params.worldBounds;
-	maxZoom = params.viewMaxZoom;
+        window = new JFrame(params.windowTitle);
+        zoomFactor = params.viewZoom;
+        zoomFactorBack = zoomFactor;
+        offset = new Point2d(params.viewOffset);
+        offsetBack = new Point2d(params.viewOffset);
+        bounds = params.worldBounds;
+        maxZoom = params.viewMaxZoom;
 
-	final JPanel panel = (JPanel) window.getContentPane();
-	panel
-		.setBounds(0, 0, params.windowSize.width,
-			params.windowSize.height);
-	panel.add(this);
+        final JPanel panel = (JPanel) window.getContentPane();
+        panel.setBounds(0, 0, params.windowSize.width, params.windowSize.height);
+        panel.add(this);
 
-	window.addWindowListener(new WindowAdapter() {
+        window.addWindowListener(new WindowAdapter() {
 
-	    public void windowClosing(WindowEvent evt) {
-		System.exit(0);
-	    }
+            public void windowClosing(WindowEvent evt) {
+                System.exit(0);
+            }
 
-	});
-	window.addComponentListener(new ComponentListener() {
+        });
+        window.addComponentListener(new ComponentListener() {
 
-	    @Override
-	    public void componentShown(ComponentEvent e) {
-	    }
+            @Override
+            public void componentShown(ComponentEvent e) {
+            }
 
-	    @Override
-	    public void componentResized(ComponentEvent e) {
-		reinitializeBuffers = true;
-	    }
+            @Override
+            public void componentResized(ComponentEvent e) {
+                reinitializeBuffers = true;
+            }
 
-	    @Override
-	    public void componentMoved(ComponentEvent e) {
-	    }
+            @Override
+            public void componentMoved(ComponentEvent e) {
+            }
 
-	    @Override
-	    public void componentHidden(ComponentEvent e) {
-	    }
+            @Override
+            public void componentHidden(ComponentEvent e) {
+            }
 
-	});
+        });
 
-	window.pack();
+        window.pack();
 
-	// listeners
-	addMouseMotionListener(new MouseMotionListener() {
-	    @Override
-	    public void mouseMoved(MouseEvent e) {
-		cursorPosition.set(transInvXCurrent(e.getX()),
-			transInvYCurrent(e.getY()));
-	    }
+        // listeners
+        addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                cursorPosition.set(transInvXCurrent(e.getX()), transInvYCurrent(e.getY()));
+            }
 
-	    @Override
-	    public void mouseDragged(MouseEvent e) {
-		cursorPosition.set(transInvXCurrent(e.getX()),
-			transInvYCurrent(e.getY()));
-	    }
-	});
-	addKeyListener(new KeyListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                cursorPosition.set(transInvXCurrent(e.getX()), transInvYCurrent(e.getY()));
+            }
+        });
+        addKeyListener(new KeyListener() {
 
-	    @Override
-	    public void keyTyped(KeyEvent e) {
-	    }
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
 
-	    @Override
-	    public void keyReleased(KeyEvent e) {
-	    }
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
 
-	    @Override
-	    public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_HOME) {
-		    offset.x = 0;
-		    offset.y = 0;
-		    zoomFactor = 1;
-		}
-	    }
-	});
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_HOME) {
+                    offset.x = 0;
+                    offset.y = 0;
+                    zoomFactor = 1;
+                }
+            }
+        });
 
-	// buffers
-	reinitializeBuffers();
+        // buffers
+        reinitializeBuffers();
 
-	window.setVisible(true);
+        window.setVisible(true);
     }
 
     public Component getComponent() {
-	return this;
+        return this;
     }
 
     public Graphics2D getGraphics2D() {
-	return graphics;
+        return graphics;
     }
 
     private boolean reinitializeBuffers() {
-	if (reinitializeBuffers) {
-	    reinitializeBuffers = false;
+        if (reinitializeBuffers) {
+            reinitializeBuffers = false;
 
-	    createBufferStrategy(2);
-	    strategy = getBufferStrategy();
+            createBufferStrategy(2);
+            strategy = getBufferStrategy();
 
-	    graphics = (Graphics2D) strategy.getDrawGraphics();
-	    graphics.setColor(Color.WHITE);
-	    graphics.setBackground(Color.BLACK);
+            graphics = (Graphics2D) strategy.getDrawGraphics();
+            graphics.setColor(Color.WHITE);
+            graphics.setBackground(Color.BLACK);
 
-	    return true;
-	}
+            return true;
+        }
 
-	return false;
+        return false;
     }
 
     public void flip() {
-	strategy.show();
+        strategy.show();
 
-	if (reinitializeBuffers()) {
-	    limitTransformation();
-	}
+        if (reinitializeBuffers()) {
+            limitTransformation();
+        }
 
-	zoomFactorBack = zoomFactor;
-	offsetBack.set(offset);
+        zoomFactorBack = zoomFactor;
+        offsetBack.set(offset);
     }
 
     public void setZoomFactor(double zoom) {
-	zoomFactor = zoom;
-	limitTransformation();
+        zoomFactor = zoom;
+        limitTransformation();
     }
 
     public int transX(double x) {
-	return (int) (offsetBack.x + x * zoomFactorBack);
+        return (int) (offsetBack.x + x * zoomFactorBack);
     }
 
     public int transY(double y) {
-	return (int) (offsetBack.y + y * zoomFactorBack);
+        return (int) (offsetBack.y + y * zoomFactorBack);
     }
 
     public int transXCurrent(double x) {
-	return (int) (offset.x + x * zoomFactor);
+        return (int) (offset.x + x * zoomFactor);
     }
 
     public int transYCurrent(double y) {
-	return (int) (offset.y + y * zoomFactor);
+        return (int) (offset.y + y * zoomFactor);
     }
 
     public int transW(double w) {
-	return (int) (w * zoomFactorBack);
+        return (int) (w * zoomFactorBack);
     }
 
     public int transH(double h) {
-	return (int) (h * zoomFactorBack);
+        return (int) (h * zoomFactorBack);
     }
 
     public double transInvX(int x) {
-	return (x - offsetBack.x) / zoomFactorBack;
+        return (x - offsetBack.x) / zoomFactorBack;
     }
 
     public double transInvY(int y) {
-	return (y - offsetBack.y) / zoomFactorBack;
+        return (y - offsetBack.y) / zoomFactorBack;
     }
 
     public double transInvW(int w) {
-	return w / zoomFactorBack;
+        return w / zoomFactorBack;
     }
 
     public double transInvH(int h) {
-	return h / zoomFactorBack;
+        return h / zoomFactorBack;
     }
 
     public double getZoomFactor() {
-	return zoomFactor;
+        return zoomFactor;
     }
 
     public Point2d getOffset() {
-	return new Point2d(offset);
+        return new Point2d(offset);
     }
 
     public Dimension getDrawingDimension() {
-	return window.getContentPane().getSize();
+        return window.getContentPane().getSize();
     }
 
     public void setWindowBounds(Rectangle rect) {
-	window.setBounds(rect);
+        window.setBounds(rect);
     }
 
     public void setWindowTitle(String title) {
-	window.setTitle(title);
+        window.setTitle(title);
     }
 
     private double transInvXCurrent(int x) {
-	return (x - offset.x) / zoomFactor;
+        return (x - offset.x) / zoomFactor;
     }
 
     private double transInvYCurrent(int y) {
-	return (y - offset.y) / zoomFactor;
+        return (y - offset.y) / zoomFactor;
     }
 
     public Point2d getOffsetBack() {
-	return new Point2d(offsetBack);
+        return new Point2d(offsetBack);
     }
 
     public double getZoomFactorBack() {
-	return zoomFactorBack;
+        return zoomFactorBack;
     }
 
     public void setOffset(Point2d offset) {
-	this.offset.set(offset);
-	limitTransformation();
+        this.offset.set(offset);
+        limitTransformation();
     }
 
     public Point2d getCursorPosition() {
-	return cursorPosition;
+        return cursorPosition;
     }
 
     private void limitTransformation() {
-	zoomFactor = Math.min(zoomFactor, maxZoom);
+        zoomFactor = Math.min(zoomFactor, maxZoom);
 
-	int bMinX = transXCurrent(bounds.getMinX());
-	int bMinY = transYCurrent(bounds.getMinY());
-	int bMaxX = transXCurrent(bounds.getMaxX());
-	int bMaxY = transYCurrent(bounds.getMaxY());
-	int bW = transXCurrent(bounds.getMaxX() - bounds.getMinX());
-	int bH = transYCurrent(bounds.getMaxY() - bounds.getMinY());
+        int bMinX = transXCurrent(bounds.getMinX());
+        int bMinY = transYCurrent(bounds.getMinY());
+        int bMaxX = transXCurrent(bounds.getMaxX());
+        int bMaxY = transYCurrent(bounds.getMaxY());
+        int bW = transXCurrent(bounds.getMaxX() - bounds.getMinX());
+        int bH = transYCurrent(bounds.getMaxY() - bounds.getMinY());
 
-	// TODO limiting zoom is not working well
-	if (bMaxX - bMinX < getWidth()) {
-	    zoomFactor *= getWidth() / (double) (bMaxX - bMinX);
-	}
-	if (bMaxY - bMinY < getHeight()) {
-	    zoomFactor *= getHeight() / (double) (bMaxY - bMinY);
-	}
+        // TODO limiting zoom is not working well
+        if (bMaxX - bMinX < getWidth()) {
+            zoomFactor *= getWidth() / (double) (bMaxX - bMinX);
+        }
+        if (bMaxY - bMinY < getHeight()) {
+            zoomFactor *= getHeight() / (double) (bMaxY - bMinY);
+        }
 
-	if (bMinX > 0) {
-	    offset.x -= bMinX;
-	}
-	if (bMinY > 0) {
-	    offset.y -= bMinY;
-	}
-	if (bW < getWidth()) {
-	    offset.x += -bW + getWidth();
-	}
-	if (bH < getHeight()) {
-	    offset.y += -bH + getHeight();
-	}
+        if (bMinX > 0) {
+            offset.x -= bMinX;
+        }
+        if (bMinY > 0) {
+            offset.y -= bMinY;
+        }
+        if (bW < getWidth()) {
+            offset.x += -bW + getWidth();
+        }
+        if (bH < getHeight()) {
+            offset.y += -bH + getHeight();
+        }
     }
 
 }

@@ -7,31 +7,30 @@ public abstract class MaxFPSRealTimeSampler implements Sampler {
 
     @Override
     public void start() {
-	new Thread(new Runnable() {
+        new Thread(new Runnable() {
 
-	    @Override
-	    public void run() {
-		Thread.currentThread().setPriority(THREAD_PRIORITY);
-		while (true) {
-		    long startNanos = System.nanoTime();
-		    sample();
-		    long endNanos = System.nanoTime();
+            @Override
+            public void run() {
+                Thread.currentThread().setPriority(THREAD_PRIORITY);
+                while (true) {
+                    long startNanos = System.nanoTime();
+                    sample();
+                    long endNanos = System.nanoTime();
 
-		    long sleepNanos = (long) (1.0 / FPS_MAX * 1000000000.0)
-			    - (endNanos - startNanos);
-		    sleepNanos = sleepNanos < 0 ? 0 : sleepNanos;
-		    long sleepMillis = sleepNanos / 1000000;
-		    sleepNanos -= sleepMillis * 1000000;
+                    long sleepNanos = (long) (1.0 / FPS_MAX * 1000000000.0) - (endNanos - startNanos);
+                    sleepNanos = sleepNanos < 0 ? 0 : sleepNanos;
+                    long sleepMillis = sleepNanos / 1000000;
+                    sleepNanos -= sleepMillis * 1000000;
 
-		    try {
-			Thread.sleep(sleepMillis, (int) sleepNanos);
-		    } catch (InterruptedException ex) {
+                    try {
+                        Thread.sleep(sleepMillis, (int) sleepNanos);
+                    } catch (InterruptedException ex) {
 
-		    }
-		}
-	    }
+                    }
+                }
+            }
 
-	}).start();
+        }).start();
     }
 
     protected abstract void sample();

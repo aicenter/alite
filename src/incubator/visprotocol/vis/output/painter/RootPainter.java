@@ -10,19 +10,19 @@ public class RootPainter implements GroupPainter {
     private final List<Painter> subPainters;
 
     public RootPainter() {
-	subPainters = new LinkedList<Painter>();
+        subPainters = new LinkedList<Painter>();
     }
 
     @Override
     public void addPainter(Painter painter) {
-	subPainters.add(painter);
+        subPainters.add(painter);
     }
 
     @Override
     public void paint(Protocol protocol) {
-	for (Painter painter : subPainters) {
-	    painter.paint(protocol);
-	}
+        for (Painter painter : subPainters) {
+            painter.paint(protocol);
+        }
     }
 
 }

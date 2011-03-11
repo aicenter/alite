@@ -12,15 +12,17 @@ import cz.agents.alite.vis.element.Point;
 
 public class PointPainterVis2D implements Painter {
 
-    private Vis2DOutput vis2dOutput;
+    private final Vis2DOutput vis2dOutput;
+    private final String id;
 
-    public PointPainterVis2D(Vis2DOutput vis2dOutput) {
+    public PointPainterVis2D(Vis2DOutput vis2dOutput, String id) {
         this.vis2dOutput = vis2dOutput;
+        this.id = id;
     }
 
     @Override
     public void paint(Protocol protocol) {
-        Points points = protocol.pull(Points.class);
+        Points points = (Points) protocol.pull(id);
 
         Graphics2D graphics2d = vis2dOutput.getGraphics2D();
 
@@ -33,8 +35,7 @@ public class PointPainterVis2D implements Painter {
             int y1 = vis2dOutput.transY(point.getPosition().y) - radius;
             int x2 = vis2dOutput.transX(point.getPosition().x) + radius;
             int y2 = vis2dOutput.transY(point.getPosition().y) + radius;
-            if ((x2 > 0) && (x1 < vis2dOutput.getWidth())
-                    && (y2 > 0) && (y1 < vis2dOutput.getHeight())) {
+            if ((x2 > 0) && (x1 < vis2dOutput.getWidth()) && (y2 > 0) && (y1 < vis2dOutput.getHeight())) {
                 graphics2d.fillOval(x1, y1, radius * 2, radius * 2);
             }
         }

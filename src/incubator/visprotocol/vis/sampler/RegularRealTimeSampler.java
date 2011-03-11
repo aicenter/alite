@@ -7,22 +7,22 @@ public abstract class RegularRealTimeSampler implements Sampler {
 
     @Override
     public void start() {
-	new Thread(new Runnable() {
+        new Thread(new Runnable() {
 
-	    @Override
-	    public void run() {
-		Thread.currentThread().setPriority(THREAD_PRIORITY);
-		while (true) {
-		    sample();
-		    try {
-			Thread.sleep(PERIOD_MILLIS);
-		    } catch (InterruptedException ex) {
+            @Override
+            public void run() {
+                Thread.currentThread().setPriority(THREAD_PRIORITY);
+                while (true) {
+                    sample();
+                    try {
+                        Thread.sleep(PERIOD_MILLIS);
+                    } catch (InterruptedException ex) {
 
-		    }
-		}
-	    }
+                    }
+                }
+            }
 
-	}).start();
+        }).start();
     }
 
     protected abstract void sample();

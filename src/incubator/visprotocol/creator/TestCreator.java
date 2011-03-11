@@ -54,11 +54,8 @@ public class TestCreator implements Creator {
         final RootProxyLayer rootProxyLayer = new RootProxyLayer();
         // using the PersonLayer (similarly to the old vis) create a
         // PointProxyLayer building the Points for the visualization protocol
-        // TODO works only the last layer
-        // 	--- problem is that the proxies both puts into the protocol Points class
-        //          which overwrites themselves
-        rootProxyLayer.addLayer(PersonLayer.create(exampleEnvironment));
-        rootProxyLayer.addLayer(RandomPointsLayer.create(1000));
+        rootProxyLayer.addLayer(PersonLayer.create(exampleEnvironment, "Person"));
+        rootProxyLayer.addLayer(RandomPointsLayer.create(1000, 10000, "Dots"));
         // XXX: in future all the layers of the old vis should be replicated
         // using the proxies here
 
@@ -73,7 +70,8 @@ public class TestCreator implements Creator {
         final RootPainter rootPainter = new RootPainter();
         // create a Painter drawing the visual elements (Points) using the
         // Vis2DOutput (2D output based on old Vis class)
-        rootPainter.addPainter(new PointPainterVis2D(vis2d));
+        rootPainter.addPainter(new PointPainterVis2D(vis2d, "Person"));
+        rootPainter.addPainter(new PointPainterVis2D(vis2d, "Dots"));
         // create a Painter drawing the visual elements (Points) using sysout
         // (for demonstarion of multi-output use)
         // TODO: generalize the painter to string painter (it can be used as
@@ -115,12 +113,9 @@ public class TestCreator implements Creator {
     private void createAndRunSimulation() {
         Random random = new Random();
         while (true) {
-            exampleEnvironment.exampleString = "string"
-                    + Long.toString(random.nextLong());
-            exampleEnvironment.examplePosition = new Point3d(random
-                    .nextDouble() * 20.0 + 100.0,
-                    random.nextDouble() * 20.0 + 100.0,
-                    random.nextDouble() * 20.0 + 100.0);
+            exampleEnvironment.exampleString = "string" + Long.toString(random.nextLong());
+            exampleEnvironment.examplePosition = new Point3d(random.nextDouble() * 20.0 + 100.0,
+                    random.nextDouble() * 20.0 + 100.0, random.nextDouble() * 20.0 + 100.0);
             exampleEnvironment.exampleInteger = random.nextInt();
 
             exampleEnvironment.exampleTime++;
