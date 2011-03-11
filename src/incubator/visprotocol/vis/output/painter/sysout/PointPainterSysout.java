@@ -12,7 +12,7 @@ public class PointPainterSysout implements Painter {
         Points points = protocol.pull(Points.class);
 
         String output = "";
-        for (Point point : points.getPoints()) {
+        for (Point point : points.points) {
             output = "POINT: " + point.getPosition();
         }
         System.out.println(output);
