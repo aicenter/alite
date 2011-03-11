@@ -1,6 +1,11 @@
 package incubator.visprotocol.vis.structure;
 
-public class Structure {
+import java.io.Serializable;
+
+public class Structure implements Serializable {
+
+    private static final long serialVersionUID = -5536165397290203610L;
+
     private Folder root;
 
     public Structure() {
@@ -47,6 +52,9 @@ public class Structure {
         if (this == obj) {
             return true;
         }
+        if (!(obj instanceof Structure)) {
+            return false;
+        }
         Structure s2 = (Structure) obj;
         if (s2.getRoot() == root) {
             return true;
@@ -55,5 +63,12 @@ public class Structure {
             return false;
         }
         return root.equals(s2.getRoot());
+    }
+    
+    public String print() {
+        if(root == null) {
+            return "Empty\n";
+        }
+        return root.print();
     }
 }
