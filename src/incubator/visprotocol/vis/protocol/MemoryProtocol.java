@@ -5,25 +5,25 @@ import java.util.Map;
 
 public class MemoryProtocol implements Protocol {
 
-    private Map<Class<?>, Object> elementsByClass;
+    private Map<String, Object> elementsById;
 
     public MemoryProtocol() {
-	elementsByClass = new HashMap<Class<?>, Object>();
+        elementsById = new HashMap<String, Object>();
     }
 
     @Override
-    public <T> void push(T elements) {
-	elementsByClass.put(elements.getClass(), elements);
+    public void push(String id, Object elements) {
+        elementsById.put(id, elements);
     }
 
     @Override
-    public <T> T pull(Class<T> clazz) {
-	return clazz.cast(elementsByClass.get(clazz));
+    public Object pull(String id) {
+        return elementsById.get(id);
     }
 
     @Override
     public void nextStep() {
-	elementsByClass.clear();
+        elementsById.clear();
     }
 
 }

@@ -6,15 +6,17 @@ import cz.agents.alite.vis.element.aggregation.PointElements;
 
 public class PointProxyLayer implements ProxyLayer {
 
-    private PointElements pointElements;
+    private final PointElements pointElements;
+    private final String id;
 
-    public PointProxyLayer(PointElements pointElements) {
-	this.pointElements = pointElements;
+    public PointProxyLayer(PointElements pointElements, String id) {
+        this.pointElements = pointElements;
+        this.id = id;
     }
 
     @Override
     public void fillProtocol(Protocol protocol) {
-	protocol.push(new Points(pointElements));
+        protocol.push(id, new Points(pointElements));
     }
 
 }

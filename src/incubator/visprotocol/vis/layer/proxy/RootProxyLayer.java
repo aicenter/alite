@@ -10,19 +10,19 @@ public class RootProxyLayer implements GroupProxyLayer {
     private final List<ProxyLayer> subLayers;
 
     public RootProxyLayer() {
-	subLayers = new LinkedList<ProxyLayer>();
+        subLayers = new LinkedList<ProxyLayer>();
     }
 
     @Override
     public void fillProtocol(Protocol protocol) {
-	for (ProxyLayer layer : subLayers) {
-	    layer.fillProtocol(protocol);
-	}
+        for (ProxyLayer layer : subLayers) {
+            layer.fillProtocol(protocol);
+        }
     }
 
     @Override
     public void addLayer(ProxyLayer layer) {
-	subLayers.add(layer);
+        subLayers.add(layer);
     }
 
 }

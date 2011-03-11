@@ -1,11 +1,10 @@
 package incubator.visprotocol.vis.protocol;
 
-
 public interface Protocol {
 
-    public <T> void push(T elements);
+    public void push(String id, Object elements);
 
-    public <T> T pull(Class<T> clazz);
+    public Object pull(String id);
 
     public void nextStep();
 

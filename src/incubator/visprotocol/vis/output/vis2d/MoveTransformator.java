@@ -25,36 +25,36 @@ public class MoveTransformator implements MouseListener, MouseMotionListener {
     private double speed = 1;
 
     public MoveTransformator(Vis2DOutput vis2d) {
-	this.vis2d = vis2d;
-	lastOffset = vis2d.getOffset();
-	vis2d.addMouseListener(this);
-	vis2d.addMouseMotionListener(this);
+        this.vis2d = vis2d;
+        lastOffset = vis2d.getOffset();
+        vis2d.addMouseListener(this);
+        vis2d.addMouseMotionListener(this);
     }
 
     public void setSpeed(double speed) {
-	this.speed = speed;
+        this.speed = speed;
     }
 
     public double getSpeed() {
-	return speed;
+        return speed;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-	if (e.getButton() == MouseEvent.BUTTON3) {
-	    vis2d.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-	    moving = false;
-	}
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            vis2d.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            moving = false;
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-	if (e.getButton() == MouseEvent.BUTTON3) {
-	    vis2d.setCursor(new Cursor(Cursor.HAND_CURSOR));
-	    lastOffset.x = e.getX();
-	    lastOffset.y = e.getY();
-	    moving = true;
-	}
+        if (e.getButton() == MouseEvent.BUTTON3) {
+            vis2d.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            lastOffset.x = e.getX();
+            lastOffset.y = e.getY();
+            moving = true;
+        }
     }
 
     @Override
@@ -71,14 +71,14 @@ public class MoveTransformator implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-	if (moving) {
-	    Point2d offset = vis2d.getOffset();
-	    offset.x += speed * (e.getX() - lastOffset.x);
-	    offset.y += speed * (e.getY() - lastOffset.y);
-	    vis2d.setOffset(offset);
-	    lastOffset.x = e.getX();
-	    lastOffset.y = e.getY();
-	}
+        if (moving) {
+            Point2d offset = vis2d.getOffset();
+            offset.x += speed * (e.getX() - lastOffset.x);
+            offset.y += speed * (e.getY() - lastOffset.y);
+            vis2d.setOffset(offset);
+            lastOffset.x = e.getX();
+            lastOffset.y = e.getY();
+        }
     }
 
     @Override

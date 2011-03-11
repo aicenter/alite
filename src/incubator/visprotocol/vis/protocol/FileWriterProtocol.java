@@ -6,24 +6,24 @@ package incubator.visprotocol.vis.protocol;
 public class FileWriterProtocol implements Protocol {
 
     public FileWriterProtocol() {
-	// TODO Auto-generated constructor stub
+        // TODO Auto-generated constructor stub
     }
-    
+
     @Override
-    public <T> void push(T elements) {
-	// TODO Auto-generated method stub
+    public void push(String id, Object elements) {
+        // TODO Auto-generated method stub
 
     }
 
     @Override
-    public <T> T pull(Class<T> clazz) {
-	// TODO Auto-generated method stub
-	return null;
+    public Object pull(String id) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
     public void nextStep() {
-	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 

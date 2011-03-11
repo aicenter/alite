@@ -14,35 +14,33 @@ import cz.agents.alite.vis.element.implemetation.PointImpl;
 
 public class RandomPointsLayer implements Layer {
 
-    
-    
-    public static ProxyLayer create(int n) {
-	final ArrayList<Point> points = new ArrayList<Point>(n);
-	for(int i = 0; i < n; i++) {
-	    points.add(new PointImpl(new Point3d(Math.random() * 10000, Math.random() * 10000, 0)));
-	}
-	
-	return new PointProxyLayer(new PointElements() {
+    public static ProxyLayer create(int n, int size, final String id) {
+        final ArrayList<Point> points = new ArrayList<Point>(n);
+        for (int i = 0; i < n; i++) {
+            points.add(new PointImpl(new Point3d(Math.random() * size, Math.random() * size, 0)));
+        }
 
-	    @Override
-	    public int getStrokeWidth() {
-		return 5;
-	    }
+        return new PointProxyLayer(new PointElements() {
 
-	    @Override
-	    public Color getColor() {
-		return Color.RED;
-	    }
+            @Override
+            public int getStrokeWidth() {
+                return 5;
+            }
 
-	    @Override
-	    public Iterable<? extends Point> getPoints() {
-		return points;
-	    }
-	});
+            @Override
+            public Color getColor() {
+                return Color.RED;
+            }
+
+            @Override
+            public Iterable<? extends Point> getPoints() {
+                return points;
+            }
+        }, id);
     }
 
     @Override
     public String getName() {
-	return "Random layer";
+        return "Random layer";
     }
 }
