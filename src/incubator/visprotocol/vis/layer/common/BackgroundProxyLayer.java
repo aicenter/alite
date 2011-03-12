@@ -20,16 +20,25 @@ public class BackgroundProxyLayer extends TypedProxyLayer {
         this(color, path, DEFAULT_ID, types);
     }
 
-    public BackgroundProxyLayer(Color color, String path, String id, Map<String, Set<String>> types) {
-        super(types);
-        struct = generateStruct(color, path, id);
+    public BackgroundProxyLayer(Color color, String[] path, Map<String, Set<String>> types) {
+        this(color, path, DEFAULT_ID, types);
     }
 
-    private Structure generateStruct(Color color, String path, String id) {
-        Structure ret = StructUtils.createStructure(path);
-        Element e = StructUtils.getLeaf(ret).getElement(id, FillColorKeys.TYPE);
+    public BackgroundProxyLayer(Color color, String path, String id, Map<String, Set<String>> types) {
+        super(types);
+        struct = generateStruct(color, StructUtils.createStructure(path), id);
+    }
+
+    public BackgroundProxyLayer(Color color, String[] path, String id,
+            Map<String, Set<String>> types) {
+        super(types);
+        struct = generateStruct(color, StructUtils.createStructure(path), id);
+    }
+
+    private Structure generateStruct(Color color, Structure struct, String id) {
+        Element e = StructUtils.getLeaf(struct).getElement(id, FillColorKeys.TYPE);
         setParameter(e, FillColorKeys.COLOR, color);
-        return ret;
+        return struct;
     }
 
     @Override
