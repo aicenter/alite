@@ -62,6 +62,7 @@ public class ZoomTransformator implements Transformator, MouseWheelListener {
 
         int rotation = mouseWheelEvent.getWheelRotation() * mouseWheelEvent.getScrollAmount();
         // TODO bugged
+        // TODO what if step < 1
         if (rotation < 0) {
             // zoom in
             if (zoomInCenter) {

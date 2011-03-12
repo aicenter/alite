@@ -6,7 +6,7 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 
-public class RandomStructureGenerator {
+public class RandomStructGenerator {
     private int folders = 3;
     private int elements = 20;
     private int params = 10;
@@ -14,10 +14,10 @@ public class RandomStructureGenerator {
 
     private Random rnd = new Random();
 
-    public RandomStructureGenerator() {
+    public RandomStructGenerator() {
     }
 
-    public RandomStructureGenerator(int folders, int elements, int params, int maxFolders) {
+    public RandomStructGenerator(int folders, int elements, int params, int maxFolders) {
         this.folders = folders;
         this.elements = elements;
         this.params = 10;

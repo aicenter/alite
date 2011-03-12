@@ -3,7 +3,7 @@ package incubator.visprotocol.vis.layer.example;
 import incubator.visprotocol.structprocessor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
-import incubator.visprotocol.vis.layer.proxy.TypedProxyLayer;
+import incubator.visprotocol.vis.layer.TypedProxyLayer;
 
 import java.util.Map;
 import java.util.Set;

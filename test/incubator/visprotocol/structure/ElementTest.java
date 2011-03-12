@@ -7,7 +7,7 @@ import java.awt.Color;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.PointKeys;
-import incubator.visprotocol.utils.RandomStructureGenerator;
+import incubator.visprotocol.utils.RandomStructGenerator;
 
 import org.junit.Test;
 
@@ -44,7 +44,7 @@ public class ElementTest {
 
     @Test
     public void testEquals() {
-        RandomStructureGenerator gen = new RandomStructureGenerator(0, tests, 50, 0);
+        RandomStructGenerator gen = new RandomStructGenerator(0, tests, 50, 0);
         gen.setSeed(666);
         Structure s1 = gen.next();
         gen.setSeed(666);
@@ -66,7 +66,7 @@ public class ElementTest {
 
     @Test
     public void testDeepCopy() {
-        RandomStructureGenerator gen = new RandomStructureGenerator(0, tests, 50, 0);
+        RandomStructGenerator gen = new RandomStructGenerator(0, tests, 50, 0);
         Structure s1 = gen.next();
         Structure s2 = s1.deepCopy();
         assertTrue(s1.equalsDeep(s2));

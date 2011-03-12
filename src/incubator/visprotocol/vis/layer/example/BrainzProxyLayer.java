@@ -5,7 +5,7 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.PointKeys;
-import incubator.visprotocol.vis.layer.proxy.TypedProxyLayer;
+import incubator.visprotocol.vis.layer.TypedProxyLayer;
 
 import java.awt.Color;
 import java.util.ArrayList;

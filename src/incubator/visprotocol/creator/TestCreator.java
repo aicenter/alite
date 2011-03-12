@@ -5,11 +5,11 @@ import incubator.visprotocol.protocol.Protocol;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structprocessor.Differ;
 import incubator.visprotocol.structprocessor.Updater;
-import incubator.visprotocol.vis.layer.example.BackgroundProxyLayer;
+import incubator.visprotocol.vis.layer.RootProxyLayer;
+import incubator.visprotocol.vis.layer.common.BackgroundProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
 import incubator.visprotocol.vis.layer.example.ZombieProxyLayer;
-import incubator.visprotocol.vis.layer.proxy.RootProxyLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.RootPainter;
@@ -56,10 +56,10 @@ public class TestCreator implements Creator {
         // layers
         final RootProxyLayer rootProxyLayer = new RootProxyLayer();
         rootProxyLayer.addLayer(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
-        rootProxyLayer.addLayer(new BackgroundProxyLayer(Color.WHITE,
+        rootProxyLayer.addLayer(new BackgroundProxyLayer(Color.WHITE, ".Undead land.Other",
                 Vis2DBasicPainters.ELEMENT_TYPES));
         rootProxyLayer
-                .addLayer(new BrainzProxyLayer(1000, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
+                .addLayer(new BrainzProxyLayer(3, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
         rootProxyLayer.addLayer(new ZombieProxyLayer(exampleEnvironment,
                 Vis2DBasicPainters.ELEMENT_TYPES));
 
@@ -90,7 +90,7 @@ public class TestCreator implements Creator {
                 // current state in updater
                 painter.paint(updater.pull());
 
-                // TODO: should be done probably by painter
+                // TODO: should be done probably by painter ...but I don't think so
                 vis2d.flip();
             }
         };
