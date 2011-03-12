@@ -2,7 +2,7 @@ package incubator.visprotocol.creator;
 
 import javax.vecmath.Point3d;
 
-public interface VisualPersonProvider {
+public interface ZombieProvider {
 
     public String getPersonName();
 

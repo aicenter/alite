@@ -3,18 +3,19 @@ package incubator.visprotocol.creator;
 import incubator.visprotocol.protocol.MemoryProtocol;
 import incubator.visprotocol.protocol.Protocol;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
-import incubator.visprotocol.structprocessor.GeneralDiffer;
-import incubator.visprotocol.structprocessor.GeneralUpdater;
+import incubator.visprotocol.structprocessor.Differ;
+import incubator.visprotocol.structprocessor.Updater;
 import incubator.visprotocol.vis.layer.example.BackgroundProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
+import incubator.visprotocol.vis.layer.example.ZombieProxyLayer;
 import incubator.visprotocol.vis.layer.proxy.RootProxyLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
-import incubator.visprotocol.vis.output.painter.GroupPainter;
-import incubator.visprotocol.vis.output.painter.vis2d.BasicPainters;
+import incubator.visprotocol.vis.output.painter.RootPainter;
 import incubator.visprotocol.vis.output.vis2d.MoveTransformator;
 import incubator.visprotocol.vis.output.vis2d.ZoomTransformator;
+import incubator.visprotocol.vis.output.vis2d.painter.Vis2DBasicPainters;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -58,19 +59,20 @@ public class TestCreator implements Creator {
         rootProxyLayer.addLayer(new SimInfoProxyLayer());
         rootProxyLayer.addLayer(new BackgroundProxyLayer(Color.WHITE));
         rootProxyLayer.addLayer(new BrainzProxyLayer(1000, 10000));
+        rootProxyLayer.addLayer(new ZombieProxyLayer(exampleEnvironment));
 
         // protocol
         // use protocol storing the visual elements (Points) into memory
         final Protocol protocol = new MemoryProtocol();
 
         // outputs
-        final GroupPainter painter = new GroupPainter();
-        painter.addPainters(BasicPainters.getAllBasicPainters(vis2d));
+        final RootPainter painter = new RootPainter();
+        painter.addPainters(Vis2DBasicPainters.getAllBasicPainters(vis2d));
 
         // joint between proxies and protocol
-        final GeneralDiffer differ = new GeneralDiffer();
+        final Differ differ = new Differ();
         // joint between protocol and painters
-        final GeneralUpdater updater = new GeneralUpdater();
+        final Updater updater = new Updater();
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
@@ -113,7 +115,7 @@ public class TestCreator implements Creator {
             exampleEnvironment.exampleString = "string" + Long.toString(random.nextLong());
             exampleEnvironment.examplePosition = new Point3d(random.nextDouble() * 20.0 + 100.0,
                     random.nextDouble() * 20.0 + 100.0, random.nextDouble() * 20.0 + 100.0);
-            exampleEnvironment.exampleInteger = random.nextInt();
+            exampleEnvironment.exampleInteger = random.nextInt(256);
 
             exampleEnvironment.exampleTime++;
 
@@ -125,7 +127,7 @@ public class TestCreator implements Creator {
         }
     }
 
-    public static class ExampleEnvironment implements VisualPersonProvider {
+    public static class ExampleEnvironment implements ZombieProvider {
 
         private long exampleTime = 1;
 

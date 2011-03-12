@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.output.painter.vis2d;
+package incubator.visprotocol.vis.output.vis2d.painter;
 
 import incubator.visprotocol.structure.key.FillColorKeys;
 import incubator.visprotocol.structure.key.PointKeys;
@@ -8,7 +8,7 @@ import incubator.visprotocol.vis.output.painter.Painter;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class BasicPainters {
+public abstract class Vis2DBasicPainters {
 
     public static Map<String, Painter> getAllBasicPainters(Vis2DOutput vis2d) {
         Map<String, Painter> ret = new HashMap<String, Painter>();

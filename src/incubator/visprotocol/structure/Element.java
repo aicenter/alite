@@ -59,6 +59,11 @@ public class Element implements Serializable {
         parameters.put(id.toString(), value);
     }
 
+    // TODO somehow do not allow different class than C as value
+    public <C> void setParameter(Typer<C> typer, C value) {
+        parameters.put(typer.paramId, value);
+    }
+
     public Object removeParameter(Object id) {
         return parameters.remove(id.toString());
     }
@@ -113,10 +118,10 @@ public class Element implements Serializable {
     }
 
     public boolean equalsDeep(Object obj) {
-        if(!equals(obj)) {
+        if (!equals(obj)) {
             return false;
         }
-        return parameters.equals(((Element)obj).parameters);
+        return parameters.equals(((Element) obj).parameters);
     }
 
     @Override

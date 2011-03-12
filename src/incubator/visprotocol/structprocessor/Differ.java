@@ -12,12 +12,12 @@ import incubator.visprotocol.structure.key.CommonKeys;
  * 
  * @author Ondrej Milenovsky
  */
-public class GeneralDiffer implements StructProcessor {
+public class Differ implements StructProcessor {
 
     private Structure state;
     private Structure updatePart;
 
-    public GeneralDiffer() {
+    public Differ() {
         state = new Structure();
         updatePart = new Structure();
     }
@@ -93,7 +93,7 @@ public class GeneralDiffer implements StructProcessor {
     public Structure pull() {
         Structure ret = updatePart;
 
-        GeneralUpdater updater = new GeneralUpdater(state);
+        Updater updater = new Updater(state);
         updater.push(updatePart);
         state = updater.pull();
 
