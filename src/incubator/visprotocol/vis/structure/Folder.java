@@ -1,7 +1,5 @@
 package incubator.visprotocol.vis.structure;
 
-import incubator.visprotocol.vis.structure.key.FolderKeys;
-
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
@@ -13,6 +11,8 @@ import java.util.LinkedHashMap;
  * */
 public class Folder extends Element {
 
+    public static final String TYPE = "Folder";
+    
     private static final long serialVersionUID = 6708406764600130786L;
 
     private final LinkedHashMap<String, Element> elements;
@@ -20,8 +20,8 @@ public class Folder extends Element {
 
     public Folder(String id) {
         super(id, null);
-        elements = new LinkedHashMap<String, Element>();
-        folders = new LinkedHashMap<String, Folder>();
+        elements = new LinkedHashMap<String, Element>(2);
+        folders = new LinkedHashMap<String, Folder>(2);
     }
 
     public boolean containsFolder(String id) {
@@ -82,6 +82,14 @@ public class Folder extends Element {
         return getElement(e.getId(), e.getType());
     }
 
+    public Element removeElement(String id) {
+        return elements.remove(id);
+    }
+
+    public Folder removeFolder(String id) {
+        return folders.remove(id);
+    }
+
     public Collection<String> getFolderIds() {
         return folders.keySet();
     }
@@ -110,6 +118,19 @@ public class Folder extends Element {
         return elements.isEmpty() && folders.isEmpty() && super.isEmpty();
     }
 
+    /** Makes deep copy of the folder, not of element parameters! */
+    public Folder deepCopy() {
+        Folder ret = (Folder)super.deepCopy();
+        for(Folder f: folders.values()) {
+            ret.addFolder(f.deepCopy());
+        }
+        for(Element e: elements.values()) {
+            ret.addElement(e.deepCopy());
+        }
+        return ret;
+    }
+    
+    /** Copied also all elements and folders, shallow copy! */
     @Override
     public void update(Element e) {
         super.update(e);
@@ -122,7 +143,7 @@ public class Folder extends Element {
 
     @Override
     public String getType() {
-        return FolderKeys.TYPE;
+        return TYPE;
     }
 
     @Override
