@@ -9,20 +9,24 @@ import java.awt.event.MouseWheelListener;
 import javax.vecmath.Point2d;
 
 /**
- * Zooming by mouse wheel. Just create with pointer to vis, no need to add it
- * somewhere, you can forget pointer to this instance.
+ * Zooming by mouse wheel. Just create with pointer to vis, no need to add it somewhere, you can
+ * forget pointer to this instance.
  * 
  * @author Ondrej Milenovsky
  * */
-public class ZoomTransformator implements MouseWheelListener {
+public class ZoomTransformator implements Transformator, MouseWheelListener {
 
     private double zoomStep = 1.1;
     private boolean zoomInCenter = false;
     private boolean zoomOutCenter = true;
 
-    private final Vis2DOutput vis2d;
+    private Vis2DOutput vis2d;
 
-    public ZoomTransformator(Vis2DOutput vis2d) {
+    public ZoomTransformator() {
+    }
+
+    @Override
+    public void setToVis(Vis2DOutput vis2d) {
         this.vis2d = vis2d;
         vis2d.getComponent().addMouseWheelListener(this);
     }
@@ -82,17 +86,17 @@ public class ZoomTransformator implements MouseWheelListener {
     }
 
     private void computeCenterMouse(Point2d offset, double zoomFactor, Point mousePoint) {
-        offset.x -= (mousePoint.x - vis2d.getOffsetBack().x) / vis2d.getZoomFactorBack() * zoomFactor
-                * (zoomStep - 1.0);
-        offset.y -= (mousePoint.y - vis2d.getOffsetBack().y) / vis2d.getZoomFactorBack() * zoomFactor
-                * (zoomStep - 1.0);
+        offset.x -= (mousePoint.x - vis2d.getOffsetBack().x) / vis2d.getZoomFactorBack()
+                * zoomFactor * (zoomStep - 1.0);
+        offset.y -= (mousePoint.y - vis2d.getOffsetBack().y) / vis2d.getZoomFactorBack()
+                * zoomFactor * (zoomStep - 1.0);
     }
 
     private void computeCenterMiddle(Point2d offset, double zoomFactor) {
-        offset.x += (vis2d.getWidth() / 2 - vis2d.getOffsetBack().x) / vis2d.getZoomFactorBack() * zoomFactor
-                * (zoomStep - 1.0);
-        offset.y += (vis2d.getHeight() / 2 - vis2d.getOffsetBack().y) / vis2d.getZoomFactorBack() * zoomFactor
-                * (zoomStep - 1.0);
+        offset.x += (vis2d.getWidth() / 2 - vis2d.getOffsetBack().x) / vis2d.getZoomFactorBack()
+                * zoomFactor * (zoomStep - 1.0);
+        offset.y += (vis2d.getHeight() / 2 - vis2d.getOffsetBack().y) / vis2d.getZoomFactorBack()
+                * zoomFactor * (zoomStep - 1.0);
     }
 
 }
