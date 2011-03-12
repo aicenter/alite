@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.output.painter.vis2d;
+package incubator.visprotocol.vis.output.vis2d.painter;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.key.FillColorKeys;

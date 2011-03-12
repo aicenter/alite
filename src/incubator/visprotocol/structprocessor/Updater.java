@@ -12,16 +12,16 @@ import incubator.visprotocol.structure.key.CommonKeys;
  * 
  * @author Ondrej Milenovsky
  * */
-public class GeneralUpdater implements StructProcessor {
+public class Updater implements StructProcessor {
 
     private Structure state;
     private boolean deleteFolders;
 
-    public GeneralUpdater() {
+    public Updater() {
         this(new Structure());
     }
 
-    public GeneralUpdater(Structure struct) {
+    public Updater(Structure struct) {
         deleteFolders = false;
         state = struct;
     }
