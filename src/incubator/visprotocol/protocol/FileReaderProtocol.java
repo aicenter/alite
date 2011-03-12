@@ -31,6 +31,7 @@ public class FileReaderProtocol extends StreamProtocol {
         return null;
     }
 
+    @Deprecated
     @Override
     public void push(Structure struct) {
         throw new RuntimeException("This is only file reader");

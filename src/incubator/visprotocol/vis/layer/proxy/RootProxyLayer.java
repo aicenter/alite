@@ -1,6 +1,6 @@
 package incubator.visprotocol.vis.layer.proxy;
 
-import incubator.visprotocol.StructProcessor;
+import incubator.visprotocol.structprocessor.StructProcessor;
 
 import java.util.LinkedList;
 import java.util.List;
