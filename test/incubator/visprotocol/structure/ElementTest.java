@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.structure;
+package incubator.visprotocol.structure;
 
 import static org.junit.Assert.assertTrue;
 
