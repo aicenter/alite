@@ -4,6 +4,4 @@ import incubator.visprotocol.StructProcessor;
 
 public interface Protocol extends StructProcessor {
 
-    public void nextStep();
-
 }

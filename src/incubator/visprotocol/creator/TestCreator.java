@@ -95,12 +95,6 @@ public class TestCreator implements Creator {
                 // current state in updater
                 painter.paint(updater.pull());
 
-                // inform the protocol, that the "frame" was completed
-                protocol.nextStep();
-                // XXX: in future the nextStep can be called in different time
-                // points (depending on type of visualization: synchronized,
-                // asynchronous, network, ...)
-
                 // TODO: should be done probably by painter
                 vis2d.flip();
             }
