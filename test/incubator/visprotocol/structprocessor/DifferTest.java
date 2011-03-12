@@ -1,10 +1,10 @@
-package incubator.visprotocol.vis.differ;
+package incubator.visprotocol.structprocessor;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class GeneralDifferTest {
+public class DifferTest {
 
     @Test
     public void testNormalUse() {

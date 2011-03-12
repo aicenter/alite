@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.structure;
+package incubator.visprotocol.structure;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
@@ -54,10 +54,20 @@ public class StructureTest {
         System.out.println(s.print());
         System.out.println(s2.print());
     }
-    
+
+    @Test
+    public void test2() {
+        // TODO
+    }
+
+    @Test
+    public void testEquals() {
+        // TODO
+    }
+
     @Test
     public void testDeepCopy() {
-        //TODO
+        // TODO
     }
 
 }
