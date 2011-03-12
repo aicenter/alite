@@ -65,6 +65,14 @@ public class Structure implements Serializable {
         root = s.getRoot();
     }
 
+    /** Makes deep copy of the structure, not of element parameters! */
+    public Structure deepCopy() {
+        if (root == null) {
+            return new Structure(timeStamp);
+        }
+        return new Structure(getRoot().deepCopy(), timeStamp);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

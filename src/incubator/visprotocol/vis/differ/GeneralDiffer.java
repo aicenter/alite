@@ -3,6 +3,7 @@ package incubator.visprotocol.vis.differ;
 import incubator.visprotocol.vis.structure.Element;
 import incubator.visprotocol.vis.structure.Folder;
 import incubator.visprotocol.vis.structure.Structure;
+import incubator.visprotocol.vis.structure.key.CommonKeys;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class GeneralDiffer implements Differ {
         newState = new Structure();
     }
 
-    /** the newPart may be inserted into the differ, do not use it any more ! */
+    /** The newPart may be inserted into the differ, do not use it any more! */
     @Override
     public void push(Structure newPart) {
         if (newPart.isEmpty()) {
@@ -120,8 +121,37 @@ public class GeneralDiffer implements Differ {
     @Override
     public Structure pull() {
         Structure ret = newState;
-        newState = new Structure();
+        clearUpdate();
         return ret;
+    }
+
+    /** creates copy of current state, but with no parameters, the only parameter is delete all */
+    private void clearUpdate() {
+        newState = new Structure();
+        if (!state.isEmpty() && deletableFolder(state.getRoot())) {
+            clearUpdate(newState.getRoot(state.getRoot()), state.getRoot());
+        }
+    }
+
+    private void clearUpdate(Folder updF, Folder currF) {
+        updF.setParameter(CommonKeys.DELETE, true);
+        for(Folder f: currF.getFolders()) {
+            if(deletableFolder(f)) {
+                clearUpdate(updF.getFolder(f), f);
+            }
+        }
+        for(Element e: currF.getElements()) {
+            updF.getElement(e).setParameter(CommonKeys.DELETE, true);
+        }
+    }
+
+    public static boolean deletableFolder(Folder f) {
+        return (!f.containsParameter(CommonKeys.DELETE) || f.getParameter(CommonKeys.DELETE));
+    }
+
+    @Override
+    public Structure getCurrentState() {
+        return state;
     }
 
 }

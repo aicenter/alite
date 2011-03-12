@@ -35,28 +35,32 @@ public class Element implements Serializable {
         return type;
     }
 
-    public boolean containsParameter(String id) {
+    public boolean containsParameter(Object id) {
         return parameters.containsKey(id);
     }
 
-    public Object getParameter(String id) {
+    public Object getParameter(Object id) {
         return parameters.get(id);
     }
 
     // TODO warnings
     /** returns parameter, if not contains, returns null */
     @SuppressWarnings("unchecked")
-    public <C> C getParameter(String id, Class<C> clazz) {
+    public <C> C getParameter(Object id, Class<C> clazz) {
         return (C) parameters.get(id);
     }
-    
+
     @SuppressWarnings("unchecked")
     public <C> C getParameter(Typer<C> typer) {
-        return (C)parameters.get(typer.paramId);
+        return (C) parameters.get(typer.paramId);
     }
 
-    public void setParameter(String id, Object value) {
-        parameters.put(id, value);
+    public void setParameter(Object id, Object value) {
+        parameters.put(id.toString(), value);
+    }
+
+    public Object removeParameter(Object id) {
+        return parameters.remove(id);
     }
 
     public Collection<String> getParamIds() {
@@ -68,7 +72,7 @@ public class Element implements Serializable {
     }
 
     /**
-     * elements must equal ! taken all parameters and change flag and updated current state
+     * Elements must equal! Taken all parameters and updated current state. Shallow copy!
      */
     public void update(Element e) {
         if (!equals(e)) {
@@ -80,6 +84,13 @@ public class Element implements Serializable {
 
     public boolean isEmpty() {
         return parameters.isEmpty();
+    }
+
+    /** Makes deep copy of the folder, not of element parameters! */
+    public Element deepCopy() {
+        Element e = new Element(id, type);
+        e.parameters.putAll(parameters);
+        return e;
     }
 
     @Override
