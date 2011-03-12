@@ -5,11 +5,6 @@ import incubator.visprotocol.vis.structure.Folder;
 import incubator.visprotocol.vis.structure.Structure;
 import incubator.visprotocol.vis.structure.key.CommonKeys;
 
-import java.util.ArrayList;
-import java.util.List;
-
-// TODO test regular use and all exception cases
-// TODO deleting
 /**
  * Stores last state and structure to send. When pushed new part, updates last state and differences
  * are added to the structure to send. When pulled, structure to send is returned and cleared.
@@ -26,106 +21,88 @@ public class GeneralDiffer implements Differ {
         updatePart = new Structure();
     }
 
-    /** The newPart may be inserted into the differ, do not use it any more! */
+    @Override
+    public Structure getState() {
+        return state;
+    }
+
+    /**
+     * The newPart may be inserted into the differ, do not use it any more! State is not changing,
+     * current state is updated after pull.
+     */
     @Override
     public void push(Structure newPart) {
         if (newPart.isEmpty()) {
             return;
         }
         if (state.isEmpty()) {
-            updatePart.update(newPart);
-        } else {
-            update(newPart.getRoot(), state.getRoot(newPart.getRoot()), new ArrayList<String>());
+            diff(newPart.getRoot(), null, updatePart.getRoot(newPart.getRoot()));
+            return;
         }
+        diff(newPart.getRoot(), state.getRoot(newPart.getRoot()), updatePart.getRoot(newPart
+                .getRoot()));
     }
 
     /**
-     * Recursive update deeper from current folder. New and current folders must be on same path, path is
-     * stored in the list excluding current folder id
+     * Recursive create diff on folder/element, current element can be null, if state does not
+     * conttain it.
      */
-    private void update(Folder newF, Folder current, List<String> path) {
-        if (newF.equals(current)) {
-            throw new RuntimeException("New folder " + newF.getId() + " is not same id as folder "
-                    + current.getId());
+    private void diff(Element newE, Element currE, Element updateE) {
+        if ((currE != null) && newE.equals(currE)) {
+            throw new RuntimeException("New folder/element " + newE.getId()
+                    + " is not same id as folder/element " + currE.getId());
         }
-        path.add(newF.getId());
-        Folder updateFolder = null;
+        notDelete(updateE);
+        // diff params
+        for (String p : newE.getParamIds()) {
+            Object value = newE.getParameter(p);
+            if ((currE == null) || !currE.parameterEqual(p, value)) {
+                updateE.setParameter(p, value);
+            }
+        }
+        // is folder, diff folders and elements
+        if (newE instanceof Folder) {
+            diffFolder((Folder) newE, (Folder) currE, (Folder) updateE);
+        }
+    }
 
+    /** So far diffed as element/folder, now diff the folder addons. */
+    private void diffFolder(Folder newF, Folder currF, Folder updateF) {
+        // diff folders
         for (Folder f : newF.getFolders()) {
-            // whole subfolder missing, add it
-            if (!current.containsFolder(f.getId())) {
-                current.addFolder(f);
-                if (updateFolder == null) {
-                    updateFolder = getFolderFromUpdate(path);
-                }
-                updateFolder.addFolder(f);
+            if ((currF == null) || !currF.containsFolder(f)) {
+                diff(f, null, updateF.getFolder(f));
             } else {
-                update(f, current.getFolder(f), path);
+                diff(f, currF.getFolder(f), updateF.getFolder(f));
             }
         }
-
+        // diff elements
         for (Element e : newF.getElements()) {
-            // whole element missing, add it
-            if (!current.containsElement(e)) {
-                current.addElement(e);
-                if (updateFolder == null) {
-                    updateFolder = getFolderFromUpdate(path);
-                }
-                updateFolder.addElement(e);
+            if ((currF == null) || !currF.containsElement(e)) {
+                diff(e, null, updateF.getElement(e));
             } else {
-                update(e, current.getElement(e), path);
+                diff(e, currF.getElement(e), updateF.getElement(e));
             }
         }
-        path.remove(path.size() - 1);
-    }
-
-    /** update element */
-    private void update(Element newE, Element current, List<String> path) {
-        if (newE.equals(current)) {
-            throw new RuntimeException("New element " + newE.getId()
-                    + " is not same type and id as element " + current.getId());
-        }
-        Element updateElement = null;
-        for (String id : newE.getParamIds()) {
-            Object value = newE.getParameter(id);
-            Object currVal = current.getParameter(id);
-            if (((value == null) && (currVal != null))
-                    || ((value != currVal) && !value.equals(currVal))) {
-                current.setParameter(id, value);
-                if (updateElement == null) {
-                    updateElement = getFolderFromUpdate(path).getElement(newE);
-                }
-                updateElement.setParameter(id, value);
-            }
-        }
-        current.update(newE);
-    }
-
-    /**
-     * returns folder from update struct on specified path (folders created if not exist)
-     */
-    private Folder getFolderFromUpdate(List<String> path) {
-        Folder f = updatePart.getRoot(path.get(0));
-        boolean first = true;
-        for (String id : path) {
-            if (first) {
-                first = false;
-            } else {
-                f = f.getFolder(id);
-            }
-        }
-        return f;
     }
 
     @Override
     public Structure pull() {
         Structure ret = updatePart;
-        new GeneralUpdater(state).update(updatePart);
+
+        GeneralUpdater updater = new GeneralUpdater(state);
+        updater.update(updatePart);
+        state = updater.getState();
+
         clearUpdate();
+
         return ret;
     }
 
-    /** creates copy of current state, but with no parameters, the only parameter is delete all */
+    /**
+     * creates copy of current state, but with no parameters, the only parameter is delete
+     * everywhere true
+     */
     private void clearUpdate() {
         updatePart = new Structure();
         if (!state.isEmpty() && deletableFolder(state.getRoot())) {
@@ -133,27 +110,30 @@ public class GeneralDiffer implements Differ {
         }
     }
 
-    /**recursive clearing update*/
+    /** recursive clearing update */
     private void clearUpdate(Folder updF, Folder currF) {
-        updF.setParameter(CommonKeys.DELETE, true);
+        setDelete(updF);
         for (Folder f : currF.getFolders()) {
             if (deletableFolder(f)) {
                 clearUpdate(updF.getFolder(f), f);
             }
         }
         for (Element e : currF.getElements()) {
-            updF.getElement(e).setParameter(CommonKeys.DELETE, true);
+            setDelete(updF.getElement(e));
         }
     }
 
-    /** returns false only if folder.delete = false */
-    public static boolean deletableFolder(Folder f) {
-        return (!f.containsParameter(CommonKeys.DELETE) || f.getParameter(CommonKeys.DELETE));
+    public static void notDelete(Element e) {
+        e.removeParameter(CommonKeys.DELETE);
     }
 
-    @Override
-    public Structure getCurrentState() {
-        return state;
+    public static void setDelete(Element e) {
+        e.setParameter(CommonKeys.DELETE, true);
+    }
+
+    /** returns false only if folder.delete == false */
+    public static boolean deletableFolder(Folder f) {
+        return !f.parameterEqual(CommonKeys.DELETE, false);
     }
 
 }

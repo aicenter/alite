@@ -63,6 +63,11 @@ public class Element implements Serializable {
         return parameters.remove(id);
     }
 
+    /** returns true only if e.containsParam(id) and e.id == value */
+    public boolean parameterEqual(Object id, Object value) {
+        return parameters.containsKey(id) && parameters.get(id).equals(value);
+    }
+
     public Collection<String> getParamIds() {
         return parameters.keySet();
     }
@@ -105,6 +110,13 @@ public class Element implements Serializable {
         Element e = new Element(id, type);
         e.parameters.putAll(parameters);
         return e;
+    }
+
+    public boolean equalsDeep(Object obj) {
+        if(!equals(obj)) {
+            return false;
+        }
+        return parameters.equals(((Element)obj).parameters);
     }
 
     @Override

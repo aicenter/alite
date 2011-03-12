@@ -16,6 +16,6 @@ public interface Differ {
     public Structure pull();
 
     /** returns current structure */
-    public Structure getCurrentState();
+    public Structure getState();
 
 }

@@ -7,7 +7,7 @@ import incubator.visprotocol.vis.structure.key.CommonKeys;
 
 /**
  * Holds current state, accepts updates from differ and updates current state. Default setting is
- * not to delete folders.
+ * not to delete folders. Makes deep copy of update part.
  * 
  * @author Ondrej Milenovsky
  * */
@@ -44,15 +44,14 @@ public class GeneralUpdater implements Updater {
             System.out.println("Warning: Current time: " + state.getTimeStamp()
                     + " >= update time " + newPart.getTimeStamp());
         }
+        state.setTimeStamp(newPart.getTimeStamp());
         if (newPart.isEmpty()) {
-            state.setTimeStamp(newPart.getTimeStamp());
             return;
         }
         if (state.isEmpty()) {
-            state = newPart.deepCopy();
+            state.setRoot(newPart.getRoot().deepCopy());
             return;
         }
-        state.setTimeStamp(newPart.getTimeStamp());
         if (!newPart.getRoot().equals(state.getRoot())) {
             throw new RuntimeException("Current folder" + state.getRoot().getId()
                     + " != new folder " + newPart.getRoot().getId());
@@ -84,7 +83,7 @@ public class GeneralUpdater implements Updater {
 
     /** returns true only if folder.delete = true */
     public static boolean deleteElement(Element e) {
-        return e.containsParameter(CommonKeys.DELETE) && e.getParameter(CommonKeys.DELETE);
+        return e.parameterEqual(CommonKeys.DELETE, true);
     }
 
 }

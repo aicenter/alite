@@ -74,6 +74,11 @@ public class Structure implements Serializable {
         return new Structure(getRoot().deepCopy(), timeStamp);
     }
 
+    // TODO
+    public boolean equalsDeep(Object obj) {
+        return equals(obj);
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
