@@ -7,16 +7,25 @@ import incubator.visprotocol.vis.output.painter.Painter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class Vis2DBasicPainters {
 
-    public static Map<String, Painter> getAllBasicPainters(Vis2DOutput vis2d) {
+    /** all element types with parameters that are used by 2D vis */
+    public static final Map<String, Set<String>> ELEMENT_TYPES = new HashMap<String, Set<String>>();
+
+    static {
+        ELEMENT_TYPES.put(PointKeys.TYPE, PointPainter.TYPES);
+        ELEMENT_TYPES.put(FillColorKeys.TYPE, FillColorPainter.TYPES);
+    }
+
+    /** returns all painter instances used by 2D vis */
+    public static Map<String, Painter> createBasicPainters(Vis2DOutput vis2d) {
         Map<String, Painter> ret = new HashMap<String, Painter>();
-        
+
         ret.put(PointKeys.TYPE, new PointPainter(vis2d));
         ret.put(FillColorKeys.TYPE, new FillColorPainter(vis2d));
-        
-        
+
         return ret;
     }
 }

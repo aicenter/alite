@@ -7,8 +7,15 @@ import incubator.visprotocol.vis.output.painter.Painter;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class FillColorPainter implements Painter {
+
+    /** all parameter ids which this painter can paint */
+    public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(FillColorKeys.COLOR
+            + ""));
 
     private final Vis2DOutput vis2dOutput;
 

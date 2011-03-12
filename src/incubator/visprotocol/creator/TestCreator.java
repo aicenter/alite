@@ -18,7 +18,6 @@ import incubator.visprotocol.vis.output.vis2d.ZoomTransformator;
 import incubator.visprotocol.vis.output.vis2d.painter.Vis2DBasicPainters;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
@@ -56,10 +55,13 @@ public class TestCreator implements Creator {
 
         // layers
         final RootProxyLayer rootProxyLayer = new RootProxyLayer();
-        rootProxyLayer.addLayer(new SimInfoProxyLayer());
-        rootProxyLayer.addLayer(new BackgroundProxyLayer(Color.WHITE));
-        rootProxyLayer.addLayer(new BrainzProxyLayer(1000, 10000));
-        rootProxyLayer.addLayer(new ZombieProxyLayer(exampleEnvironment));
+        rootProxyLayer.addLayer(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
+        rootProxyLayer.addLayer(new BackgroundProxyLayer(Color.WHITE,
+                Vis2DBasicPainters.ELEMENT_TYPES));
+        rootProxyLayer
+                .addLayer(new BrainzProxyLayer(1000, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
+        rootProxyLayer.addLayer(new ZombieProxyLayer(exampleEnvironment,
+                Vis2DBasicPainters.ELEMENT_TYPES));
 
         // protocol
         // use protocol storing the visual elements (Points) into memory
@@ -67,7 +69,7 @@ public class TestCreator implements Creator {
 
         // outputs
         final RootPainter painter = new RootPainter();
-        painter.addPainters(Vis2DBasicPainters.getAllBasicPainters(vis2d));
+        painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
 
         // joint between proxies and protocol
         final Differ differ = new Differ();
@@ -76,15 +78,8 @@ public class TestCreator implements Creator {
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
-
             @Override
             protected void sample() {
-                // TODO: should be BackgroundProxyLayer with Vis2D painter and
-                // probably even sysout painter
-                Graphics graphics = vis2d.getGraphics2D();
-                graphics.setColor(Color.WHITE);
-                graphics.fillRect(0, 0, 1000, 1000);
-
                 // fill the used differ with new data
                 rootProxyLayer.fillProcessor(differ);
                 // generate update struct and fill the used protocol by new struct
@@ -98,7 +93,6 @@ public class TestCreator implements Creator {
                 // TODO: should be done probably by painter
                 vis2d.flip();
             }
-
         };
         sampler.start();
     }
