@@ -1,21 +1,19 @@
 package incubator.visprotocol.vis.differ;
 
+import static org.junit.Assert.assertTrue;
 
-// TODO import junit
+import org.junit.Test;
+
 public class GeneralDifferTest {
-    
-    
+
+    @Test
     public void testNormalUse() {
-        
+        // TODO
     }
 
+    @Test
     public void testExceptions() {
-
-    }
-
-    public static void main(String[] args) {
-        GeneralDifferTest o = new GeneralDifferTest();
-        o.testNormalUse();
+        // TODO
     }
 
 }

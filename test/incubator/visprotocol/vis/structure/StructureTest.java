@@ -4,10 +4,13 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 
-// TODO import junit
-// TODO test deep copy
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 public class StructureTest {
 
+    @Test
     public void test1() {
         Structure s = new Structure();
         // folder test
@@ -48,21 +51,13 @@ public class StructureTest {
 
         f3.getFolder("f4");
 
-        f1a.update(f1);
         System.out.println(s.print());
         System.out.println(s2.print());
     }
-
-    private void assertTrue(boolean t) {
-        if (!t) {
-            throw new RuntimeException("False !!!");
-        }
-    }
-
-    public static void main(String[] args) {
-        StructureTest o = new StructureTest();
-        o.test1();
-        System.out.println("Passed");
+    
+    @Test
+    public void testDeepCopy() {
+        //TODO
     }
 
 }
