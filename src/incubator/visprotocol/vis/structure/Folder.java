@@ -1,5 +1,7 @@
 package incubator.visprotocol.vis.structure;
 
+import incubator.visprotocol.vis.structure.key.FolderKeys;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 
@@ -12,8 +14,6 @@ import java.util.LinkedHashMap;
 public class Folder extends Element {
 
     private static final long serialVersionUID = 6708406764600130786L;
-
-    public static final String DEFAULT_TYPE = "Folder";
 
     private final LinkedHashMap<String, Element> elements;
     private final LinkedHashMap<String, Folder> folders;
@@ -122,7 +122,7 @@ public class Folder extends Element {
 
     @Override
     public String getType() {
-        return DEFAULT_TYPE;
+        return FolderKeys.TYPE;
     }
 
     @Override

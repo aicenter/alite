@@ -7,12 +7,30 @@ public class Structure implements Serializable {
     private static final long serialVersionUID = -5536165397290203610L;
 
     private Folder root;
+    private long timeStamp;
 
     public Structure() {
     }
 
+    public Structure(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     public Structure(Folder folder) {
         this.root = folder;
+    }
+
+    public Structure(Folder folder, long timeStamp) {
+        this.root = folder;
+        this.timeStamp = timeStamp;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public void setRoot(Folder folder) {
@@ -64,9 +82,9 @@ public class Structure implements Serializable {
         }
         return root.equals(s2.getRoot());
     }
-    
+
     public String print() {
-        if(root == null) {
+        if (root == null) {
             return "Empty\n";
         }
         return root.print();
