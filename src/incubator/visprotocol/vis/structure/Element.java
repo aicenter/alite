@@ -1,5 +1,7 @@
 package incubator.visprotocol.vis.structure;
 
+import incubator.visprotocol.vis.structure.key.Typer;
+
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,10 +43,16 @@ public class Element implements Serializable {
         return parameters.get(id);
     }
 
+    // TODO warnings
     /** returns parameter, if not contains, returns null */
     @SuppressWarnings("unchecked")
-    public <C extends Object> C getParameter(String id, Class<C> clazz) {
+    public <C> C getParameter(String id, Class<C> clazz) {
         return (C) parameters.get(id);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <C> C getParameter(Typer<C> typer) {
+        return (C)parameters.get(typer.paramId);
     }
 
     public void setParameter(String id, Object value) {
