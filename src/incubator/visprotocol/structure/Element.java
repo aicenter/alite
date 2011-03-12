@@ -55,8 +55,9 @@ public class Element implements Serializable {
         return (C) parameters.get(typer.paramId);
     }
 
-    public void setParameter(Object id, Object value) {
-        parameters.put(id.toString(), value);
+    
+    public void setParameter(String id, Object value) {
+        parameters.put(id, value);
     }
 
     // TODO somehow do not allow different class than C as value
