@@ -1,9 +1,8 @@
 package incubator.visprotocol.vis.output.painter;
 
-import incubator.visprotocol.vis.protocol.Protocol;
+import incubator.visprotocol.structure.Element;
 
 public interface Painter {
-
-    public void paint(Protocol protocol);
+    public void paint(Element e);
 
 }

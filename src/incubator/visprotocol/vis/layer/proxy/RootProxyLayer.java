@@ -1,10 +1,16 @@
 package incubator.visprotocol.vis.layer.proxy;
 
-import incubator.visprotocol.vis.protocol.Protocol;
+import incubator.visprotocol.StructProcessor;
 
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * All proxies send data from simulation in structures to the differ. The last layer will generate
+ * common data to the structure, for now it is only simulation time.
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class RootProxyLayer implements GroupProxyLayer {
 
     private final List<ProxyLayer> subLayers;
@@ -14,9 +20,9 @@ public class RootProxyLayer implements GroupProxyLayer {
     }
 
     @Override
-    public void fillProtocol(Protocol protocol) {
+    public void fillProcessor(StructProcessor processor) {
         for (ProxyLayer layer : subLayers) {
-            layer.fillProtocol(protocol);
+            layer.fillProcessor(processor);
         }
     }
 

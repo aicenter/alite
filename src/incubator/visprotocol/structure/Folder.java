@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.structure;
+package incubator.visprotocol.structure;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -144,7 +144,8 @@ public class Folder extends Element {
 
     /** Makes deep copy of the folder, not of element parameters! */
     public Folder deepCopy() {
-        Folder ret = (Folder) super.deepCopy();
+        Folder ret = new Folder(getId());
+        ret.updateParams(this);
         for (Folder f : folders.values()) {
             ret.addFolder(f.deepCopy());
         }

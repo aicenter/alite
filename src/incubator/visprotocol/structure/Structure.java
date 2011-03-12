@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.structure;
+package incubator.visprotocol.structure;
 
 import java.io.Serializable;
 
@@ -7,12 +7,12 @@ public class Structure implements Serializable {
     private static final long serialVersionUID = -5536165397290203610L;
 
     private Folder root;
-    private long timeStamp;
+    private Long timeStamp = null;
 
     public Structure() {
     }
 
-    public Structure(long timeStamp) {
+    public Structure(Long timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -25,7 +25,7 @@ public class Structure implements Serializable {
         this.timeStamp = timeStamp;
     }
 
-    public long getTimeStamp() {
+    public Long getTimeStamp() {
         return timeStamp;
     }
 

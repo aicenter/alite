@@ -1,17 +1,20 @@
 package incubator.visprotocol.creator;
 
-import incubator.visprotocol.vis.layer.PersonLayer;
-import incubator.visprotocol.vis.layer.RandomPointsLayer;
+import incubator.visprotocol.protocol.MemoryProtocol;
+import incubator.visprotocol.protocol.Protocol;
+import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
+import incubator.visprotocol.structprocessor.GeneralDiffer;
+import incubator.visprotocol.structprocessor.GeneralUpdater;
+import incubator.visprotocol.vis.layer.example.BackgroundProxyLayer;
+import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
+import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
 import incubator.visprotocol.vis.layer.proxy.RootProxyLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
-import incubator.visprotocol.vis.output.painter.RootPainter;
-import incubator.visprotocol.vis.output.painter.vis2d.PointPainterVis2D;
+import incubator.visprotocol.vis.output.painter.GroupPainter;
+import incubator.visprotocol.vis.output.painter.vis2d.BasicPainters;
 import incubator.visprotocol.vis.output.vis2d.MoveTransformator;
 import incubator.visprotocol.vis.output.vis2d.ZoomTransformator;
-import incubator.visprotocol.vis.protocol.MemoryProtocol;
-import incubator.visprotocol.vis.protocol.Protocol;
-import incubator.visprotocol.vis.sampler.MaxFPSRealTimeSampler;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -52,33 +55,22 @@ public class TestCreator implements Creator {
 
         // layers
         final RootProxyLayer rootProxyLayer = new RootProxyLayer();
-        // using the PersonLayer (similarly to the old vis) create a
-        // PointProxyLayer building the Points for the visualization protocol
-        rootProxyLayer.addLayer(PersonLayer.create(exampleEnvironment, "Person"));
-        rootProxyLayer.addLayer(RandomPointsLayer.create(1000, 10000, "Dots"));
-        // XXX: in future all the layers of the old vis should be replicated
-        // using the proxies here
+        rootProxyLayer.addLayer(new SimInfoProxyLayer());
+        rootProxyLayer.addLayer(new BackgroundProxyLayer(Color.WHITE));
+        rootProxyLayer.addLayer(new BrainzProxyLayer(1000, 10000));
 
         // protocol
         // use protocol storing the visual elements (Points) into memory
         final Protocol protocol = new MemoryProtocol();
-        // XXX: in future there can be various protocols storing the
-        // visualization elements, using network to provide visualization
-        // stream, etc.
 
         // outputs
-        final RootPainter rootPainter = new RootPainter();
-        // create a Painter drawing the visual elements (Points) using the
-        // Vis2DOutput (2D output based on old Vis class)
-        rootPainter.addPainter(new PointPainterVis2D(vis2d, "Person"));
-        rootPainter.addPainter(new PointPainterVis2D(vis2d, "Dots"));
-        // create a Painter drawing the visual elements (Points) using sysout
-        // (for demonstarion of multi-output use)
-        // TODO: generalize the painter to string painter (it can be used as
-        // logger with different outputs - sysout, errlog, ...)
-        // rootPainter.addPainter(new PointPainterSysout());
-        // XXX: in the future there can be other Outputs: GoogleEarth, 3D jME,
-        // Aglobe Visio, etc
+        final GroupPainter painter = new GroupPainter();
+        painter.addPainters(BasicPainters.getAllBasicPainters(vis2d));
+
+        // joint between proxies and protocol
+        final GeneralDiffer differ = new GeneralDiffer();
+        // joint between protocol and painters
+        final GeneralUpdater updater = new GeneralUpdater();
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
@@ -91,10 +83,15 @@ public class TestCreator implements Creator {
                 graphics.setColor(Color.WHITE);
                 graphics.fillRect(0, 0, 1000, 1000);
 
-                // fill the used protocol using the proxy layers
-                rootProxyLayer.fillProtocol(protocol);
-                // draw the elements using the painters
-                rootPainter.paint(protocol);
+                // fill the used differ with new data
+                rootProxyLayer.fillProcessor(differ);
+                // generate update struct and fill the used protocol by new struct
+                protocol.push(differ.pull());
+                // update current state
+                updater.push(protocol.pull());
+                // draw the elements using the painters, they will get what they want from the
+                // current state in updater
+                painter.paint(updater.pull());
 
                 // inform the protocol, that the "frame" was completed
                 protocol.nextStep();

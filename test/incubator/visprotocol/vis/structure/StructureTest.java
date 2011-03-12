@@ -1,7 +1,8 @@
 package incubator.visprotocol.vis.structure;
 
-import incubator.visprotocol.vis.structure.Folder;
-import incubator.visprotocol.vis.structure.Structure;
+import incubator.visprotocol.structure.Element;
+import incubator.visprotocol.structure.Folder;
+import incubator.visprotocol.structure.Structure;
 
 // TODO import junit
 // TODO test deep copy

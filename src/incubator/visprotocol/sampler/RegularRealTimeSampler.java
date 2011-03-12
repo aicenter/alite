@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.sampler;
+package incubator.visprotocol.sampler;
 
 public abstract class RegularRealTimeSampler implements Sampler {
 
