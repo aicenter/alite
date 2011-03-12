@@ -60,7 +60,6 @@ public class Element implements Serializable {
         parameters.put(id, value);
     }
 
-    // TODO somehow do not allow different class than C as value
     public <C> void setParameter(Typer<C> typer, C value) {
         parameters.put(typer.paramId, value);
     }
