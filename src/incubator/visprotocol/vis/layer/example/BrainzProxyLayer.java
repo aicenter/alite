@@ -33,6 +33,7 @@ public class BrainzProxyLayer implements ProxyLayer {
             if (i == 0) {
                 e.setParameter(PointKeys.COLOR, Color.RED);
                 e.setParameter(PointKeys.WIDTH, 4.0);
+                e.setParameter(PointKeys.CONSTANT_SIZE, true);
             }
         }
         processor.push(struct);

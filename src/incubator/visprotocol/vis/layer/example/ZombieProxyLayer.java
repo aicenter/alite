@@ -28,6 +28,7 @@ public class ZombieProxyLayer implements ProxyLayer {
         e.setParameter(PointKeys.POS, pos);
         e.setParameter(PointKeys.WIDTH, 6.0);
         e.setParameter(PointKeys.COLOR, new Color(0, Math.min(255, env.getPersonHealth()), 0));
+        e.setParameter(PointKeys.CONSTANT_SIZE, false);
         processor.push(struct);
     }
 

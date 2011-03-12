@@ -18,6 +18,7 @@ public class PointPainter implements Painter {
     private Color color = Color.BLACK;
     private double width = 1;
     private Point2d pos = new Point2d();
+    private boolean constantSize = false;
 
     public PointPainter(Vis2DOutput vis2dOutput) {
         this.vis2dOutput = vis2dOutput;
@@ -25,6 +26,8 @@ public class PointPainter implements Painter {
 
     @Override
     public void paint(Element e) {
+        Graphics2D graphics2d = vis2dOutput.getGraphics2D();
+
         if (e.containsParameter(PointKeys.COLOR)) {
             color = e.getParameter(PointKeys.COLOR);
         }
@@ -34,10 +37,16 @@ public class PointPainter implements Painter {
         if (e.containsParameter(PointKeys.POS)) {
             pos = e.getParameter(PointKeys.POS);
         }
+        if (e.containsParameter(PointKeys.CONSTANT_SIZE)) {
+            constantSize = e.getParameter(PointKeys.CONSTANT_SIZE);
+        }
 
-        Graphics2D graphics2d = vis2dOutput.getGraphics2D();
+        double drawWidth = width;
+        if (!constantSize) {
+            drawWidth = vis2dOutput.transW(width);
+        }
+        int radius = (int) (drawWidth / 2.0);
 
-        int radius = (int) (width / 2);
         graphics2d.setColor(color);
         graphics2d.setStroke(new BasicStroke(1));
 
