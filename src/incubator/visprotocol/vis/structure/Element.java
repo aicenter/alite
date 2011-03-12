@@ -74,6 +74,7 @@ public class Element implements Serializable {
     /**
      * Elements must equal! Taken all parameters and updated current state. Shallow copy!
      */
+    @Deprecated
     public void update(Element e) {
         if (!equals(e)) {
             throw new RuntimeException("Merging " + getId() + " and " + e.getId()
@@ -82,8 +83,21 @@ public class Element implements Serializable {
         parameters.putAll(e.parameters);
     }
 
+    public void updateParams(Element e) {
+        parameters.putAll(e.parameters);
+    }
+
     public boolean isEmpty() {
         return parameters.isEmpty();
+    }
+
+    /** clears all parameters */
+    public void clear() {
+        parameters.clear();
+    }
+
+    public void clearParams() {
+        parameters.clear();
     }
 
     /** Makes deep copy of the folder, not of element parameters! */

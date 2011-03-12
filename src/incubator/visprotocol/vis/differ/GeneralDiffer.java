@@ -19,11 +19,11 @@ import java.util.List;
 public class GeneralDiffer implements Differ {
 
     private Structure state;
-    private Structure newState;
+    private Structure updatePart;
 
     public GeneralDiffer() {
         state = new Structure();
-        newState = new Structure();
+        updatePart = new Structure();
     }
 
     /** The newPart may be inserted into the differ, do not use it any more! */
@@ -33,15 +33,14 @@ public class GeneralDiffer implements Differ {
             return;
         }
         if (state.isEmpty()) {
-            state.update(newPart);
-            newState.update(newPart);
+            updatePart.update(newPart);
         } else {
             update(newPart.getRoot(), state.getRoot(newPart.getRoot()), new ArrayList<String>());
         }
     }
 
     /**
-     * Update deeper from current folder. New and current folders must be on same path, path is
+     * Recursive update deeper from current folder. New and current folders must be on same path, path is
      * stored in the list excluding current folder id
      */
     private void update(Folder newF, Folder current, List<String> path) {
@@ -106,7 +105,7 @@ public class GeneralDiffer implements Differ {
      * returns folder from update struct on specified path (folders created if not exist)
      */
     private Folder getFolderFromUpdate(List<String> path) {
-        Folder f = newState.getRoot(path.get(0));
+        Folder f = updatePart.getRoot(path.get(0));
         boolean first = true;
         for (String id : path) {
             if (first) {
@@ -120,31 +119,34 @@ public class GeneralDiffer implements Differ {
 
     @Override
     public Structure pull() {
-        Structure ret = newState;
+        Structure ret = updatePart;
+        new GeneralUpdater(state).update(updatePart);
         clearUpdate();
         return ret;
     }
 
     /** creates copy of current state, but with no parameters, the only parameter is delete all */
     private void clearUpdate() {
-        newState = new Structure();
+        updatePart = new Structure();
         if (!state.isEmpty() && deletableFolder(state.getRoot())) {
-            clearUpdate(newState.getRoot(state.getRoot()), state.getRoot());
+            clearUpdate(updatePart.getRoot(state.getRoot()), state.getRoot());
         }
     }
 
+    /**recursive clearing update*/
     private void clearUpdate(Folder updF, Folder currF) {
         updF.setParameter(CommonKeys.DELETE, true);
-        for(Folder f: currF.getFolders()) {
-            if(deletableFolder(f)) {
+        for (Folder f : currF.getFolders()) {
+            if (deletableFolder(f)) {
                 clearUpdate(updF.getFolder(f), f);
             }
         }
-        for(Element e: currF.getElements()) {
+        for (Element e : currF.getElements()) {
             updF.getElement(e).setParameter(CommonKeys.DELETE, true);
         }
     }
 
+    /** returns false only if folder.delete = false */
     public static boolean deletableFolder(Folder f) {
         return (!f.containsParameter(CommonKeys.DELETE) || f.getParameter(CommonKeys.DELETE));
     }
