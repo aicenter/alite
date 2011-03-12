@@ -1,6 +1,5 @@
 package incubator.visprotocol.structprocessor;
 
-import incubator.visprotocol.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;

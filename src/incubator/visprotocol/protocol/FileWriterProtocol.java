@@ -31,6 +31,7 @@ public class FileWriterProtocol extends StreamProtocol {
         return null;
     }
 
+    @Deprecated
     @Override
     public Structure pull() {
         throw new RuntimeException("This is only file writer");

@@ -1,4 +1,4 @@
-package incubator.visprotocol;
+package incubator.visprotocol.structprocessor;
 
 import incubator.visprotocol.structure.Structure;
 

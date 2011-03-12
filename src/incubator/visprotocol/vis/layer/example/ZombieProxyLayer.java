@@ -1,7 +1,7 @@
 package incubator.visprotocol.vis.layer.example;
 
-import incubator.visprotocol.StructProcessor;
 import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
+import incubator.visprotocol.structprocessor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.PointKeys;

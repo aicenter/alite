@@ -11,6 +11,9 @@ import java.util.Set;
 
 public abstract class Vis2DBasicPainters {
 
+    // TODO nesel by udelat jenom seznam trid a potom z nich v cyklu vytahat TridaKeys.TYPE a
+    // TridaPainter.TYPES ???
+
     /** all element types with parameters that are used by 2D vis */
     public static final Map<String, Set<String>> ELEMENT_TYPES = new HashMap<String, Set<String>>();
 
