@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.layer.proxy;
+package incubator.visprotocol.vis.layer;
 
 import incubator.visprotocol.structprocessor.StructProcessor;
 

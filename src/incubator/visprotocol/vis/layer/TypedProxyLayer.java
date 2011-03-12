@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.layer.proxy;
+package incubator.visprotocol.vis.layer;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.key.Typer;
@@ -13,6 +13,7 @@ import java.util.Set;
  * 
  * @author Ondrej Milenovsky
  * */
+// TODO folder filter
 public abstract class TypedProxyLayer implements ProxyLayer {
 
     private final Map<String, Set<String>> types;
