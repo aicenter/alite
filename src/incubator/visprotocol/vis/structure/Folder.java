@@ -89,7 +89,7 @@ public class Folder extends Element {
     public Element removeElement(Element e) {
         return elements.remove(e.getId());
     }
-    
+
     public Folder removeFolder(String id) {
         return folders.remove(id);
     }
@@ -97,7 +97,7 @@ public class Folder extends Element {
     public Folder removeFolder(Folder f) {
         return folders.remove(f.getId());
     }
-    
+
     public Collection<String> getFolderIds() {
         return folders.keySet();
     }
@@ -133,7 +133,7 @@ public class Folder extends Element {
         elements.clear();
         folders.clear();
     }
-    
+
     public void clearFolders() {
         folders.clear();
     }
@@ -141,7 +141,7 @@ public class Folder extends Element {
     public void clearElements() {
         elements.clear();
     }
-    
+
     /** Makes deep copy of the folder, not of element parameters! */
     public Folder deepCopy() {
         Folder ret = (Folder) super.deepCopy();
@@ -169,6 +169,34 @@ public class Folder extends Element {
     @Override
     public String getType() {
         return TYPE;
+    }
+
+    @Override
+    public boolean equalsDeep(Object obj) {
+        if (!super.equalsDeep(obj)) {
+            return false;
+        }
+        Folder f2 = (Folder) obj;
+        if ((elements.size() != f2.elements.size()) || (folders.size() != f2.folders.size())) {
+            return false;
+        }
+        for (Element e : elements.values()) {
+            if (!f2.containsElement(e)) {
+                return false;
+            }
+            if (!e.equalsDeep(f2.getElement(e))) {
+                return false;
+            }
+        }
+        for (Folder f : folders.values()) {
+            if (!f2.containsFolder(f)) {
+                return false;
+            }
+            if (!f.equalsDeep(f2.getFolder(f))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

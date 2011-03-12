@@ -4,11 +4,12 @@ import incubator.visprotocol.vis.structure.Folder;
 import incubator.visprotocol.vis.structure.Structure;
 
 // TODO import junit
+// TODO test deep copy
 public class StructureTest {
 
     public void test1() {
         Structure s = new Structure();
-        //folder test
+        // folder test
         Folder f1 = s.getRoot("f1");
         Folder f2 = f1.getFolder("f2");
         Folder f3 = f1.getFolder("f3");
@@ -19,13 +20,13 @@ public class StructureTest {
         assertTrue(!f1.containsFolder("f4"));
         assertTrue(f2.isEmpty());
         assertTrue(!f1.isEmpty());
-        
-        //element test
+
+        // element test
         Element e1 = f3.getElement("e1", "type1");
         assertTrue(!f3.isEmpty());
         assertTrue(f3.getElement(e1) == e1);
         assertTrue(f3.getElement("e1", "type1") == e1);
-        
+
         e1.setParameter("p1", 3);
         e1.setParameter("p3", "lama");
         e1.setParameter("p2", "grr");
@@ -34,7 +35,7 @@ public class StructureTest {
         assertTrue(e1.getParameter("p1", Integer.class) == 3);
         assertTrue(e1.getParameter("p2", String.class).equals("grr"));
         assertTrue(e1.getParameter("p3", Double.class) == 5.4);
-        
+
         Structure s2 = new Structure();
         // folder equal test
         Folder f1a = s2.getRoot("neco").getFolder("f1");
@@ -43,7 +44,7 @@ public class StructureTest {
         assertTrue(!f1a.equals(f2));
         Folder f3a = new Folder("f3");
         assertTrue(f3a.equals(f3));
-        
+
         f3.getFolder("f4");
 
         f1a.update(f1);
