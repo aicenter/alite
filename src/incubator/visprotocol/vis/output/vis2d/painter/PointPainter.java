@@ -8,10 +8,17 @@ import incubator.visprotocol.vis.output.painter.Painter;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.vecmath.Point2d;
 
 public class PointPainter implements Painter {
+
+    /** all parameter ids which this painter can paint */
+    public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(PointKeys.COLOR + "",
+            PointKeys.WIDTH + "", PointKeys.POS + "", PointKeys.CONSTANT_SIZE + ""));
 
     private final Vis2DOutput vis2dOutput;
 

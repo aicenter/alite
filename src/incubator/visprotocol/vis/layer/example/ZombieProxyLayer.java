@@ -1,21 +1,24 @@
 package incubator.visprotocol.vis.layer.example;
 
-import java.awt.Color;
-
 import incubator.visprotocol.StructProcessor;
 import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.PointKeys;
-import incubator.visprotocol.vis.layer.proxy.ProxyLayer;
+import incubator.visprotocol.vis.layer.proxy.TypedProxyLayer;
+
+import java.awt.Color;
+import java.util.Map;
+import java.util.Set;
 
 import javax.vecmath.Point2d;
 
-public class ZombieProxyLayer implements ProxyLayer {
+public class ZombieProxyLayer extends TypedProxyLayer {
 
     private final ExampleEnvironment env;
 
-    public ZombieProxyLayer(ExampleEnvironment env) {
+    public ZombieProxyLayer(ExampleEnvironment env, Map<String, Set<String>> types) {
+        super(types);
         this.env = env;
     }
 

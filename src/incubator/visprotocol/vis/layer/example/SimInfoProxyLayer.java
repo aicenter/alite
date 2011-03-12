@@ -3,21 +3,27 @@ package incubator.visprotocol.vis.layer.example;
 import incubator.visprotocol.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
-import incubator.visprotocol.vis.layer.proxy.ProxyLayer;
+import incubator.visprotocol.vis.layer.proxy.TypedProxyLayer;
 
-public class SimInfoProxyLayer implements ProxyLayer {
+import java.util.Map;
+import java.util.Set;
+
+public class SimInfoProxyLayer extends TypedProxyLayer {
 
     private long time = 0;
 
-    public SimInfoProxyLayer() {
+    public SimInfoProxyLayer(Map<String, Set<String>> types) {
+        super(types);
     }
 
     @Override
     public void fillProcessor(StructProcessor processor) {
         time++;
         Structure struct = new Structure(time);
-        Element e = struct.getRoot("Undead land").getFolder("Other").getElement("Info", "Text");
-        e.setParameter("Name", "Undead land");
+        if (hasType("Text")) {
+            Element e = struct.getRoot("Undead land").getFolder("Other").getElement("Info", "Text");
+            setParameter(e, "Name", "Undead land");
+        }
         processor.push(struct);
     }
 
