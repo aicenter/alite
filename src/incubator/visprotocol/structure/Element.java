@@ -1,6 +1,6 @@
-package incubator.visprotocol.vis.structure;
+package incubator.visprotocol.structure;
 
-import incubator.visprotocol.vis.structure.key.Typer;
+import incubator.visprotocol.structure.key.Typer;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -36,18 +36,18 @@ public class Element implements Serializable {
     }
 
     public boolean containsParameter(Object id) {
-        return parameters.containsKey(id);
+        return parameters.containsKey(id.toString());
     }
 
     public Object getParameter(Object id) {
-        return parameters.get(id);
+        return parameters.get(id.toString());
     }
 
     // TODO warnings
     /** returns parameter, if not contains, returns null */
     @SuppressWarnings("unchecked")
     public <C> C getParameter(Object id, Class<C> clazz) {
-        return (C) parameters.get(id);
+        return (C) parameters.get(id.toString());
     }
 
     @SuppressWarnings("unchecked")
@@ -60,12 +60,12 @@ public class Element implements Serializable {
     }
 
     public Object removeParameter(Object id) {
-        return parameters.remove(id);
+        return parameters.remove(id.toString());
     }
 
     /** returns true only if e.containsParam(id) and e.id == value */
     public boolean parameterEqual(Object id, Object value) {
-        return parameters.containsKey(id) && parameters.get(id).equals(value);
+        return parameters.containsKey(id.toString()) && parameters.get(id.toString()).equals(value);
     }
 
     public Collection<String> getParamIds() {

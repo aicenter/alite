@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.structure.key;
+package incubator.visprotocol.structure.key;
 
 /**
  * Structure to get typed parameter from Element.

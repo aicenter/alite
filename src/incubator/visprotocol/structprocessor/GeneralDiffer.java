@@ -1,9 +1,10 @@
-package incubator.visprotocol.vis.differ;
+package incubator.visprotocol.structprocessor;
 
-import incubator.visprotocol.vis.structure.Element;
-import incubator.visprotocol.vis.structure.Folder;
-import incubator.visprotocol.vis.structure.Structure;
-import incubator.visprotocol.vis.structure.key.CommonKeys;
+import incubator.visprotocol.StructProcessor;
+import incubator.visprotocol.structure.Element;
+import incubator.visprotocol.structure.Folder;
+import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.CommonKeys;
 
 /**
  * Stores last state and structure to send. When pushed new part, updates last state and differences
@@ -11,7 +12,7 @@ import incubator.visprotocol.vis.structure.key.CommonKeys;
  * 
  * @author Ondrej Milenovsky
  */
-public class GeneralDiffer implements Differ {
+public class GeneralDiffer implements StructProcessor {
 
     private Structure state;
     private Structure updatePart;
@@ -21,7 +22,6 @@ public class GeneralDiffer implements Differ {
         updatePart = new Structure();
     }
 
-    @Override
     public Structure getState() {
         return state;
     }
@@ -32,6 +32,9 @@ public class GeneralDiffer implements Differ {
      */
     @Override
     public void push(Structure newPart) {
+        if(newPart.getTimeStamp() != null) {
+            updatePart.setTimeStamp(newPart.getTimeStamp());
+        }
         if (newPart.isEmpty()) {
             return;
         }
@@ -48,7 +51,7 @@ public class GeneralDiffer implements Differ {
      * conttain it.
      */
     private void diff(Element newE, Element currE, Element updateE) {
-        if ((currE != null) && newE.equals(currE)) {
+        if ((currE != null) && !newE.equals(currE)) {
             throw new RuntimeException("New folder/element " + newE.getId()
                     + " is not same id as folder/element " + currE.getId());
         }
@@ -91,8 +94,8 @@ public class GeneralDiffer implements Differ {
         Structure ret = updatePart;
 
         GeneralUpdater updater = new GeneralUpdater(state);
-        updater.update(updatePart);
-        state = updater.getState();
+        updater.push(updatePart);
+        state = updater.pull();
 
         clearUpdate();
 

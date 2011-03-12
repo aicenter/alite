@@ -1,9 +1,9 @@
 package incubator.visprotocol.vis.layer.proxy;
 
-import incubator.visprotocol.vis.protocol.Protocol;
+import incubator.visprotocol.StructProcessor;
 
 public interface ProxyLayer {
 
-    public void fillProtocol(Protocol protocol);
+    public void fillProcessor(StructProcessor processor);
 
 }

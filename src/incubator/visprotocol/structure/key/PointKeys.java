@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.structure.key;
+package incubator.visprotocol.structure.key;
 
 import java.awt.Color;
 

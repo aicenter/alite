@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.sampler;
+package incubator.visprotocol.sampler;
 
 public interface Sampler {
     public void start();
