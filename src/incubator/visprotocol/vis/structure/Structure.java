@@ -58,6 +58,7 @@ public class Structure implements Serializable {
         return root == null;
     }
 
+    @Deprecated
     public void update(Structure s) {
         if (!equals(s)) {
             throw new RuntimeException("Updating different structure");

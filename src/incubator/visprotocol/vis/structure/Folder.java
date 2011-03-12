@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 public class Folder extends Element {
 
     public static final String TYPE = "Folder";
-    
+
     private static final long serialVersionUID = 6708406764600130786L;
 
     private final LinkedHashMap<String, Element> elements;
@@ -86,10 +86,18 @@ public class Folder extends Element {
         return elements.remove(id);
     }
 
+    public Element removeElement(Element e) {
+        return elements.remove(e.getId());
+    }
+    
     public Folder removeFolder(String id) {
         return folders.remove(id);
     }
 
+    public Folder removeFolder(Folder f) {
+        return folders.remove(f.getId());
+    }
+    
     public Collection<String> getFolderIds() {
         return folders.keySet();
     }
@@ -118,20 +126,37 @@ public class Folder extends Element {
         return elements.isEmpty() && folders.isEmpty() && super.isEmpty();
     }
 
+    /** Clears parameters, folders and elements */
+    @Override
+    public void clear() {
+        super.clear();
+        elements.clear();
+        folders.clear();
+    }
+    
+    public void clearFolders() {
+        folders.clear();
+    }
+
+    public void clearElements() {
+        elements.clear();
+    }
+    
     /** Makes deep copy of the folder, not of element parameters! */
     public Folder deepCopy() {
-        Folder ret = (Folder)super.deepCopy();
-        for(Folder f: folders.values()) {
+        Folder ret = (Folder) super.deepCopy();
+        for (Folder f : folders.values()) {
             ret.addFolder(f.deepCopy());
         }
-        for(Element e: elements.values()) {
+        for (Element e : elements.values()) {
             ret.addElement(e.deepCopy());
         }
         return ret;
     }
-    
+
     /** Copied also all elements and folders, shallow copy! */
     @Override
+    @Deprecated
     public void update(Element e) {
         super.update(e);
         if (e instanceof Folder) {
