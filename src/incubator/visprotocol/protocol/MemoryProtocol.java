@@ -16,12 +16,9 @@ public class MemoryProtocol implements Protocol {
 
     @Override
     public Structure pull() {
-        return struct;
-    }
-
-    @Override
-    public void nextStep() {
+        Structure ret = struct;
         struct = null;
+        return ret;
     }
 
 }
