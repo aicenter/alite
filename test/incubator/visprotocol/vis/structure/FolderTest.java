@@ -1,6 +1,13 @@
 package incubator.visprotocol.vis.structure;
 
-//TODO test deep copy
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 public class FolderTest {
+    @Test
+    public void testDeepCopy() {
+        //TODO
+    }
 
 }
