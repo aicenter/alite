@@ -1,10 +1,39 @@
 package incubator.visprotocol.protocol;
 
-//TODO: this protocol will read the elements from a file and will replay the visualization
-public class FileReaderProtocol/* implements Protocol */{
+import incubator.visprotocol.structure.Structure;
 
-    public FileReaderProtocol() {
-        // TODO Auto-generated constructor stub
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+/**
+ * Just extended StreamProtocol with constructor with file.
+ * 
+ * @author Ondrej Milenovsky
+ * */
+public class FileReaderProtocol extends StreamProtocol {
+
+    public FileReaderProtocol(File file) {
+        super(init(file), null);
+    }
+
+    public FileReaderProtocol(String fileName) {
+        this(new File(fileName));
+    }
+
+    private static InputStream init(File file) {
+        try {
+            return new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public void push(Structure struct) {
+        throw new RuntimeException("This is only file reader");
     }
 
 }
