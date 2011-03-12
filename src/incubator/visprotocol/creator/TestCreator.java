@@ -59,7 +59,7 @@ public class TestCreator implements Creator {
         rootProxyLayer.addLayer(new BackgroundProxyLayer(Color.WHITE, ".Undead land.Other",
                 Vis2DBasicPainters.ELEMENT_TYPES));
         rootProxyLayer
-                .addLayer(new BrainzProxyLayer(3, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
+                .addLayer(new BrainzProxyLayer(1000, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
         rootProxyLayer.addLayer(new ZombieProxyLayer(exampleEnvironment,
                 Vis2DBasicPainters.ELEMENT_TYPES));
 
