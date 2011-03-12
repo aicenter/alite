@@ -47,8 +47,8 @@ public class TestCreator implements Creator {
         Vis2DParams params = new Vis2DParams();
         params.worldBounds = new Rectangle2D.Double(-400, -600, 11000, 11000);
         vis2d = new Vis2DOutput(params);
-        new ZoomTransformator(vis2d);
-        new MoveTransformator(vis2d);
+        vis2d.addTransformator(new ZoomTransformator());
+        vis2d.addTransformator(new MoveTransformator());
 
         // layers
         final RootProxyLayer rootProxyLayer = new RootProxyLayer();

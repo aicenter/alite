@@ -1,5 +1,7 @@
 package incubator.visprotocol.vis.output;
 
+import incubator.visprotocol.vis.output.vis2d.Transformator;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
@@ -129,6 +131,10 @@ public class Vis2DOutput extends Canvas {
         reinitializeBuffers();
 
         window.setVisible(true);
+    }
+
+    public void addTransformator(Transformator t) {
+        t.setToVis(this);
     }
 
     public Component getComponent() {
