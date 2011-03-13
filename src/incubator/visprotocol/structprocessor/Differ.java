@@ -32,7 +32,7 @@ public class Differ implements StructProcessor {
      */
     @Override
     public void push(Structure newPart) {
-        if(newPart.getTimeStamp() != null) {
+        if (newPart.getTimeStamp() != null) {
             updatePart.setTimeStamp(newPart.getTimeStamp());
         }
         if (newPart.isEmpty()) {
@@ -55,7 +55,11 @@ public class Differ implements StructProcessor {
             throw new RuntimeException("New folder/element " + newE.getId()
                     + " is not same id as folder/element " + currE.getId());
         }
-        notDelete(updateE);
+        if (currE == null) {
+            setCreate(updateE);
+        } else {
+            notDelete(updateE);
+        }
         // diff params
         for (String p : newE.getParamIds()) {
             Object value = newE.getParameter(p);
@@ -86,7 +90,7 @@ public class Differ implements StructProcessor {
             } else {
                 diff(e, currF.getElement(e), updateF.getElement(e));
             }
-            if(updateF.getElement(e).isEmpty()) {
+            if (updateF.getElement(e).isEmpty()) {
                 updateF.removeElement(e);
             }
         }
@@ -131,6 +135,10 @@ public class Differ implements StructProcessor {
 
     public static void notDelete(Element e) {
         e.removeParameter(CommonKeys.CHANGE);
+    }
+
+    public static void setCreate(Element e) {
+        e.setParameter(CommonKeys.CHANGE, ChangeFlag.CREATE);
     }
 
     public static void setDelete(Element e) {
