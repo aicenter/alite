@@ -3,6 +3,7 @@ package incubator.visprotocol.structprocessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.ChangeFlag;
 import incubator.visprotocol.structure.key.CommonKeys;
 
 /**
@@ -126,16 +127,16 @@ public class Differ implements StructProcessor {
     }
 
     public static void notDelete(Element e) {
-        e.removeParameter(CommonKeys.DELETE);
+        e.removeParameter(CommonKeys.CHANGE);
     }
 
     public static void setDelete(Element e) {
-        e.setParameter(CommonKeys.DELETE, true);
+        e.setParameter(CommonKeys.CHANGE, ChangeFlag.DELETE);
     }
 
-    /** returns false only if folder.delete == false */
+    /** returns false only if folder.change == not_delete */
     public static boolean deletableFolder(Folder f) {
-        return !f.parameterEqual(CommonKeys.DELETE, false);
+        return !f.parameterEqual(CommonKeys.CHANGE, ChangeFlag.NOT_DELETE);
     }
 
 }
