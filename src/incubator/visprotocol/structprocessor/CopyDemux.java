@@ -5,6 +5,10 @@ import incubator.visprotocol.structure.Structure;
 /**
  * Pushes deep copy of the instance to all subprocessors, has no pull.
  * 
+ * Takes: any structure
+ * 
+ * Creates: N/A
+ * 
  * @author Ondrej Milenovsky
  * */
 public class CopyDemux extends LightDemux {

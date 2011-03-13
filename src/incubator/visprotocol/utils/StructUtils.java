@@ -102,4 +102,23 @@ public class StructUtils {
         return ret;
     }
 
+    /** creates deep copy of folders (without elements and params), timestamp is copied */
+    public static Structure copyFolders(Structure s) {
+        Structure ret = new Structure(s);
+        if (s.isEmpty()) {
+            return ret;
+        }
+        ret.setRoot(copyFolders(s.getRoot()));
+        return ret;
+    }
+
+    /** creates deep copy of folders (without elements and params) */
+    private static Folder copyFolders(Folder f) {
+        Folder ret = new Folder(f);
+        for (Folder f2 : f.getFolders()) {
+            ret.addFolder(copyFolders(f2));
+        }
+        return ret;
+    }
+
 }

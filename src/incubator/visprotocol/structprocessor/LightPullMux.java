@@ -6,6 +6,12 @@ import incubator.visprotocol.structure.Structure;
  * Pulles structures from all subprocessors and pushes to output, then pulls structure from the
  * output.
  * 
+ * Takes: any structure (not useful)
+ * 
+ * Creates: product of output, which is composed from inputs
+ * 
+ * Forward: fills the output
+ * 
  * @author Ondrej Milenovsky
  * */
 public class LightPullMux extends MultipleProcessor implements Forwarder {

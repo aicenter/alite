@@ -15,6 +15,11 @@ public class Structure implements Serializable {
     public Structure() {
     }
 
+    /** copies only timestamp */
+    public Structure(Structure s) {
+        this(s.getTimeStamp());
+    }
+
     public Structure(Long timeStamp) {
         this.timeStamp = timeStamp;
     }

@@ -2,6 +2,11 @@ package incubator.visprotocol.protocol;
 
 import incubator.visprotocol.structure.Structure;
 
+/**
+ * Storage for one structure, pull clears state.
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class MemoryProtocol implements Protocol {
 
     private Structure struct;
