@@ -11,7 +11,7 @@ import java.util.List;
  * 
  * @author Ondrej Milenovsky
  * */
-public class LightMux implements HubProcessor {
+public class LightMux implements HubProcessor, Forwarder {
 
     private final List<StructProcessor> processors;
 
@@ -43,10 +43,16 @@ public class LightMux implements HubProcessor {
     /** pull from all subprocessors, push to output, return output.pull() */
     @Override
     public Structure pull() {
+        forward();
+        return output.pull();
+    }
+
+    /** pushes from subprocessors to the output */
+    @Override
+    public void forward() {
         for (StructProcessor pr : processors) {
             output.push(pr.pull());
         }
-        return output.pull();
     }
 
 }

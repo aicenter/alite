@@ -8,20 +8,20 @@ import incubator.visprotocol.structure.Structure;
  * 
  * @author Ondrej Milenovsky
  * */
-public class PullForwarder extends MultipleProcessor {
+public class PullForwarder extends PushForwarder {
 
-    @Override
-    public Structure pull() {
-        Structure struct = null;
-        for (StructProcessor pr : getProcessors()) {
-            if (struct != null) {
-                pr.push(struct);
-            }
-            struct = pr.pull();
-        }
-        return struct;
+    public PullForwarder(StructProcessor... processors) {
+        super(processors);
     }
 
+    /** pull from whole chain */
+    @Override
+    public Structure pull() {
+        forward();
+        return getProcessor(size() - 1).pull();
+    }
+
+    /** push to the first */
     @Override
     public void push(Structure newPart) {
         getProcessor(0).push(newPart);

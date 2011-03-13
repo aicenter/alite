@@ -1,10 +1,10 @@
 package incubator.visprotocol.creator;
 
 import incubator.visprotocol.protocol.MemoryProtocol;
-import incubator.visprotocol.protocol.Protocol;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structprocessor.Differ;
 import incubator.visprotocol.structprocessor.LightMux;
+import incubator.visprotocol.structprocessor.PullForwarder;
 import incubator.visprotocol.structprocessor.Updater;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
@@ -53,41 +53,30 @@ public class TestCreator implements Creator {
         vis2d.addTransformator(new ZoomTransformator());
         vis2d.addTransformator(new MoveTransformator());
 
-        // joint between proxies and protocol
-        final Differ differ = new Differ();
+        RootPainter painter = new RootPainter();
+        // the chain of components
+        final PullForwarder chain = new PullForwarder(new Differ(), new MemoryProtocol(),
+                new Updater(), painter);
 
+        // layers mux
+        final LightMux theTube = new LightMux(chain);
         // layers
-        final LightMux rootProxyLayer = new LightMux(differ);
-        rootProxyLayer.addProcessor(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
-        rootProxyLayer.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other",
+        theTube.addProcessor(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
+        theTube.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other",
                 Vis2DBasicPainters.ELEMENT_TYPES));
-        rootProxyLayer.addProcessor(new BrainzProxyLayer(1000, 10000,
+        theTube.addProcessor(new BrainzProxyLayer(1000, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
+        theTube.addProcessor(new ZombieProxyLayer(exampleEnvironment,
                 Vis2DBasicPainters.ELEMENT_TYPES));
-        rootProxyLayer.addProcessor(new ZombieProxyLayer(exampleEnvironment,
-                Vis2DBasicPainters.ELEMENT_TYPES));
-
-        // protocol
-        // use protocol storing the visual elements (Points) into memory
-        final Protocol protocol = new MemoryProtocol();
-
-        // joint between protocol and painters
-        final Updater updater = new Updater();
 
         // outputs
-        final RootPainter painter = new RootPainter();
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
             @Override
             protected void sample() {
-                // generate update struct and fill the used protocol by new struct
-                protocol.push(rootProxyLayer.pull());
-                // update current state
-                updater.push(protocol.pull());
-                // draw the elements using the painters, they will get what they want from the
-                // current state in updater
-                painter.paint(updater.pull());
+                theTube.forward();
+                chain.forward();
 
                 // TODO: should be done probably by painter ...but I don't think so
                 vis2d.flip();

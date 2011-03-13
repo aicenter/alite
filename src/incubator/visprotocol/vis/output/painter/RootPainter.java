@@ -1,5 +1,6 @@
 package incubator.visprotocol.vis.output.painter;
 
+import incubator.visprotocol.structprocessor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
@@ -12,7 +13,7 @@ import java.util.Map;
  * 
  * @author Ondrej Milenovsky
  * */
-public class RootPainter implements GroupPainter {
+public class RootPainter implements GroupPainter, StructProcessor {
 
     private final Map<String, Painter> painters;
 
@@ -50,6 +51,17 @@ public class RootPainter implements GroupPainter {
         for (Folder f2 : f.getFolders()) {
             paint(f2);
         }
+    }
+
+    @Override
+    @Deprecated
+    public Structure pull() {
+        throw new RuntimeException("Not used");
+    }
+
+    @Override
+    public void push(Structure newPart) {
+        paint(newPart);
     }
 
 }
