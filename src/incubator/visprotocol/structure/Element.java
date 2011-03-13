@@ -76,7 +76,12 @@ public class Element implements Serializable {
     public <C> boolean parameterEqual(Typer<C> id, C value) {
         return parameters.containsKey(id.toString()) && parameters.get(id.toString()).equals(value);
     }
-    
+
+    /** if the parameter is contained and is null */
+    public boolean parameterNull(Object id) {
+        return parameterEqual(id.toString(), null);
+    }
+
     public Collection<String> getParamIds() {
         return parameters.keySet();
     }
