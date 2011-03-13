@@ -3,6 +3,8 @@ package incubator.visprotocol.structure;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.utils.RandomStructGenerator;
+import incubator.visprotocol.utils.StructUtils;
 
 import static org.junit.Assert.assertTrue;
 
@@ -57,17 +59,63 @@ public class StructureTest {
 
     @Test
     public void test2() {
-        // TODO
+        Structure s1 = new Structure(666L);
+        Structure s2 = new Structure(66L);
+        assertTrue(s1.isEmpty());
+        s1.getRoot("f1");
+        assertTrue(!s1.isEmpty());
+        assertTrue(!s1.equals(s2));
+        s2.setTimeStamp(666L);
+        assertTrue(s1.equals(s2));
+        assertTrue(!s1.equalsDeep(s2));
+        s2.getRoot("f1");
+        assertTrue(s1.equalsDeep(s2));
+        s2.clear();
+        assertTrue(s2.isEmpty());
+
     }
 
     @Test
     public void testEquals() {
-        // TODO
+        RandomStructGenerator gen = new RandomStructGenerator();
+        gen.setSeed(-666);
+        Structure s1 = gen.next();
+        gen.setSeed(-666);
+        Structure s2 = gen.next();
+        assertTrue(s1.equals(s2));
+        assertTrue(s1.equalsDeep(s2));
+        Element e = StructUtils.getLeaf(s1);
+        e.setParameter("vemeno", "doji");
+        assertTrue(s1.equals(s2));
+        assertTrue(!s1.equalsDeep(s2));
+        e = StructUtils.getLeaf(s2);
+        e.setParameter("vemeno", "doji");
+        assertTrue(s1.equalsDeep(s2));
+        
+        gen.setSeed(1);
+        s1 = gen.next();
+        gen.setSeed(2);
+        s2 = gen.next();
+        assertTrue(!s1.equalsDeep(s2));
     }
 
     @Test
     public void testDeepCopy() {
-        // TODO
+        RandomStructGenerator gen = new RandomStructGenerator();
+        Structure s1 = gen.next();
+        Structure s2 = s1.deepCopy();
+        assertTrue(s1.equalsDeep(s2));
+        Element e = StructUtils.getLeaf(s1);
+        e.setParameter("vemeno", "doji");
+        assertTrue(!s1.equalsDeep(s2));
+        e.removeParameter("vemeno");
+        
+        assertTrue(s1.getRoot() != s2.getRoot());
+        for(Folder f: s1.getRoot().getFolders()) {
+            Folder f2 = s2.getRoot().getFolder(f);
+            assertTrue(f != f2);
+            assertTrue(f.equalsDeep(f2));
+        }
     }
 
 }

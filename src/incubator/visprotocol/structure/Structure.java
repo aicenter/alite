@@ -58,6 +58,10 @@ public class Structure implements Serializable {
         return root == null;
     }
 
+    public void clear() {
+        root = null;
+    }
+
     @Deprecated
     public void update(Structure s) {
         if (!equals(s)) {
@@ -74,9 +78,16 @@ public class Structure implements Serializable {
         return new Structure(getRoot().deepCopy(), timeStamp);
     }
 
-    // TODO
     public boolean equalsDeep(Object obj) {
-        return equals(obj);
+        if (!equals(obj)) {
+            return false;
+        }
+        Structure s2 = (Structure) obj;
+        if (root == null) {
+            return s2.getRoot() == null;
+        } else {
+            return root.equalsDeep(s2.getRoot());
+        }
     }
 
     @Override
@@ -88,19 +99,23 @@ public class Structure implements Serializable {
             return false;
         }
         Structure s2 = (Structure) obj;
-        if (s2.getRoot() == root) {
-            return true;
+        if (timeStamp == null) {
+            return (s2.getTimeStamp() == null);
+        } else {
+            return timeStamp.equals(s2.getTimeStamp());
         }
-        if ((root == null) || (s2.root == null)) {
-            return false;
-        }
-        return root.equals(s2.getRoot());
     }
 
     public String print() {
-        if (root == null) {
-            return "Empty\n";
+        String ret = "";
+        if (timeStamp != null) {
+            ret += timeStamp + "\n";
         }
-        return root.print();
+        if (root == null) {
+            ret += "Empty\n";
+        } else {
+            ret += root.print();
+        }
+        return ret;
     }
 }
