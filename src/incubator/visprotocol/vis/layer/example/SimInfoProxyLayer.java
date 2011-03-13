@@ -1,14 +1,13 @@
 package incubator.visprotocol.vis.layer.example;
 
-import incubator.visprotocol.structprocessor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
-import incubator.visprotocol.vis.layer.TypedProxyLayer;
+import incubator.visprotocol.vis.layer.TypedLayer;
 
 import java.util.Map;
 import java.util.Set;
 
-public class SimInfoProxyLayer extends TypedProxyLayer {
+public class SimInfoProxyLayer extends TypedLayer {
 
     private long time = 0;
 
@@ -17,14 +16,14 @@ public class SimInfoProxyLayer extends TypedProxyLayer {
     }
 
     @Override
-    public void fillProcessor(StructProcessor processor) {
+    public Structure pull() {
         time++;
         Structure struct = new Structure(time);
         if (hasType("Text")) {
             Element e = struct.getRoot("Undead land").getFolder("Other").getElement("Info", "Text");
             setParameter(e, "Name", "Undead land");
         }
-        processor.push(struct);
+        return struct;
     }
 
 }

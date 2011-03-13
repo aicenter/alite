@@ -6,6 +6,9 @@ public class Structure implements Serializable {
 
     private static final long serialVersionUID = -5536165397290203610L;
 
+    /** do not modify this instance !!! */
+    public static final Structure EMPTY_INSTANCE = new Structure();
+
     private Folder root;
     private Long timeStamp = null;
 

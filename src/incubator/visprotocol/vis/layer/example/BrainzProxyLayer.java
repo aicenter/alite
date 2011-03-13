@@ -1,11 +1,10 @@
 package incubator.visprotocol.vis.layer.example;
 
-import incubator.visprotocol.structprocessor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.PointKeys;
-import incubator.visprotocol.vis.layer.TypedProxyLayer;
+import incubator.visprotocol.vis.layer.TypedLayer;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.Set;
 
 import javax.vecmath.Point2d;
 
-public class BrainzProxyLayer extends TypedProxyLayer {
+public class BrainzProxyLayer extends TypedLayer {
 
     private final ArrayList<Point2d> points;
 
@@ -27,7 +26,7 @@ public class BrainzProxyLayer extends TypedProxyLayer {
     }
 
     @Override
-    public void fillProcessor(StructProcessor processor) {
+    public Structure pull() {
         Structure struct = new Structure();
         if (hasType(PointKeys.TYPE)) {
             Folder f = struct.getRoot("Undead land").getFolder("Brainz");
@@ -41,7 +40,7 @@ public class BrainzProxyLayer extends TypedProxyLayer {
                 }
             }
         }
-        processor.push(struct);
+        return struct;
     }
 
 }

@@ -1,11 +1,10 @@
 package incubator.visprotocol.vis.layer.example;
 
 import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
-import incubator.visprotocol.structprocessor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.PointKeys;
-import incubator.visprotocol.vis.layer.TypedProxyLayer;
+import incubator.visprotocol.vis.layer.TypedLayer;
 
 import java.awt.Color;
 import java.util.Map;
@@ -13,7 +12,7 @@ import java.util.Set;
 
 import javax.vecmath.Point2d;
 
-public class ZombieProxyLayer extends TypedProxyLayer {
+public class ZombieProxyLayer extends TypedLayer {
 
     private final ExampleEnvironment env;
 
@@ -23,7 +22,7 @@ public class ZombieProxyLayer extends TypedProxyLayer {
     }
 
     @Override
-    public void fillProcessor(StructProcessor processor) {
+    public Structure pull() {
         Structure struct = new Structure();
         Element e = struct.getRoot("Undead land").getFolder("Zombies").getElement(
                 env.getPersonName(), PointKeys.TYPE);
@@ -32,7 +31,7 @@ public class ZombieProxyLayer extends TypedProxyLayer {
         e.setParameter(PointKeys.WIDTH, 60.0);
         e.setParameter(PointKeys.COLOR, new Color(0, Math.min(255, env.getPersonHealth()), 0));
         e.setParameter(PointKeys.CONSTANT_SIZE, false);
-        processor.push(struct);
+        return struct;
     }
 
 }
