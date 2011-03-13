@@ -3,6 +3,7 @@ package incubator.visprotocol.structprocessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.ChangeFlag;
 import incubator.visprotocol.structure.key.CommonKeys;
 
 /**
@@ -84,9 +85,9 @@ public class Updater implements StructProcessor {
         }
     }
 
-    /** returns true only if folder.delete = true */
+    /** returns true only if folder.change == delete */
     public static boolean deleteElement(Element e) {
-        return e.parameterEqual(CommonKeys.DELETE, true);
+        return e.parameterEqual(CommonKeys.CHANGE, ChangeFlag.DELETE);
     }
 
 }

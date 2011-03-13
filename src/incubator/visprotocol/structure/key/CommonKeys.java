@@ -12,6 +12,6 @@ public abstract class CommonKeys {
      * deleted in vis layer. False is used by proxy layers (only folders), means that nothing in the
      * folder will be deleted, even if the proxy doesn't send any element to the folder.
      */
-    public static final Typer<Boolean> DELETE = new Typer<Boolean>("delete");
+    public static final Typer<ChangeFlag> CHANGE = new Typer<ChangeFlag>("change");
 
 }
