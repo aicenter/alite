@@ -3,7 +3,7 @@ package incubator.visprotocol.creator;
 import incubator.visprotocol.protocol.MemoryProtocol;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structprocessor.Differ;
-import incubator.visprotocol.structprocessor.LightMux;
+import incubator.visprotocol.structprocessor.LightPullMux;
 import incubator.visprotocol.structprocessor.PullForwarder;
 import incubator.visprotocol.structprocessor.Updater;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
@@ -53,13 +53,8 @@ public class TestCreator implements Creator {
         vis2d.addTransformator(new ZoomTransformator());
         vis2d.addTransformator(new MoveTransformator());
 
-        RootPainter painter = new RootPainter();
-        // the chain of components
-        final PullForwarder chain = new PullForwarder(new Differ(), new MemoryProtocol(),
-                new Updater(), painter);
-
         // layers mux
-        final LightMux collector = new LightMux(chain);
+        LightPullMux collector = new LightPullMux(new Differ());
         // layers
         collector.addProcessor(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
         collector.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other",
@@ -68,6 +63,11 @@ public class TestCreator implements Creator {
         collector.addProcessor(new ZombieProxyLayer(exampleEnvironment,
                 Vis2DBasicPainters.ELEMENT_TYPES));
 
+        RootPainter painter = new RootPainter();
+        // the chain of components
+        final PullForwarder chain = new PullForwarder(collector, new MemoryProtocol(),
+                new Updater(), painter);
+
         // outputs
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
 
@@ -75,10 +75,9 @@ public class TestCreator implements Creator {
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
             @Override
             protected void sample() {
-                collector.forward();
                 chain.forward();
 
-                // TODO: should be done probably by painter ...but I don't think so
+                // TODO: should be done probably by painter
                 vis2d.flip();
             }
         };
@@ -88,7 +87,6 @@ public class TestCreator implements Creator {
     private void createAndRunSimulation() {
         Random random = new Random();
         while (true) {
-            exampleEnvironment.exampleString = "string" + Long.toString(random.nextLong());
             exampleEnvironment.examplePosition = new Point3d(random.nextDouble() * 20.0 + 100.0,
                     random.nextDouble() * 20.0 + 100.0, random.nextDouble() * 20.0 + 100.0);
             exampleEnvironment.exampleInteger = random.nextInt(256);
@@ -107,7 +105,7 @@ public class TestCreator implements Creator {
 
         private long exampleTime = 1;
 
-        private String exampleString = "string";
+        private String exampleString = "Green zombie";
         private Point3d examplePosition = new Point3d();
         private int exampleInteger = 100;
 

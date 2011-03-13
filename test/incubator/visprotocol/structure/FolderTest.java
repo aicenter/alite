@@ -50,6 +50,15 @@ public class FolderTest {
         Folder f2a = new Folder("f2");
         f1a.addFolder(f2a);
         assertTrue(f.equalsDeep(f2));
+        
+        Folder a1 = new Folder("f1");
+        Folder a2 = a1.getFolder("f2");
+
+        Folder b1 = new Folder("f1");
+        Folder b2 = b1.getFolder("f2");
+        
+        assertTrue(a1.getFolder(b2) == a2);
+        assertTrue(b1.getFolder(a2) == b2);
 
     }
 
@@ -73,6 +82,14 @@ public class FolderTest {
         assertTrue(f1.isEmpty());
         assertTrue(f1.equalsDeep(f2));
 
+        Folder a1 = new Folder("f1");
+        Element a2 = a1.getElement("f2", "t");
+
+        Folder b1 = new Folder("f1");
+        Element b2 = b1.getElement("f2", "t");
+        
+        assertTrue(a1.getElement(b2) == a2);
+        assertTrue(b1.getElement(a2) == b2);        
     }
 
     @Test

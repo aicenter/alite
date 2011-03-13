@@ -86,6 +86,9 @@ public class Differ implements StructProcessor {
             } else {
                 diff(e, currF.getElement(e), updateF.getElement(e));
             }
+            if(updateF.getElement(e).isEmpty()) {
+                updateF.removeElement(e);
+            }
         }
     }
 

@@ -2,43 +2,28 @@ package incubator.visprotocol.structprocessor;
 
 import incubator.visprotocol.structure.Structure;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Pulles structures from all subprocessors and pushes to output, then pulls structure from the
  * output.
  * 
  * @author Ondrej Milenovsky
  * */
-public class LightMux implements HubProcessor, Forwarder {
-
-    private final List<StructProcessor> processors;
+public class LightPullMux extends MultipleProcessor implements Forwarder {
 
     private StructProcessor output;
 
-    public LightMux(StructProcessor output) {
-        processors = new ArrayList<StructProcessor>();
+    public LightPullMux() {
+    }
+    
+    public LightPullMux(StructProcessor output) {
         this.output = output;
     }
 
     public void setOutput(StructProcessor output) {
         this.output = output;
     }
-    
-    @Override
-    public void addProcessor(StructProcessor pr) {
-        processors.add(pr);
-    }
 
-    @Override
-    public void removeProcessor(StructProcessor pr) {
-        int i = processors.indexOf(pr);
-        if (i >= 0) {
-            processors.remove(i);
-        }
-    }
-
+    /** this might not be useful */
     @Override
     public void push(Structure newPart) {
         output.push(newPart);
@@ -54,7 +39,7 @@ public class LightMux implements HubProcessor, Forwarder {
     /** pushes from subprocessors to the output */
     @Override
     public void forward() {
-        for (StructProcessor pr : processors) {
+        for (StructProcessor pr : getProcessors()) {
             output.push(pr.pull());
         }
     }
