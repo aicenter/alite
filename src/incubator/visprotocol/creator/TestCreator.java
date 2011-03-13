@@ -59,13 +59,13 @@ public class TestCreator implements Creator {
                 new Updater(), painter);
 
         // layers mux
-        final LightMux theTube = new LightMux(chain);
+        final LightMux collector = new LightMux(chain);
         // layers
-        theTube.addProcessor(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
-        theTube.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other",
+        collector.addProcessor(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
+        collector.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other",
                 Vis2DBasicPainters.ELEMENT_TYPES));
-        theTube.addProcessor(new BrainzProxyLayer(1000, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
-        theTube.addProcessor(new ZombieProxyLayer(exampleEnvironment,
+        collector.addProcessor(new BrainzProxyLayer(1000, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
+        collector.addProcessor(new ZombieProxyLayer(exampleEnvironment,
                 Vis2DBasicPainters.ELEMENT_TYPES));
 
         // outputs
@@ -75,7 +75,7 @@ public class TestCreator implements Creator {
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
             @Override
             protected void sample() {
-                theTube.forward();
+                collector.forward();
                 chain.forward();
 
                 // TODO: should be done probably by painter ...but I don't think so

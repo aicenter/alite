@@ -35,8 +35,6 @@ public class Simulation extends EventProcessor {
     private long drawReload = 40;
     /** last time drawed */
     private long lastDrawed = 0;
-    /** this is not used as class variable but it must be */
-    private long drawDeadline;
 
     public void run() {
 	runTime = System.currentTimeMillis();
@@ -144,7 +142,7 @@ public class Simulation extends EventProcessor {
     private long drawFrame(long timeToSleep) {
 	drawFrame = false;
 	long startTime = System.currentTimeMillis();
-	drawDeadline = System.currentTimeMillis()
+	final long drawDeadline = System.currentTimeMillis()
 		+ Math.max(timeToSleep, drawTimeout);
 	// start drawing thread
 	Thread thread2 = new Thread(new Runnable() {
