@@ -21,6 +21,11 @@ public class Element implements Serializable {
     private final String type;
     private final Map<String, Object> parameters;
 
+    /** copies only id and type */
+    public Element(Element e) {
+        this(e.getId(), e.getType());
+    }
+
     public Element(String id, String type) {
         this.id = id;
         this.type = type;

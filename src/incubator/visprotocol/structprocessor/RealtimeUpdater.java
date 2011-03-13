@@ -3,30 +3,31 @@ package incubator.visprotocol.structprocessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
-import incubator.visprotocol.structure.key.ChangeFlag;
-import incubator.visprotocol.structure.key.CommonKeys;
+import incubator.visprotocol.utils.StructUtils;
 
 /**
- * Holds current state, accepts updates from differ and updates current state. Default setting is
- * not to delete folders. Makes deep copy of update part.
+ * Holds current state, accepts parts of world. When push, returns current world state. Default
+ * setting is not to delete folders.
  * 
- * Takes: whole world state (can be split to parts)
+ * Takes: differences between two world states
  * 
  * Creates: last world state
  * 
  * @author Ondrej Milenovsky
  * */
-public class Updater implements StructProcessor {
+public class RealtimeUpdater implements StructProcessor {
 
     private Structure state;
     private boolean deleteFolders;
+    private boolean deepCopy;
 
-    public Updater() {
+    public RealtimeUpdater() {
         this(new Structure());
     }
 
-    public Updater(Structure struct) {
+    public RealtimeUpdater(Structure struct) {
         deleteFolders = false;
+        deepCopy = false;
         state = struct;
     }
 
@@ -40,7 +41,9 @@ public class Updater implements StructProcessor {
 
     @Override
     public Structure pull() {
-        return state;
+        Structure ret = state;
+        clearState();
+        return ret;
     }
 
     @Override
@@ -57,7 +60,7 @@ public class Updater implements StructProcessor {
             return;
         }
         if (state.isEmpty()) {
-            state.setRoot(newPart.getRoot().deepCopy());
+            state.setRoot(newPart.getRoot());
             return;
         }
         if (!newPart.getRoot().equals(state.getRoot())) {
@@ -70,28 +73,29 @@ public class Updater implements StructProcessor {
     /** recursive updating */
     private void update(Folder newF, Folder currF) {
         currF.updateParams(newF);
-        if (deleteElement(newF)) {
-            currF.clearElements();
-            if (deleteFolders) {
-                currF.clearFolders();
-            }
-        } else {
-            for (Folder f : newF.getFolders()) {
+        for (Folder f : newF.getFolders()) {
+            if (deepCopy || currF.containsElement(f)) {
                 update(f, currF.getFolder(f));
+            } else {
+                currF.addFolder(f);
             }
-            for (Element e : newF.getElements()) {
-                if (deleteElement(e)) {
-                    currF.removeElement(e);
-                } else {
-                    currF.getElement(e).updateParams(e);
-                }
+        }
+        for (Element e : newF.getElements()) {
+            if (deepCopy || currF.containsElement(e)) {
+                currF.getElement(e).updateParams(e);
+            } else {
+                currF.addElement(e);
             }
         }
     }
 
-    /** returns true only if folder.change == delete */
-    public static boolean deleteElement(Element e) {
-        return e.parameterEqual(CommonKeys.CHANGE, ChangeFlag.DELETE);
+    /** copy folder structure, wihtout params and elements */
+    private void clearState() {
+        if (deleteFolders) {
+            state = new Structure(state.getTimeStamp());
+        } else {
+            state = StructUtils.copyFolders(state);
+        }
     }
 
 }

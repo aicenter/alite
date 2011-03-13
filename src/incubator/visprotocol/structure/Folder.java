@@ -18,6 +18,11 @@ public class Folder extends Element {
     private final LinkedHashMap<String, Element> elements;
     private final LinkedHashMap<String, Folder> folders;
 
+    /** copies only id */
+    public Folder(Folder f) {
+        this(f.getId());
+    }
+
     public Folder(String id) {
         super(id, null);
         elements = new LinkedHashMap<String, Element>(2);

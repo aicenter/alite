@@ -5,6 +5,10 @@ import incubator.visprotocol.structure.Structure;
 /**
  * Pushes one instance to all subprocessors, has no pull.
  * 
+ * Takes: any structure
+ * 
+ * Creates: N/A
+ * 
  * @author Ondrej Milenovsky
  * */
 public class LightDemux extends MultipleProcessor {

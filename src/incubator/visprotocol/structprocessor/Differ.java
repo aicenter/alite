@@ -10,6 +10,10 @@ import incubator.visprotocol.structure.key.CommonKeys;
  * Stores last state and structure to send. When pushed new part, updates last state and differences
  * are added to the structure to send. When pulled, structure to send is returned and cleared.
  * 
+ * Takes: whole world state (can be split to parts)
+ * 
+ * Creates: difference between last state (generated when push)
+ * 
  * @author Ondrej Milenovsky
  */
 public class Differ implements StructProcessor {
