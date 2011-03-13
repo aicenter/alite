@@ -11,26 +11,30 @@ import java.awt.Color;
 import java.util.Map;
 import java.util.Set;
 
-public class BackgroundProxyLayer extends TypedProxyLayer {
+/**
+ * This layer wills whole canvas by specified color, used as background.
+ * 
+ * @author Ondrej Milenovsky
+ * */
+public class FillColorProxyLayer extends TypedProxyLayer {
 
     public static final String DEFAULT_ID = "Background";
     private final Structure struct;
 
-    public BackgroundProxyLayer(Color color, String path, Map<String, Set<String>> types) {
+    public FillColorProxyLayer(Color color, String path, Map<String, Set<String>> types) {
         this(color, path, DEFAULT_ID, types);
     }
 
-    public BackgroundProxyLayer(Color color, String[] path, Map<String, Set<String>> types) {
+    public FillColorProxyLayer(Color color, String[] path, Map<String, Set<String>> types) {
         this(color, path, DEFAULT_ID, types);
     }
 
-    public BackgroundProxyLayer(Color color, String path, String id, Map<String, Set<String>> types) {
+    public FillColorProxyLayer(Color color, String path, String id, Map<String, Set<String>> types) {
         super(types);
         struct = generateStruct(color, StructUtils.createStructure(path), id);
     }
 
-    public BackgroundProxyLayer(Color color, String[] path, String id,
-            Map<String, Set<String>> types) {
+    public FillColorProxyLayer(Color color, String[] path, String id, Map<String, Set<String>> types) {
         super(types);
         struct = generateStruct(color, StructUtils.createStructure(path), id);
     }
