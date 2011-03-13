@@ -36,7 +36,7 @@ public class BackgroundProxyLayer extends TypedProxyLayer {
     }
 
     private Structure generateStruct(Color color, Structure struct, String id) {
-        Element e = StructUtils.getLeaf(struct).getElement(id, FillColorKeys.TYPE);
+        Element e = StructUtils.getLeafFolder(struct).getElement(id, FillColorKeys.TYPE);
         setParameter(e, FillColorKeys.COLOR, color);
         return struct;
     }

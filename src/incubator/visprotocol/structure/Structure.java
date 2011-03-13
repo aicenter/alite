@@ -62,14 +62,6 @@ public class Structure implements Serializable {
         root = null;
     }
 
-    @Deprecated
-    public void update(Structure s) {
-        if (!equals(s)) {
-            throw new RuntimeException("Updating different structure");
-        }
-        root = s.getRoot();
-    }
-
     /** Makes deep copy of the structure, not of element parameters! */
     public Structure deepCopy() {
         if (root == null) {

@@ -12,6 +12,8 @@ import org.junit.Test;
 
 public class StructureTest {
 
+    private int tests = 20;
+
     @Test
     public void test1() {
         Structure s = new Structure();
@@ -84,14 +86,14 @@ public class StructureTest {
         Structure s2 = gen.next();
         assertTrue(s1.equals(s2));
         assertTrue(s1.equalsDeep(s2));
-        Element e = StructUtils.getLeaf(s1);
+        Element e = StructUtils.getLeafFolder(s1);
         e.setParameter("vemeno", "doji");
         assertTrue(s1.equals(s2));
         assertTrue(!s1.equalsDeep(s2));
-        e = StructUtils.getLeaf(s2);
+        e = StructUtils.getLeafFolder(s2);
         e.setParameter("vemeno", "doji");
         assertTrue(s1.equalsDeep(s2));
-        
+
         gen.setSeed(1);
         s1 = gen.next();
         gen.setSeed(2);
@@ -101,20 +103,22 @@ public class StructureTest {
 
     @Test
     public void testDeepCopy() {
-        RandomStructGenerator gen = new RandomStructGenerator();
-        Structure s1 = gen.next();
-        Structure s2 = s1.deepCopy();
-        assertTrue(s1.equalsDeep(s2));
-        Element e = StructUtils.getLeaf(s1);
-        e.setParameter("vemeno", "doji");
-        assertTrue(!s1.equalsDeep(s2));
-        e.removeParameter("vemeno");
-        
-        assertTrue(s1.getRoot() != s2.getRoot());
-        for(Folder f: s1.getRoot().getFolders()) {
-            Folder f2 = s2.getRoot().getFolder(f);
-            assertTrue(f != f2);
-            assertTrue(f.equalsDeep(f2));
+        for (int i = 0; i < tests; i++) {
+            RandomStructGenerator gen = new RandomStructGenerator();
+            Structure s1 = gen.next();
+            Structure s2 = s1.deepCopy();
+            assertTrue(s1.equalsDeep(s2));
+            Element e = StructUtils.getLeafFolder(s1);
+            e.setParameter("vemeno", "doji");
+            assertTrue(!s1.equalsDeep(s2));
+            e.removeParameter("vemeno");
+
+            assertTrue(s1.getRoot() != s2.getRoot());
+            for (Folder f : s1.getRoot().getFolders()) {
+                Folder f2 = s2.getRoot().getFolder(f);
+                assertTrue(f != f2);
+                assertTrue(f.equalsDeep(f2));
+            }
         }
     }
 

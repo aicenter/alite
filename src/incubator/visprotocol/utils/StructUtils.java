@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 
@@ -18,18 +19,32 @@ import incubator.visprotocol.structure.Structure;
  * */
 public class StructUtils {
 
-    /** returns first leaf of structure */
-    public static Folder getLeaf(Structure s) {
-        return getLeaf(s.getRoot());
+    /** returns first leaf folder of structure */
+    public static Folder getLeafFolder(Structure s) {
+        return getLeafFolder(s.getRoot());
     }
 
-    /** returns first leaf of folder */
-    public static Folder getLeaf(Folder f) {
+    /** returns first leaf folder of folder */
+    public static Folder getLeafFolder(Folder f) {
         if ((f == null) || f.getFolders().isEmpty()) {
             return f;
         }
         for (Folder f2 : f.getFolders()) {
-            return getLeaf(f2);
+            return getLeafFolder(f2);
+        }
+        return null;
+    }
+
+    /** returns first leaf element of structure */
+    public static Element getLeafElement(Structure s) {
+        return getLeafElement(getLeafFolder(s.getRoot()));
+    }
+
+    /** returns first leaf element of folder */
+    public static Element getLeafElement(Folder f) {
+        f = getLeafFolder(f);
+        for (Element e : f.getElements()) {
+            return e;
         }
         return null;
     }
