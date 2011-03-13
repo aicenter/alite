@@ -55,8 +55,8 @@ public class StructureTest {
 
         f3.getFolder("f4");
 
-        System.out.println(s.print());
-        System.out.println(s2.print());
+        // System.out.println(s.print());
+        // System.out.println(s2.print());
     }
 
     @Test

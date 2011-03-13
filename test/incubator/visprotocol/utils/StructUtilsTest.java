@@ -35,15 +35,15 @@ public class StructUtilsTest {
         f.getFolder("c");
 
         assertTrue(StructUtils.getLeafFolder(f) == leafF);
-        
+
         Element leafE = leafF.getElement("leafE", "type");
         f.getElement("e1", "type");
         f.getFolder("1").getElement("e2", "type");
         leafF.getElement("aaa", "type");
-        
-        System.out.println(StructUtils.getLeafElement(f).print());
+
+        // System.out.println(StructUtils.getLeafElement(f).print());
         assertTrue(StructUtils.getLeafElement(f) == leafE);
-        
+
         leafF.getFolder("zzz");
         assertTrue(StructUtils.getLeafFolder(f) != leafF);
         assertTrue(StructUtils.getLeafElement(f) != leafE);

@@ -12,6 +12,10 @@ import java.util.Map;
  * This painter ignores params of folders, default setting: first paints elements, then subfolders
  * of folder.
  * 
+ * Takes: whole structure to paint
+ * 
+ * Creates: N/A
+ * 
  * @author Ondrej Milenovsky
  * */
 public class RootPainter implements GroupPainter, StructProcessor {
@@ -50,10 +54,6 @@ public class RootPainter implements GroupPainter, StructProcessor {
     }
 
     private void paint(Folder f) {
-        if ((f.getElements().size() > 0) && (f.getFolders().size() > 0)) {
-            System.err.println("Warning: " + f.getId()
-                    + " has folders and elements, first are drawn elements, then folders");
-        }
         if (firstElements) {
             paintElements(f);
             paintFolders(f);
