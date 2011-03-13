@@ -155,18 +155,6 @@ public class Folder extends Element {
         return ret;
     }
 
-    /** Copied also all elements and folders, shallow copy! */
-    @Override
-    @Deprecated
-    public void update(Element e) {
-        super.update(e);
-        if (e instanceof Folder) {
-            Folder f = (Folder) e;
-            folders.putAll(f.folders);
-            elements.putAll(f.elements);
-        }
-    }
-
     @Override
     public String getType() {
         return TYPE;

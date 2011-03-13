@@ -55,7 +55,6 @@ public class Element implements Serializable {
         return (C) parameters.get(typer.paramId);
     }
 
-    
     public void setParameter(String id, Object value) {
         parameters.put(id, value);
     }
@@ -79,18 +78,6 @@ public class Element implements Serializable {
 
     public Collection<Object> getParameters() {
         return parameters.values();
-    }
-
-    /**
-     * Elements must equal! Taken all parameters and updated current state. Shallow copy!
-     */
-    @Deprecated
-    public void update(Element e) {
-        if (!equals(e)) {
-            throw new RuntimeException("Merging " + getId() + " and " + e.getId()
-                    + " different elements");
-        }
-        parameters.putAll(e.parameters);
     }
 
     public void updateParams(Element e) {
