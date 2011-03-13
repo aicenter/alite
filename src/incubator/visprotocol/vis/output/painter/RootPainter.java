@@ -9,16 +9,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This painter ignores params of folders, first paints sub folders, then elements of folder.
+ * This painter ignores params of folders, default setting: first paints elements, then subfolders
+ * of folder.
  * 
  * @author Ondrej Milenovsky
  * */
 public class RootPainter implements GroupPainter, StructProcessor {
 
     private final Map<String, Painter> painters;
+    private boolean firstElements;
 
     public RootPainter() {
         painters = new HashMap<String, Painter>();
+        firstElements = true;
+    }
+
+    public void setFirstElements(boolean firstElements) {
+        this.firstElements = firstElements;
+    }
+
+    public boolean isFirstElements() {
+        return firstElements;
     }
 
     @Override
@@ -43,13 +54,26 @@ public class RootPainter implements GroupPainter, StructProcessor {
             System.err.println("Warning: " + f.getId()
                     + " has folders and elements, first are drawn elements, then folders");
         }
+        if (firstElements) {
+            paintElements(f);
+            paintFolders(f);
+        } else {
+            paintFolders(f);
+            paintElements(f);
+        }
+    }
+
+    private void paintFolders(Folder f) {
+        for (Folder f2 : f.getFolders()) {
+            paint(f2);
+        }
+    }
+
+    private void paintElements(Folder f) {
         for (Element e : f.getElements()) {
             if (painters.containsKey(e.getType())) {
                 painters.get(e.getType()).paint(e);
             }
-        }
-        for (Folder f2 : f.getFolders()) {
-            paint(f2);
         }
     }
 

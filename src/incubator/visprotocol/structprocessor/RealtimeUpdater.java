@@ -89,7 +89,7 @@ public class RealtimeUpdater implements StructProcessor {
         }
     }
 
-    /** copy folder structure, wihtout params and elements */
+    /** prepare for next updating */
     private void clearState() {
         if (deleteFolders) {
             state = new Structure(state.getTimeStamp());
