@@ -1,9 +1,5 @@
 package incubator.visprotocol.structprocessor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import incubator.visprotocol.structure.Structure;
 
 /**
@@ -11,27 +7,10 @@ import incubator.visprotocol.structure.Structure;
  * 
  * @author Ondrej Milenovsky
  * */
-public class LightDemux implements StructProcessor {
-
-    private final List<StructProcessor> processors;
+public class LightDemux extends MultipleProcessor {
 
     public LightDemux() {
-        processors = new ArrayList<StructProcessor>(2);
-    }
-
-    public void addProcessor(StructProcessor pr) {
-        processors.add(pr);
-    }
-
-    public void removeProcessor(StructProcessor pr) {
-        int i = processors.indexOf(pr);
-        if (i >= 0) {
-            processors.remove(i);
-        }
-    }
-    
-    public Collection<StructProcessor> getProcessors() {
-        return processors;
+        super();
     }
 
     @Deprecated
@@ -47,7 +26,7 @@ public class LightDemux implements StructProcessor {
      */
     @Override
     public void push(Structure newPart) {
-        for (StructProcessor pr : processors) {
+        for (StructProcessor pr : getProcessors()) {
             pr.push(newPart);
         }
     }

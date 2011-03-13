@@ -4,8 +4,8 @@ import incubator.visprotocol.protocol.MemoryProtocol;
 import incubator.visprotocol.protocol.Protocol;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structprocessor.Differ;
+import incubator.visprotocol.structprocessor.LightMux;
 import incubator.visprotocol.structprocessor.Updater;
-import incubator.visprotocol.vis.layer.RootProxyLayer;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
@@ -53,37 +53,36 @@ public class TestCreator implements Creator {
         vis2d.addTransformator(new ZoomTransformator());
         vis2d.addTransformator(new MoveTransformator());
 
+        // joint between proxies and protocol
+        final Differ differ = new Differ();
+
         // layers
-        final RootProxyLayer rootProxyLayer = new RootProxyLayer();
-        rootProxyLayer.addLayer(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
-        rootProxyLayer.addLayer(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other",
+        final LightMux rootProxyLayer = new LightMux(differ);
+        rootProxyLayer.addProcessor(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
+        rootProxyLayer.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other",
                 Vis2DBasicPainters.ELEMENT_TYPES));
-        rootProxyLayer
-                .addLayer(new BrainzProxyLayer(1000, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
-        rootProxyLayer.addLayer(new ZombieProxyLayer(exampleEnvironment,
+        rootProxyLayer.addProcessor(new BrainzProxyLayer(1000, 10000,
+                Vis2DBasicPainters.ELEMENT_TYPES));
+        rootProxyLayer.addProcessor(new ZombieProxyLayer(exampleEnvironment,
                 Vis2DBasicPainters.ELEMENT_TYPES));
 
         // protocol
         // use protocol storing the visual elements (Points) into memory
         final Protocol protocol = new MemoryProtocol();
 
+        // joint between protocol and painters
+        final Updater updater = new Updater();
+
         // outputs
         final RootPainter painter = new RootPainter();
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
-
-        // joint between proxies and protocol
-        final Differ differ = new Differ();
-        // joint between protocol and painters
-        final Updater updater = new Updater();
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
             @Override
             protected void sample() {
-                // fill the used differ with new data
-                rootProxyLayer.fillProcessor(differ);
                 // generate update struct and fill the used protocol by new struct
-                protocol.push(differ.pull());
+                protocol.push(rootProxyLayer.pull());
                 // update current state
                 updater.push(protocol.pull());
                 // draw the elements using the painters, they will get what they want from the

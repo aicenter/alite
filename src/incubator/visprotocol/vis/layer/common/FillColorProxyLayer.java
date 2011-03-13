@@ -1,11 +1,10 @@
 package incubator.visprotocol.vis.layer.common;
 
-import incubator.visprotocol.structprocessor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.FillColorKeys;
 import incubator.visprotocol.utils.StructUtils;
-import incubator.visprotocol.vis.layer.TypedProxyLayer;
+import incubator.visprotocol.vis.layer.TypedLayer;
 
 import java.awt.Color;
 import java.util.Map;
@@ -16,7 +15,7 @@ import java.util.Set;
  * 
  * @author Ondrej Milenovsky
  * */
-public class FillColorProxyLayer extends TypedProxyLayer {
+public class FillColorProxyLayer extends TypedLayer {
 
     public static final String DEFAULT_ID = "Background";
     private final Structure struct;
@@ -46,10 +45,11 @@ public class FillColorProxyLayer extends TypedProxyLayer {
     }
 
     @Override
-    public void fillProcessor(StructProcessor processor) {
+    public Structure pull() {
         if (hasType(FillColorKeys.TYPE) && typeHasParam(FillColorKeys.TYPE, FillColorKeys.COLOR)) {
-            processor.push(struct);
+            return struct;
         }
+        return Structure.EMPTY_INSTANCE;
     }
 
 }
