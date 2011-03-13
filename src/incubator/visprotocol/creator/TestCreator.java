@@ -6,7 +6,7 @@ import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structprocessor.Differ;
 import incubator.visprotocol.structprocessor.Updater;
 import incubator.visprotocol.vis.layer.RootProxyLayer;
-import incubator.visprotocol.vis.layer.common.BackgroundProxyLayer;
+import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
 import incubator.visprotocol.vis.layer.example.ZombieProxyLayer;
@@ -56,7 +56,7 @@ public class TestCreator implements Creator {
         // layers
         final RootProxyLayer rootProxyLayer = new RootProxyLayer();
         rootProxyLayer.addLayer(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
-        rootProxyLayer.addLayer(new BackgroundProxyLayer(Color.WHITE, ".Undead land.Other",
+        rootProxyLayer.addLayer(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other",
                 Vis2DBasicPainters.ELEMENT_TYPES));
         rootProxyLayer
                 .addLayer(new BrainzProxyLayer(1000, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
