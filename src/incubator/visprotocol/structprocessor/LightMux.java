@@ -15,13 +15,17 @@ public class LightMux implements HubProcessor, Forwarder {
 
     private final List<StructProcessor> processors;
 
-    private final StructProcessor output;
+    private StructProcessor output;
 
     public LightMux(StructProcessor output) {
         processors = new ArrayList<StructProcessor>();
         this.output = output;
     }
 
+    public void setOutput(StructProcessor output) {
+        this.output = output;
+    }
+    
     @Override
     public void addProcessor(StructProcessor pr) {
         processors.add(pr);
