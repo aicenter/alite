@@ -4,11 +4,10 @@ import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.PointKeys;
+import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
 import java.awt.Color;
-import java.util.Map;
-import java.util.Set;
 
 import javax.vecmath.Point2d;
 
@@ -16,8 +15,8 @@ public class ZombieProxyLayer extends TypedLayer {
 
     private final ExampleEnvironment env;
 
-    public ZombieProxyLayer(ExampleEnvironment env, Map<String, Set<String>> types) {
-        super(types);
+    public ZombieProxyLayer(ExampleEnvironment env, TypeParamIdFilter filter) {
+        super(filter);
         this.env = env;
     }
 

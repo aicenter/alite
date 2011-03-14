@@ -6,6 +6,7 @@ import incubator.visprotocol.structprocessor.Differ;
 import incubator.visprotocol.structprocessor.LightPullMux;
 import incubator.visprotocol.structprocessor.PullForwarder;
 import incubator.visprotocol.structprocessor.DiffUpdater;
+import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
@@ -55,13 +56,13 @@ public class TestCreator implements Creator {
 
         // layers mux
         LightPullMux collector = new LightPullMux(new Differ());
+        // filter
+        TypeParamIdFilter filter = new TypeParamIdFilter(Vis2DBasicPainters.ELEMENT_TYPES);
         // layers
-        collector.addProcessor(new SimInfoProxyLayer(Vis2DBasicPainters.ELEMENT_TYPES));
-        collector.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other",
-                Vis2DBasicPainters.ELEMENT_TYPES));
-        collector.addProcessor(new BrainzProxyLayer(1000, 10000, Vis2DBasicPainters.ELEMENT_TYPES));
-        collector.addProcessor(new ZombieProxyLayer(exampleEnvironment,
-                Vis2DBasicPainters.ELEMENT_TYPES));
+        collector.addProcessor(new SimInfoProxyLayer(filter));
+        collector.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other", filter));
+        collector.addProcessor(new BrainzProxyLayer(1000, 10000, filter));
+        collector.addProcessor(new ZombieProxyLayer(exampleEnvironment, filter));
 
         RootPainter painter = new RootPainter();
         // the chain of components
