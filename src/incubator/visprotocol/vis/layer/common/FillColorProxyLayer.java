@@ -4,11 +4,10 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.FillColorKeys;
 import incubator.visprotocol.utils.StructUtils;
+import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
 import java.awt.Color;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * This layer wills whole canvas by specified color, used as background.
@@ -20,21 +19,21 @@ public class FillColorProxyLayer extends TypedLayer {
     public static final String DEFAULT_ID = "Background";
     private final Structure struct;
 
-    public FillColorProxyLayer(Color color, String path, Map<String, Set<String>> types) {
-        this(color, path, DEFAULT_ID, types);
+    public FillColorProxyLayer(Color color, String path, TypeParamIdFilter filter) {
+        this(color, path, DEFAULT_ID, filter);
     }
 
-    public FillColorProxyLayer(Color color, String[] path, Map<String, Set<String>> types) {
-        this(color, path, DEFAULT_ID, types);
+    public FillColorProxyLayer(Color color, String[] path, TypeParamIdFilter filter) {
+        this(color, path, DEFAULT_ID, filter);
     }
 
-    public FillColorProxyLayer(Color color, String path, String id, Map<String, Set<String>> types) {
-        super(types);
+    public FillColorProxyLayer(Color color, String path, String id, TypeParamIdFilter filter) {
+        super(filter);
         struct = generateStruct(color, StructUtils.createStructure(path), id);
     }
 
-    public FillColorProxyLayer(Color color, String[] path, String id, Map<String, Set<String>> types) {
-        super(types);
+    public FillColorProxyLayer(Color color, String[] path, String id, TypeParamIdFilter filter) {
+        super(filter);
         struct = generateStruct(color, StructUtils.createStructure(path), id);
     }
 

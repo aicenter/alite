@@ -4,12 +4,11 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.PointKeys;
+import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
 
 import javax.vecmath.Point2d;
 
@@ -17,8 +16,8 @@ public class BrainzProxyLayer extends TypedLayer {
 
     private final ArrayList<Point2d> points;
 
-    public BrainzProxyLayer(int n, int size, Map<String, Set<String>> types) {
-        super(types);
+    public BrainzProxyLayer(int n, int size, TypeParamIdFilter filter) {
+        super(filter);
         points = new ArrayList<Point2d>(n);
         for (int i = 0; i < n; i++) {
             points.add(new Point2d(Math.random() * size, Math.random() * size));

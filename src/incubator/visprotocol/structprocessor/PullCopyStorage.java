@@ -11,7 +11,7 @@ import incubator.visprotocol.structure.Structure;
  * 
  * @author Ondrej Milenovsky
  * */
-public class PullCopier extends LightStorage {
+public class PullCopyStorage extends LightStorage {
 
     /** returns deep copy of current state, does not change it */
     @Override

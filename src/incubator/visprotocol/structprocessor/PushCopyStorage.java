@@ -12,7 +12,7 @@ import incubator.visprotocol.structure.Structure;
  * 
  * @author Ondrej Milenovsky
  * */
-public class PushCopier extends LightStorage {
+public class PushCopyStorage extends LightStorage {
 
     /** store deep copy of the structure */
     @Override

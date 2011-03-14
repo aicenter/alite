@@ -1,28 +1,22 @@
 package incubator.visprotocol.protocol;
 
+import incubator.visprotocol.structprocessor.LightStorage;
 import incubator.visprotocol.structure.Structure;
 
 /**
- * Storage for one structure, pull clears state.
+ * Storage for one structure, pull clears current state.
  * 
  * @author Ondrej Milenovsky
  * */
-public class MemoryProtocol implements Protocol {
-
-    private Structure struct;
+public class MemoryProtocol extends LightStorage implements Protocol {
 
     public MemoryProtocol() {
     }
 
     @Override
-    public void push(Structure struct) {
-        this.struct = struct;
-    }
-
-    @Override
     public Structure pull() {
-        Structure ret = struct;
-        struct = null;
+        Structure ret = super.pull();
+        push(null);
         return ret;
     }
 
