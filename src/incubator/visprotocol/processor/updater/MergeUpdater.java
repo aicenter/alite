@@ -54,7 +54,7 @@ public class MergeUpdater implements StructProcessor {
     public void push(Structure newPart) {
         if (newPart.getTimeStamp() == null) {
             // TODO use logger
-            //System.out.println("Warning: new part has no timestamp");
+            // System.out.println("Warning: new part has no timestamp");
         } else if ((state.getTimeStamp() != null)
                 && (state.getTimeStamp() >= newPart.getTimeStamp())) {
             System.out.println("Warning: Current time: " + state.getTimeStamp()
@@ -79,14 +79,14 @@ public class MergeUpdater implements StructProcessor {
     private void update(Folder newF, Folder currF) {
         currF.updateParams(newF);
         for (Folder f : newF.getFolders()) {
-            if (deepCopy || currF.containsElement(f)) {
+            if (deepCopy || (currF.containsElement(f) && !currF.isEmpty())) {
                 update(f, currF.getFolder(f));
             } else {
                 currF.addFolder(f);
             }
         }
         for (Element e : newF.getElements()) {
-            if (deepCopy || currF.containsElement(e)) {
+            if (deepCopy || (currF.containsElement(e) && !currF.isEmpty())) {
                 currF.getElement(e).updateParams(e);
             } else {
                 currF.addElement(e);
