@@ -21,6 +21,7 @@ public class MergeUpdater implements StructProcessor {
     private Structure state;
     private boolean deleteFolders;
     private boolean deepCopy;
+    private boolean acceptPast = false;
 
     public MergeUpdater() {
         this(new Structure(0L));
@@ -41,6 +42,14 @@ public class MergeUpdater implements StructProcessor {
         return deleteFolders;
     }
 
+    public void setAcceptPast(boolean acceptPast) {
+        this.acceptPast = acceptPast;
+    }
+
+    public boolean isAcceptPast() {
+        return acceptPast;
+    }
+
     /** returns current state and clears it */
     @Override
     public Structure pull() {
@@ -52,13 +61,13 @@ public class MergeUpdater implements StructProcessor {
     /** merge current state with new part */
     @Override
     public void push(Structure newPart) {
-        if (newPart.getTimeStamp() == null) {
-            // TODO use logger
-            // System.out.println("Warning: new part has no timestamp");
-        } else if ((state.getTimeStamp() != null)
-                && (state.getTimeStamp() >= newPart.getTimeStamp())) {
-            System.out.println("Warning: Current time: " + state.getTimeStamp()
-                    + " >= update time " + newPart.getTimeStamp());
+        if (!acceptPast) {
+            if (newPart.getTimeStamp() == null) {
+                System.out.println("Warning: new part has no timestamp");
+            } else if ((state.getTimeStamp() != null)
+                    && (state.getTimeStamp() >= newPart.getTimeStamp())) {
+                return;
+            }
         }
         state.setTimeStamp(newPart);
         if (newPart.isEmpty()) {

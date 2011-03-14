@@ -11,6 +11,7 @@ import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
+import incubator.visprotocol.vis.layer.example.PentagramLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
 import incubator.visprotocol.vis.layer.example.ZombieProxyLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
@@ -29,7 +30,7 @@ import cz.agents.alite.creator.Creator;
 
 public class TestCreator implements Creator {
 
-    private static final int DELAY = 100;
+    private static final int DELAY = 20;
     private ExampleEnvironment exampleEnvironment;
     private Vis2DOutput vis2d;
 
@@ -65,10 +66,11 @@ public class TestCreator implements Creator {
         // filter
         TypeParamIdFilter filter = new TypeParamIdFilter(Vis2DBasicPainters.ELEMENT_TYPES);
         // layers
-        collector.addProcessor(new SimInfoProxyLayer(filter));
-        collector.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other", filter));
+        collector.addProcessor(new SimInfoProxyLayer(exampleEnvironment, filter));
+        collector.addProcessor(new FillColorProxyLayer(Color.BLACK, ".Undead land.Other", filter));
         collector.addProcessor(new BrainzProxyLayer(nPoints, 10000, filter));
         collector.addProcessor(new ZombieProxyLayer(exampleEnvironment, filter));
+        collector.addProcessor(new PentagramLayer(exampleEnvironment, filter));
 
         // outputs
         RootPainter painter = new RootPainter();
@@ -80,7 +82,9 @@ public class TestCreator implements Creator {
             collector.setOutput(painter);
             chain = collector;
         } else if (mode == Mode.REALTIME) {
-            collector.setOutput(new MergeUpdater());
+            MergeUpdater m = new MergeUpdater();
+            m.setAcceptPast(true);
+            collector.setOutput(m);
             chain = new PullForwarder(collector, painter);
         } else if (mode == Mode.PROTOCOL) {
             collector.setOutput(new Differ());
@@ -142,6 +146,10 @@ public class TestCreator implements Creator {
             return exampleInteger;
         }
 
+        public long getTime() {
+            return exampleTime;
+        }
+        
     }
 
     private enum Mode {

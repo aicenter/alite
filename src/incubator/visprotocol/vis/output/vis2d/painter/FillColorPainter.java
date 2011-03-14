@@ -11,6 +11,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Painter to fill the canvas with color from the elemetn
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class FillColorPainter implements Painter {
 
     /** all parameter ids which this painter can paint */
