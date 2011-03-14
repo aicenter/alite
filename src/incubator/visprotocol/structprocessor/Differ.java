@@ -8,11 +8,12 @@ import incubator.visprotocol.structure.key.CommonKeys;
 
 /**
  * Stores last state and structure to send. When pushed new part, updates last state and differences
- * are added to the structure to send. When pulled, structure to send is returned and cleared.
+ * are added to the structure to send. When pulled, structure to send is returned and cleared. Makes
+ * deep copy.
  * 
- * Takes: whole world state (can be split to parts)
+ * Push: whole world state (can be split to parts)
  * 
- * Creates: difference between last state (generated when push)
+ * Pull: difference between last state (generated when push), changes current state
  * 
  * @author Ondrej Milenovsky
  */
@@ -31,8 +32,7 @@ public class Differ implements StructProcessor {
     }
 
     /**
-     * The newPart may be inserted into the differ, do not use it any more! State is not changing,
-     * current state is updated after pull.
+     * Push part of the world, deep copy.
      */
     @Override
     public void push(Structure newPart) {
@@ -100,11 +100,12 @@ public class Differ implements StructProcessor {
         }
     }
 
+    /** returns differences between two states, clears current state */
     @Override
     public Structure pull() {
         Structure ret = updatePart;
 
-        Updater updater = new Updater(state);
+        DiffUpdater updater = new DiffUpdater(state);
         updater.push(updatePart);
         state = updater.pull();
 

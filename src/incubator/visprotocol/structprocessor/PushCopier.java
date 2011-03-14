@@ -5,27 +5,18 @@ import incubator.visprotocol.structure.Structure;
 /**
  * When push, stores deep copy of the structure. When pull, returns stored struct.
  * 
- * Takes: any structure
+ * Push: any structure
  * 
- * Creates: stored deep copy of the structure structure
+ * Pull: stored deep copy of the structure (copy is not created when pull), does not change current
+ * state
  * 
  * @author Ondrej Milenovsky
  * */
-public class PushCopier implements StructProcessor {
+public class PushCopier extends LightStorage {
 
-    private Structure state;
-
-    public PushCopier() {
-    }
-
-    @Override
-    public Structure pull() {
-        return state;
-    }
-
+    /** store deep copy of the structure */
     @Override
     public void push(Structure newPart) {
-        state = newPart.deepCopy();
+        super.push(newPart.deepCopy());
     }
-
 }

@@ -10,22 +10,22 @@ import incubator.visprotocol.structure.key.CommonKeys;
  * Holds current state, accepts updates from differ and updates current state. Default setting is
  * not to delete folders. Makes deep copy of update part.
  * 
- * Takes: whole world state (can be split to parts)
+ * Push: whole world state (can be split to parts)
  * 
- * Creates: last world state
+ * Pull: last world state, does not change current state
  * 
  * @author Ondrej Milenovsky
  * */
-public class Updater implements StructProcessor {
+public class DiffUpdater implements StructProcessor {
 
     private Structure state;
     private boolean deleteFolders;
 
-    public Updater() {
+    public DiffUpdater() {
         this(new Structure());
     }
 
-    public Updater(Structure struct) {
+    public DiffUpdater(Structure struct) {
         deleteFolders = false;
         state = struct;
     }
@@ -38,6 +38,7 @@ public class Updater implements StructProcessor {
         return deleteFolders;
     }
 
+    /** just returns current state, does not change it */
     @Override
     public Structure pull() {
         return state;

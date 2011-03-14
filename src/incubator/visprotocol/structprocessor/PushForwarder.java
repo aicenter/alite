@@ -6,9 +6,9 @@ import incubator.visprotocol.structure.Structure;
  * When push, pushes to the first processor, then from first to second, from second to third....
  * When pull, pulles from the last processor.
  * 
- * Takes: any structure
+ * Push: any structure
  * 
- * Creates: product of last processor
+ * Pull: product of last processor, may change current state
  * 
  * Forward: first -> second -> third -> ... -> last
  * 
@@ -20,7 +20,7 @@ public class PushForwarder extends MultipleProcessor implements Forwarder {
         super(processors);
     }
 
-    /** Pull from the last subprocessor */
+    /** Pull from the last subprocessor, may change its state */
     @Override
     public Structure pull() {
         return getProcessor(size() - 1).pull();
