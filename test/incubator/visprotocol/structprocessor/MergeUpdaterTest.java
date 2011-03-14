@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class RealtimeUpdaterTest {
+public class MergeUpdaterTest {
 
     @Test
     public void test1() {

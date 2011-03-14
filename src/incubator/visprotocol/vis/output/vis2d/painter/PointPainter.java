@@ -17,8 +17,9 @@ import javax.vecmath.Point2d;
 public class PointPainter implements Painter {
 
     /** all parameter ids which this painter can paint */
-    public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(PointKeys.COLOR + "",
-            PointKeys.WIDTH + "", PointKeys.POS + "", PointKeys.CONSTANT_SIZE + ""));
+    public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(PointKeys.COLOR
+            .toString(), PointKeys.WIDTH.toString(), PointKeys.POS.toString(),
+            PointKeys.CONSTANT_SIZE.toString()));
 
     private final Vis2DOutput vis2dOutput;
 

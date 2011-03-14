@@ -2,10 +2,10 @@ package incubator.visprotocol.creator;
 
 import incubator.visprotocol.protocol.MemoryProtocol;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
+import incubator.visprotocol.structprocessor.DiffUpdater;
 import incubator.visprotocol.structprocessor.Differ;
 import incubator.visprotocol.structprocessor.LightPullMux;
 import incubator.visprotocol.structprocessor.PullForwarder;
-import incubator.visprotocol.structprocessor.DiffUpdater;
 import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
@@ -14,8 +14,7 @@ import incubator.visprotocol.vis.layer.example.ZombieProxyLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.RootPainter;
-import incubator.visprotocol.vis.output.vis2d.MoveTransformator;
-import incubator.visprotocol.vis.output.vis2d.ZoomTransformator;
+import incubator.visprotocol.vis.output.vis2d.Vis2DBasicTransformators;
 import incubator.visprotocol.vis.output.vis2d.painter.Vis2DBasicPainters;
 
 import java.awt.Color;
@@ -51,8 +50,7 @@ public class TestCreator implements Creator {
         Vis2DParams params = new Vis2DParams();
         params.worldBounds = new Rectangle2D.Double(-400, -600, 11000, 11000);
         vis2d = new Vis2DOutput(params);
-        vis2d.addTransformator(new ZoomTransformator());
-        vis2d.addTransformator(new MoveTransformator());
+        vis2d.addTransformators(Vis2DBasicTransformators.createBasicTransformators());
 
         // layers mux
         LightPullMux collector = new LightPullMux(new Differ());
