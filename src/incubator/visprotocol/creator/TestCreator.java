@@ -5,7 +5,7 @@ import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structprocessor.Differ;
 import incubator.visprotocol.structprocessor.LightPullMux;
 import incubator.visprotocol.structprocessor.PullForwarder;
-import incubator.visprotocol.structprocessor.Updater;
+import incubator.visprotocol.structprocessor.DiffUpdater;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
@@ -66,7 +66,7 @@ public class TestCreator implements Creator {
         RootPainter painter = new RootPainter();
         // the chain of components
         final PullForwarder chain = new PullForwarder(collector, new MemoryProtocol(),
-                new Updater(), painter);
+                new DiffUpdater(), painter);
 
         // outputs
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));

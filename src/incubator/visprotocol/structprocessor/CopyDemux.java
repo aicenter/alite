@@ -5,9 +5,9 @@ import incubator.visprotocol.structure.Structure;
 /**
  * Pushes deep copy of the instance to all subprocessors, has no pull.
  * 
- * Takes: any structure
+ * Push: any structure
  * 
- * Creates: N/A
+ * Pull: N/A
  * 
  * @author Ondrej Milenovsky
  * */

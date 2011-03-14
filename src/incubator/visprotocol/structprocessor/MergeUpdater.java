@@ -9,23 +9,23 @@ import incubator.visprotocol.utils.StructUtils;
  * Holds current state, accepts parts of world. When push, returns current world state. Default
  * setting is not to delete folders.
  * 
- * Takes: differences between two world states
+ * Push: differences between two world states
  * 
- * Creates: last world state
+ * Pull: last world state, clears current state
  * 
  * @author Ondrej Milenovsky
  * */
-public class RealtimeUpdater implements StructProcessor {
+public class MergeUpdater implements StructProcessor {
 
     private Structure state;
     private boolean deleteFolders;
     private boolean deepCopy;
 
-    public RealtimeUpdater() {
+    public MergeUpdater() {
         this(new Structure());
     }
 
-    public RealtimeUpdater(Structure struct) {
+    public MergeUpdater(Structure struct) {
         deleteFolders = false;
         deepCopy = false;
         state = struct;
@@ -39,6 +39,7 @@ public class RealtimeUpdater implements StructProcessor {
         return deleteFolders;
     }
 
+    /** returns current state and clears it */
     @Override
     public Structure pull() {
         Structure ret = state;
@@ -46,6 +47,7 @@ public class RealtimeUpdater implements StructProcessor {
         return ret;
     }
 
+    /** merge current state with new part */
     @Override
     public void push(Structure newPart) {
         if (newPart.getTimeStamp() == null) {
