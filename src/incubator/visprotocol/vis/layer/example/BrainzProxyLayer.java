@@ -33,7 +33,7 @@ public class BrainzProxyLayer extends TypedLayer {
                 Element e = f.getElement("p" + i, PointKeys.TYPE);
                 setParameter(e, PointKeys.POS, points.get(i));
                 if (i == 0) {
-                    setParameter(e, PointKeys.COLOR, Color.RED);
+                    setParameter(e, PointKeys.COLOR, Color.PINK);
                     setParameter(e, PointKeys.WIDTH, 4.0);
                     setParameter(e, PointKeys.CONSTANT_SIZE, true);
                 }

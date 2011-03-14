@@ -5,7 +5,6 @@ import incubator.visprotocol.structure.key.PointKeys;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.painter.Painter;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.Arrays;
@@ -14,6 +13,11 @@ import java.util.Set;
 
 import javax.vecmath.Point2d;
 
+/**
+ * Painter to paint single point from element
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class PointPainter implements Painter {
 
     /** all parameter ids which this painter can paint */
@@ -56,14 +60,13 @@ public class PointPainter implements Painter {
         int radius = (int) (drawWidth / 2.0);
 
         graphics2d.setColor(color);
-        graphics2d.setStroke(new BasicStroke(1));
 
         int x1 = vis2dOutput.transX(pos.x) - radius;
         int y1 = vis2dOutput.transY(pos.y) - radius;
         int x2 = vis2dOutput.transX(pos.x) + radius;
         int y2 = vis2dOutput.transY(pos.y) + radius;
-        if ((x2 > 0) && (x1 < vis2dOutput.getWidth()) && (y2 > 0) && (y1 < vis2dOutput.getHeight())) {
-            graphics2d.fillOval(x1, y1, radius * 2, radius * 2);
+        if (vis2dOutput.containsRect(x1, y1, x2, y2)) {
+            graphics2d.fillOval(x1, y1, (int)drawWidth, (int)drawWidth);
         }
     }
 
