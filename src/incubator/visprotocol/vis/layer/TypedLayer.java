@@ -15,17 +15,17 @@ import incubator.visprotocol.structure.key.Typer;
  * */
 public abstract class TypedLayer implements StructProcessor {
 
-    private TypeParamIdFilter filter;
+    private FilterStorage filter;
 
-    public TypedLayer(TypeParamIdFilter filter) {
+    public TypedLayer(FilterStorage filter) {
         this.filter = filter;
     }
 
-    public void setFilter(TypeParamIdFilter filter) {
+    public void setFilter(FilterStorage filter) {
         this.filter = filter;
     }
 
-    public TypeParamIdFilter getFilter() {
+    public FilterStorage getFilter() {
         return filter;
     }
 
@@ -50,7 +50,7 @@ public abstract class TypedLayer implements StructProcessor {
 
     /** sets parameter to element if not filtred */
     protected <C> void setParameter(Element e, Typer<C> typer, C value) {
-        if (filter.typeHasParam(e.getType(), typer.paramId)) {
+        if (filter.typeHasParam(e.getType(), typer.id)) {
             e.setParameter(typer, value);
         }
     }

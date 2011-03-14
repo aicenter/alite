@@ -23,10 +23,9 @@ import javax.vecmath.Point2d;
 public class OvalPainter implements Painter {
 
     /** all parameter ids which this painter can paint */
-    public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(OvalKeys.COLOR
-            .toString(), OvalKeys.LINE_WIDTH.toString(), OvalKeys.CONSTANT_LINE_WIDTH.toString(),
-            OvalKeys.DIAMETER.toString(), OvalKeys.CENTER.toString(), OvalKeys.SIZE_X.toString(),
-            OvalKeys.SIZE_Y.toString(), OvalKeys.CONSTANT_SIZE.toString()));
+    public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(OvalKeys.COLOR.id,
+            OvalKeys.LINE_WIDTH.id, OvalKeys.CONSTANT_LINE_WIDTH.id, OvalKeys.DIAMETER.id,
+            OvalKeys.CENTER.id, OvalKeys.SIZE_X.id, OvalKeys.SIZE_Y.id, OvalKeys.CONSTANT_SIZE.id));
 
     private final Vis2DOutput vis2dOutput;
 

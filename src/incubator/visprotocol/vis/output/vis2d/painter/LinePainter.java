@@ -25,9 +25,8 @@ import javax.vecmath.Point2d;
 public class LinePainter implements Painter {
 
     /** all parameter ids which this painter can paint */
-    public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(LineKeys.COLOR
-            .toString(), LineKeys.LINE_WIDTH.toString(), LineKeys.POINTS.toString(),
-            LineKeys.CONSTANT_LINE_WIDTH.toString()));
+    public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(LineKeys.COLOR.id,
+            LineKeys.LINE_WIDTH.id, LineKeys.POINTS.id, LineKeys.CONSTANT_LINE_WIDTH.id));
 
     private final Vis2DOutput vis2dOutput;
 
@@ -47,7 +46,8 @@ public class LinePainter implements Painter {
         color = StructUtils.updateValue(e, LineKeys.COLOR, color);
         width = StructUtils.updateValue(e, LineKeys.LINE_WIDTH, width);
         points = StructUtils.updateValue(e, LineKeys.POINTS, points);
-        constantLinwWidth = StructUtils.updateValue(e, LineKeys.CONSTANT_LINE_WIDTH, constantLinwWidth);
+        constantLinwWidth = StructUtils.updateValue(e, LineKeys.CONSTANT_LINE_WIDTH,
+                constantLinwWidth);
 
         double drawWidth = width;
         if (!constantLinwWidth) {

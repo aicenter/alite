@@ -1,7 +1,10 @@
 package incubator.visprotocol.vis.layer;
 
+import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.Typer;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,14 +15,28 @@ import java.util.Set;
  * @author Ondrej Milenovsky
  * */
 // TODO extend to id filter
-public class TypeParamIdFilter {
+public class FilterStorage {
 
     private Map<String, Set<String>> types;
 
-    public TypeParamIdFilter() {
+    private Set<String> params;
+
+    public FilterStorage() {
+        params = new HashSet<String>(CommonKeys.COMMON_PARAMS);
     }
 
-    public TypeParamIdFilter(Map<String, Set<String>> types) {
+    public FilterStorage(Map<String, Set<String>> types) {
+        this();
+        this.types = types;
+    }
+
+    public FilterStorage(Set<String> params) {
+        this();
+        this.params.addAll(params);
+    }
+
+    public FilterStorage(Map<String, Set<String>> types, Set<String> params) {
+        this(params);
         this.types = types;
     }
 
@@ -31,6 +48,18 @@ public class TypeParamIdFilter {
 
     public Map<String, Set<String>> getTypes() {
         return types;
+    }
+
+    public void setCommonParams(Set<String> commonTypes) {
+        this.params = commonTypes;
+    }
+
+    public Set<String> getCommonParams() {
+        return params;
+    }
+
+    public void addCommonParams(Collection<String> params) {
+        this.params.addAll(params);
     }
 
     // TYPES ////////////////////////
@@ -47,6 +76,9 @@ public class TypeParamIdFilter {
 
     /** if the param of the type is not filtred */
     public boolean typeHasParam(String type, String param) {
+        if ((params != null) && (params.contains(param))) {
+            return true;
+        }
         if ((types == null) || !types.containsKey(type)) {
             return true;
         }
@@ -55,10 +87,7 @@ public class TypeParamIdFilter {
 
     /** if the param of the type is not filtred */
     public boolean typeHasParam(String type, Typer<?> param) {
-        if ((types == null) || !types.containsKey(type)) {
-            return true;
-        }
-        return types.get(type).contains(param.paramId);
+        return typeHasParam(type, param.id);
     }
 
     // IDS ////////////////////////

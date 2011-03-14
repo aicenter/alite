@@ -3,14 +3,14 @@ package incubator.visprotocol.vis.layer.example;
 import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
-import incubator.visprotocol.vis.layer.TypeParamIdFilter;
+import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
 public class SimInfoProxyLayer extends TypedLayer {
 
     private final ExampleEnvironment env;
     
-    public SimInfoProxyLayer(ExampleEnvironment env, TypeParamIdFilter filter) {
+    public SimInfoProxyLayer(ExampleEnvironment env, FilterStorage filter) {
         super(filter);
         this.env = env;
     }

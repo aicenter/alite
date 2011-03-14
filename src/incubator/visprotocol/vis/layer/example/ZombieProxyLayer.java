@@ -7,7 +7,7 @@ import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.PointKeys;
 import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.structure.key.struct.Align;
-import incubator.visprotocol.vis.layer.TypeParamIdFilter;
+import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
 import java.awt.Color;
@@ -19,7 +19,7 @@ public class ZombieProxyLayer extends TypedLayer {
 
     private final ExampleEnvironment env;
 
-    public ZombieProxyLayer(ExampleEnvironment env, TypeParamIdFilter filter) {
+    public ZombieProxyLayer(ExampleEnvironment env, FilterStorage filter) {
         super(filter);
         this.env = env;
     }

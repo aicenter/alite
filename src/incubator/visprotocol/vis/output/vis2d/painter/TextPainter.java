@@ -24,11 +24,10 @@ import javax.vecmath.Point2d;
 public class TextPainter implements Painter {
 
     /** all parameter ids which this painter can paint */
-    public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(TextKeys.COLOR
-            .toString(), TextKeys.ALIGN_ON_SCREEN.toString(), TextKeys.CENTER.toString(),
-            TextKeys.CONSTANT_SIZE.toString(), TextKeys.FONT.toString(), TextKeys.FONT_STYLE
-                    .toString(), TextKeys.FONT_NAME.toString(), TextKeys.FONT_SIZE.toString(),
-            TextKeys.TEXT.toString(), TextKeys.POS.toString()));
+    public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(TextKeys.COLOR.id,
+            TextKeys.ALIGN_ON_SCREEN.id, TextKeys.CENTER.id, TextKeys.CONSTANT_SIZE.id,
+            TextKeys.FONT.id, TextKeys.FONT_STYLE.id, TextKeys.FONT_NAME.id, TextKeys.FONT_SIZE.id,
+            TextKeys.TEXT.id, TextKeys.POS.id));
 
     private final Vis2DOutput vis2d;
 
@@ -86,12 +85,7 @@ public class TextPainter implements Painter {
         graphics2d.setFont(drawFont);
         graphics2d.setColor(color);
 
-        double sizeX;
-        if (align == Align.NONE) {
-            sizeX = vis2d.getFontMetrics(font).stringWidth(text);
-        } else {
-            sizeX = vis2d.getFontMetrics(drawFont).stringWidth(text);
-        }
+        double sizeX = vis2d.getFontMetrics(drawFont).stringWidth(text);
         double sizeY = fontSize;
 
         // position
@@ -103,7 +97,8 @@ public class TextPainter implements Painter {
             pos = e.getParameter(TextKeys.CENTER);
             posChanged = true;
             if (align == Align.NONE) {
-                pos = new Point2d(pos.x -= sizeX / 2.0, pos.y -= sizeY / 2.0);
+                pos = new Point2d(pos.x -= vis2d.getFontMetrics(font).stringWidth(text) / 2.0,
+                        pos.y -= sizeY / 2.0);
             }
         }
         if (!posChanged && (align != Align.NONE)) {

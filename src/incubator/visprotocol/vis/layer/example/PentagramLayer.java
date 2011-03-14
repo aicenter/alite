@@ -11,7 +11,7 @@ import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.LineKeys;
 import incubator.visprotocol.structure.key.OvalKeys;
-import incubator.visprotocol.vis.layer.TypeParamIdFilter;
+import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
 public class PentagramLayer extends TypedLayer {
@@ -19,7 +19,7 @@ public class PentagramLayer extends TypedLayer {
     private final ExampleEnvironment env;
     private double size = 10000;
 
-    public PentagramLayer(ExampleEnvironment env, TypeParamIdFilter filter) {
+    public PentagramLayer(ExampleEnvironment env, FilterStorage filter) {
         super(filter);
         this.env = env;
     }
