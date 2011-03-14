@@ -76,7 +76,7 @@ public class TextPainter implements Painter {
             font = new Font(fontName, fontStyle, (int) fontSize);
         }
         // end font ///////
-        
+
         Font drawFont = font;
         if (!constantSize) {
             fontSize = vis2d.transW(fontSize);
@@ -101,42 +101,42 @@ public class TextPainter implements Painter {
             }
         }
 
-        int x1 = 0;
-        int y1 = 0;
-        int x2 = x1 + (int) sizeX;
-        int y2 = y1 + (int) sizeY;
+        int x1;
+        int y1;
 
-        if (align == Align.NONE) {
-            x1 = vis2d.transX(pos.x);
-            y1 = vis2d.transY(pos.y);
-        } else if (align == Align.UPPER_LEFT) {
+        if (align == Align.UPPER_LEFT) {
             x1 = (int) pos.x;
-            y1 = (int) pos.y;
+            y1 = (int) (pos.y + sizeY);
         } else if (align == Align.UPPER_CENTER) {
             x1 = (int) (pos.x + (vis2d.getWidth() - sizeX) / 2.0);
-            y1 = (int) pos.y;
+            y1 = (int) (pos.y + sizeY);
         } else if (align == Align.UPPER_RIGHT) {
             x1 = (int) (pos.x + vis2d.getWidth() - sizeX);
-            y1 = (int) pos.y;
+            y1 = (int) (pos.y + sizeY);
         } else if (align == Align.LEFT_CENTER) {
             x1 = (int) pos.x;
-            y1 = (int) (pos.y + (vis2d.getHeight() - sizeY) / 2.0);
+            y1 = (int) (pos.y + (vis2d.getHeight() - sizeY) / 2.0 + sizeY);
         } else if (align == Align.CENTER) {
             x1 = (int) (pos.x + (vis2d.getWidth() - sizeX) / 2.0);
-            y1 = (int) (pos.y + (vis2d.getHeight() - sizeY) / 2.0);
+            y1 = (int) (pos.y + (vis2d.getHeight() - sizeY) / 2.0 + sizeY);
         } else if (align == Align.RIGHT_CENTER) {
             x1 = (int) (pos.x + vis2d.getWidth() - sizeX);
-            y1 = (int) (pos.y + (vis2d.getHeight() - sizeY) / 2.0);
+            y1 = (int) (pos.y + (vis2d.getHeight() - sizeY) / 2.0 + sizeY);
         } else if (align == Align.LOWER_LEFT) {
             x1 = (int) pos.x;
-            y1 = (int) (pos.y + vis2d.getHeight() - sizeY);
+            y1 = (int) (pos.y + vis2d.getHeight() - sizeY + sizeY);
         } else if (align == Align.LOWER_CENTER) {
             x1 = (int) (pos.x + (vis2d.getWidth() - sizeX) / 2.0);
-            y1 = (int) (pos.y + vis2d.getHeight() - sizeY);
+            y1 = (int) (pos.y + vis2d.getHeight() - sizeY + sizeY);
         } else if (align == Align.LOWER_RIGHT) {
             x1 = (int) (pos.x + vis2d.getWidth() - sizeX);
-            y1 = (int) (pos.y + vis2d.getHeight() - sizeY);
+            y1 = (int) (pos.y + vis2d.getHeight() - sizeY + sizeY);
+        } else {
+            x1 = vis2d.transX(pos.x);
+            y1 = (int) (vis2d.transY(pos.y) + sizeY / 2.0);
         }
+        int x2 = x1 + (int) sizeX;
+        int y2 = y1 + (int) sizeY;
 
         if ((align != Align.NONE) || vis2d.containsRect(x1, y1, x2, y2)) {
             graphics2d.drawString(text, x1, y1);

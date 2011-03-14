@@ -12,6 +12,7 @@ import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
+import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
 import incubator.visprotocol.vis.layer.example.ZombieProxyLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
@@ -71,6 +72,7 @@ public class TestCreator implements Creator {
         collector.addProcessor(new PentagramLayer(exampleEnvironment, filter));
         collector.addProcessor(new BrainzProxyLayer(nPoints, 10000, filter));
         collector.addProcessor(new ZombieProxyLayer(exampleEnvironment, filter));
+        collector.addProcessor(new ScreenTextLayer(exampleEnvironment, filter));
 
         // outputs
         RootPainter painter = new RootPainter();

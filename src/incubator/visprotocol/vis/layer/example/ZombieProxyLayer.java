@@ -23,13 +23,15 @@ public class ZombieProxyLayer extends TypedLayer {
     @Override
     public Structure pull() {
         Structure struct = new Structure();
-        Element e = struct.getRoot("Undead land").getFolder("Zombies").getElement(
-                env.getPersonName(), PointKeys.TYPE);
-        Point2d pos = new Point2d(env.getPersonPosition().x, env.getPersonPosition().y);
-        e.setParameter(PointKeys.CENTER, pos);
-        e.setParameter(PointKeys.SIZE, 60.0);
-        e.setParameter(PointKeys.COLOR, new Color(0, Math.min(255, env.getPersonHealth()), 0));
-        e.setParameter(PointKeys.CONSTANT_SIZE, false);
+        if (hasType(PointKeys.TYPE)) {
+            Element e = struct.getRoot("Undead land").getFolder("Zombies").getElement(
+                    env.getPersonName(), PointKeys.TYPE);
+            Point2d pos = new Point2d(env.getPersonPosition().x, env.getPersonPosition().y);
+            setParameter(e, PointKeys.CENTER, pos);
+            setParameter(e, PointKeys.SIZE, 60.0);
+            setParameter(e, PointKeys.COLOR, new Color(0, Math.min(255, env.getPersonHealth()), 0));
+            setParameter(e, PointKeys.CONSTANT_SIZE, false);
+        }
         return struct;
     }
 
