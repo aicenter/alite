@@ -57,7 +57,7 @@ public class Element implements Serializable {
 
     @SuppressWarnings("unchecked")
     public <C> C getParameter(Typer<C> typer) {
-        return (C) parameters.get(typer.paramId);
+        return (C) parameters.get(typer.id);
     }
 
     public void setParameter(String id, Object value) {
@@ -65,7 +65,7 @@ public class Element implements Serializable {
     }
 
     public <C> void setParameter(Typer<C> typer, C value) {
-        parameters.put(typer.paramId, value);
+        parameters.put(typer.id, value);
     }
 
     public Object removeParameter(Object id) {

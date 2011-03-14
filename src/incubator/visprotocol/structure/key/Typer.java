@@ -7,24 +7,24 @@ package incubator.visprotocol.structure.key;
  * */
 public class Typer<E> {
 
-    public final String paramId;
+    public final String id;
 
     public Typer(String paramId) {
-        this.paramId = paramId;
+        this.id = paramId;
     }
 
     public String getId() {
-        return paramId;
+        return id;
     }
 
     @Override
     public String toString() {
-        return paramId;
+        return id;
     }
 
     @Override
     public int hashCode() {
-        return paramId.hashCode();
+        return id.hashCode();
     }
 
 }

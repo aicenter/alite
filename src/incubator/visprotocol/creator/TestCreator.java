@@ -8,7 +8,8 @@ import incubator.visprotocol.processor.updater.Differ;
 import incubator.visprotocol.processor.updater.MergeUpdater;
 import incubator.visprotocol.protocol.MemoryProtocol;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
-import incubator.visprotocol.vis.layer.TypeParamIdFilter;
+import incubator.visprotocol.structure.key.Vis2DCommonKeys;
+import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
@@ -65,7 +66,8 @@ public class TestCreator implements Creator {
         // layers mux
         LightPullMux collector = new LightPullMux();
         // filter
-        TypeParamIdFilter filter = new TypeParamIdFilter(Vis2DBasicPainters.ELEMENT_TYPES);
+        FilterStorage filter = new FilterStorage(Vis2DBasicPainters.ELEMENT_TYPES,
+                Vis2DCommonKeys.COMMON_PARAMS);
         // layers
         collector.addProcessor(new SimInfoProxyLayer(exampleEnvironment, filter));
         collector.addProcessor(new FillColorProxyLayer(Color.BLACK, ".Undead land.Other", filter));
@@ -149,7 +151,7 @@ public class TestCreator implements Creator {
         public long getTime() {
             return exampleTime;
         }
-        
+
     }
 
     private enum Mode {

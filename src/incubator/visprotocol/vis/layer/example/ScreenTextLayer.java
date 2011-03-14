@@ -6,7 +6,7 @@ import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.structure.key.struct.Align;
-import incubator.visprotocol.vis.layer.TypeParamIdFilter;
+import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
 import java.awt.Color;
@@ -18,7 +18,7 @@ public class ScreenTextLayer extends TypedLayer {
 
     private final ExampleEnvironment env;
 
-    public ScreenTextLayer(ExampleEnvironment env, TypeParamIdFilter filter) {
+    public ScreenTextLayer(ExampleEnvironment env, FilterStorage filter) {
         super(filter);
         this.env = env;
     }

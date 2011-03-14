@@ -1,5 +1,8 @@
 package incubator.visprotocol.structure.key;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import incubator.visprotocol.structure.key.struct.ChangeFlag;
 
 /**
@@ -9,6 +12,8 @@ import incubator.visprotocol.structure.key.struct.ChangeFlag;
  * */
 public abstract class CommonKeys {
 
+    public static final Set<String> COMMON_PARAMS = new HashSet<String>();
+    
     /**
      * True is used in update structure (elements, maybe folders), means that the element will be
      * deleted in vis layer. False is used by proxy layers (only folders), means that nothing in the
@@ -16,4 +21,9 @@ public abstract class CommonKeys {
      */
     public static final Typer<ChangeFlag> CHANGE = new Typer<ChangeFlag>("change");
 
+    static {
+        COMMON_PARAMS.add(CHANGE.id);
+    }
+    
+    
 }
