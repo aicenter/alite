@@ -54,8 +54,11 @@ public class TestCreator implements Creator {
         vis2d = new Vis2DOutput(params);
         vis2d.addTransformators(Vis2DBasicTransformators.createBasicTransformators());
 
-        // v realtime modu je to tak 3x rychlejsi, direct este rychlejsi, ale nema ulozenej stav
+        // V realtime modu je to tak 3x rychlejsi nez protocol. Direct este rychlejsi, ale nema
+        // ulozenej aktualni stav, hodne trhane dokaze i 1M bodu.
         Mode mode = Mode.PROTOCOL;
+        // 10k bodu este v pohode, 100k se trochu trha, 200k se dost trha, 1M jsem se nedockal
+        int nPoints = 1000;
 
         // layers mux
         LightPullMux collector = new LightPullMux();
@@ -64,9 +67,8 @@ public class TestCreator implements Creator {
         // layers
         collector.addProcessor(new SimInfoProxyLayer(filter));
         collector.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other", filter));
-        collector.addProcessor(new BrainzProxyLayer(1000000, 10100, filter));
+        collector.addProcessor(new BrainzProxyLayer(nPoints, 10000, filter));
         collector.addProcessor(new ZombieProxyLayer(exampleEnvironment, filter));
-        // 10k bodu este v pohode, 100k se trochu trha, 200k se dost trha, 1M jsem se nedockal
 
         // outputs
         RootPainter painter = new RootPainter();
