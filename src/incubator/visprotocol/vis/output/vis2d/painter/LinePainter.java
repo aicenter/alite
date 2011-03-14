@@ -34,7 +34,7 @@ public class LinePainter implements Painter {
     private Color color = Color.BLACK;
     private double width = 1;
     private Collection<Point2d> points = new ArrayList<Point2d>(0);
-    private boolean constantSize = false;
+    private boolean constantLinwWidth = false;
 
     public LinePainter(Vis2DOutput vis2dOutput) {
         this.vis2dOutput = vis2dOutput;
@@ -47,10 +47,10 @@ public class LinePainter implements Painter {
         color = StructUtils.updateValue(e, LineKeys.COLOR, color);
         width = StructUtils.updateValue(e, LineKeys.LINE_WIDTH, width);
         points = StructUtils.updateValue(e, LineKeys.POINTS, points);
-        constantSize = StructUtils.updateValue(e, LineKeys.CONSTANT_LINE_WIDTH, constantSize);
+        constantLinwWidth = StructUtils.updateValue(e, LineKeys.CONSTANT_LINE_WIDTH, constantLinwWidth);
 
         double drawWidth = width;
-        if (!constantSize) {
+        if (!constantLinwWidth) {
             drawWidth = vis2dOutput.transW(width);
         }
 

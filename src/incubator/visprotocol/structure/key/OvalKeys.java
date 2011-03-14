@@ -23,5 +23,6 @@ public abstract class OvalKeys {
     public static final Typer<Color> COLOR = new Typer<Color>("color");
     public static final Typer<Double> LINE_WIDTH = new Typer<Double>("line_width");
     public static final Typer<Boolean> CONSTANT_LINE_WIDTH = new Typer<Boolean>("const_line_width");
+    public static final Typer<Boolean> CONSTANT_SIZE = new Typer<Boolean>("const_size");
 
 }
