@@ -31,10 +31,10 @@ public class BrainzProxyLayer extends TypedLayer {
             Folder f = struct.getRoot("Undead land").getFolder("Brainz");
             for (int i = 0; i < points.size(); i++) {
                 Element e = f.getElement("p" + i, PointKeys.TYPE);
-                setParameter(e, PointKeys.POS, points.get(i));
+                setParameter(e, PointKeys.CENTER, points.get(i));
                 if (i == 0) {
                     setParameter(e, PointKeys.COLOR, Color.PINK);
-                    setParameter(e, PointKeys.WIDTH, 4.0);
+                    setParameter(e, PointKeys.SIZE, 4.0);
                     setParameter(e, PointKeys.CONSTANT_SIZE, true);
                 }
             }

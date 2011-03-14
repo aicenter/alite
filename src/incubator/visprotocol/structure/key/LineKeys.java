@@ -11,7 +11,7 @@ public abstract class LineKeys {
 
     public static final Typer<Collection<Point2d>> POINTS = new Typer<Collection<Point2d>>("points");
     public static final Typer<Color> COLOR = new Typer<Color>("color");
-    public static final Typer<Double> WIDTH = new Typer<Double>("width");
-    public static final Typer<Boolean> CONSTANT_SIZE = new Typer<Boolean>("const_size");
+    public static final Typer<Double> LINE_WIDTH = new Typer<Double>("line_width");
+    public static final Typer<Boolean> CONSTANT_LINE_WIDTH = new Typer<Boolean>("const_line_width");
 
 }

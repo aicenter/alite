@@ -25,8 +25,8 @@ public class LinePainter implements Painter {
 
     /** all parameter ids which this painter can paint */
     public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(LineKeys.COLOR
-            .toString(), LineKeys.WIDTH.toString(), LineKeys.POINTS.toString(),
-            LineKeys.CONSTANT_SIZE.toString()));
+            .toString(), LineKeys.LINE_WIDTH.toString(), LineKeys.POINTS.toString(),
+            LineKeys.CONSTANT_LINE_WIDTH.toString()));
 
     private final Vis2DOutput vis2dOutput;
 
@@ -46,14 +46,14 @@ public class LinePainter implements Painter {
         if (e.containsParameter(LineKeys.COLOR)) {
             color = e.getParameter(LineKeys.COLOR);
         }
-        if (e.containsParameter(LineKeys.WIDTH)) {
-            width = e.getParameter(LineKeys.WIDTH);
+        if (e.containsParameter(LineKeys.LINE_WIDTH)) {
+            width = e.getParameter(LineKeys.LINE_WIDTH);
         }
         if (e.containsParameter(LineKeys.POINTS)) {
             points = e.getParameter(LineKeys.POINTS);
         }
-        if (e.containsParameter(LineKeys.CONSTANT_SIZE)) {
-            constantSize = e.getParameter(LineKeys.CONSTANT_SIZE);
+        if (e.containsParameter(LineKeys.CONSTANT_LINE_WIDTH)) {
+            constantSize = e.getParameter(LineKeys.CONSTANT_LINE_WIDTH);
         }
 
         double drawWidth = width;

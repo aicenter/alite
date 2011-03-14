@@ -31,11 +31,11 @@ public class ElementTest {
         e.removeParameter("mozky");
         assertTrue(!e.containsParameter("mozky"));
 
-        e.setParameter(PointKeys.WIDTH, 20.0);
-        assertTrue(e.getParameter(PointKeys.WIDTH) == 20.0);
+        e.setParameter(PointKeys.SIZE, 20.0);
+        assertTrue(e.getParameter(PointKeys.SIZE) == 20.0);
 
-        e.setParameter(PointKeys.WIDTH, 30.0);
-        assertTrue(e.parameterEqual(PointKeys.WIDTH, 30.0));
+        e.setParameter(PointKeys.SIZE, 30.0);
+        assertTrue(e.parameterEqual(PointKeys.SIZE, 30.0));
 
         e.clear();
         assertTrue(e.isEmpty());

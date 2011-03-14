@@ -23,8 +23,8 @@ public class OvalPainter implements Painter {
 
     /** all parameter ids which this painter can paint */
     public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(OvalKeys.COLOR
-            .toString(), OvalKeys.WIDTH.toString(), OvalKeys.CONSTANT_SIZE.toString(),
-            OvalKeys.DIAMETER.toString(), OvalKeys.POS.toString(), OvalKeys.SIZE_X.toString(),
+            .toString(), OvalKeys.LINE_WIDTH.toString(), OvalKeys.CONSTANT_LINE_WIDTH.toString(),
+            OvalKeys.DIAMETER.toString(), OvalKeys.CENTER.toString(), OvalKeys.SIZE_X.toString(),
             OvalKeys.SIZE_Y.toString()));
 
     private final Vis2DOutput vis2dOutput;
@@ -47,14 +47,14 @@ public class OvalPainter implements Painter {
         if (e.containsParameter(OvalKeys.COLOR)) {
             color = e.getParameter(OvalKeys.COLOR);
         }
-        if (e.containsParameter(OvalKeys.WIDTH)) {
-            width = e.getParameter(OvalKeys.WIDTH);
+        if (e.containsParameter(OvalKeys.LINE_WIDTH)) {
+            width = e.getParameter(OvalKeys.LINE_WIDTH);
         }
-        if (e.containsParameter(OvalKeys.CONSTANT_SIZE)) {
-            constantSize = e.getParameter(OvalKeys.CONSTANT_SIZE);
+        if (e.containsParameter(OvalKeys.CONSTANT_LINE_WIDTH)) {
+            constantSize = e.getParameter(OvalKeys.CONSTANT_LINE_WIDTH);
         }
-        if (e.containsParameter(OvalKeys.POS)) {
-            pos = e.getParameter(OvalKeys.POS);
+        if (e.containsParameter(OvalKeys.CENTER)) {
+            pos = e.getParameter(OvalKeys.CENTER);
             if (e.containsParameter(OvalKeys.DIAMETER)) {
                 sizeX = e.getParameter(OvalKeys.DIAMETER);
                 sizeY = sizeX;
