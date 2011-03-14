@@ -21,7 +21,7 @@ public class MergeUpdater implements StructProcessor {
     private Structure state;
     private boolean deleteFolders;
     private boolean deepCopy;
-    private boolean acceptPast = false;
+    private boolean acceptPast = true;
 
     public MergeUpdater() {
         this(new Structure(0L));

@@ -68,9 +68,9 @@ public class TestCreator implements Creator {
         // layers
         collector.addProcessor(new SimInfoProxyLayer(exampleEnvironment, filter));
         collector.addProcessor(new FillColorProxyLayer(Color.BLACK, ".Undead land.Other", filter));
+        collector.addProcessor(new PentagramLayer(exampleEnvironment, filter));
         collector.addProcessor(new BrainzProxyLayer(nPoints, 10000, filter));
         collector.addProcessor(new ZombieProxyLayer(exampleEnvironment, filter));
-        collector.addProcessor(new PentagramLayer(exampleEnvironment, filter));
 
         // outputs
         RootPainter painter = new RootPainter();
@@ -82,9 +82,7 @@ public class TestCreator implements Creator {
             collector.setOutput(painter);
             chain = collector;
         } else if (mode == Mode.REALTIME) {
-            MergeUpdater m = new MergeUpdater();
-            m.setAcceptPast(true);
-            collector.setOutput(m);
+            collector.setOutput(new MergeUpdater());
             chain = new PullForwarder(collector, painter);
         } else if (mode == Mode.PROTOCOL) {
             collector.setOutput(new Differ());
