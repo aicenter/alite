@@ -17,7 +17,7 @@ import incubator.visprotocol.vis.layer.TypedLayer;
 public class PentagramLayer extends TypedLayer {
 
     private final ExampleEnvironment env;
-    private double lineWidth = 110;
+    private double size = 10000;
 
     public PentagramLayer(ExampleEnvironment env, TypeParamIdFilter filter) {
         super(filter);
@@ -45,38 +45,42 @@ public class PentagramLayer extends TypedLayer {
         if (step >= 360) {
             step -= 360;
         }
-        double size = 10000;
-
+        double lineWidth = size / 95.0;
         double cx = size / 2.0;
         double cy = size / 2.0;
         double sizeX = size * Math.cos(step * Math.PI / 180.0);
         double sizeA = Math.abs(sizeX);
 
-        Element e = f.getElement("circle" + number, OvalKeys.TYPE);
-        if (number == 0) {
-            e.setParameter(OvalKeys.CONSTANT_LINE_WIDTH, false);
-            e.setParameter(OvalKeys.LINE_WIDTH, lineWidth);
+        if (hasType(OvalKeys.TYPE)) {
+            Element e = f.getElement("circle" + number, OvalKeys.TYPE);
+            if (number == 0) {
+                setParameter(e, OvalKeys.CONSTANT_LINE_WIDTH, false);
+                setParameter(e, OvalKeys.LINE_WIDTH, lineWidth);
+            }
+            setParameter(e, OvalKeys.COLOR, c);
+            setParameter(e, OvalKeys.CENTER, new Point2d(cx, cy));
+            setParameter(e, OvalKeys.SIZE_X, sizeA);
+            setParameter(e, OvalKeys.SIZE_Y, size);
         }
-        e.setParameter(OvalKeys.COLOR, c);
-        e.setParameter(OvalKeys.CENTER, new Point2d(cx, cy));
-        e.setParameter(OvalKeys.SIZE_X, sizeA);
-        e.setParameter(OvalKeys.SIZE_Y, size);
 
-        e = f.getElement("star" + number, LineKeys.TYPE);
-        if (number == 0) {
-            e.setParameter(LineKeys.LINE_WIDTH, lineWidth);
-            e.setParameter(LineKeys.CONSTANT_LINE_WIDTH, false);
+        if (hasType(LineKeys.TYPE)) {
+            Element e = f.getElement("star" + number, LineKeys.TYPE);
+            if (number == 0) {
+                setParameter(e, LineKeys.LINE_WIDTH, lineWidth);
+                setParameter(e, LineKeys.CONSTANT_LINE_WIDTH, false);
+            }
+            e.setParameter(LineKeys.COLOR, c);
+
+            ArrayList<Point2d> points = new ArrayList<Point2d>(6);
+            for (int i = 0; i < 5; i++) {
+                double a = Math.PI * 2 / 2.5 * i + Math.PI / 2.0 + 0.01;
+                points.add(new Point2d(cx + sizeX / 2.0 * Math.cos(a), cy + size / 2.0
+                        * Math.sin(a)));
+            }
+            points.add(points.get(0));
+
+            setParameter(e, LineKeys.POINTS, points);
         }
-        e.setParameter(LineKeys.COLOR, c);
-
-        ArrayList<Point2d> points = new ArrayList<Point2d>(6);
-        for (int i = 0; i < 5; i++) {
-            double a = Math.PI * 2 / 2.5 * i + Math.PI / 2.0 + 0.01;
-            points.add(new Point2d(cx + sizeX / 2.0 * Math.cos(a), cy + size / 2.0 * Math.sin(a)));
-        }
-        points.add(points.get(0));
-
-        e.setParameter(LineKeys.POINTS, points);
     }
 
 }
