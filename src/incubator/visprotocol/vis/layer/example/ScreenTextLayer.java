@@ -36,7 +36,7 @@ public class ScreenTextLayer extends TypedLayer {
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.UPPER_LEFT);
             // title
             e = f.getElement("upper_center", TextKeys.TYPE);
-            setParameter(e, TextKeys.COLOR, Color.YELLOW);
+            setParameter(e, TextKeys.COLOR, new Color(255, 100, 0));
             setParameter(e, TextKeys.FONT, new Font("GothicE", Font.PLAIN, 30));
             setParameter(e, TextKeys.TEXT, "Welcome to Undead Land");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.UPPER_CENTER);
