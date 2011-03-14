@@ -45,6 +45,9 @@ public class LightPullMux extends MultipleProcessor implements Forwarder {
     /** pushes from subprocessors to the output */
     @Override
     public void forward() {
+        if (output == null) {
+            throw new NullPointerException("No output");
+        }
         for (StructProcessor pr : getProcessors()) {
             output.push(pr.pull());
         }
