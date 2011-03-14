@@ -4,6 +4,7 @@ import incubator.visprotocol.structure.key.FillColorKeys;
 import incubator.visprotocol.structure.key.LineKeys;
 import incubator.visprotocol.structure.key.OvalKeys;
 import incubator.visprotocol.structure.key.PointKeys;
+import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.painter.Painter;
 
@@ -29,6 +30,7 @@ public abstract class Vis2DBasicPainters {
         ELEMENT_TYPES.put(FillColorKeys.TYPE, FillColorPainter.TYPES);
         ELEMENT_TYPES.put(LineKeys.TYPE, LinePainter.TYPES);
         ELEMENT_TYPES.put(OvalKeys.TYPE, OvalPainter.TYPES);
+        ELEMENT_TYPES.put(TextKeys.TYPE, TextPainter.TYPES);
     }
 
     /** returns all painter instances used by 2D vis */
@@ -39,6 +41,7 @@ public abstract class Vis2DBasicPainters {
         ret.put(FillColorKeys.TYPE, new FillColorPainter(vis2d));
         ret.put(LineKeys.TYPE, new LinePainter(vis2d));
         ret.put(OvalKeys.TYPE, new OvalPainter(vis2d));
+        ret.put(TextKeys.TYPE, new TextPainter(vis2d));
 
         return ret;
     }

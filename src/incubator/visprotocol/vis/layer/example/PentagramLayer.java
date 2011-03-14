@@ -45,7 +45,6 @@ public class PentagramLayer extends TypedLayer {
         if (step >= 360) {
             step -= 360;
         }
-        double lineWidth = size / 95.0;
         double cx = size / 2.0;
         double cy = size / 2.0;
         double sizeX = size * Math.cos(step * Math.PI / 180.0);
@@ -55,7 +54,7 @@ public class PentagramLayer extends TypedLayer {
             Element e = f.getElement("circle" + number, OvalKeys.TYPE);
             if (number == 0) {
                 setParameter(e, OvalKeys.CONSTANT_LINE_WIDTH, false);
-                setParameter(e, OvalKeys.LINE_WIDTH, lineWidth);
+                setParameter(e, OvalKeys.LINE_WIDTH, size / 90.0);
             }
             setParameter(e, OvalKeys.COLOR, c);
             setParameter(e, OvalKeys.CENTER, new Point2d(cx, cy));
@@ -66,7 +65,7 @@ public class PentagramLayer extends TypedLayer {
         if (hasType(LineKeys.TYPE)) {
             Element e = f.getElement("star" + number, LineKeys.TYPE);
             if (number == 0) {
-                setParameter(e, LineKeys.LINE_WIDTH, lineWidth);
+                setParameter(e, LineKeys.LINE_WIDTH, size / 90.0);
                 setParameter(e, LineKeys.CONSTANT_LINE_WIDTH, false);
             }
             e.setParameter(LineKeys.COLOR, c);
@@ -74,7 +73,7 @@ public class PentagramLayer extends TypedLayer {
             ArrayList<Point2d> points = new ArrayList<Point2d>(6);
             for (int i = 0; i < 5; i++) {
                 double a = Math.PI * 2 / 2.5 * i + Math.PI / 2.0 + 0.01;
-                points.add(new Point2d(cx + sizeX / 2.0 * Math.cos(a), cy + size / 2.0
+                points.add(new Point2d(cx + sizeX / 2.01 * Math.cos(a), cy + size / 2.01
                         * Math.sin(a)));
             }
             points.add(points.get(0));

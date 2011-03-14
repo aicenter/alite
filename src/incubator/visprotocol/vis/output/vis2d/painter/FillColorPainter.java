@@ -2,6 +2,7 @@ package incubator.visprotocol.vis.output.vis2d.painter;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.key.FillColorKeys;
+import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.painter.Painter;
 
@@ -32,9 +33,7 @@ public class FillColorPainter implements Painter {
 
     @Override
     public void paint(Element e) {
-        if (e.containsParameter(FillColorKeys.COLOR)) {
-            color = e.getParameter(FillColorKeys.COLOR);
-        }
+        color = StructUtils.updateValue(e, FillColorKeys.COLOR, color);
         Graphics2D graphics2d = vis2dOutput.getGraphics2D();
         graphics2d.setColor(color);
         graphics2d.fillRect(0, 0, vis2dOutput.getWidth(), vis2dOutput.getHeight());

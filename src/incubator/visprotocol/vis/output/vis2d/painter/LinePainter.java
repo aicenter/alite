@@ -2,6 +2,7 @@ package incubator.visprotocol.vis.output.vis2d.painter;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.key.LineKeys;
+import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.painter.Painter;
 
@@ -43,18 +44,10 @@ public class LinePainter implements Painter {
     public void paint(Element e) {
         Graphics2D graphics2d = vis2dOutput.getGraphics2D();
 
-        if (e.containsParameter(LineKeys.COLOR)) {
-            color = e.getParameter(LineKeys.COLOR);
-        }
-        if (e.containsParameter(LineKeys.LINE_WIDTH)) {
-            width = e.getParameter(LineKeys.LINE_WIDTH);
-        }
-        if (e.containsParameter(LineKeys.POINTS)) {
-            points = e.getParameter(LineKeys.POINTS);
-        }
-        if (e.containsParameter(LineKeys.CONSTANT_LINE_WIDTH)) {
-            constantSize = e.getParameter(LineKeys.CONSTANT_LINE_WIDTH);
-        }
+        color = StructUtils.updateValue(e, LineKeys.COLOR, color);
+        width = StructUtils.updateValue(e, LineKeys.LINE_WIDTH, width);
+        points = StructUtils.updateValue(e, LineKeys.POINTS, points);
+        constantSize = StructUtils.updateValue(e, LineKeys.CONSTANT_LINE_WIDTH, constantSize);
 
         double drawWidth = width;
         if (!constantSize) {
@@ -64,22 +57,23 @@ public class LinePainter implements Painter {
         graphics2d.setColor(color);
         graphics2d.setStroke(new BasicStroke((int) drawWidth));
 
-        Point2d last = null;
+        int lastX = 0;
+        int lastY = 0;
+        boolean draw = false;
         for (Point2d p : points) {
-            if (last != null) {
-                drawLine(last, p);
+            int x = vis2dOutput.transX(p.x);
+            int y = vis2dOutput.transY(p.y);
+            if (draw) {
+                drawLine(lastX, lastY, x, y);
             }
-            last = p;
+            draw = true;
+            lastX = x;
+            lastY = y;
         }
 
     }
 
-    private void drawLine(Point2d p1, Point2d p2) {
-        int x1 = vis2dOutput.transX(p1.x);
-        int y1 = vis2dOutput.transY(p1.y);
-        int x2 = vis2dOutput.transX(p2.x);
-        int y2 = vis2dOutput.transY(p2.y);
-
+    private void drawLine(int x1, int y1, int x2, int y2) {
         if (vis2dOutput.containsRect(x1, y1, x2, y2)) {
             vis2dOutput.getGraphics2D().drawLine(x1, y1, x2, y2);
         }

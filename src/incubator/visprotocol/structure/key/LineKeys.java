@@ -5,6 +5,9 @@ import java.util.Collection;
 
 import javax.vecmath.Point2d;
 
+/**
+ * @author Ondrej Milenovsky
+ */
 public abstract class LineKeys {
 
     public static final String TYPE = "Line";

@@ -1,5 +1,7 @@
 package incubator.visprotocol.structure.key;
 
+import incubator.visprotocol.structure.key.struct.ChangeFlag;
+
 /**
  * Params for all elements and folders.
  * 
