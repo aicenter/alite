@@ -13,7 +13,7 @@ public class PointPainterSysout implements Painter {
 
     @Override
     public void paint(Element e) {
-        Point2d pos = e.getParameter(PointKeys.POS);
+        Point2d pos = e.getParameter(PointKeys.CENTER);
         System.out.println(e.getId() + " " + pos);
     }
 

@@ -22,7 +22,7 @@ public class PointPainter implements Painter {
 
     /** all parameter ids which this painter can paint */
     public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(PointKeys.COLOR
-            .toString(), PointKeys.WIDTH.toString(), PointKeys.POS.toString(),
+            .toString(), PointKeys.SIZE.toString(), PointKeys.CENTER.toString(),
             PointKeys.CONSTANT_SIZE.toString()));
 
     private final Vis2DOutput vis2dOutput;
@@ -43,11 +43,11 @@ public class PointPainter implements Painter {
         if (e.containsParameter(PointKeys.COLOR)) {
             color = e.getParameter(PointKeys.COLOR);
         }
-        if (e.containsParameter(PointKeys.WIDTH)) {
-            width = e.getParameter(PointKeys.WIDTH);
+        if (e.containsParameter(PointKeys.SIZE)) {
+            width = e.getParameter(PointKeys.SIZE);
         }
-        if (e.containsParameter(PointKeys.POS)) {
-            pos = e.getParameter(PointKeys.POS);
+        if (e.containsParameter(PointKeys.CENTER)) {
+            pos = e.getParameter(PointKeys.CENTER);
         }
         if (e.containsParameter(PointKeys.CONSTANT_SIZE)) {
             constantSize = e.getParameter(PointKeys.CONSTANT_SIZE);

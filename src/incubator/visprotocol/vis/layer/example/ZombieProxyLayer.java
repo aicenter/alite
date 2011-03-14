@@ -26,8 +26,8 @@ public class ZombieProxyLayer extends TypedLayer {
         Element e = struct.getRoot("Undead land").getFolder("Zombies").getElement(
                 env.getPersonName(), PointKeys.TYPE);
         Point2d pos = new Point2d(env.getPersonPosition().x, env.getPersonPosition().y);
-        e.setParameter(PointKeys.POS, pos);
-        e.setParameter(PointKeys.WIDTH, 60.0);
+        e.setParameter(PointKeys.CENTER, pos);
+        e.setParameter(PointKeys.SIZE, 60.0);
         e.setParameter(PointKeys.COLOR, new Color(0, Math.min(255, env.getPersonHealth()), 0));
         e.setParameter(PointKeys.CONSTANT_SIZE, false);
         return struct;

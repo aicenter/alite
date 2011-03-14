@@ -54,18 +54,18 @@ public class PentagramLayer extends TypedLayer {
 
         Element e = f.getElement("circle" + number, OvalKeys.TYPE);
         if (number == 0) {
-            e.setParameter(OvalKeys.CONSTANT_SIZE, false);
-            e.setParameter(OvalKeys.WIDTH, lineWidth);
+            e.setParameter(OvalKeys.CONSTANT_LINE_WIDTH, false);
+            e.setParameter(OvalKeys.LINE_WIDTH, lineWidth);
         }
         e.setParameter(OvalKeys.COLOR, c);
-        e.setParameter(OvalKeys.POS, new Point2d(cx, cy));
+        e.setParameter(OvalKeys.CENTER, new Point2d(cx, cy));
         e.setParameter(OvalKeys.SIZE_X, sizeA);
         e.setParameter(OvalKeys.SIZE_Y, size);
 
         e = f.getElement("star" + number, LineKeys.TYPE);
         if (number == 0) {
-            e.setParameter(LineKeys.WIDTH, lineWidth);
-            e.setParameter(LineKeys.CONSTANT_SIZE, false);
+            e.setParameter(LineKeys.LINE_WIDTH, lineWidth);
+            e.setParameter(LineKeys.CONSTANT_LINE_WIDTH, false);
         }
         e.setParameter(LineKeys.COLOR, c);
 
