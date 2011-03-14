@@ -1,8 +1,5 @@
 package incubator.visprotocol.vis.layer.example;
 
-import java.awt.Color;
-import java.awt.Font;
-
 import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
@@ -11,6 +8,11 @@ import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.structure.key.struct.Align;
 import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.TypedLayer;
+
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.vecmath.Point2d;
 
 public class ScreenTextLayer extends TypedLayer {
 
@@ -70,6 +72,7 @@ public class ScreenTextLayer extends TypedLayer {
             //
             e = f.getElement("lower_left", TextKeys.TYPE);
             setParameter(e, TextKeys.FONT_STYLE, Font.ITALIC);
+            setParameter(e, TextKeys.POS, new Point2d(20, -20));
             setParameter(e, TextKeys.CONSTANT_SIZE, true);
             setParameter(e, TextKeys.TEXT, "Bla bla bla");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.LOWER_LEFT);

@@ -26,13 +26,14 @@ public class OvalPainter implements Painter {
     public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(OvalKeys.COLOR
             .toString(), OvalKeys.LINE_WIDTH.toString(), OvalKeys.CONSTANT_LINE_WIDTH.toString(),
             OvalKeys.DIAMETER.toString(), OvalKeys.CENTER.toString(), OvalKeys.SIZE_X.toString(),
-            OvalKeys.SIZE_Y.toString()));
+            OvalKeys.SIZE_Y.toString(), OvalKeys.CONSTANT_SIZE.toString()));
 
     private final Vis2DOutput vis2dOutput;
 
     private Color color = Color.BLACK;
     private double width = 1;
     private Point2d pos = new Point2d();
+    private boolean constantLineWidth = false;
     private boolean constantSize = false;
     private double sizeX = 10;
     private double sizeY = 10;
@@ -47,7 +48,9 @@ public class OvalPainter implements Painter {
 
         color = StructUtils.updateValue(e, OvalKeys.COLOR, color);
         width = StructUtils.updateValue(e, OvalKeys.LINE_WIDTH, width);
-        constantSize = StructUtils.updateValue(e, OvalKeys.CONSTANT_LINE_WIDTH, constantSize);
+        constantLineWidth = StructUtils.updateValue(e, OvalKeys.CONSTANT_LINE_WIDTH,
+                constantLineWidth);
+        constantSize = StructUtils.updateValue(e, OvalKeys.CONSTANT_SIZE, constantSize);
         pos = StructUtils.updateValue(e, OvalKeys.CENTER, pos);
         if (e.containsParameter(OvalKeys.DIAMETER)) {
             sizeX = e.getParameter(OvalKeys.DIAMETER);
@@ -58,15 +61,22 @@ public class OvalPainter implements Painter {
         }
 
         double drawWidth = width;
-        if (!constantSize) {
+        if (!constantLineWidth) {
             drawWidth = vis2dOutput.transW(width);
         }
 
         graphics2d.setColor(color);
         graphics2d.setStroke(new BasicStroke((int) drawWidth));
 
-        int sx = vis2dOutput.transW(sizeX);
-        int sy = vis2dOutput.transW(sizeY);
+        int sx;
+        int sy;
+        if (constantSize) {
+            sx = (int) sizeX;
+            sy = (int) sizeY;
+        } else {
+            sx = vis2dOutput.transW(sizeX);
+            sy = vis2dOutput.transW(sizeY);
+        }
 
         int x1 = vis2dOutput.transX(pos.x) - sx / 2;
         int y1 = vis2dOutput.transY(pos.y) - sy / 2;
