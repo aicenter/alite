@@ -4,7 +4,9 @@ import incubator.visprotocol.protocol.MemoryProtocol;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structprocessor.DiffUpdater;
 import incubator.visprotocol.structprocessor.Differ;
+import incubator.visprotocol.structprocessor.Forwarder;
 import incubator.visprotocol.structprocessor.LightPullMux;
+import incubator.visprotocol.structprocessor.MergeUpdater;
 import incubator.visprotocol.structprocessor.PullForwarder;
 import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
@@ -52,23 +54,38 @@ public class TestCreator implements Creator {
         vis2d = new Vis2DOutput(params);
         vis2d.addTransformators(Vis2DBasicTransformators.createBasicTransformators());
 
+        // v realtime modu je to tak 3x rychlejsi, direct este rychlejsi, ale nema ulozenej stav
+        Mode mode = Mode.PROTOCOL;
+
         // layers mux
-        LightPullMux collector = new LightPullMux(new Differ());
+        LightPullMux collector = new LightPullMux();
         // filter
         TypeParamIdFilter filter = new TypeParamIdFilter(Vis2DBasicPainters.ELEMENT_TYPES);
         // layers
         collector.addProcessor(new SimInfoProxyLayer(filter));
         collector.addProcessor(new FillColorProxyLayer(Color.WHITE, ".Undead land.Other", filter));
-        collector.addProcessor(new BrainzProxyLayer(1000, 10000, filter));
+        collector.addProcessor(new BrainzProxyLayer(1000000, 10100, filter));
         collector.addProcessor(new ZombieProxyLayer(exampleEnvironment, filter));
-
-        RootPainter painter = new RootPainter();
-        // the chain of components
-        final PullForwarder chain = new PullForwarder(collector, new MemoryProtocol(),
-                new DiffUpdater(), painter);
+        // 10k bodu este v pohode, 100k se trochu trha, 200k se dost trha, 1M jsem se nedockal
 
         // outputs
+        RootPainter painter = new RootPainter();
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
+
+        // the chain of components
+        final Forwarder chain;
+        if (mode == Mode.DIRECT) {
+            collector.setOutput(painter);
+            chain = collector;
+        } else if (mode == Mode.REALTIME) {
+            collector.setOutput(new MergeUpdater());
+            chain = new PullForwarder(collector, painter);
+        } else if (mode == Mode.PROTOCOL) {
+            collector.setOutput(new Differ());
+            chain = new PullForwarder(collector, new MemoryProtocol(), new DiffUpdater(), painter);
+        } else {
+            chain = null;
+        }
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
@@ -123,6 +140,15 @@ public class TestCreator implements Creator {
             return exampleInteger;
         }
 
+    }
+
+    private enum Mode {
+        /** proxies -> differ -> protocol -> updater -> painter */
+        PROTOCOL,
+        /** proxies -> updater -> painter */
+        REALTIME,
+        /** proxies -> painter, but the current state is not stored */
+        DIRECT
     }
 
 }

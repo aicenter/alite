@@ -22,7 +22,8 @@ public class MergeUpdater implements StructProcessor {
     private boolean deepCopy;
 
     public MergeUpdater() {
-        this(new Structure());
+        this(new Structure(0L));
+        clearState();
     }
 
     public MergeUpdater(Structure struct) {
@@ -51,13 +52,13 @@ public class MergeUpdater implements StructProcessor {
     @Override
     public void push(Structure newPart) {
         if (newPart.getTimeStamp() == null) {
-            System.out.println("Warning: new part has no timestamp");
+            //System.out.println("Warning: new part has no timestamp");
         } else if ((state.getTimeStamp() != null)
                 && (state.getTimeStamp() >= newPart.getTimeStamp())) {
             System.out.println("Warning: Current time: " + state.getTimeStamp()
                     + " >= update time " + newPart.getTimeStamp());
         }
-        state.setTimeStamp(newPart.getTimeStamp());
+        state.setTimeStamp(newPart);
         if (newPart.isEmpty()) {
             return;
         }

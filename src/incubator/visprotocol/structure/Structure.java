@@ -41,6 +41,10 @@ public class Structure implements Serializable {
         this.timeStamp = timeStamp;
     }
 
+    public void setTimeStamp(Structure s) {
+        this.timeStamp = s.getTimeStamp();
+    }
+    
     public void setRoot(Folder folder) {
         this.root = folder;
     }
