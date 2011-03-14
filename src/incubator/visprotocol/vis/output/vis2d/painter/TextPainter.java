@@ -86,8 +86,12 @@ public class TextPainter implements Painter {
         graphics2d.setFont(drawFont);
         graphics2d.setColor(color);
 
-        // TODO size
-        double sizeX = 100;
+        double sizeX;
+        if (align == Align.NONE) {
+            sizeX = vis2d.getFontMetrics(font).stringWidth(text);
+        } else {
+            sizeX = vis2d.getFontMetrics(drawFont).stringWidth(text);
+        }
         double sizeY = fontSize;
 
         // position
