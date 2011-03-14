@@ -4,10 +4,13 @@ import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.PointKeys;
+import incubator.visprotocol.structure.key.TextKeys;
+import incubator.visprotocol.structure.key.struct.Align;
 import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import javax.vecmath.Point2d;
 
@@ -31,6 +34,17 @@ public class ZombieProxyLayer extends TypedLayer {
             setParameter(e, PointKeys.SIZE, 60.0);
             setParameter(e, PointKeys.COLOR, new Color(0, Math.min(255, env.getPersonHealth()), 0));
             setParameter(e, PointKeys.CONSTANT_SIZE, false);
+        }
+        if (hasType(TextKeys.TYPE)) {
+            Element e = struct.getRoot("Undead land").getFolder("Zombies").getElement(
+                    env.getPersonName() + "-text", TextKeys.TYPE);
+            Point2d pos = new Point2d(env.getPersonPosition().x, env.getPersonPosition().y - 50);
+            setParameter(e, TextKeys.CENTER, pos);
+            setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.NONE);
+            setParameter(e, TextKeys.FONT, new Font("GothicE", Font.PLAIN, 40));
+            setParameter(e, TextKeys.CONSTANT_SIZE, false);
+            setParameter(e, TextKeys.COLOR, Color.YELLOW);
+            setParameter(e, TextKeys.TEXT, "Brainzzz");
         }
         return struct;
     }

@@ -22,7 +22,10 @@ public abstract class TextKeys {
     public static final Typer<Point2d> POS = new Typer<Point2d>("pos");
     public static final Typer<Color> COLOR = new Typer<Color>("color");
     public static final Typer<Boolean> CONSTANT_SIZE = new Typer<Boolean>("const_size");
-    /** Pos or center means translation from aligned position, so (0,0) means exact place. */
+    /**
+     * Pos or center means translation from aligned position, so (0,0) means exact place. If pos is
+     * not specified, is reseted to (0,0), so you don't need to specify it everywhere.
+     */
     public static final Typer<Align> ALIGN_ON_SCREEN = new Typer<Align>("align");
     public static final Typer<String> TEXT = new Typer<String>("text");
     /** Do not use font. */

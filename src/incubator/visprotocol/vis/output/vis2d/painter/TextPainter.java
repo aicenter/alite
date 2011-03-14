@@ -91,14 +91,19 @@ public class TextPainter implements Painter {
         double sizeY = fontSize;
 
         // position
+        boolean posChanged = false;
         if (e.containsParameter(TextKeys.POS)) {
             pos = e.getParameter(TextKeys.POS);
+            posChanged = true;
         } else if (e.containsParameter(TextKeys.CENTER)) {
             pos = e.getParameter(TextKeys.CENTER);
+            posChanged = true;
             if (align == Align.NONE) {
-                pos.x -= sizeX / 2.0;
-                pos.y -= sizeY / 2.0;
+                pos = new Point2d(pos.x -= sizeX / 2.0, pos.y -= sizeY / 2.0);
             }
+        }
+        if (!posChanged && (align != Align.NONE)) {
+            pos = new Point2d(0, 0);
         }
 
         int x1;
