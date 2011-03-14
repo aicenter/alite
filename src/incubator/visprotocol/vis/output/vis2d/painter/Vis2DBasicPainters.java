@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Basic painters for Vis2D. Includes types and params they can process.
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public abstract class Vis2DBasicPainters {
 
     // TODO nesel by udelat jenom seznam trid a potom z nich v cyklu vytahat TridaKeys.TYPE a

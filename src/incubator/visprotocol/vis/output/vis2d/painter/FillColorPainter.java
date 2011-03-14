@@ -15,7 +15,7 @@ public class FillColorPainter implements Painter {
 
     /** all parameter ids which this painter can paint */
     public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(FillColorKeys.COLOR
-            + ""));
+            .toString()));
 
     private final Vis2DOutput vis2dOutput;
 

@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.output.sysout.painter;
+package incubator.visprotocol.vis.output.console.painter;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.key.PointKeys;

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class UpdaterTest {
+public class DiffUpdaterTest {
 
     @Test
     public void test1() {

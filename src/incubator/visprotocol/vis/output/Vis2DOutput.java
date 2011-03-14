@@ -18,6 +18,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
+import java.util.Collection;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -135,6 +136,12 @@ public class Vis2DOutput extends Canvas {
 
     public void addTransformator(Transformator t) {
         t.setToVis(this);
+    }
+
+    public void addTransformators(Collection<Transformator> ts) {
+        for (Transformator t : ts) {
+            addTransformator(t);
+        }
     }
 
     public Component getComponent() {
