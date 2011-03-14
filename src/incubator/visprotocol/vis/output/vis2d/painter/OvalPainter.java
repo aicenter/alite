@@ -2,6 +2,7 @@ package incubator.visprotocol.vis.output.vis2d.painter;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.key.OvalKeys;
+import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.painter.Painter;
 
@@ -44,28 +45,16 @@ public class OvalPainter implements Painter {
     public void paint(Element e) {
         Graphics2D graphics2d = vis2dOutput.getGraphics2D();
 
-        if (e.containsParameter(OvalKeys.COLOR)) {
-            color = e.getParameter(OvalKeys.COLOR);
-        }
-        if (e.containsParameter(OvalKeys.LINE_WIDTH)) {
-            width = e.getParameter(OvalKeys.LINE_WIDTH);
-        }
-        if (e.containsParameter(OvalKeys.CONSTANT_LINE_WIDTH)) {
-            constantSize = e.getParameter(OvalKeys.CONSTANT_LINE_WIDTH);
-        }
-        if (e.containsParameter(OvalKeys.CENTER)) {
-            pos = e.getParameter(OvalKeys.CENTER);
-            if (e.containsParameter(OvalKeys.DIAMETER)) {
-                sizeX = e.getParameter(OvalKeys.DIAMETER);
-                sizeY = sizeX;
-            } else {
-                if (e.containsParameter(OvalKeys.SIZE_X)) {
-                    sizeX = e.getParameter(OvalKeys.SIZE_X);
-                }
-                if (e.containsParameter(OvalKeys.SIZE_Y)) {
-                    sizeY = e.getParameter(OvalKeys.SIZE_Y);
-                }
-            }
+        color = StructUtils.updateValue(e, OvalKeys.COLOR, color);
+        width = StructUtils.updateValue(e, OvalKeys.LINE_WIDTH, width);
+        constantSize = StructUtils.updateValue(e, OvalKeys.CONSTANT_LINE_WIDTH, constantSize);
+        pos = StructUtils.updateValue(e, OvalKeys.CENTER, pos);
+        if (e.containsParameter(OvalKeys.DIAMETER)) {
+            sizeX = e.getParameter(OvalKeys.DIAMETER);
+            sizeY = sizeX;
+        } else {
+            sizeX = StructUtils.updateValue(e, OvalKeys.SIZE_X, sizeX);
+            sizeY = StructUtils.updateValue(e, OvalKeys.SIZE_Y, sizeY);
         }
 
         double drawWidth = width;
@@ -81,8 +70,8 @@ public class OvalPainter implements Painter {
 
         int x1 = vis2dOutput.transX(pos.x) - sx / 2;
         int y1 = vis2dOutput.transY(pos.y) - sy / 2;
-        int x2 = vis2dOutput.transX(pos.x) + sx / 2;
-        int y2 = vis2dOutput.transY(pos.y) + sy / 2;
+        int x2 = x1 + sx;
+        int y2 = y1 + sy;
         if (vis2dOutput.containsRect(x1, y1, x2, y2)) {
             graphics2d.drawOval(x1, y1, sx, sy);
         }

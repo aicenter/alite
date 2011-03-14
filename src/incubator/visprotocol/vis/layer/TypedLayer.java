@@ -6,10 +6,10 @@ import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.Typer;
 
 /**
- * Proxy layer using filter, methods are forwarded, so you call hasType("type") instead
- * filter.hasType("type") + some useful methods. Before creating an element, always check
+ * Proxy layer using filter, methods are forwarded, so you call hasType(type) instead
+ * filter.hasType(type) + some useful methods. Before creating an element, always check
  * hasParam(type). Never call element.setParameter(param, value), call setParameter(element, param,
- * value).
+ * value). Before creating an element, always check hasType(type).
  * 
  * @author Ondrej Milenovsky
  * */

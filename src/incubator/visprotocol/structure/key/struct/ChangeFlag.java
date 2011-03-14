@@ -1,4 +1,4 @@
-package incubator.visprotocol.structure.key;
+package incubator.visprotocol.structure.key.struct;
 
 public enum ChangeFlag {
     /** probably not usable, when update, element does not contain the parameter */

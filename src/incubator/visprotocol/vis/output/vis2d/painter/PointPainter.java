@@ -2,6 +2,7 @@ package incubator.visprotocol.vis.output.vis2d.painter;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.key.PointKeys;
+import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.painter.Painter;
 
@@ -40,18 +41,10 @@ public class PointPainter implements Painter {
     public void paint(Element e) {
         Graphics2D graphics2d = vis2dOutput.getGraphics2D();
 
-        if (e.containsParameter(PointKeys.COLOR)) {
-            color = e.getParameter(PointKeys.COLOR);
-        }
-        if (e.containsParameter(PointKeys.SIZE)) {
-            width = e.getParameter(PointKeys.SIZE);
-        }
-        if (e.containsParameter(PointKeys.CENTER)) {
-            pos = e.getParameter(PointKeys.CENTER);
-        }
-        if (e.containsParameter(PointKeys.CONSTANT_SIZE)) {
-            constantSize = e.getParameter(PointKeys.CONSTANT_SIZE);
-        }
+        color = StructUtils.updateValue(e, PointKeys.COLOR, color);
+        width = StructUtils.updateValue(e, PointKeys.SIZE, width);
+        pos = StructUtils.updateValue(e, PointKeys.CENTER, pos);
+        constantSize = StructUtils.updateValue(e, PointKeys.CONSTANT_SIZE, constantSize);
 
         double drawWidth = width;
         if (!constantSize) {
@@ -63,10 +56,10 @@ public class PointPainter implements Painter {
 
         int x1 = vis2dOutput.transX(pos.x) - radius;
         int y1 = vis2dOutput.transY(pos.y) - radius;
-        int x2 = vis2dOutput.transX(pos.x) + radius;
-        int y2 = vis2dOutput.transY(pos.y) + radius;
+        int x2 = x1 + 2 * radius;
+        int y2 = y1 + 2 * radius;
         if (vis2dOutput.containsRect(x1, y1, x2, y2)) {
-            graphics2d.fillOval(x1, y1, (int)drawWidth, (int)drawWidth);
+            graphics2d.fillOval(x1, y1, (int) drawWidth, (int) drawWidth);
         }
     }
 

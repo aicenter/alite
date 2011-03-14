@@ -107,8 +107,8 @@ public class TestCreator implements Creator {
     private void createAndRunSimulation() {
         Random random = new Random();
         while (true) {
-            exampleEnvironment.examplePosition = new Point3d(random.nextDouble() * 20.0 + 100.0,
-                    random.nextDouble() * 20.0 + 100.0, random.nextDouble() * 20.0 + 100.0);
+            exampleEnvironment.examplePosition = new Point3d(random.nextDouble() * 200.0 + 100.0,
+                    random.nextDouble() * 200.0 + 100.0, random.nextDouble() * 20.0 + 100.0);
             exampleEnvironment.exampleInteger = random.nextInt(256);
 
             exampleEnvironment.exampleTime++;

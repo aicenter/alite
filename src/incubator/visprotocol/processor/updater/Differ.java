@@ -4,8 +4,8 @@ import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
-import incubator.visprotocol.structure.key.ChangeFlag;
 import incubator.visprotocol.structure.key.CommonKeys;
+import incubator.visprotocol.structure.key.struct.ChangeFlag;
 
 /**
  * Stores last state and structure to send. When pushed new part, updates last state and differences

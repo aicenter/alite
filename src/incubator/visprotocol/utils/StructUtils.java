@@ -7,6 +7,7 @@ import java.util.List;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.Typer;
 
 /**
  * Generating specified structures.
@@ -18,6 +19,14 @@ import incubator.visprotocol.structure.Structure;
  * @author Ondrej Milenovsky
  * */
 public class StructUtils {
+
+    /** if the element contains the parameter, update the value, else return old value */
+    public static <C> C updateValue(Element e, Typer<C> typer, C value) {
+        if (e.containsParameter(typer)) {
+            value = e.getParameter(typer);
+        }
+        return value;
+    }
 
     /** returns first leaf folder of structure */
     public static Folder getLeafFolder(Structure s) {
