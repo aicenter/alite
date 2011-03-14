@@ -1,5 +1,6 @@
-package incubator.visprotocol.structprocessor;
+package incubator.visprotocol.processor.updater;
 
+import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
@@ -52,6 +53,7 @@ public class MergeUpdater implements StructProcessor {
     @Override
     public void push(Structure newPart) {
         if (newPart.getTimeStamp() == null) {
+            // TODO use logger
             //System.out.println("Warning: new part has no timestamp");
         } else if ((state.getTimeStamp() != null)
                 && (state.getTimeStamp() >= newPart.getTimeStamp())) {

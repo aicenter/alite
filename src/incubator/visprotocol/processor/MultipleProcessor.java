@@ -1,4 +1,4 @@
-package incubator.visprotocol.structprocessor;
+package incubator.visprotocol.processor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
