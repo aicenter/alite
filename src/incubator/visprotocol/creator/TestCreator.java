@@ -1,13 +1,13 @@
 package incubator.visprotocol.creator;
 
+import incubator.visprotocol.processor.Forwarder;
+import incubator.visprotocol.processor.LightPullMux;
+import incubator.visprotocol.processor.PullForwarder;
+import incubator.visprotocol.processor.updater.DiffUpdater;
+import incubator.visprotocol.processor.updater.Differ;
+import incubator.visprotocol.processor.updater.MergeUpdater;
 import incubator.visprotocol.protocol.MemoryProtocol;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
-import incubator.visprotocol.structprocessor.DiffUpdater;
-import incubator.visprotocol.structprocessor.Differ;
-import incubator.visprotocol.structprocessor.Forwarder;
-import incubator.visprotocol.structprocessor.LightPullMux;
-import incubator.visprotocol.structprocessor.MergeUpdater;
-import incubator.visprotocol.structprocessor.PullForwarder;
 import incubator.visprotocol.vis.layer.TypeParamIdFilter;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;

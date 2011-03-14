@@ -1,6 +1,6 @@
 package incubator.visprotocol.vis.output.painter;
 
-import incubator.visprotocol.structprocessor.StructProcessor;
+import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;

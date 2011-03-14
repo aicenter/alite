@@ -1,6 +1,6 @@
 package incubator.visprotocol.protocol;
 
-import incubator.visprotocol.structprocessor.LightStorage;
+import incubator.visprotocol.processor.LightStorage;
 import incubator.visprotocol.structure.Structure;
 
 /**
