@@ -20,8 +20,6 @@ public class FillColorProxyLayer extends TypedLayer {
 
     public static final String DEFAULT_ID = "Background";
     private final Structure struct;
-    private final boolean generateOnce = false;
-    private boolean generated = false;
 
     public FillColorProxyLayer(Color color, String path, FilterStorage filter) {
         this(color, path, DEFAULT_ID, filter);
@@ -50,9 +48,7 @@ public class FillColorProxyLayer extends TypedLayer {
 
     @Override
     public Structure pull() {
-        if ((!generated || !generateOnce) && hasType(FillColorKeys.TYPE)
-                && typeHasParam(FillColorKeys.TYPE, FillColorKeys.COLOR)) {
-            generated = true;
+        if (hasType(FillColorKeys.TYPE) && typeHasParam(FillColorKeys.TYPE, FillColorKeys.COLOR)) {
             return struct.deepCopy();
         }
         return Structure.createEmptyInstance();

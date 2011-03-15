@@ -23,12 +23,8 @@ public class BrainzProxyLayer extends TypedLayer {
 
     private final ArrayList<Point2d> points;
 
-    private boolean generated = false;
-    private final boolean generateOnce;
-
-    public BrainzProxyLayer(int n, int size, FilterStorage filter, boolean generateOnce) {
+    public BrainzProxyLayer(int n, int size, FilterStorage filter) {
         super(filter);
-        this.generateOnce = generateOnce;
         points = new ArrayList<Point2d>(n);
         for (int i = 0; i < n; i++) {
             points.add(new Point2d(Math.random() * size, Math.random() * size));
@@ -38,7 +34,7 @@ public class BrainzProxyLayer extends TypedLayer {
     @Override
     public Structure pull() {
         Structure struct = new Structure();
-        if ((!generated || !generateOnce) && hasType(PointKeys.TYPE)) {
+        if (hasType(PointKeys.TYPE)) {
             Folder f = struct.getRoot("Undead land").getFolder("Brainz");
             setParameter(f, CommonKeys.CHANGE, ChangeFlag.NOT_CHANGE);
             for (int i = 0; i < points.size(); i++) {
@@ -50,7 +46,6 @@ public class BrainzProxyLayer extends TypedLayer {
                     setParameter(e, PointKeys.CONSTANT_SIZE, true);
                 }
             }
-            generated = true;
         }
         return struct;
     }
