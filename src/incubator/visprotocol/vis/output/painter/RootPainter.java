@@ -80,7 +80,7 @@ public class RootPainter implements GroupPainter, StructProcessor {
     @Override
     @Deprecated
     public Structure pull() {
-        throw new RuntimeException("Not used");
+        throw new RuntimeException("No pull");
     }
 
     @Override

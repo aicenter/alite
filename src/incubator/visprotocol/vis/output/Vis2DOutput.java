@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -41,7 +42,7 @@ public class Vis2DOutput extends Canvas {
     private int widthBack;
     private int heightBack;
 
-    private final Point2d cursorPosition = new Point2d();
+    private final Point cursorPosition = new Point();
 
     private final Rectangle2D bounds;
     private final double maxZoom;
@@ -111,12 +112,12 @@ public class Vis2DOutput extends Canvas {
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                cursorPosition.set(transInvXCurrent(e.getX()), transInvYCurrent(e.getY()));
+                cursorPosition.setLocation(e.getLocationOnScreen());
             }
 
             @Override
             public void mouseDragged(MouseEvent e) {
-                cursorPosition.set(transInvXCurrent(e.getX()), transInvYCurrent(e.getY()));
+                cursorPosition.setLocation(e.getLocationOnScreen());
             }
         });
         addKeyListener(new KeyListener() {
@@ -270,11 +271,11 @@ public class Vis2DOutput extends Canvas {
         window.setTitle(title);
     }
 
-    private double transInvXCurrent(int x) {
+    protected double transInvXCurrent(int x) {
         return (x - offset.x) / zoomFactor;
     }
 
-    private double transInvYCurrent(int y) {
+    protected double transInvYCurrent(int y) {
         return (y - offset.y) / zoomFactor;
     }
 
@@ -292,7 +293,7 @@ public class Vis2DOutput extends Canvas {
     }
 
     public Point2d getCursorPosition() {
-        return cursorPosition;
+        return new Point2d(transInvX(cursorPosition.x), transInvY(cursorPosition.y));
     }
 
     public boolean containsRect(int x1, int y1, int x2, int y2) {

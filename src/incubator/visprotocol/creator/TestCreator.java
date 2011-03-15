@@ -12,6 +12,7 @@ import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
+import incubator.visprotocol.vis.layer.common.Vis2DInfoLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
 import incubator.visprotocol.vis.layer.example.LightsProxyLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
@@ -64,7 +65,7 @@ public class TestCreator implements Creator {
         // V realtime modu je to tak 3x rychlejsi nez protocol. Direct este rychlejsi, ale nema
         // ulozenej aktualni stav, hodne trhane dokaze i 1M bodu. Kdyz je direct, tak se z proxy
         // musi generovat body pokazdy, u ostatnich staci jednou na zacatku.
-        final Mode mode = Mode.DIRECT;
+        final Mode mode = Mode.PROTOCOL;
         // 10k bodu este v pohode, 100k se trochu trha, 200k se dost trha, 1M jsem se nedockal
         int nDynamicPoints = 1000;
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi (nevim proc)
@@ -98,27 +99,36 @@ public class TestCreator implements Creator {
         RootPainter painter = new RootPainter();
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
 
-        // the chain of components
-        final Forwarder chain;
-        // fill the chain
+        Forwarder finalMux = new LightPullMux(painter);
+
+        final Forwarder root;
+
+        // create the structure of processors
         if (mode == Mode.DIRECT) {
-            collector.setOutput(painter);
-            chain = collector;
+            collector.setOutput(finalMux);
+            root = collector;
+            finalMux = collector;
         } else if (mode == Mode.REALTIME) {
             collector.setOutput(new MergeUpdater());
-            chain = new PullForwarder(collector, painter);
+            finalMux.addProcessor(collector);
+            root = finalMux;
         } else if (mode == Mode.PROTOCOL) {
             collector.setOutput(new Differ());
-            chain = new PullForwarder(collector, new MemoryProtocol(), new DiffUpdater(), painter);
+            Forwarder chain = new PullForwarder(collector, new MemoryProtocol(), new DiffUpdater());
+            finalMux.addProcessor(chain);
+            root = finalMux;
         } else {
-            chain = null;
+            root = null;
         }
+
+        // add vis info layer
+        finalMux.addProcessor(new Vis2DInfoLayer(vis2d, filter));
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
             @Override
             protected void sample() {
-                chain.forward();
+                root.forward();
 
                 // TODO: should be done probably by painter
                 vis2d.flip();
