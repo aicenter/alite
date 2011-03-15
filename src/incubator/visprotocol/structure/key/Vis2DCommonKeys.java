@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Common keys for Vis2DOutput.
+ * 
  * @author Ondrej Milenovsky
  * */
 public abstract class Vis2DCommonKeys {
@@ -17,7 +19,7 @@ public abstract class Vis2DCommonKeys {
 
     /** Precision when printing double */
     public static final Typer<Integer> PRECISION = new Typer<Integer>("vis2d_prec");
-    
+
     static {
         COMMON_PARAMS.add(LOD_MAX.id);
         COMMON_PARAMS.add(LOD_MIN.id);

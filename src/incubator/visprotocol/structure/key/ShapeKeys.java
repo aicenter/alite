@@ -7,7 +7,8 @@ import java.awt.Color;
 import javax.vecmath.Point2d;
 
 /**
- * Use diameter or [size x and size y]
+ * Points for ShapePainter (oval or rectangle). Linewidth < 0 means fill. Use diameter or [size x
+ * and size y]
  * 
  * @author Ondrej Milenovsky
  * */

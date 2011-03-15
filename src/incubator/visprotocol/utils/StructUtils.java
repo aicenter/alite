@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Generating specified structures.
+ * Useful methods for Structure, Folders and Elements.
  * 
  * String path syntax: first char is separator, example: ".root.vehicles.cars" is same as
  * "-root-vehicles-cars" and it is even same as ".root....vehicles.cars......" but not same as

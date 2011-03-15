@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Leaf element in structure. Type is used to determine painter. Change flag is used to create or
+ * Leaf element in structure. Type is used to determine painter. ChangeFlag is used to create or
  * delete associated vis object. Must have some type.
  * 
  * @author Ondrej Milenovsky
@@ -49,6 +49,7 @@ public class Element implements Serializable {
     }
 
     // TODO warnings
+    // TODO extends of C
     /** returns parameter, if not contains, returns null */
     @SuppressWarnings("unchecked")
     public <C> C getParameter(Object id, Class<C> clazz) {

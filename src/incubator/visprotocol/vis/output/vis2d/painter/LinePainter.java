@@ -18,7 +18,7 @@ import java.util.Set;
 import javax.vecmath.Point2d;
 
 /**
- * Painter to paint single line from element
+ * Painter to paint single line from element, line can has more than two points.
  * 
  * @author Ondrej Milenovsky
  * */

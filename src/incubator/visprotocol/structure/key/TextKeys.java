@@ -8,7 +8,7 @@ import java.awt.Font;
 import javax.vecmath.Point2d;
 
 /**
- * Use center or pos. Use font or [font name, font size and font flags].
+ * Keys for TextPainter. Use center or pos. Use font and/or [font name, font size and font flags].
  * 
  * @author Ondrej Milenovsky
  * */

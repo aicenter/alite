@@ -6,11 +6,24 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 
+/**
+ * Generates random structure tree. Used is normal distribtion with sigma = mean / 2.
+ * 
+ * Folders means mean value of subfolders of an folder.
+ * 
+ * Elements means mean value of subelements of an folder.
+ * 
+ * Params means mean value of params of an folder/element.
+ * 
+ * MaxFolders means maximum folders in the structure.
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class RandomStructGenerator {
-    private int folders = 3;
-    private int elements = 20;
-    private int params = 10;
-    private int maxFolders = 30;
+    public int folders = 3;
+    public int elements = 20;
+    public int params = 10;
+    public int maxFolders = 30;
 
     private Random rnd = new Random();
 
@@ -62,6 +75,6 @@ public class RandomStructGenerator {
     }
 
     private int genNum(int a) {
-        return (int) Math.max(0, rnd.nextGaussian() * a / 3.0 + a);
+        return (int) Math.max(0, rnd.nextGaussian() * a / 2.0 + a);
     }
 }

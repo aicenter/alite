@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 
 /**
- * Folder in the structure. Has one collection for elements and one for folders. Type is not
- * necessary.
+ * Folder in the structure. Has one collection for elements and one for folders. Also has parameters
+ * inheridet from Element, type is not used.
  * 
  * @author Ondrej Milenovsky
  * */

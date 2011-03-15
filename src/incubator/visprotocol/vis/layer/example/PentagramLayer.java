@@ -15,6 +15,11 @@ import java.util.ArrayList;
 
 import javax.vecmath.Point2d;
 
+/**
+ * The unholy layer >:-)
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class PentagramLayer extends TypedLayer {
 
     private final ExampleEnvironment env;

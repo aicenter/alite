@@ -9,8 +9,7 @@ import java.awt.event.MouseWheelListener;
 import javax.vecmath.Point2d;
 
 /**
- * Zooming by mouse wheel. Just create with pointer to vis, no need to add it somewhere, you can
- * forget pointer to this instance.
+ * Zooming by mouse wheel.
  * 
  * @author Ondrej Milenovsky
  * */

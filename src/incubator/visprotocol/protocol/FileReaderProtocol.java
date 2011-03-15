@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
- * Just extended StreamProtocol with constructor with file.
+ * Just extended StreamProtocol with constructor with file. No push.
  * 
  * @author Ondrej Milenovsky
  * */

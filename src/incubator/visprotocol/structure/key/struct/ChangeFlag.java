@@ -1,5 +1,10 @@
 package incubator.visprotocol.structure.key.struct;
 
+/**
+ * What will be done with an element/folder when updating.
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public enum ChangeFlag {
     /** (not used) probably not usable, when update, element does not contain the parameter change */
     UPDATE,

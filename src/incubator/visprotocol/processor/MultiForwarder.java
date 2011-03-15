@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Calls forward() on all forwarders in order they were added.
+ * Parallel processing of forwarders. Calls forward() on all forwarders in order they were added.
  * 
  * @author Ondrej Milenovsky
  * */

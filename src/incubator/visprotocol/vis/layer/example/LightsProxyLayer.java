@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import javax.vecmath.Point2d;
 
 /**
- * random dynamic points
+ * Random dynamic points changing color and appearing/disappearing.
  * 
  * @author Ondrej Milenovsky
  * */

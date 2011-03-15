@@ -6,6 +6,11 @@ import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
+/**
+ * Generating struct timestamp
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class SimInfoProxyLayer extends TypedLayer {
 
     private final ExampleEnvironment env;

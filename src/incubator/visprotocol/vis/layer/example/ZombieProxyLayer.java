@@ -15,6 +15,11 @@ import java.awt.Font;
 
 import javax.vecmath.Point2d;
 
+/**
+ * Green zombie from the environment
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class ZombieProxyLayer extends TypedLayer {
 
     private final ExampleEnvironment env;

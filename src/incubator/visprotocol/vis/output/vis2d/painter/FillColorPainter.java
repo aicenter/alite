@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Painter to fill the canvas with color from the element. Also sets bg color to vis2d.
+ * Painter to fill the canvas with color from the element. Also sets background color to vis2d.
  * 
  * @author Ondrej Milenovsky
  * */

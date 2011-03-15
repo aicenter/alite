@@ -3,7 +3,11 @@ package incubator.visprotocol.processor;
 import incubator.visprotocol.structure.Structure;
 
 /**
- * First time pulls input.pull(), then always empty structure.
+ * Only once pulling from input.
+ * 
+ * Push: push to the input
+ * 
+ * Pull: First time pulls input.pull(), then always empty structure.
  * 
  * @author Ondrej Milenovsky
  * */
