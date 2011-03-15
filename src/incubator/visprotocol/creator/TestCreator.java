@@ -2,6 +2,7 @@ package incubator.visprotocol.creator;
 
 import incubator.visprotocol.processor.Forwarder;
 import incubator.visprotocol.processor.LightPullMux;
+import incubator.visprotocol.processor.Once;
 import incubator.visprotocol.processor.PullForwarder;
 import incubator.visprotocol.processor.updater.DiffUpdater;
 import incubator.visprotocol.processor.updater.Differ;
@@ -62,9 +63,8 @@ public class TestCreator implements Creator {
 
         // V realtime modu je to tak 3x rychlejsi nez protocol. Direct este rychlejsi, ale nema
         // ulozenej aktualni stav, hodne trhane dokaze i 1M bodu. Kdyz je direct, tak se z proxy
-        // musi generovat body pokazdy, u ostatnich staci jednou na zacatku (posledni parametr u
-        // BrainzLayer).
-        final Mode mode = Mode.PROTOCOL;
+        // musi generovat body pokazdy, u ostatnich staci jednou na zacatku.
+        final Mode mode = Mode.DIRECT;
         // 10k bodu este v pohode, 100k se trochu trha, 200k se dost trha, 1M jsem se nedockal
         int nDynamicPoints = 1000;
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi (nevim proc)
@@ -77,10 +77,19 @@ public class TestCreator implements Creator {
                 Vis2DCommonKeys.COMMON_PARAMS);
         // layers
         collector.addProcessor(new SimInfoProxyLayer(exampleEnvironment, filter));
-        collector.addProcessor(new FillColorProxyLayer(Color.BLACK, ".Undead land.Other", filter));
+        if (mode == Mode.DIRECT) {
+            collector.addProcessor(new FillColorProxyLayer(Color.BLACK, ".Undead land.Other",
+                    filter));
+        } else {
+            collector.addProcessor(new Once(new FillColorProxyLayer(Color.BLACK,
+                    ".Undead land.Other", filter)));
+        }
         collector.addProcessor(new PentagramLayer(exampleEnvironment, filter));
-        collector.addProcessor(new BrainzProxyLayer(nStaticPoints, 10000, filter,
-                mode != Mode.DIRECT));
+        if (mode == Mode.DIRECT) {
+            collector.addProcessor(new BrainzProxyLayer(nStaticPoints, 10000, filter));
+        } else {
+            collector.addProcessor(new Once(new BrainzProxyLayer(nStaticPoints, 10000, filter)));
+        }
         collector.addProcessor(new LightsProxyLayer(nDynamicPoints, 10000, filter));
         collector.addProcessor(new ZombieProxyLayer(exampleEnvironment, filter));
         collector.addProcessor(new ScreenTextLayer(exampleEnvironment, filter));
