@@ -53,7 +53,7 @@ public class ScreenTextLayer extends TypedLayer {
             e = f.getElement("left_center", TextKeys.TYPE);
             setParameter(e, TextKeys.FONT_STYLE, Font.BOLD);
             setParameter(e, TextKeys.TEXT, "Aaaaaaaa");
-            setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.LEFT_CENTER);
+            setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.CENTER_LEFT);
             //
             e = f.getElement("center", TextKeys.TYPE);
             setParameter(e, TextKeys.COLOR, Color.WHITE);
@@ -68,7 +68,7 @@ public class ScreenTextLayer extends TypedLayer {
             setParameter(e, TextKeys.CONSTANT_SIZE, false);
             setParameter(e, TextKeys.TEXT,
                     "I am the death unlimited and death is all I have to give");
-            setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.RIGHT_CENTER);
+            setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.CENTER_RIGHT);
             //
             e = f.getElement("lower_left", TextKeys.TYPE);
             setParameter(e, TextKeys.FONT_STYLE, Font.ITALIC);

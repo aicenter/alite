@@ -11,7 +11,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.vecmath.Point2d;
@@ -27,7 +29,21 @@ public class TextPainter implements Painter {
     public static final Set<String> TYPES = new HashSet<String>(Arrays.asList(TextKeys.COLOR.id,
             TextKeys.ALIGN_ON_SCREEN.id, TextKeys.CENTER.id, TextKeys.CONSTANT_SIZE.id,
             TextKeys.FONT.id, TextKeys.FONT_STYLE.id, TextKeys.FONT_NAME.id, TextKeys.FONT_SIZE.id,
-            TextKeys.TEXT.id, TextKeys.POS.id));
+            TextKeys.TEXT.id, TextKeys.POS.id, TextKeys.ALIGN_RATIO.id));
+
+    /** align ratios for basic aligns */
+    public static final Map<Align, Point2d> ALIGN_RATIOS = new HashMap<Align, Point2d>();
+    static {
+        ALIGN_RATIOS.put(Align.UPPER_LEFT, new Point2d(0, 0));
+        ALIGN_RATIOS.put(Align.UPPER_CENTER, new Point2d(0.5, 0));
+        ALIGN_RATIOS.put(Align.UPPER_RIGHT, new Point2d(1, 0));
+        ALIGN_RATIOS.put(Align.CENTER_LEFT, new Point2d(0, 0.5));
+        ALIGN_RATIOS.put(Align.CENTER, new Point2d(0.5, 0.5));
+        ALIGN_RATIOS.put(Align.CENTER_RIGHT, new Point2d(1, 0.5));
+        ALIGN_RATIOS.put(Align.LOWER_LEFT, new Point2d(0, 1));
+        ALIGN_RATIOS.put(Align.LOWER_CENTER, new Point2d(0.5, 1));
+        ALIGN_RATIOS.put(Align.LOWER_RIGHT, new Point2d(1, 1));
+    }
 
     private final Vis2DOutput vis2d;
 
@@ -38,6 +54,7 @@ public class TextPainter implements Painter {
     private Align align = Align.NONE;
     private String text = "Welcome to hell!";
     private double fontSize = 10;
+    private Point2d alignRatio = new Point2d(0.5, 0.5);
 
     public TextPainter(Vis2DOutput vis2dOutput) {
         this.vis2d = vis2dOutput;
@@ -48,9 +65,12 @@ public class TextPainter implements Painter {
         Graphics2D graphics2d = vis2d.getGraphics2D();
 
         color = StructUtils.updateValue(e, TextKeys.COLOR, color);
-        align = e.getParameter(TextKeys.ALIGN_ON_SCREEN);
         constantSize = StructUtils.updateValue(e, TextKeys.CONSTANT_SIZE, constantSize);
         text = StructUtils.updateValue(e, TextKeys.TEXT, text);
+        align = StructUtils.updateValue(e, TextKeys.ALIGN_ON_SCREEN, align);
+        if (align == Align.RATIO) {
+            alignRatio = StructUtils.updateValue(e, TextKeys.ALIGN_RATIO, alignRatio);
+        }
 
         // font ///////
         font = StructUtils.updateValue(e, TextKeys.FONT, font);
@@ -108,37 +128,17 @@ public class TextPainter implements Painter {
         int x1;
         int y1;
 
-        if (align == Align.UPPER_LEFT) {
-            x1 = (int) pos.x;
-            y1 = (int) (pos.y + sizeY);
-        } else if (align == Align.UPPER_CENTER) {
-            x1 = (int) (pos.x + (vis2d.getWidth() - sizeX) / 2.0);
-            y1 = (int) (pos.y + sizeY);
-        } else if (align == Align.UPPER_RIGHT) {
-            x1 = (int) (pos.x + vis2d.getWidth() - sizeX);
-            y1 = (int) (pos.y + sizeY);
-        } else if (align == Align.LEFT_CENTER) {
-            x1 = (int) pos.x;
-            y1 = (int) (pos.y + (vis2d.getHeight() - sizeY) / 2.0 + sizeY);
-        } else if (align == Align.CENTER) {
-            x1 = (int) (pos.x + (vis2d.getWidth() - sizeX) / 2.0);
-            y1 = (int) (pos.y + (vis2d.getHeight() - sizeY) / 2.0 + sizeY);
-        } else if (align == Align.RIGHT_CENTER) {
-            x1 = (int) (pos.x + vis2d.getWidth() - sizeX);
-            y1 = (int) (pos.y + (vis2d.getHeight() - sizeY) / 2.0 + sizeY);
-        } else if (align == Align.LOWER_LEFT) {
-            x1 = (int) pos.x;
-            y1 = (int) (pos.y + vis2d.getHeight() - sizeY + sizeY);
-        } else if (align == Align.LOWER_CENTER) {
-            x1 = (int) (pos.x + (vis2d.getWidth() - sizeX) / 2.0);
-            y1 = (int) (pos.y + vis2d.getHeight() - sizeY + sizeY);
-        } else if (align == Align.LOWER_RIGHT) {
-            x1 = (int) (pos.x + vis2d.getWidth() - sizeX);
-            y1 = (int) (pos.y + vis2d.getHeight() - sizeY + sizeY);
-        } else {
+        if (align == Align.NONE) {
             x1 = vis2d.transX(pos.x);
             y1 = (int) (vis2d.transY(pos.y) + sizeY / 2.0);
+        } else {
+            if (align != Align.RATIO) {
+                alignRatio = ALIGN_RATIOS.get(align);
+            }
+            x1 = (int) ((vis2d.getWidth() - sizeX) * alignRatio.x + pos.x);
+            y1 = (int) ((vis2d.getHeight() - sizeY) * alignRatio.y + pos.y + sizeY);
         }
+
         int x2 = x1 + (int) sizeX;
         int y2 = y1 + (int) sizeY;
 
