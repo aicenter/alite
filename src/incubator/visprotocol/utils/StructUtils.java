@@ -1,13 +1,16 @@
 package incubator.visprotocol.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.Typer;
+import incubator.visprotocol.structure.key.struct.ChangeFlag;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Generating specified structures.
@@ -111,6 +114,55 @@ public class StructUtils {
         return ret;
     }
 
+    /** copy only folders and elements with change == not_delete ot not_change, keeps all folders */
+    public static Structure makeDeepNotDeletableCopy(Structure struct) {
+        Structure ret = new Structure(struct);
+        if (!struct.isEmpty()) {
+            ret.setRoot(makeDeepNotDeletableCopy(struct.getRoot()));
+        }
+        return ret;
+    }
+
+    /** copy only folders and elements with change == not_delete ot not_change, keeps all folders */
+    public static Folder makeDeepNotDeletableCopy(Folder folder) {
+        if (notClearable(folder)) {
+            return folder.deepCopy();
+        }
+        Folder ret = new Folder(folder);
+        for (Folder f : folder.getFolders()) {
+            ret.addFolder(makeDeepNotDeletableCopy(f));
+        }
+        for (Element e : folder.getElements()) {
+            if (notClearable(e)) {
+                ret.addElement(e.deepCopy());
+            }
+        }
+        return ret;
+    }
+
+    /** removes from struct clearable elements */
+    public static void removeClearableElements(Structure struct) {
+        if (!struct.isEmpty()) {
+            removeClearableElements(struct.getRoot());
+        }
+    }
+
+    /** removes from folder clearable elements */
+    public static void removeClearableElements(Folder folder) {
+        if (notClearable(folder)) {
+            return;
+        }
+        for (Iterator<Element> it = folder.getElements().iterator(); it.hasNext();) {
+            Element e = it.next();
+            if (!notClearable(e)) {
+                it.remove();
+            }
+        }
+        for (Folder f : folder.getFolders()) {
+            removeClearableElements(f);
+        }
+    }
+
     /** creates deep copy of folders (without elements and params), timestamp is copied */
     public static Structure copyFolders(Structure s) {
         Structure ret = new Structure(s);
@@ -128,6 +180,16 @@ public class StructUtils {
             ret.addFolder(copyFolders(f2));
         }
         return ret;
+    }
+
+    /** if element is not deletable or not changable */
+    public static boolean notClearable(Element e) {
+        if (e.containsParameter(CommonKeys.CHANGE)) {
+            ChangeFlag change = e.getParameter(CommonKeys.CHANGE);
+            return (change == ChangeFlag.NOT_CHANGE) || (change == ChangeFlag.NOT_DELETE);
+        } else {
+            return false;
+        }
     }
 
 }

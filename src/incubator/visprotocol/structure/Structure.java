@@ -9,6 +9,11 @@ public class Structure implements Serializable {
     /** do not modify this instance !!! */
     public static final Structure EMPTY_INSTANCE = new Structure();
 
+    /** you can modify this */
+    public static Structure createEmptyInstance() {
+        return new Structure();
+    }
+
     private Folder root;
     private Long timeStamp = null;
 
@@ -44,7 +49,7 @@ public class Structure implements Serializable {
     public void setTimeStamp(Structure s) {
         this.timeStamp = s.getTimeStamp();
     }
-    
+
     public void setRoot(Folder folder) {
         this.root = folder;
     }
@@ -79,7 +84,10 @@ public class Structure implements Serializable {
         if (root == null) {
             return new Structure(timeStamp);
         }
-        return new Structure(getRoot().deepCopy(), timeStamp);
+        if(timeStamp == null) {
+            return new Structure(root.deepCopy());
+        }
+        return new Structure(root.deepCopy(), timeStamp);
     }
 
     public boolean equalsDeep(Object obj) {
