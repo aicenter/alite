@@ -135,8 +135,8 @@ public class TextPainter implements Painter {
             if (align != Align.RATIO) {
                 alignRatio = ALIGN_RATIOS.get(align);
             }
-            x1 = (int) ((vis2d.getWidth() - sizeX) * alignRatio.x + pos.x);
-            y1 = (int) ((vis2d.getHeight() - sizeY) * alignRatio.y + pos.y + sizeY);
+            x1 = (int) ((vis2d.getPaintWidth() - sizeX) * alignRatio.x + pos.x);
+            y1 = (int) ((vis2d.getPaintHeight() - sizeY) * alignRatio.y + pos.y + sizeY);
         }
 
         int x2 = x1 + (int) sizeX;

@@ -94,9 +94,9 @@ public class ZoomTransformator implements Transformator, MouseWheelListener {
     }
 
     private void computeCenterMiddle(Point2d offset, double zoomFactor) {
-        offset.x += (vis2d.getWidth() / 2 - vis2d.getOffsetBack().x) / vis2d.getZoomFactorBack()
+        offset.x += (vis2d.getPaintWidth() / 2 - vis2d.getOffsetBack().x) / vis2d.getZoomFactorBack()
                 * zoomFactor * (zoomStep - 1.0);
-        offset.y += (vis2d.getHeight() / 2 - vis2d.getOffsetBack().y) / vis2d.getZoomFactorBack()
+        offset.y += (vis2d.getPaintHeight() / 2 - vis2d.getOffsetBack().y) / vis2d.getZoomFactorBack()
                 * zoomFactor * (zoomStep - 1.0);
     }
 
