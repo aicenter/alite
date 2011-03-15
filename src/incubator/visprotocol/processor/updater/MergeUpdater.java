@@ -7,8 +7,7 @@ import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.utils.StructUtils;
 
 /**
- * Holds current state, accepts parts of world. When push, returns current world state. Default
- * setting is not to delete folders.
+ * Holds current state, accepts parts of world. When push, returns current world state.
  * 
  * Push: differences between two world states
  * 
@@ -18,12 +17,18 @@ import incubator.visprotocol.utils.StructUtils;
  * */
 public class MergeUpdater implements StructProcessor {
 
-    private Structure state;
+    // properties
     private boolean deleteFolders = false;
     private boolean deepCopyUpdating = false;
-    private boolean deepCopyClearing = true;
+    private boolean deepCopyClearing = false;
     private boolean acceptPast = true;
     private boolean containsNotDelete = false;
+    private boolean clearOnFirstPush = true;
+    
+    // state
+    private Structure state;
+    private boolean pulled = false;
+
 
     public MergeUpdater() {
         this(new Structure(0L));
@@ -34,15 +39,24 @@ public class MergeUpdater implements StructProcessor {
         state = struct;
     }
 
+    /** pull does not clear the state, but first push does */
+    public void setClearOnFirstPush(boolean clearOnFirstPush) {
+        this.clearOnFirstPush = clearOnFirstPush;
+    }
+
+    public boolean isClearOnFirstPush() {
+        return clearOnFirstPush;
+    }
+
     /**
      * If make deep copy or change current state if contains not changable element and clearing
-     * state. If false, sets delete folders to false and clearState() must be called after
-     * drawing!!!
+     * state. If false, sets delete folders to false and clearOnFirstPush to true
      */
     public void setDeepCopyClearing(boolean deepCopyClearing) {
         this.deepCopyClearing = deepCopyClearing;
         if (!deepCopyClearing) {
             deleteFolders = false;
+            clearOnFirstPush = true;
         }
     }
 
@@ -84,15 +98,20 @@ public class MergeUpdater implements StructProcessor {
     @Override
     public Structure pull() {
         Structure ret = state;
-        if (deepCopyClearing) {
+        if (!clearOnFirstPush) {
             clearState();
         }
+        pulled = true;
         return ret;
     }
 
     /** merge current state with new part */
     @Override
     public void push(Structure newPart) {
+        if(pulled && clearOnFirstPush) {
+            clearState();
+            pulled = false;
+        }
         if (!acceptPast) {
             if (newPart.getTimeStamp() == null) {
                 System.out.println("Warning: new part has no timestamp");
