@@ -70,7 +70,7 @@ public class TestCreator implements Creator {
         final Mode mode = Mode.PROTOCOL;
         // 10k bodu este v pohode, 100k se trochu trha, 200k se dost trha, 1M jsem se nedockal
         int nDynamicPoints = 1000;
-        // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi (nevim proc)
+        // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
         int nStaticPoints = 10000;
 
         // layers mux

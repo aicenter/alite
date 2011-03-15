@@ -10,7 +10,7 @@ import java.util.List;
  * 
  * @author Ondrej Milenovsky
  * */
-public abstract class MultipleProcessor implements HubProcessor {
+public abstract class MultipleProcessor implements ProcessorHolder {
 
     private final List<StructProcessor> processors;
 
