@@ -1,5 +1,5 @@
 package incubator.visprotocol.processor;
 
-public interface Forwarder extends HubProcessor {
+public interface Forwarder {
     public void forward();
 }
