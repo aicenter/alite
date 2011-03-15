@@ -10,15 +10,17 @@ public enum Align {
     /***/
     UPPER_RIGHT,
     /***/
-    LEFT_CENTER,
+    CENTER_LEFT,
     /***/
     CENTER,
     /***/
-    RIGHT_CENTER,
+    CENTER_RIGHT,
     /***/
     LOWER_LEFT,
     /***/
     LOWER_CENTER,
     /***/
     LOWER_RIGHT,
+    /**use align_ratio*/
+    RATIO,
 }

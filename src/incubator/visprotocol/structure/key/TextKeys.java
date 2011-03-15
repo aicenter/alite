@@ -24,9 +24,13 @@ public abstract class TextKeys {
     public static final Typer<Boolean> CONSTANT_SIZE = new Typer<Boolean>("const_size");
     /**
      * Pos or center means translation from aligned position, so (0,0) means exact place. If pos is
-     * not specified, is reseted to (0,0), so you don't need to specify it everywhere.
+     * not specified, is reseted to (0,0), so you don't need to specify it everywhere. If ratio,
+     * align_ratio is used.
      */
     public static final Typer<Align> ALIGN_ON_SCREEN = new Typer<Align>("align");
+    /** used only if align = ratio, (0, 0) means upper left corner, (0.5, 0.5) means center */
+    public static final Typer<Point2d> ALIGN_RATIO = new Typer<Point2d>("align_ratio");
+
     public static final Typer<String> TEXT = new Typer<String>("text");
     /** Do not use font. */
     public static final Typer<Double> FONT_SIZE = new Typer<Double>("font_size");

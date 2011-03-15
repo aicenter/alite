@@ -2,7 +2,7 @@ package incubator.visprotocol.vis.output.vis2d.painter;
 
 import incubator.visprotocol.structure.key.FillColorKeys;
 import incubator.visprotocol.structure.key.LineKeys;
-import incubator.visprotocol.structure.key.OvalKeys;
+import incubator.visprotocol.structure.key.ShapeKeys;
 import incubator.visprotocol.structure.key.PointKeys;
 import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.vis.output.Vis2DOutput;
@@ -29,7 +29,7 @@ public abstract class Vis2DBasicPainters {
         ELEMENT_TYPES.put(PointKeys.TYPE, PointPainter.TYPES);
         ELEMENT_TYPES.put(FillColorKeys.TYPE, FillColorPainter.TYPES);
         ELEMENT_TYPES.put(LineKeys.TYPE, LinePainter.TYPES);
-        ELEMENT_TYPES.put(OvalKeys.TYPE, OvalPainter.TYPES);
+        ELEMENT_TYPES.put(ShapeKeys.TYPE, ShapePainter.TYPES);
         ELEMENT_TYPES.put(TextKeys.TYPE, TextPainter.TYPES);
     }
 
@@ -40,7 +40,7 @@ public abstract class Vis2DBasicPainters {
         ret.put(PointKeys.TYPE, new PointPainter(vis2d));
         ret.put(FillColorKeys.TYPE, new FillColorPainter(vis2d));
         ret.put(LineKeys.TYPE, new LinePainter(vis2d));
-        ret.put(OvalKeys.TYPE, new OvalPainter(vis2d));
+        ret.put(ShapeKeys.TYPE, new ShapePainter(vis2d));
         ret.put(TextKeys.TYPE, new TextPainter(vis2d));
 
         return ret;
