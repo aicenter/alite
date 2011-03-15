@@ -3,9 +3,7 @@ package incubator.visprotocol.vis.layer.example;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
-import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.PointKeys;
-import incubator.visprotocol.structure.key.struct.ChangeFlag;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
@@ -15,20 +13,17 @@ import java.util.ArrayList;
 import javax.vecmath.Point2d;
 
 /**
- * Random static points.
+ * random dynamic points
  * 
  * @author Ondrej Milenovsky
  * */
-public class BrainzProxyLayer extends TypedLayer {
+public class LightsProxyLayer extends TypedLayer {
 
     private final ArrayList<Point2d> points;
+    private double prGenerate = 0.999;
 
-    private boolean generated = false;
-    private final boolean generateOnce;
-
-    public BrainzProxyLayer(int n, int size, FilterStorage filter, boolean generateOnce) {
+    public LightsProxyLayer(int n, int size, FilterStorage filter) {
         super(filter);
-        this.generateOnce = generateOnce;
         points = new ArrayList<Point2d>(n);
         for (int i = 0; i < n; i++) {
             points.add(new Point2d(Math.random() * size, Math.random() * size));
@@ -38,19 +33,22 @@ public class BrainzProxyLayer extends TypedLayer {
     @Override
     public Structure pull() {
         Structure struct = new Structure();
-        if ((!generated || !generateOnce) && hasType(PointKeys.TYPE)) {
-            Folder f = struct.getRoot("Undead land").getFolder("Brainz");
-            setParameter(f, CommonKeys.CHANGE, ChangeFlag.NOT_CHANGE);
+        if (hasType(PointKeys.TYPE)) {
+            Folder f = struct.getRoot("Undead land").getFolder("Lights");
+            boolean first = true;
             for (int i = 0; i < points.size(); i++) {
-                Element e = f.getElement("p" + i, PointKeys.TYPE);
+                if (Math.random() > prGenerate) {
+                    continue;
+                }
+                Element e = f.getElement("l" + i, PointKeys.TYPE);
                 setParameter(e, PointKeys.CENTER, points.get(i));
-                if (i == 0) {
-                    setParameter(e, PointKeys.COLOR, new Color(255, 160, 160, 30));
-                    setParameter(e, PointKeys.SIZE, 4.0);
-                    setParameter(e, PointKeys.CONSTANT_SIZE, true);
+                setParameter(e, PointKeys.COLOR, new Color(0, 0, (int) (Math.random() * 256)));
+                if (first) {
+                    setParameter(e, PointKeys.SIZE, 30.0);
+                    setParameter(e, PointKeys.CONSTANT_SIZE, false);
+                    first = false;
                 }
             }
-            generated = true;
         }
         return struct;
     }

@@ -75,6 +75,9 @@ public class StructureTest {
         s2.clear();
         assertTrue(s2.isEmpty());
 
+        s1 = new Structure();
+        s1.getRoot("root");
+        s1.deepCopy();
     }
 
     @Test

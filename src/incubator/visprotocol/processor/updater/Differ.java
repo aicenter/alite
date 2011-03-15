@@ -60,6 +60,9 @@ public class Differ implements StructProcessor {
             throw new RuntimeException("New folder/element " + newE.getId()
                     + " is not same id as folder/element " + currE.getId());
         }
+        if((currE != null) && (!changableElement(newE))) {
+            return;
+        }
         if (currE == null) {
             setCreate(updateE);
         } else {

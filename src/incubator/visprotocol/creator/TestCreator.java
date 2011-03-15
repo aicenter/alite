@@ -12,6 +12,7 @@ import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
 import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
+import incubator.visprotocol.vis.layer.example.LightsProxyLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
 import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
@@ -58,10 +59,14 @@ public class TestCreator implements Creator {
         vis2d.addTransformators(Vis2DBasicTransformators.createBasicTransformators());
 
         // V realtime modu je to tak 3x rychlejsi nez protocol. Direct este rychlejsi, ale nema
-        // ulozenej aktualni stav, hodne trhane dokaze i 1M bodu.
-        Mode mode = Mode.PROTOCOL;
+        // ulozenej aktualni stav, hodne trhane dokaze i 1M bodu. Kdyz je direct, tak se z proxy
+        // musi generovat body pokazdy, u ostatnich staci jednou na zacatku (posledni parametr u
+        // BrainzLayer).
+        final Mode mode = Mode.PROTOCOL;
         // 10k bodu este v pohode, 100k se trochu trha, 200k se dost trha, 1M jsem se nedockal
-        int nPoints = 1000;
+        int nDynamicPoints = 1000;
+        // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
+        int nStaticPoints = 1000;
 
         // layers mux
         LightPullMux collector = new LightPullMux();
@@ -72,7 +77,9 @@ public class TestCreator implements Creator {
         collector.addProcessor(new SimInfoProxyLayer(exampleEnvironment, filter));
         collector.addProcessor(new FillColorProxyLayer(Color.BLACK, ".Undead land.Other", filter));
         collector.addProcessor(new PentagramLayer(exampleEnvironment, filter));
-        collector.addProcessor(new BrainzProxyLayer(nPoints, 10000, filter));
+        collector.addProcessor(new BrainzProxyLayer(nStaticPoints, 10000, filter,
+                mode != Mode.DIRECT));
+        collector.addProcessor(new LightsProxyLayer(nDynamicPoints, 10000, filter));
         collector.addProcessor(new ZombieProxyLayer(exampleEnvironment, filter));
         collector.addProcessor(new ScreenTextLayer(exampleEnvironment, filter));
 
@@ -82,11 +89,15 @@ public class TestCreator implements Creator {
 
         // the chain of components
         final Forwarder chain;
+        // used only if realtime
+        final MergeUpdater mergeUpdater = new MergeUpdater();
+        // fill the chain
         if (mode == Mode.DIRECT) {
             collector.setOutput(painter);
             chain = collector;
         } else if (mode == Mode.REALTIME) {
-            collector.setOutput(new MergeUpdater());
+            mergeUpdater.setDeepCopyClearing(false);
+            collector.setOutput(mergeUpdater);
             chain = new PullForwarder(collector, painter);
         } else if (mode == Mode.PROTOCOL) {
             collector.setOutput(new Differ());
@@ -103,6 +114,9 @@ public class TestCreator implements Creator {
 
                 // TODO: should be done probably by painter
                 vis2d.flip();
+                if (mode == Mode.REALTIME) {
+                    mergeUpdater.clearState();
+                }
             }
         };
         sampler.start();
