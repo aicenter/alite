@@ -10,7 +10,7 @@ import java.util.List;
  * 
  * @author Ondrej Milenovsky
  * */
-public class MultiForwarder implements Forwarder {
+public class MultiForwarder implements ForwarderHolder {
 
     private final List<Forwarder> forwarders;
 
@@ -26,10 +26,12 @@ public class MultiForwarder implements Forwarder {
         this.forwarders = forwarders;
     }
 
+    @Override
     public void addForwarder(Forwarder fw) {
         forwarders.add(fw);
     }
 
+    @Override
     public void removeForwarder(Forwarder fw) {
         int i = forwarders.indexOf(fw);
         if (i >= 0) {
