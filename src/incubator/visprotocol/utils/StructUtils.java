@@ -184,12 +184,7 @@ public class StructUtils {
 
     /** if element is not deletable or not changable */
     public static boolean notClearable(Element e) {
-        if (e.containsParameter(CommonKeys.CHANGE)) {
-            ChangeFlag change = e.getParameter(CommonKeys.CHANGE);
-            return (change == ChangeFlag.NOT_CHANGE) || (change == ChangeFlag.NOT_DELETE);
-        } else {
-            return false;
-        }
+        return e.parameterEqual(CommonKeys.NOT_CHANGE, true)
+                || (e.parameterEqual(CommonKeys.CHANGE, ChangeFlag.NOT_DELETE));
     }
-
 }

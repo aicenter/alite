@@ -17,18 +17,22 @@ import incubator.visprotocol.structure.key.struct.ChangeFlag;
  * 
  * @author Ondrej Milenovsky
  * */
+// TODO bug: first comes empty struct, then .folder.folder which is not_change, will be ignored
 public class DiffUpdater implements StructProcessor {
 
-    private Structure state;
-    private boolean deleteFolders;
+    // properties
+    private boolean deleteFolders = false;
     private boolean acceptPast = false;
+
+    // state
+    private Structure state;
+    private boolean firstRun = true;
 
     public DiffUpdater() {
         this(new Structure());
     }
 
     public DiffUpdater(Structure struct) {
-        deleteFolders = false;
         state = struct;
     }
 
@@ -51,6 +55,7 @@ public class DiffUpdater implements StructProcessor {
     /** just returns current state, does not change it */
     @Override
     public Structure pull() {
+        firstRun = false;
         return state;
     }
 
@@ -64,7 +69,9 @@ public class DiffUpdater implements StructProcessor {
                 return;
             }
         }
-        state.setTimeStamp(newPart.getTimeStamp());
+        if (newPart.getTimeStamp() != null) {
+            state.setTimeStamp(newPart);
+        }
         if (newPart.isEmpty()) {
             return;
         }
@@ -81,7 +88,7 @@ public class DiffUpdater implements StructProcessor {
 
     /** recursive updating */
     private void update(Folder newF, Folder currF) {
-        if (!Differ.changableElement(currF)) {
+        if (!Differ.changableElement(currF) && !firstRun) {
             return;
         }
         currF.updateParams(newF);
@@ -95,9 +102,11 @@ public class DiffUpdater implements StructProcessor {
                 update(f, currF.getFolder(f));
             }
             for (Element e : newF.getElements()) {
-                if (deleteElement(e)) {
+                if (deleteElement(e)
+                        && (!currF.containsElement(e) || currF.getElement(e).parameterEqual(
+                                CommonKeys.NOT_CHANGE, true))) {
                     currF.removeElement(e);
-                } else if (Differ.changableElement(currF.getElement(e))) {
+                } else if (Differ.changableElement(currF.getElement(e)) || firstRun) {
                     currF.getElement(e).updateParams(e);
                 }
             }

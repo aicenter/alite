@@ -18,8 +18,8 @@ public class SimInfoProxyLayer extends TypedLayer {
     @Override
     public Structure pull() {
         Structure struct = new Structure(env.getTime());
-        if (hasType("Text")) {
-            Element e = struct.getRoot("Undead land").getFolder("Other").getElement("Info", "Text");
+        if (hasType("Name")) {
+            Element e = struct.getRoot("Undead land").getFolder("Other").getElement("Info", "Name");
             setParameter(e, "Name", "Undead land");
         }
         return struct;
