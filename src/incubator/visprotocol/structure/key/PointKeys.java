@@ -5,6 +5,8 @@ import java.awt.Color;
 import javax.vecmath.Point2d;
 
 /**
+ * Keys for PointPainter.
+ * 
  * @author Ondrej Milenovsky
  * */
 public abstract class PointKeys {

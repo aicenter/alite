@@ -6,7 +6,7 @@ import java.util.Queue;
 import incubator.visprotocol.structure.Structure;
 
 /**
- * just queue
+ * Implementation using queue.
  * 
  * @author Ondrej Milenovsky
  * */

@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Implementation of HubProcessor using ArrayList.
+ * Implementation of ProcessorHolder using ArrayList.
  * 
  * @author Ondrej Milenovsky
  * */

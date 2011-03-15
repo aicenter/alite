@@ -2,12 +2,15 @@ package incubator.visprotocol.structure;
 
 import java.io.Serializable;
 
+/**
+ * Entry point to whole tree. Has timestamp, used for diffs, should be simulation time in millis
+ * (offset doesn't metter). Then has pointer to root folder.
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class Structure implements Serializable {
 
     private static final long serialVersionUID = -5536165397290203610L;
-
-    /** do not modify this instance !!! */
-    public static final Structure EMPTY_INSTANCE = new Structure();
 
     /** you can modify this */
     public static Structure createEmptyInstance() {
@@ -33,7 +36,7 @@ public class Structure implements Serializable {
         this.root = folder;
     }
 
-    public Structure(Folder folder, long timeStamp) {
+    public Structure(Folder folder, Long timeStamp) {
         this.root = folder;
         this.timeStamp = timeStamp;
     }
@@ -42,7 +45,7 @@ public class Structure implements Serializable {
         return timeStamp;
     }
 
-    public void setTimeStamp(long timeStamp) {
+    public void setTimeStamp(Long timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -83,9 +86,6 @@ public class Structure implements Serializable {
     public Structure deepCopy() {
         if (root == null) {
             return new Structure(timeStamp);
-        }
-        if(timeStamp == null) {
-            return new Structure(root.deepCopy());
         }
         return new Structure(root.deepCopy(), timeStamp);
     }

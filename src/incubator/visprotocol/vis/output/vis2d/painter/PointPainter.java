@@ -15,7 +15,7 @@ import java.util.Set;
 import javax.vecmath.Point2d;
 
 /**
- * Painter to paint single point from element
+ * Painter to paint single point from element.
  * 
  * @author Ondrej Milenovsky
  * */

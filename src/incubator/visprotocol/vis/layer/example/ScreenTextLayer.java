@@ -14,6 +14,11 @@ import java.awt.Font;
 
 import javax.vecmath.Point2d;
 
+/**
+ * Some text on screen including simulation time
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class ScreenTextLayer extends TypedLayer {
 
     private final ExampleEnvironment env;

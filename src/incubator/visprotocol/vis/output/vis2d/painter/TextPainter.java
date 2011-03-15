@@ -19,7 +19,7 @@ import java.util.Set;
 import javax.vecmath.Point2d;
 
 /**
- * Painter to paint single text from element
+ * Painter to paint single text from element. Used to paint text on screen or text in environment.
  * 
  * @author Ondrej Milenovsky
  * */

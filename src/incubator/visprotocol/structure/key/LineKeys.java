@@ -6,6 +6,8 @@ import java.util.Collection;
 import javax.vecmath.Point2d;
 
 /**
+ * Keys for LinePainter.
+ * 
  * @author Ondrej Milenovsky
  */
 public abstract class LineKeys {

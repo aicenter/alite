@@ -1,5 +1,8 @@
 package incubator.visprotocol.structure.key.struct;
 
+/**
+ * @author Ondrej Milenovsky
+ * */
 public enum Align {
     /***/
     NONE,
@@ -21,6 +24,6 @@ public enum Align {
     LOWER_CENTER,
     /***/
     LOWER_RIGHT,
-    /**use align_ratio*/
+    /** use align_ratio */
     RATIO,
 }

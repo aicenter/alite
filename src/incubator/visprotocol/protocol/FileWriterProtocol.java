@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 /**
- * Just extended StreamProtocol with constructor with file.
+ * Just extended StreamProtocol with constructor with file. No pull.
  * 
  * @author Ondrej Milenovsky
  * */

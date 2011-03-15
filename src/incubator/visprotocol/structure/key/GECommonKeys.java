@@ -1,6 +1,8 @@
 package incubator.visprotocol.structure.key;
 
 /**
+ * Common keys used by GE.
+ * 
  * @author Ondrej Milenovsky
  * */
 public abstract class GECommonKeys {

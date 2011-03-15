@@ -8,6 +8,11 @@ import java.io.OutputStream;
 
 import incubator.visprotocol.structure.Structure;
 
+/**
+ * One stream for input, one for output.
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class StreamProtocol implements Protocol {
 
     private ObjectInputStream input;
