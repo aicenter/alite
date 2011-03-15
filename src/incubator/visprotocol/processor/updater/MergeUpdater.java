@@ -86,6 +86,9 @@ public class MergeUpdater implements StructProcessor {
 
     /** recursive updating */
     private void update(Folder newF, Folder currF) {
+        if (!Differ.changableElement(currF)) {
+            return;
+        }
         currF.updateParams(newF);
         for (Folder f : newF.getFolders()) {
             if (deepCopy || (currF.containsElement(f) && !currF.isEmpty())) {
@@ -95,6 +98,9 @@ public class MergeUpdater implements StructProcessor {
             }
         }
         for (Element e : newF.getElements()) {
+            if (currF.containsElement(e) && !Differ.changableElement(currF.getElement(e))) {
+                continue;
+            }
             if (deepCopy || (currF.containsElement(e) && !currF.isEmpty())) {
                 currF.getElement(e).updateParams(e);
             } else {

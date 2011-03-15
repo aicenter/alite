@@ -62,13 +62,18 @@ public class ScreenTextLayer extends TypedLayer {
             setParameter(e, TextKeys.TEXT, ">:-)");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.CENTER);
             //
-            e = f.getElement("right_center", TextKeys.TYPE);
+            e = f.getElement("right_center1", TextKeys.TYPE);
             setParameter(e, TextKeys.COLOR, Color.CYAN);
             setParameter(e, TextKeys.FONT, new Font("arial", Font.PLAIN, 10));
             setParameter(e, TextKeys.CONSTANT_SIZE, false);
             setParameter(e, TextKeys.TEXT,
                     "I am the death unlimited and death is all I have to give");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.CENTER_RIGHT);
+
+            e = f.getElement("right_center2", TextKeys.TYPE);
+            setParameter(e, TextKeys.TEXT,
+                    "I'll tell you the meaning of life, it's not to live but to die!");
+            setParameter(e, TextKeys.POS, new Point2d(0, 11));
             //
             e = f.getElement("lower_left", TextKeys.TYPE);
             setParameter(e, TextKeys.FONT_STYLE, Font.ITALIC);
