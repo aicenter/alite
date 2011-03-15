@@ -65,8 +65,8 @@ public class TestCreator implements Creator {
         final Mode mode = Mode.PROTOCOL;
         // 10k bodu este v pohode, 100k se trochu trha, 200k se dost trha, 1M jsem se nedockal
         int nDynamicPoints = 1000;
-        // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
-        int nStaticPoints = 1000;
+        // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi (nevim proc)
+        int nStaticPoints = 10000;
 
         // layers mux
         LightPullMux collector = new LightPullMux();
@@ -89,15 +89,12 @@ public class TestCreator implements Creator {
 
         // the chain of components
         final Forwarder chain;
-        // used only if realtime
-        final MergeUpdater mergeUpdater = new MergeUpdater();
         // fill the chain
         if (mode == Mode.DIRECT) {
             collector.setOutput(painter);
             chain = collector;
         } else if (mode == Mode.REALTIME) {
-            mergeUpdater.setDeepCopyClearing(false);
-            collector.setOutput(mergeUpdater);
+            collector.setOutput(new MergeUpdater());
             chain = new PullForwarder(collector, painter);
         } else if (mode == Mode.PROTOCOL) {
             collector.setOutput(new Differ());
@@ -114,9 +111,6 @@ public class TestCreator implements Creator {
 
                 // TODO: should be done probably by painter
                 vis2d.flip();
-                if (mode == Mode.REALTIME) {
-                    mergeUpdater.clearState();
-                }
             }
         };
         sampler.start();
