@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Painter to fill the canvas with color from the elemetn
+ * Painter to fill the canvas with color from the element. Also sets bg color to vis2d.
  * 
  * @author Ondrej Milenovsky
  * */
@@ -29,14 +29,18 @@ public class FillColorPainter implements Painter {
 
     public FillColorPainter(Vis2DOutput vis2dOutput) {
         this.vis2dOutput = vis2dOutput;
+        vis2dOutput.setBackground(color);
     }
 
     @Override
     public void paint(Element e) {
         color = StructUtils.updateValue(e, FillColorKeys.COLOR, color);
+        if (!vis2dOutput.getBackground().equals(color)) {
+            vis2dOutput.setBackground(color);
+        }
         Graphics2D graphics2d = vis2dOutput.getGraphics2D();
         graphics2d.setColor(color);
-        graphics2d.fillRect(0, 0, vis2dOutput.getPaintWidth(), vis2dOutput.getPaintHeight());
+        graphics2d.fillRect(0, 0, vis2dOutput.getWidth(), vis2dOutput.getHeight());
     }
 
 }

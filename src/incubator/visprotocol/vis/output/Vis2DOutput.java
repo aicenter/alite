@@ -183,6 +183,10 @@ public class Vis2DOutput extends Canvas {
     public void flip() {
         strategy.show();
 
+        if ((getWidth() != widthBack) || (getHeight() != heightBack)) {
+            reinitializeBuffers = true;
+        }
+
         if (reinitializeBuffers()) {
             limitTransformation();
         }
@@ -193,25 +197,11 @@ public class Vis2DOutput extends Canvas {
         heightBack = super.getHeight();
     }
 
-    /** use getPaintWidth() */
-    @Override
-    @Deprecated
-    public int getWidth() {
-        return super.getWidth();
-    }
-
-    /** use getPaintHeight() */
-    @Override
-    @Deprecated
-    public int getHeight() {
-        return super.getHeight();
-    }
-
-    public int getPaintWidth() {
+    public int getBackWidth() {
         return widthBack;
     }
 
-    public int getPaintHeight() {
+    public int getBackHeight() {
         return heightBack;
     }
 

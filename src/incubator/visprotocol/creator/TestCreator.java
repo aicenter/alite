@@ -58,6 +58,8 @@ public class TestCreator implements Creator {
         vis2d = new Vis2DOutput(params);
         vis2d.addTransformators(Vis2DBasicTransformators.createBasicTransformators());
 
+        // TODO bug kdyz je protocol, u dynamickych bodu se obcas neprepisou parametry
+
         // V realtime modu je to tak 3x rychlejsi nez protocol. Direct este rychlejsi, ale nema
         // ulozenej aktualni stav, hodne trhane dokaze i 1M bodu. Kdyz je direct, tak se z proxy
         // musi generovat body pokazdy, u ostatnich staci jednou na zacatku (posledni parametr u
