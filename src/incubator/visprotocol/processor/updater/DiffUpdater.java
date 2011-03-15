@@ -81,6 +81,9 @@ public class DiffUpdater implements StructProcessor {
 
     /** recursive updating */
     private void update(Folder newF, Folder currF) {
+        if (!Differ.changableElement(currF)) {
+            return;
+        }
         currF.updateParams(newF);
         if (deleteElement(newF)) {
             currF.clearElements();
@@ -94,7 +97,7 @@ public class DiffUpdater implements StructProcessor {
             for (Element e : newF.getElements()) {
                 if (deleteElement(e)) {
                     currF.removeElement(e);
-                } else {
+                } else if (Differ.changableElement(currF.getElement(e))) {
                     currF.getElement(e).updateParams(e);
                 }
             }

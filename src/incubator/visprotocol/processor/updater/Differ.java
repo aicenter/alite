@@ -121,7 +121,8 @@ public class Differ implements StructProcessor {
      */
     private void clearUpdate() {
         updatePart = new Structure();
-        if (!state.isEmpty() && deletableFolder(state.getRoot())) {
+        if (!state.isEmpty() && deletableElement(state.getRoot())
+                && changableElement(state.getRoot())) {
             clearUpdate(updatePart.getRoot(state.getRoot()), state.getRoot());
         }
     }
@@ -130,12 +131,14 @@ public class Differ implements StructProcessor {
     private void clearUpdate(Folder updF, Folder currF) {
         setDelete(updF);
         for (Folder f : currF.getFolders()) {
-            if (deletableFolder(f)) {
+            if (deletableElement(f) && changableElement(f)) {
                 clearUpdate(updF.getFolder(f), f);
             }
         }
         for (Element e : currF.getElements()) {
-            setDelete(updF.getElement(e));
+            if (deletableElement(e) && changableElement(e)) {
+                setDelete(updF.getElement(e));
+            }
         }
     }
 
@@ -152,8 +155,13 @@ public class Differ implements StructProcessor {
     }
 
     /** returns false only if folder.change == not_delete */
-    public static boolean deletableFolder(Folder f) {
-        return !f.parameterEqual(CommonKeys.CHANGE, ChangeFlag.NOT_DELETE);
+    public static boolean deletableElement(Element e) {
+        return !e.parameterEqual(CommonKeys.CHANGE, ChangeFlag.NOT_DELETE);
+    }
+
+    /** returns false only if folder.change == not_change */
+    public static boolean changableElement(Element e) {
+        return !e.parameterEqual(CommonKeys.CHANGE, ChangeFlag.NOT_CHANGE);
     }
 
 }

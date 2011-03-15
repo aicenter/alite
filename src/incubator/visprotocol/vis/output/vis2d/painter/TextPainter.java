@@ -50,7 +50,7 @@ public class TextPainter implements Painter {
     private Color color = Color.BLACK;
     private Point2d pos = new Point2d();
     private boolean constantSize = false;
-    private Font font = new Font("arial", Font.PLAIN, 10);
+    private Font font = new Font("Arial", Font.PLAIN, 10);
     private Align align = Align.NONE;
     private String text = "Welcome to hell!";
     private double fontSize = 10;
