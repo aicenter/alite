@@ -5,7 +5,6 @@ import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.PointKeys;
-import incubator.visprotocol.structure.key.struct.ChangeFlag;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.TypedLayer;
 
@@ -36,7 +35,7 @@ public class BrainzProxyLayer extends TypedLayer {
         Structure struct = new Structure();
         if (hasType(PointKeys.TYPE)) {
             Folder f = struct.getRoot("Undead land").getFolder("Brainz");
-            setParameter(f, CommonKeys.CHANGE, ChangeFlag.NOT_CHANGE);
+            setParameter(f, CommonKeys.NOT_CHANGE, true);
             for (int i = 0; i < points.size(); i++) {
                 Element e = f.getElement("p" + i, PointKeys.TYPE);
                 setParameter(e, PointKeys.CENTER, points.get(i));

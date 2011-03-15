@@ -79,11 +79,11 @@ public class TestCreator implements Creator {
         // layers
         collector.addProcessor(new SimInfoProxyLayer(exampleEnvironment, filter));
         if (mode == Mode.DIRECT) {
-            collector.addProcessor(new FillColorProxyLayer(Color.BLACK, ".Undead land.Other",
+            collector.addProcessor(new FillColorProxyLayer(Color.BLACK, ".Undead land.Background",
                     filter));
         } else {
             collector.addProcessor(new Once(new FillColorProxyLayer(Color.BLACK,
-                    ".Undead land.Other", filter)));
+                    ".Undead land.Background", filter)));
         }
         collector.addProcessor(new PentagramLayer(exampleEnvironment, filter));
         if (mode == Mode.DIRECT) {

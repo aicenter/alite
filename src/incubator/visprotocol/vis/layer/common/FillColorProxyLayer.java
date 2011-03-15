@@ -1,10 +1,10 @@
 package incubator.visprotocol.vis.layer.common;
 
 import incubator.visprotocol.structure.Element;
+import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.FillColorKeys;
-import incubator.visprotocol.structure.key.struct.ChangeFlag;
 import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.TypedLayer;
@@ -40,9 +40,11 @@ public class FillColorProxyLayer extends TypedLayer {
     }
 
     private Structure generateStruct(Color color, Structure struct, String id) {
-        Element e = StructUtils.getLeafFolder(struct).getElement(id, FillColorKeys.TYPE);
+        Folder f = StructUtils.getLeafFolder(struct);
+        setParameter(f, CommonKeys.NOT_CHANGE, true);
+        Element e = f.getElement(id, FillColorKeys.TYPE);
         setParameter(e, FillColorKeys.COLOR, color);
-        setParameter(e, CommonKeys.CHANGE, ChangeFlag.NOT_CHANGE);
+        setParameter(e, CommonKeys.NOT_CHANGE, true);
         return struct;
     }
 

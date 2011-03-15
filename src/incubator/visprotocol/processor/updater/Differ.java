@@ -22,7 +22,8 @@ public class Differ implements StructProcessor {
 
     private Structure state;
     private Structure updatePart;
-
+    private boolean firstRun = true;
+    
     public Differ() {
         state = new Structure();
         updatePart = new Structure();
@@ -60,7 +61,7 @@ public class Differ implements StructProcessor {
             throw new RuntimeException("New folder/element " + newE.getId()
                     + " is not same id as folder/element " + currE.getId());
         }
-        if((currE != null) && (!changableElement(newE))) {
+        if((currE != null) && !changableElement(newE) && !firstRun) {
             return;
         }
         if (currE == null) {
@@ -107,6 +108,7 @@ public class Differ implements StructProcessor {
     /** returns differences between two states, clears current state */
     @Override
     public Structure pull() {
+        firstRun = false;
         Structure ret = updatePart;
 
         DiffUpdater updater = new DiffUpdater(state);
@@ -164,7 +166,7 @@ public class Differ implements StructProcessor {
 
     /** returns false only if folder.change == not_change */
     public static boolean changableElement(Element e) {
-        return !e.parameterEqual(CommonKeys.CHANGE, ChangeFlag.NOT_CHANGE);
+        return !e.parameterEqual(CommonKeys.NOT_CHANGE, true);
     }
 
 }

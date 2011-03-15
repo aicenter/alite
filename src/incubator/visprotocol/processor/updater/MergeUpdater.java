@@ -15,6 +15,7 @@ import incubator.visprotocol.utils.StructUtils;
  * 
  * @author Ondrej Milenovsky
  * */
+// TODO bug: not working not_change on elements
 public class MergeUpdater implements StructProcessor {
 
     // properties
@@ -24,15 +25,14 @@ public class MergeUpdater implements StructProcessor {
     private boolean acceptPast = true;
     private boolean containsNotDelete = false;
     private boolean clearOnFirstPush = true;
-    
+
     // state
     private Structure state;
     private boolean pulled = false;
-
+    private boolean firstRun = true;
 
     public MergeUpdater() {
         this(new Structure(0L));
-        clearState();
     }
 
     public MergeUpdater(Structure struct) {
@@ -102,13 +102,14 @@ public class MergeUpdater implements StructProcessor {
             clearState();
         }
         pulled = true;
+        firstRun = false;
         return ret;
     }
 
     /** merge current state with new part */
     @Override
     public void push(Structure newPart) {
-        if(pulled && clearOnFirstPush) {
+        if (pulled && clearOnFirstPush) {
             clearState();
             pulled = false;
         }
@@ -120,7 +121,9 @@ public class MergeUpdater implements StructProcessor {
                 return;
             }
         }
-        state.setTimeStamp(newPart);
+        if (newPart.getTimeStamp() != null) {
+            state.setTimeStamp(newPart);
+        }
         if (newPart.isEmpty()) {
             return;
         }
@@ -141,14 +144,14 @@ public class MergeUpdater implements StructProcessor {
 
     /** recursive updating */
     private void update(Folder newF, Folder currF) {
-        if (!Differ.changableElement(currF)) {
+        if (!Differ.changableElement(currF) && !firstRun) {
             return;
         }
         currF.updateParams(newF);
         for (Folder f : newF.getFolders()) {
-            if (needChange(currF, f)) {
+            if (needChange(currF, f) || firstRun) {
                 updateDeletableFlag(f);
-                if (deepCopyUpdating || (currF.containsElement(f) && !currF.isEmpty())) {
+                if (deepCopyUpdating || currF.containsElement(f)) {
                     update(f, currF.getFolder(f));
                 } else {
                     currF.addFolder(f);
@@ -156,9 +159,9 @@ public class MergeUpdater implements StructProcessor {
             }
         }
         for (Element e : newF.getElements()) {
-            if (needChange(currF, e)) {
+            if (needChange(currF, e) || firstRun) {
                 updateDeletableFlag(e);
-                if (deepCopyUpdating || (currF.containsElement(e) && !currF.isEmpty())) {
+                if (deepCopyUpdating || currF.containsElement(e)) {
                     currF.getElement(e).updateParams(e);
                 } else {
                     currF.addElement(e);

@@ -1,5 +1,7 @@
 package incubator.visprotocol.vis.output;
 
+import incubator.visprotocol.processor.StructProcessor;
+import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.vis.output.vis2d.Transformator;
 
 import java.awt.Canvas;
@@ -30,7 +32,7 @@ import javax.vecmath.Point2d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class Vis2DOutput extends Canvas {
+public class Vis2DOutput extends Canvas implements StructProcessor {
 
     private static final long serialVersionUID = -4597445627896905949L;
 
@@ -340,6 +342,17 @@ public class Vis2DOutput extends Canvas {
         if (bH < getHeight()) {
             offset.y += -bH + getHeight();
         }
+    }
+
+    @Override
+    public Structure pull() {
+        throw new RuntimeException("No pull");
+    }
+
+    /** same as flip() */
+    @Override
+    public void push(Structure newPart) {
+        flip();
     }
 
 }
