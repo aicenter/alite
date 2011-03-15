@@ -15,6 +15,9 @@ public abstract class Vis2DCommonKeys {
     /** Elements/folders won't be shown if vis.zoom < min */
     public static final Typer<Double> LOD_MIN = new Typer<Double>("vis2d_lod_min");
 
+    /** Precision when printing double */
+    public static final Typer<Integer> PRECISION = new Typer<Integer>("vis2d_prec");
+    
     static {
         COMMON_PARAMS.add(LOD_MAX.id);
         COMMON_PARAMS.add(LOD_MIN.id);

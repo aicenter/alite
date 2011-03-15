@@ -36,6 +36,7 @@ public class ScreenTextLayer extends TypedLayer {
             setParameter(e, TextKeys.CONSTANT_SIZE, true);
             setParameter(e, TextKeys.TEXT, "Time: " + env.getTime());
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.UPPER_LEFT);
+            setParameter(e, TextKeys.POS, new Point2d(0, 50));
             // title
             e = f.getElement("upper_center", TextKeys.TYPE);
             setParameter(e, TextKeys.COLOR, new Color(255, 100, 0));
