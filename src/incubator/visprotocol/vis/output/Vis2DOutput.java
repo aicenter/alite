@@ -24,6 +24,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
 
+/**
+ * Canvas with window to draw 2D elements. Should be created with modified Vis2DParams.
+ * 
+ * @author Ondrej Milenovsky
+ * */
 public class Vis2DOutput extends Canvas {
 
     private static final long serialVersionUID = -4597445627896905949L;
@@ -184,8 +189,8 @@ public class Vis2DOutput extends Canvas {
 
         zoomFactorBack = zoomFactor;
         offsetBack.set(offset);
-        widthBack = getWidth();
-        heightBack = getHeight();
+        widthBack = super.getWidth();
+        heightBack = super.getHeight();
     }
 
     /** use getPaintWidth() */
