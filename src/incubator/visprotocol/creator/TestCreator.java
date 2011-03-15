@@ -2,6 +2,8 @@ package incubator.visprotocol.creator;
 
 import incubator.visprotocol.processor.Forwarder;
 import incubator.visprotocol.processor.LightPullMux;
+import incubator.visprotocol.processor.LightStorage;
+import incubator.visprotocol.processor.MultiForwarder;
 import incubator.visprotocol.processor.Once;
 import incubator.visprotocol.processor.PullForwarder;
 import incubator.visprotocol.processor.updater.DiffUpdater;
@@ -99,39 +101,42 @@ public class TestCreator implements Creator {
         RootPainter painter = new RootPainter();
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
 
-        Forwarder finalMux = new LightPullMux(painter);
+        LightPullMux finalMux = new LightPullMux(painter);
 
-        final Forwarder root;
+        Forwarder first;
 
         // create the structure of processors
         if (mode == Mode.DIRECT) {
             collector.setOutput(finalMux);
-            root = collector;
+            first = collector;
             finalMux = collector;
         } else if (mode == Mode.REALTIME) {
             collector.setOutput(new MergeUpdater());
             finalMux.addProcessor(collector);
-            root = finalMux;
+            first = finalMux;
         } else if (mode == Mode.PROTOCOL) {
             collector.setOutput(new Differ());
-            Forwarder chain = new PullForwarder(collector, new MemoryProtocol(), new DiffUpdater());
+            PullForwarder chain = new PullForwarder(collector, new MemoryProtocol(),
+                    new DiffUpdater());
             finalMux.addProcessor(chain);
-            root = finalMux;
+            first = finalMux;
         } else {
-            root = null;
+            first = null;
         }
 
         // add vis info layer
         finalMux.addProcessor(new Vis2DInfoLayer(vis2d, filter));
+
+        // vis2d.flip() forwarder
+        Forwarder second = new PullForwarder(new LightStorage(), vis2d);
+
+        final Forwarder root = new MultiForwarder(first, second);
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
             @Override
             protected void sample() {
                 root.forward();
-
-                // TODO: should be done probably by painter
-                vis2d.flip();
             }
         };
         sampler.start();
