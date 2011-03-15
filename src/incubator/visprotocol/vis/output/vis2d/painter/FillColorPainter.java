@@ -36,7 +36,7 @@ public class FillColorPainter implements Painter {
         color = StructUtils.updateValue(e, FillColorKeys.COLOR, color);
         Graphics2D graphics2d = vis2dOutput.getGraphics2D();
         graphics2d.setColor(color);
-        graphics2d.fillRect(0, 0, vis2dOutput.getWidth(), vis2dOutput.getHeight());
+        graphics2d.fillRect(0, 0, vis2dOutput.getPaintWidth(), vis2dOutput.getPaintHeight());
     }
 
 }

@@ -33,6 +33,9 @@ public class Vis2DOutput extends Canvas {
     private double zoomFactorBack;
     private final Point2d offsetBack;
 
+    private int widthBack;
+    private int heightBack;
+
     private final Point2d cursorPosition = new Point2d();
 
     private final Rectangle2D bounds;
@@ -53,6 +56,9 @@ public class Vis2DOutput extends Canvas {
 
         // canvas
         setBounds(0, 0, params.windowSize.width, params.windowSize.height);
+
+        widthBack = params.windowSize.width;
+        heightBack = params.windowSize.height;
 
         window = new JFrame(params.windowTitle);
         zoomFactor = params.viewZoom;
@@ -178,6 +184,30 @@ public class Vis2DOutput extends Canvas {
 
         zoomFactorBack = zoomFactor;
         offsetBack.set(offset);
+        widthBack = getWidth();
+        heightBack = getHeight();
+    }
+
+    /** use getPaintWidth() */
+    @Override
+    @Deprecated
+    public int getWidth() {
+        return super.getWidth();
+    }
+
+    /** use getPaintHeight() */
+    @Override
+    @Deprecated
+    public int getHeight() {
+        return super.getHeight();
+    }
+
+    public int getPaintWidth() {
+        return widthBack;
+    }
+
+    public int getPaintHeight() {
+        return heightBack;
     }
 
     public void setZoomFactor(double zoom) {
