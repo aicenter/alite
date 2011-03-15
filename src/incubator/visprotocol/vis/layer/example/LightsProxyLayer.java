@@ -20,7 +20,7 @@ import javax.vecmath.Point2d;
 public class LightsProxyLayer extends TypedLayer {
 
     private final ArrayList<Point2d> points;
-    private double prGenerate = 0.999;
+    private double prGenerate = 0.9;
 
     public LightsProxyLayer(int n, int size, FilterStorage filter) {
         super(filter);
