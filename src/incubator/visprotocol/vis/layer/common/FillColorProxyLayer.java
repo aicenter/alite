@@ -45,6 +45,7 @@ public class FillColorProxyLayer extends TypedLayer {
         Element e = f.getElement(id, FillColorKeys.TYPE);
         setParameter(e, FillColorKeys.COLOR, color);
         setParameter(e, CommonKeys.NOT_CHANGE, true);
+        struct.setType(CommonKeys.STRUCT_PART);
         return struct;
     }
 
@@ -53,6 +54,6 @@ public class FillColorProxyLayer extends TypedLayer {
         if (hasType(FillColorKeys.TYPE) && typeHasParam(FillColorKeys.TYPE, FillColorKeys.COLOR)) {
             return struct.deepCopy();
         }
-        return Structure.createEmptyInstance();
+        return new Structure(CommonKeys.STRUCT_PART);
     }
 }

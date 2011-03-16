@@ -4,6 +4,7 @@ import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.PointKeys;
 import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.structure.key.struct.Align;
@@ -31,7 +32,7 @@ public class ZombieProxyLayer extends TypedLayer {
 
     @Override
     public Structure pull() {
-        Structure struct = new Structure();
+        Structure struct = new Structure(CommonKeys.STRUCT_PART);
         Folder f = struct.getRoot("Undead land").getFolder("Zombies");
         if (hasType(PointKeys.TYPE)) {
             Element e = f.getElement(env.getPersonName(), PointKeys.TYPE);

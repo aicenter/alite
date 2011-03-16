@@ -4,6 +4,7 @@ import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.LineKeys;
 import incubator.visprotocol.structure.key.ShapeKeys;
 import incubator.visprotocol.structure.key.struct.Shape;
@@ -33,14 +34,13 @@ public class PentagramLayer extends TypedLayer {
     @Override
     public Structure pull() {
 
-        Structure struct = new Structure();
+        Structure struct = new Structure(CommonKeys.STRUCT_PART);
         Folder f = struct.getRoot("Undead land").getFolder("Pentagram");
 
         int step = (int) (env.getTime() * 1.5);
         for (int i = 0; i < 30; i++) {
             fillPentagram(f, step + i, new Color(30 + i * 6, 0, 0), i);
         }
-
         return struct;
     }
 

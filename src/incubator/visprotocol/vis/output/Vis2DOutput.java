@@ -15,8 +15,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
@@ -38,6 +36,7 @@ public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
 
     private static final long serialVersionUID = -4597445627896905949L;
 
+    // state
     private double zoomFactor;
     private final Point2d offset;
     private double zoomFactorBack;
@@ -48,12 +47,14 @@ public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
 
     private final Point cursorPosition = new Point();
 
+    private boolean reinitializeBuffers = true;
+
+    // properties
     private final Rectangle2D bounds;
     private final double maxZoom;
 
+    // components
     private JFrame window;
-
-    private boolean reinitializeBuffers = true;
     private BufferStrategy strategy;
     private Graphics2D graphics;
 
@@ -64,13 +65,9 @@ public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
     public Vis2DOutput(Vis2DParams params) {
         super();
 
-        // canvas
-        setBounds(0, 0, params.windowSize.width, params.windowSize.height);
-
         widthBack = params.windowSize.width;
         heightBack = params.windowSize.height;
 
-        window = new JFrame(params.windowTitle);
         zoomFactor = params.viewZoom;
         zoomFactorBack = zoomFactor;
         offset = new Point2d(params.viewOffset);
@@ -78,20 +75,25 @@ public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
         bounds = params.worldBounds;
         maxZoom = params.viewMaxZoom;
 
+        initComponents();
+        window.setTitle(params.windowTitle);
+    }
+
+    private void initComponents() {
+        window = new JFrame();
+        setBounds(0, 0, widthBack, heightBack);
+
         final JPanel panel = (JPanel) window.getContentPane();
-        panel.setBounds(0, 0, params.windowSize.width, params.windowSize.height);
+        panel.setBounds(0, 0, widthBack, heightBack);
         panel.setLayout(new BorderLayout());
         panel.add(this);
 
         window.addWindowListener(new WindowAdapter() {
-
             public void windowClosing(WindowEvent evt) {
                 System.exit(0);
             }
-
         });
         window.addComponentListener(new ComponentListener() {
-
             @Override
             public void componentShown(ComponentEvent e) {
             }
@@ -108,7 +110,6 @@ public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
             @Override
             public void componentHidden(ComponentEvent e) {
             }
-
         });
 
         window.pack();
@@ -125,25 +126,6 @@ public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
                 cursorPosition.setLocation(e.getLocationOnScreen());
             }
         });
-        addKeyListener(new KeyListener() {
-
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_HOME) {
-                    offset.x = 0;
-                    offset.y = 0;
-                    zoomFactor = 1;
-                }
-            }
-        });
 
         // buffers
         reinitializeBuffers();
@@ -153,9 +135,12 @@ public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
 
     public void addPanel(Component panel, String borderAlign) {
         window.getContentPane().add(panel, borderAlign);
-        // TODO repaint
+        // TODO better repaint
+        Rectangle bounds = window.getBounds();
+        window.setBounds(bounds.x, bounds.y, bounds.width + 1, bounds.height);
+        window.setBounds(bounds);
     }
-    
+
     public void addTransformator(Transformator t) {
         t.setToVis(this);
     }

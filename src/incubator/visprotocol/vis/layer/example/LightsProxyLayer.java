@@ -3,6 +3,7 @@ package incubator.visprotocol.vis.layer.example;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.PointKeys;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.TypedLayer;
@@ -32,7 +33,7 @@ public class LightsProxyLayer extends TypedLayer {
 
     @Override
     public Structure pull() {
-        Structure struct = new Structure();
+        Structure struct = new Structure(CommonKeys.STRUCT_PART);
         if (hasType(PointKeys.TYPE)) {
             Folder f = struct.getRoot("Undead land").getFolder("Lights");
             boolean first = true;

@@ -32,7 +32,7 @@ public class BrainzProxyLayer extends TypedLayer {
 
     @Override
     public Structure pull() {
-        Structure struct = new Structure();
+        Structure struct = new Structure(CommonKeys.STRUCT_PART);
         if (hasType(PointKeys.TYPE)) {
             Folder f = struct.getRoot("Undead land").getFolder("Brainz");
             setParameter(f, CommonKeys.NOT_CHANGE, true);

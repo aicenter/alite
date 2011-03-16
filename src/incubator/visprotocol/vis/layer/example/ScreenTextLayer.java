@@ -4,6 +4,7 @@ import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.structure.key.struct.Align;
 import incubator.visprotocol.vis.layer.FilterStorage;
@@ -30,7 +31,7 @@ public class ScreenTextLayer extends TypedLayer {
 
     @Override
     public Structure pull() {
-        Structure struct = new Structure();
+        Structure struct = new Structure(CommonKeys.STRUCT_PART);
         if (hasType(TextKeys.TYPE)) {
             Folder f = struct.getRoot("Undead land").getFolder("Text");
             Element e;
@@ -61,12 +62,12 @@ public class ScreenTextLayer extends TypedLayer {
             setParameter(e, TextKeys.TEXT, "Aaaaaaaa");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.CENTER_LEFT);
             //
-            e = f.getElement("center", TextKeys.TYPE);
-            setParameter(e, TextKeys.COLOR, Color.WHITE);
-            setParameter(e, TextKeys.FONT, new Font("gothicE", Font.PLAIN, 100));
-            setParameter(e, TextKeys.CONSTANT_SIZE, false);
-            setParameter(e, TextKeys.TEXT, ">:-)");
-            setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.CENTER);
+            // e = f.getElement("center", TextKeys.TYPE);
+            // setParameter(e, TextKeys.COLOR, Color.WHITE);
+            // setParameter(e, TextKeys.FONT, new Font("gothicE", Font.PLAIN, 100));
+            // setParameter(e, TextKeys.CONSTANT_SIZE, false);
+            // setParameter(e, TextKeys.TEXT, ">:-)");
+            // setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.CENTER);
             //
             e = f.getElement("right_center1", TextKeys.TYPE);
             setParameter(e, TextKeys.COLOR, Color.CYAN);

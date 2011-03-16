@@ -3,6 +3,7 @@ package incubator.visprotocol.vis.layer.common;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.structure.key.struct.Align;
@@ -62,7 +63,7 @@ public class Vis2DInfoLayer extends TypedLayer {
 
     @Override
     public Structure pull() {
-        Structure ret = new Structure();
+        Structure ret = new Structure(CommonKeys.STRUCT_PART);
         if (hasType(TextKeys.TYPE)) {
             Folder f = ret.getRoot(ROOT_ID);
             Element e;
@@ -81,6 +82,7 @@ public class Vis2DInfoLayer extends TypedLayer {
             fontSize = StructUtils.updateValue(e, TextKeys.FONT_SIZE, fontSize);
             setParameter(e, TextKeys.POS, new Point2d(0, fontSize * 2));
         }
+        ret.setType(CommonKeys.STRUCT_PART);
         return ret;
     }
 

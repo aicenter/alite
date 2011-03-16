@@ -4,6 +4,7 @@ import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.CommonKeys;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,6 +86,10 @@ public class RootPainter implements GroupPainter, StructProcessor {
 
     @Override
     public void push(Structure newPart) {
+        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_STATE)) {
+            System.err.println("RootPainter should accept whole or a part of world, not "
+                    + newPart.getType());
+        }
         paint(newPart);
     }
 

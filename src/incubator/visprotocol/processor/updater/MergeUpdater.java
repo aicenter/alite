@@ -4,6 +4,7 @@ import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.utils.StructUtils;
 
 /**
@@ -103,12 +104,17 @@ public class MergeUpdater implements StructProcessor {
         }
         pulled = true;
         firstRun = false;
+        ret.setType(CommonKeys.STRUCT_STATE);
         return ret;
     }
 
     /** merge current state with new part */
     @Override
     public void push(Structure newPart) {
+        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_STATE)) {
+            System.err.println("MergeUpdater should accept whole or a part of world, not "
+                    + newPart.getType());
+        }
         if (pulled && clearOnFirstPush) {
             clearState();
             pulled = false;
