@@ -23,7 +23,7 @@ public class Differ implements StructProcessor {
     private Structure state;
     private Structure updatePart;
     private boolean firstRun = true;
-    
+
     public Differ() {
         state = new Structure();
         updatePart = new Structure();
@@ -38,6 +38,10 @@ public class Differ implements StructProcessor {
      */
     @Override
     public void push(Structure newPart) {
+        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_STATE)) {
+            System.err.println("Differ should accept whole or a part of world, not "
+                    + newPart.getType());
+        }
         if (newPart.getTimeStamp() != null) {
             updatePart.setTimeStamp(newPart.getTimeStamp());
         }
@@ -61,7 +65,7 @@ public class Differ implements StructProcessor {
             throw new RuntimeException("New folder/element " + newE.getId()
                     + " is not same id as folder/element " + currE.getId());
         }
-        if((currE != null) && !changableElement(newE) && !firstRun) {
+        if ((currE != null) && !changableElement(newE) && !firstRun) {
             return;
         }
         if (currE == null) {
@@ -116,7 +120,7 @@ public class Differ implements StructProcessor {
         state = updater.pull();
 
         clearUpdate();
-
+        ret.setType(CommonKeys.STRUCT_DIFF);
         return ret;
     }
 

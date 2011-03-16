@@ -24,6 +24,13 @@ public abstract class CommonKeys {
     /** for static elements/folders */
     public static final Typer<Boolean> NOT_CHANGE = new Typer<Boolean>("not_change");
 
+    /** Part of whole world state */
+    public static final String STRUCT_PART = "part";
+    /** Diff from differ */
+    public static final String STRUCT_DIFF = "diff";
+    /** Whole world state */
+    public static final String STRUCT_STATE = "state";
+
     static {
         COMMON_PARAMS.add(CHANGE.id);
         COMMON_PARAMS.add(NOT_CHANGE.id);
