@@ -1,9 +1,11 @@
 package incubator.visprotocol.vis.output;
 
+import incubator.visprotocol.processor.Forwarder;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.vis.output.vis2d.Transformator;
 
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
@@ -32,7 +34,7 @@ import javax.vecmath.Point2d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class Vis2DOutput extends Canvas implements StructProcessor {
+public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
 
     private static final long serialVersionUID = -4597445627896905949L;
 
@@ -78,6 +80,7 @@ public class Vis2DOutput extends Canvas implements StructProcessor {
 
         final JPanel panel = (JPanel) window.getContentPane();
         panel.setBounds(0, 0, params.windowSize.width, params.windowSize.height);
+        panel.setLayout(new BorderLayout());
         panel.add(this);
 
         window.addWindowListener(new WindowAdapter() {
@@ -148,6 +151,11 @@ public class Vis2DOutput extends Canvas implements StructProcessor {
         window.setVisible(true);
     }
 
+    public void addPanel(Component panel, String borderAlign) {
+        window.getContentPane().add(panel, borderAlign);
+        // TODO repaint
+    }
+    
     public void addTransformator(Transformator t) {
         t.setToVis(this);
     }
@@ -352,6 +360,12 @@ public class Vis2DOutput extends Canvas implements StructProcessor {
     /** same as flip() */
     @Override
     public void push(Structure newPart) {
+        flip();
+    }
+
+    /** same as flip() */
+    @Override
+    public void forward() {
         flip();
     }
 

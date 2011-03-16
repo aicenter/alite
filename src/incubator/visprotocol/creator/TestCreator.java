@@ -2,7 +2,6 @@ package incubator.visprotocol.creator;
 
 import incubator.visprotocol.processor.Forwarder;
 import incubator.visprotocol.processor.LightPullMux;
-import incubator.visprotocol.processor.LightStorage;
 import incubator.visprotocol.processor.MultiForwarder;
 import incubator.visprotocol.processor.Once;
 import incubator.visprotocol.processor.PullForwarder;
@@ -140,11 +139,10 @@ public class TestCreator implements Creator {
         // add vis info layer
         finalMux.addProcessor(new Vis2DInfoLayer(vis2d, filter));
 
-        // vis2d.flip() forwarder
-        Forwarder second = new PullForwarder(new LightStorage(), vis2d);
+        final Forwarder root = new MultiForwarder(first, vis2d);
 
-        final Forwarder root = new MultiForwarder(first, second);
-
+        //vis2d.addTransformator(new PlayerControls());
+        
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
             @Override
