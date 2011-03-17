@@ -8,7 +8,7 @@ import java.io.Serializable;
  * 
  * @author Ondrej Milenovsky
  * */
-public class Structure implements Serializable {
+public class Structure implements Serializable, Comparable<Structure> {
 
     private static final long serialVersionUID = -5536165397290203610L;
 
@@ -180,5 +180,10 @@ public class Structure implements Serializable {
             ret += root.print();
         }
         return ret;
+    }
+
+    @Override
+    public int compareTo(Structure o) {
+        return (int) (timeStamp - o.getTimeStamp());
     }
 }
