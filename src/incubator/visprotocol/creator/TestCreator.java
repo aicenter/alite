@@ -114,12 +114,12 @@ public class TestCreator implements Creator {
             painter = new TreePainter(layers);
         } else if (mode == Mode.REALTIME) {
             MergeUpdater updater = new MergeUpdater(layers);
-            painter = new TreePainter(updater);
+            painter = new TreePainter(updater, visInfoLayer);
         } else if (mode == Mode.PROTOCOL) {
             Differ differ = new Differ(layers);
             MemoryProtocol protocol = new MemoryProtocol(differ);
             DiffUpdater updater = new DiffUpdater(protocol);
-            painter = new TreePainter(updater);
+            painter = new TreePainter(updater, visInfoLayer);
         } else {
             painter = null;
         }
