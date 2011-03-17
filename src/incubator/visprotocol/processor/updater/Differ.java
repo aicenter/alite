@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import incubator.visprotocol.processor.MultipleInputProcessor;
+import incubator.visprotocol.processor.StateHolder;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
@@ -22,11 +23,12 @@ import incubator.visprotocol.structure.key.struct.ChangeFlag;
  * 
  * @author Ondrej Milenovsky
  */
-public class Differ extends MultipleInputProcessor {
+public class Differ extends MultipleInputProcessor implements StateHolder {
 
     private Structure state = new Structure();
     private Structure updatePart = new Structure();
     private boolean firstRun = true;
+    private boolean pulled = false;
 
     public Differ(StructProcessor... inputs) {
         this(Arrays.asList(inputs));
@@ -43,6 +45,10 @@ public class Differ extends MultipleInputProcessor {
         if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_STATE)) {
             System.err.println("Differ should accept whole or a part of world, not "
                     + newPart.getType());
+        }
+        if (pulled) {
+            clearUpdate();
+            pulled = false;
         }
         if (newPart.getTimeStamp() != null) {
             updatePart.setTimeStamp(newPart.getTimeStamp());
@@ -119,13 +125,13 @@ public class Differ extends MultipleInputProcessor {
         }
 
         firstRun = false;
+        pulled = true;
         Structure ret = updatePart;
 
         DiffUpdater updater = new DiffUpdater(state);
         updater.push(updatePart);
         state = updater.pull();
 
-        clearUpdate();
         ret.setType(CommonKeys.STRUCT_DIFF);
         return ret;
     }
@@ -155,6 +161,11 @@ public class Differ extends MultipleInputProcessor {
                 setDelete(updF.getElement(e));
             }
         }
+    }
+
+    @Override
+    public Structure getState() {
+        return state;
     }
 
     public static void notDelete(Element e) {

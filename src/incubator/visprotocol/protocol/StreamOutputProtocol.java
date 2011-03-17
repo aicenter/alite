@@ -15,7 +15,7 @@ import java.util.List;
  * 
  * @author Ondrej Milenovsky
  * */
-public class StreamOutputProtocol extends MultipleInputProcessor {
+public class StreamOutputProtocol extends MultipleInputProcessor implements StreamProtocol {
 
     private ObjectOutputStream output;
 

@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Just extended StreamProtocol with constructor with file.
@@ -15,6 +17,10 @@ import java.io.OutputStream;
 public class FileWriterProtocol extends StreamOutputProtocol {
 
     public FileWriterProtocol(File file, StructProcessor... inputs) {
+        this(file, Arrays.asList(inputs));
+    }
+
+    public FileWriterProtocol(File file, List<StructProcessor> inputs) {
         super(init(file), inputs);
     }
 

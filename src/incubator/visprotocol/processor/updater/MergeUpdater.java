@@ -1,6 +1,7 @@
 package incubator.visprotocol.processor.updater;
 
 import incubator.visprotocol.processor.MultipleInputProcessor;
+import incubator.visprotocol.processor.StateHolder;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
@@ -21,7 +22,7 @@ import java.util.List;
  * @author Ondrej Milenovsky
  * */
 // TODO bug: not working not_change on elements
-public class MergeUpdater extends MultipleInputProcessor {
+public class MergeUpdater extends MultipleInputProcessor implements StateHolder {
 
     // properties
     private boolean deleteFolders = false;
@@ -196,6 +197,11 @@ public class MergeUpdater extends MultipleInputProcessor {
                 state = StructUtils.copyFolders(state);
             }
         }
+    }
+
+    @Override
+    public Structure getState() {
+        return state;
     }
 
 }

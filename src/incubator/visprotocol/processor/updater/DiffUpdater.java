@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import incubator.visprotocol.processor.MultipleInputProcessor;
+import incubator.visprotocol.processor.StateHolder;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
@@ -23,7 +24,7 @@ import incubator.visprotocol.structure.key.struct.ChangeFlag;
  * @author Ondrej Milenovsky
  * */
 // TODO bug: first comes empty struct, then .folder.folder which is not_change, will be ignored
-public class DiffUpdater extends MultipleInputProcessor {
+public class DiffUpdater extends MultipleInputProcessor implements StateHolder {
 
     // properties
     private boolean deleteFolders = false;
@@ -130,6 +131,11 @@ public class DiffUpdater extends MultipleInputProcessor {
         }
     }
 
+    @Override
+    public Structure getState() {
+        return state;
+    }
+    
     /** returns true only if folder.change == delete */
     public static boolean deleteElement(Element e) {
         return e.parameterEqual(CommonKeys.CHANGE, ChangeFlag.DELETE);

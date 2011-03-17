@@ -1,6 +1,7 @@
 package incubator.visprotocol.vis.output;
 
 import incubator.visprotocol.processor.StructProcessor;
+import incubator.visprotocol.protocol.StreamProtocolCloser;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.vis.output.vis2d.Transformator;
 
@@ -39,6 +40,7 @@ public class Vis2DOutput extends Canvas implements StructProcessor {
     private static final long serialVersionUID = -4597445627896905949L;
 
     private List<StructProcessor> inputs = new ArrayList<StructProcessor>();
+    private StreamProtocolCloser streamCloser;
 
     // state
     private double zoomFactor;
@@ -94,6 +96,9 @@ public class Vis2DOutput extends Canvas implements StructProcessor {
 
         window.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent evt) {
+                if (streamCloser != null) {
+                    streamCloser.close();
+                }
                 System.exit(0);
             }
         });
@@ -135,6 +140,11 @@ public class Vis2DOutput extends Canvas implements StructProcessor {
         reinitializeBuffers();
 
         window.setVisible(true);
+    }
+
+    // TODO find better way
+    public void setStreamCloser(StreamProtocolCloser streamCloser) {
+        this.streamCloser = streamCloser;
     }
 
     public void addInput(StructProcessor input) {
