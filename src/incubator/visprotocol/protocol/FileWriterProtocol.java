@@ -1,6 +1,6 @@
 package incubator.visprotocol.protocol;
 
-import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.processor.StructProcessor;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,18 +8,14 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 /**
- * Just extended StreamProtocol with constructor with file. No pull.
+ * Just extended StreamProtocol with constructor with file.
  * 
  * @author Ondrej Milenovsky
  * */
-public class FileWriterProtocol extends StreamProtocol {
+public class FileWriterProtocol extends StreamOutputProtocol {
 
-    public FileWriterProtocol(File file) {
-        super(null, init(file));
-    }
-
-    public FileWriterProtocol(String fileName) {
-        this(new File(fileName));
+    public FileWriterProtocol(File file, StructProcessor... inputs) {
+        super(init(file), inputs);
     }
 
     private static OutputStream init(File file) {
@@ -30,11 +26,4 @@ public class FileWriterProtocol extends StreamProtocol {
         }
         return null;
     }
-
-    @Deprecated
-    @Override
-    public Structure pull() {
-        throw new RuntimeException("This is only file writer");
-    }
-
 }

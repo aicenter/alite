@@ -1,12 +1,15 @@
 package incubator.visprotocol.vis.output.painter;
 
+import incubator.visprotocol.processor.MultipleInputProcessor;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,12 +22,17 @@ import java.util.Map;
  * 
  * @author Ondrej Milenovsky
  * */
-public class RootPainter implements GroupPainter, StructProcessor {
+public class TreePainter extends MultipleInputProcessor implements GroupPainter {
 
     private final Map<String, Painter> painters;
     private boolean firstElements;
 
-    public RootPainter() {
+    public TreePainter(StructProcessor... inputs) {
+        this(Arrays.asList(inputs));
+    }
+
+    public TreePainter(List<StructProcessor> inputs) {
+        super(inputs);
         painters = new HashMap<String, Painter>();
         firstElements = true;
     }
@@ -78,13 +86,15 @@ public class RootPainter implements GroupPainter, StructProcessor {
         }
     }
 
+    /** paints and returns null */
     @Override
-    @Deprecated
     public Structure pull() {
-        throw new RuntimeException("No pull");
+        for (StructProcessor pr : getInputs()) {
+            push(pr.pull());
+        }
+        return null;
     }
 
-    @Override
     public void push(Structure newPart) {
         if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_STATE)) {
             System.err.println("RootPainter should accept whole or a part of world, not "

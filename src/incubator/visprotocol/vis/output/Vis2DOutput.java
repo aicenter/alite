@@ -1,6 +1,5 @@
 package incubator.visprotocol.vis.output;
 
-import incubator.visprotocol.processor.Forwarder;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.vis.output.vis2d.Transformator;
@@ -21,7 +20,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -32,9 +34,11 @@ import javax.vecmath.Point2d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
+public class Vis2DOutput extends Canvas implements StructProcessor {
 
     private static final long serialVersionUID = -4597445627896905949L;
+
+    private List<StructProcessor> inputs = new ArrayList<StructProcessor>();
 
     // state
     private double zoomFactor;
@@ -131,6 +135,18 @@ public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
         reinitializeBuffers();
 
         window.setVisible(true);
+    }
+
+    public void addInput(StructProcessor input) {
+        this.inputs.add(input);
+    }
+
+    public void addInputs(Collection<StructProcessor> inputs) {
+        this.inputs.addAll(inputs);
+    }
+
+    public void addInputs(StructProcessor... inputs) {
+        this.inputs.addAll(Arrays.asList(inputs));
     }
 
     public void addPanel(Component panel, String borderAlign) {
@@ -337,21 +353,14 @@ public class Vis2DOutput extends Canvas implements StructProcessor, Forwarder {
         }
     }
 
+    /** paint and flip() */
     @Override
     public Structure pull() {
-        throw new RuntimeException("No pull");
-    }
-
-    /** same as flip() */
-    @Override
-    public void push(Structure newPart) {
+        for (StructProcessor pr : inputs) {
+            pr.pull();
+        }
         flip();
-    }
-
-    /** same as flip() */
-    @Override
-    public void forward() {
-        flip();
+        return null;
     }
 
 }

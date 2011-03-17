@@ -21,11 +21,11 @@ import javax.vecmath.Point2d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class ZombieProxyLayer extends TypedLayer {
+public class ZombieLayer extends TypedLayer {
 
     private final ExampleEnvironment env;
 
-    public ZombieProxyLayer(ExampleEnvironment env, FilterStorage filter) {
+    public ZombieLayer(ExampleEnvironment env, FilterStorage filter) {
         super(filter);
         this.env = env;
     }
