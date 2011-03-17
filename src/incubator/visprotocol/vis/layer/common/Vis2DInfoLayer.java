@@ -82,7 +82,6 @@ public class Vis2DInfoLayer extends TypedLayer {
             fontSize = StructUtils.updateValue(e, TextKeys.FONT_SIZE, fontSize);
             setParameter(e, TextKeys.POS, new Point2d(0, fontSize * 2));
         }
-        ret.setType(CommonKeys.STRUCT_PART);
         return ret;
     }
 

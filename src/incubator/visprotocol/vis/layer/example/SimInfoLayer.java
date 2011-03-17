@@ -12,11 +12,11 @@ import incubator.visprotocol.vis.layer.TypedLayer;
  * 
  * @author Ondrej Milenovsky
  * */
-public class SimInfoProxyLayer extends TypedLayer {
+public class SimInfoLayer extends TypedLayer {
 
     private final ExampleEnvironment env;
     
-    public SimInfoProxyLayer(ExampleEnvironment env, FilterStorage filter) {
+    public SimInfoLayer(ExampleEnvironment env, FilterStorage filter) {
         super(filter);
         this.env = env;
     }

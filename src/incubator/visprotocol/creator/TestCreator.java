@@ -1,10 +1,7 @@
 package incubator.visprotocol.creator;
 
-import incubator.visprotocol.processor.Forwarder;
-import incubator.visprotocol.processor.LightPullMux;
-import incubator.visprotocol.processor.MultiForwarder;
 import incubator.visprotocol.processor.Once;
-import incubator.visprotocol.processor.PullForwarder;
+import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.processor.updater.DiffUpdater;
 import incubator.visprotocol.processor.updater.Differ;
 import incubator.visprotocol.processor.updater.MergeUpdater;
@@ -12,22 +9,23 @@ import incubator.visprotocol.protocol.MemoryProtocol;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.vis.layer.FilterStorage;
-import incubator.visprotocol.vis.layer.common.FillColorProxyLayer;
+import incubator.visprotocol.vis.layer.common.FillColorLayer;
 import incubator.visprotocol.vis.layer.common.Vis2DInfoLayer;
-import incubator.visprotocol.vis.layer.example.BrainzProxyLayer;
-import incubator.visprotocol.vis.layer.example.LightsProxyLayer;
+import incubator.visprotocol.vis.layer.example.BrainzLayer;
+import incubator.visprotocol.vis.layer.example.LightsLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
 import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
-import incubator.visprotocol.vis.layer.example.SimInfoProxyLayer;
-import incubator.visprotocol.vis.layer.example.ZombieProxyLayer;
+import incubator.visprotocol.vis.layer.example.SimInfoLayer;
+import incubator.visprotocol.vis.layer.example.ZombieLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
-import incubator.visprotocol.vis.output.painter.RootPainter;
+import incubator.visprotocol.vis.output.painter.TreePainter;
 import incubator.visprotocol.vis.output.vis2d.Vis2DBasicTransformators;
 import incubator.visprotocol.vis.output.vis2d.painter.Vis2DBasicPainters;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.vecmath.Point3d;
@@ -85,69 +83,57 @@ public class TestCreator implements Creator {
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
         int nStaticPoints = 10000;
 
-        // layers mux
-        LightPullMux collector = new LightPullMux();
         // filter
         FilterStorage filter = new FilterStorage(Vis2DBasicPainters.ELEMENT_TYPES,
                 Vis2DCommonKeys.COMMON_PARAMS);
         // layers
-        collector.addProcessor(new SimInfoProxyLayer(exampleEnvironment, filter));
+        ArrayList<StructProcessor> layers = new ArrayList<StructProcessor>();
+        layers.add(new SimInfoLayer(exampleEnvironment, filter));
         if (mode == Mode.DIRECT) {
-            collector.addProcessor(new FillColorProxyLayer(Color.BLACK, ".Undead land.Background",
-                    filter));
+            layers.add(new FillColorLayer(Color.BLACK, ".Undead land.Background", filter));
         } else {
-            collector.addProcessor(new Once(new FillColorProxyLayer(Color.BLACK,
-                    ".Undead land.Background", filter)));
+            layers
+                    .add(new Once(
+                            new FillColorLayer(Color.BLACK, ".Undead land.Background", filter)));
         }
-        collector.addProcessor(new PentagramLayer(exampleEnvironment, filter));
+        layers.add(new PentagramLayer(exampleEnvironment, filter));
         if (mode == Mode.DIRECT) {
-            collector.addProcessor(new BrainzProxyLayer(nStaticPoints, 10000, filter));
+            layers.add(new BrainzLayer(nStaticPoints, 10000, filter));
         } else {
-            collector.addProcessor(new Once(new BrainzProxyLayer(nStaticPoints, 10000, filter)));
+            layers.add(new Once(new BrainzLayer(nStaticPoints, 10000, filter)));
         }
-        collector.addProcessor(new LightsProxyLayer(nDynamicPoints, 10000, filter));
-        collector.addProcessor(new ZombieProxyLayer(exampleEnvironment, filter));
-        collector.addProcessor(new ScreenTextLayer(exampleEnvironment, filter));
-
-        // outputs
-        RootPainter painter = new RootPainter();
-        painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
-
-        LightPullMux finalMux = new LightPullMux(painter);
-
-        Forwarder first;
+        layers.add(new LightsLayer(nDynamicPoints, 10000, filter));
+        layers.add(new ZombieLayer(exampleEnvironment, filter));
+        layers.add(new ScreenTextLayer(exampleEnvironment, filter));
+        StructProcessor visInfoLayer = new Vis2DInfoLayer(vis2d, filter);
 
         // create the structure of processors
+        TreePainter painter;
         if (mode == Mode.DIRECT) {
-            collector.setOutput(finalMux);
-            first = collector;
-            finalMux = collector;
+            layers.add(visInfoLayer);
+            painter = new TreePainter(layers);
         } else if (mode == Mode.REALTIME) {
-            collector.setOutput(new MergeUpdater());
-            finalMux.addProcessor(collector);
-            first = finalMux;
+            MergeUpdater updater = new MergeUpdater(layers);
+            painter = new TreePainter(updater);
         } else if (mode == Mode.PROTOCOL) {
-            collector.setOutput(new Differ());
-            PullForwarder chain = new PullForwarder(collector, new MemoryProtocol(),
-                    new DiffUpdater());
-            finalMux.addProcessor(chain);
-            first = finalMux;
+            Differ differ = new Differ(layers);
+            MemoryProtocol protocol = new MemoryProtocol(differ);
+            DiffUpdater updater = new DiffUpdater(protocol);
+            painter = new TreePainter(updater);
         } else {
-            first = null;
+            painter = null;
         }
 
-        // add vis info layer
-        finalMux.addProcessor(new Vis2DInfoLayer(vis2d, filter));
+        painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
+        vis2d.addInput(painter);
 
-        final Forwarder root = new MultiForwarder(first, vis2d);
+        // vis2d.addTransformator(new PlayerControls());
 
-        //vis2d.addTransformator(new PlayerControls());
-        
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
             @Override
             protected void sample() {
-                root.forward();
+                vis2d.pull();
             }
         };
         sampler.start();

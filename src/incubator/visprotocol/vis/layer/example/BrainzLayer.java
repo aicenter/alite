@@ -18,11 +18,11 @@ import javax.vecmath.Point2d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class BrainzProxyLayer extends TypedLayer {
+public class BrainzLayer extends TypedLayer {
 
     private final ArrayList<Point2d> points;
 
-    public BrainzProxyLayer(int n, int size, FilterStorage filter) {
+    public BrainzLayer(int n, int size, FilterStorage filter) {
         super(filter);
         points = new ArrayList<Point2d>(n);
         for (int i = 0; i < n; i++) {

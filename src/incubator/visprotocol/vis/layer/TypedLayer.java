@@ -2,7 +2,6 @@ package incubator.visprotocol.vis.layer;
 
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
-import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.Typer;
 
 /**
@@ -53,12 +52,6 @@ public abstract class TypedLayer implements StructProcessor {
         if (filter.typeHasParam(e.getType(), typer.id)) {
             e.setParameter(typer, value);
         }
-    }
-
-    @Override
-    @Deprecated
-    public void push(Structure newPart) {
-        throw new RuntimeException("No push");
     }
 
 }

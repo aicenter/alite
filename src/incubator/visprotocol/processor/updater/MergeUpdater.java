@@ -1,11 +1,15 @@
 package incubator.visprotocol.processor.updater;
 
+import incubator.visprotocol.processor.MultipleInputProcessor;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.utils.StructUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Holds current state, accepts parts of world. When push, returns current world state.
@@ -17,7 +21,7 @@ import incubator.visprotocol.utils.StructUtils;
  * @author Ondrej Milenovsky
  * */
 // TODO bug: not working not_change on elements
-public class MergeUpdater implements StructProcessor {
+public class MergeUpdater extends MultipleInputProcessor {
 
     // properties
     private boolean deleteFolders = false;
@@ -25,28 +29,18 @@ public class MergeUpdater implements StructProcessor {
     private boolean deepCopyClearing = false;
     private boolean acceptPast = true;
     private boolean containsNotDelete = false;
-    private boolean clearOnFirstPush = true;
 
     // state
-    private Structure state;
+    private Structure state = new Structure(0L);
     private boolean pulled = false;
     private boolean firstRun = true;
 
-    public MergeUpdater() {
-        this(new Structure(0L));
+    public MergeUpdater(StructProcessor... inputs) {
+        this(Arrays.asList(inputs));
     }
 
-    public MergeUpdater(Structure struct) {
-        state = struct;
-    }
-
-    /** pull does not clear the state, but first push does */
-    public void setClearOnFirstPush(boolean clearOnFirstPush) {
-        this.clearOnFirstPush = clearOnFirstPush;
-    }
-
-    public boolean isClearOnFirstPush() {
-        return clearOnFirstPush;
+    public MergeUpdater(List<StructProcessor> inputs) {
+        super(inputs);
     }
 
     /**
@@ -57,7 +51,6 @@ public class MergeUpdater implements StructProcessor {
         this.deepCopyClearing = deepCopyClearing;
         if (!deepCopyClearing) {
             deleteFolders = false;
-            clearOnFirstPush = true;
         }
     }
 
@@ -98,10 +91,10 @@ public class MergeUpdater implements StructProcessor {
     /** returns current state and clears it */
     @Override
     public Structure pull() {
-        Structure ret = state;
-        if (!clearOnFirstPush) {
-            clearState();
+        for (StructProcessor pr : getInputs()) {
+            push(pr.pull());
         }
+        Structure ret = state;
         pulled = true;
         firstRun = false;
         ret.setType(CommonKeys.STRUCT_STATE);
@@ -109,13 +102,12 @@ public class MergeUpdater implements StructProcessor {
     }
 
     /** merge current state with new part */
-    @Override
     public void push(Structure newPart) {
         if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_STATE)) {
             System.err.println("MergeUpdater should accept whole or a part of world, not "
                     + newPart.getType());
         }
-        if (pulled && clearOnFirstPush) {
+        if (pulled) {
             clearState();
             pulled = false;
         }

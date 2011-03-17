@@ -1,5 +1,10 @@
 package incubator.visprotocol.processor.updater;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import incubator.visprotocol.processor.MultipleInputProcessor;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
@@ -18,22 +23,27 @@ import incubator.visprotocol.structure.key.struct.ChangeFlag;
  * @author Ondrej Milenovsky
  * */
 // TODO bug: first comes empty struct, then .folder.folder which is not_change, will be ignored
-public class DiffUpdater implements StructProcessor {
+public class DiffUpdater extends MultipleInputProcessor {
 
     // properties
     private boolean deleteFolders = false;
     private boolean acceptPast = false;
 
     // state
-    private Structure state;
+    private Structure state = new Structure();
     private boolean firstRun = true;
 
-    public DiffUpdater() {
-        this(new Structure());
+    public DiffUpdater(Structure state) {
+        super(new ArrayList<StructProcessor>(0));
+        this.state = state;
     }
 
-    public DiffUpdater(Structure struct) {
-        state = struct;
+    public DiffUpdater(StructProcessor... inputs) {
+        this(Arrays.asList(inputs));
+    }
+
+    public DiffUpdater(List<StructProcessor> inputs) {
+        super(inputs);
     }
 
     public void setDeleteFolders(boolean deleteFolders) {
@@ -55,12 +65,15 @@ public class DiffUpdater implements StructProcessor {
     /** just returns current state, does not change it */
     @Override
     public Structure pull() {
+        for (StructProcessor pr : getInputs()) {
+            push(pr.pull());
+        }
+
         firstRun = false;
         state.setType(CommonKeys.STRUCT_STATE);
         return state;
     }
 
-    @Override
     public void push(Structure newPart) {
         if (!newPart.isType(CommonKeys.STRUCT_DIFF)) {
             System.err.println("DiffUpdater should accept only diffs, not " + newPart.getType());

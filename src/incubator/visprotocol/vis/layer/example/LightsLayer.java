@@ -18,12 +18,12 @@ import javax.vecmath.Point2d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class LightsProxyLayer extends TypedLayer {
+public class LightsLayer extends TypedLayer {
 
     private final ArrayList<Point2d> points;
     private double prGenerate = 0.9;
 
-    public LightsProxyLayer(int n, int size, FilterStorage filter) {
+    public LightsLayer(int n, int size, FilterStorage filter) {
         super(filter);
         points = new ArrayList<Point2d>(n);
         for (int i = 0; i < n; i++) {

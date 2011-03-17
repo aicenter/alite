@@ -8,7 +8,5 @@ import incubator.visprotocol.structure.Structure;
  * @author Ondrej Milenovsky
  * */
 public interface StructProcessor {
-    public void push(Structure newPart);
-
     public Structure pull();
 }

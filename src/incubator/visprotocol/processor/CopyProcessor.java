@@ -3,16 +3,16 @@ package incubator.visprotocol.processor;
 import incubator.visprotocol.structure.Structure;
 
 /**
- * When push, stores the structure. When pull, returns deep copy of the structure.
- * 
- * Push: any structure
- * 
- * Pull: deep copy of actual structure, does not change current state
+ * When pull, returns deep copy of the structure.
  * 
  * @author Ondrej Milenovsky
  * */
-public class PullCopyStorage extends LightStorage {
+public class CopyProcessor extends OneInputProcessor {
 
+    public CopyProcessor(StructProcessor input) {
+        super(input);
+    }
+    
     /** returns deep copy of current state, does not change it */
     @Override
     public Structure pull() {

@@ -1,5 +1,9 @@
 package incubator.visprotocol.processor.updater;
 
+import java.util.Arrays;
+import java.util.List;
+
+import incubator.visprotocol.processor.MultipleInputProcessor;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
@@ -12,31 +16,29 @@ import incubator.visprotocol.structure.key.struct.ChangeFlag;
  * are added to the structure to send. When pulled, structure to send is returned and cleared. Makes
  * deep copy.
  * 
- * Push: whole world state (can be split to parts)
+ * Push: whole or parts of the world
  * 
  * Pull: difference between last state (generated when push), changes current state
  * 
  * @author Ondrej Milenovsky
  */
-public class Differ implements StructProcessor {
+public class Differ extends MultipleInputProcessor {
 
-    private Structure state;
-    private Structure updatePart;
+    private Structure state = new Structure();
+    private Structure updatePart = new Structure();
     private boolean firstRun = true;
 
-    public Differ() {
-        state = new Structure();
-        updatePart = new Structure();
+    public Differ(StructProcessor... inputs) {
+        this(Arrays.asList(inputs));
     }
 
-    public Structure getState() {
-        return state;
+    public Differ(List<StructProcessor> inputs) {
+        super(inputs);
     }
 
     /**
      * Push part of the world, deep copy.
      */
-    @Override
     public void push(Structure newPart) {
         if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_STATE)) {
             System.err.println("Differ should accept whole or a part of world, not "
@@ -112,6 +114,10 @@ public class Differ implements StructProcessor {
     /** returns differences between two states, clears current state */
     @Override
     public Structure pull() {
+        for (StructProcessor pr : getInputs()) {
+            push(pr.pull());
+        }
+
         firstRun = false;
         Structure ret = updatePart;
 
