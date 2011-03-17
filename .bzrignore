@@ -1,2 +1,7 @@
-classes
-.settings
+./classes
+./.settings
+build
+./modules
+src/cz/agents/alite/vis/vis.ucd
+.euml2
+.umlproject
