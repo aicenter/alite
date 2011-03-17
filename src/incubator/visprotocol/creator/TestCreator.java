@@ -7,6 +7,7 @@ import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.processor.updater.DiffUpdater;
 import incubator.visprotocol.processor.updater.Differ;
 import incubator.visprotocol.processor.updater.MergeUpdater;
+import incubator.visprotocol.protocol.FileReaderProtocol;
 import incubator.visprotocol.protocol.FileWriterProtocol;
 import incubator.visprotocol.protocol.MemoryProtocol;
 import incubator.visprotocol.protocol.StreamProtocolCloser;
@@ -135,19 +136,21 @@ public class TestCreator implements Creator {
             Differ differ = new Differ(layers);
             FileWriterProtocol fwp = new FileWriterProtocol(new File("record.grr"),
                     new StateGetter(differ));
+            streamCloser.addStreamProtocol(fwp);
             painter = new TreePainter(differ, visInfoLayer);
             root = new MultiplePuller(vis2d, fwp);
-            streamCloser.addStreamProtocol(fwp);
-            vis2d.addTransformator(new PlayerControls());
         } else if (mode == Mode.PLAYER_FROM_FILE) {
-
+            FileReaderProtocol frp = new FileReaderProtocol(new File("record.grr"));
+            streamCloser.addStreamProtocol(frp);
+            DiffUpdater updater = new DiffUpdater(frp);
+            painter = new TreePainter(updater);
+            vis2d.addTransformator(new PlayerControls());
             root = vis2d;
         }
 
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
         vis2d.addInput(painter);
         vis2d.setStreamCloser(streamCloser);
-
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {

@@ -72,6 +72,13 @@ public class PlayerControls extends JPanel implements Transformator, PlayerContr
             }
         });
 
+        speedBar.addAdjustmentListener(new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                
+            }
+        });
+        
     }
 
     public void setSeekerPrecision(int precision) {
