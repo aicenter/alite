@@ -12,7 +12,7 @@ import java.io.ObjectInputStream;
  * 
  * @author Ondrej Milenovsky
  * */
-public class StreamInputProtocol implements StructProcessor {
+public class StreamInputProtocol implements StructProcessor, StreamProtocol {
 
     private ObjectInputStream input;
 

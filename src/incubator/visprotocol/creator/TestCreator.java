@@ -1,11 +1,15 @@
 package incubator.visprotocol.creator;
 
+import incubator.visprotocol.processor.MultiplePuller;
 import incubator.visprotocol.processor.Once;
+import incubator.visprotocol.processor.StateGetter;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.processor.updater.DiffUpdater;
 import incubator.visprotocol.processor.updater.Differ;
 import incubator.visprotocol.processor.updater.MergeUpdater;
+import incubator.visprotocol.protocol.FileWriterProtocol;
 import incubator.visprotocol.protocol.MemoryProtocol;
+import incubator.visprotocol.protocol.StreamProtocolCloser;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.vis.layer.FilterStorage;
@@ -22,9 +26,11 @@ import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.TreePainter;
 import incubator.visprotocol.vis.output.vis2d.Vis2DBasicTransformators;
 import incubator.visprotocol.vis.output.vis2d.painter.Vis2DBasicPainters;
+import incubator.visprotocol.vis.player.ui.PlayerControls;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -50,6 +56,7 @@ public class TestCreator implements Creator {
     private static final int DELAY = 20;
     private ExampleEnvironment exampleEnvironment;
     private Vis2DOutput vis2d;
+    private StructProcessor root;
 
     @Override
     public void init(String[] args) {
@@ -108,32 +115,45 @@ public class TestCreator implements Creator {
         StructProcessor visInfoLayer = new Vis2DInfoLayer(vis2d, filter);
 
         // create the structure of processors
-        TreePainter painter;
+        TreePainter painter = null;
+        StreamProtocolCloser streamCloser = new StreamProtocolCloser();
         if (mode == Mode.DIRECT) {
             layers.add(visInfoLayer);
             painter = new TreePainter(layers);
+            root = vis2d;
         } else if (mode == Mode.REALTIME) {
             MergeUpdater updater = new MergeUpdater(layers);
             painter = new TreePainter(updater, visInfoLayer);
-        } else if (mode == Mode.PROTOCOL) {
+            root = vis2d;
+        } else if ((mode == Mode.PROTOCOL) || (mode == Mode.SAVE_TO_FILE)) {
             Differ differ = new Differ(layers);
             MemoryProtocol protocol = new MemoryProtocol(differ);
             DiffUpdater updater = new DiffUpdater(protocol);
             painter = new TreePainter(updater, visInfoLayer);
-        } else {
-            painter = null;
+            root = vis2d;
+        } else if (mode == Mode.SAVE_TO_FILE) {
+            Differ differ = new Differ(layers);
+            FileWriterProtocol fwp = new FileWriterProtocol(new File("record.grr"),
+                    new StateGetter(differ));
+            painter = new TreePainter(differ, visInfoLayer);
+            root = new MultiplePuller(vis2d, fwp);
+            streamCloser.addStreamProtocol(fwp);
+            vis2d.addTransformator(new PlayerControls());
+        } else if (mode == Mode.PLAYER_FROM_FILE) {
+
+            root = vis2d;
         }
 
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
         vis2d.addInput(painter);
+        vis2d.setStreamCloser(streamCloser);
 
-        // vis2d.addTransformator(new PlayerControls());
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
             @Override
             protected void sample() {
-                vis2d.pull();
+                root.pull();
             }
         };
         sampler.start();
@@ -146,7 +166,7 @@ public class TestCreator implements Creator {
                     random.nextDouble() * 200.0 + 100.0, random.nextDouble() * 20.0 + 100.0);
             exampleEnvironment.exampleInteger = random.nextInt(256);
 
-            exampleEnvironment.exampleTime++;
+            exampleEnvironment.exampleTime += DELAY;
 
             try {
                 Thread.sleep(DELAY);
@@ -191,7 +211,11 @@ public class TestCreator implements Creator {
         /** proxies -> updater -> painter */
         REALTIME,
         /** proxies -> painter, but the current state is not stored */
-        DIRECT
+        DIRECT,
+        /** protocol + save to file */
+        SAVE_TO_FILE,
+        /** no environment, player from file */
+        PLAYER_FROM_FILE,
     }
 
 }

@@ -37,7 +37,7 @@ public class PentagramLayer extends TypedLayer {
         Structure struct = new Structure(CommonKeys.STRUCT_PART);
         Folder f = struct.getRoot("Undead land").getFolder("Pentagram");
 
-        int step = (int) (env.getTime() * 1.5);
+        int step = (int) (env.getTime() * 0.075);
         for (int i = 0; i < 30; i++) {
             fillPentagram(f, step + i, new Color(30 + i * 6, 0, 0), i);
         }
