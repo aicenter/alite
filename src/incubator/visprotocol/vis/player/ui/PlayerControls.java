@@ -1,7 +1,10 @@
 package incubator.visprotocol.vis.player.ui;
 
+import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.vis2d.Transformator;
+import incubator.visprotocol.vis.player.FrameListener;
+import incubator.visprotocol.vis.player.PlayerInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -17,10 +20,12 @@ import javax.swing.JScrollBar;
 /**
  * @author Ondrej Milenovsky
  * */
-public class PlayerControls extends JPanel implements Transformator, PlayerController {
+public class PlayerControls extends JPanel implements Transformator, PlayerController, FrameListener {
 
     private static final long serialVersionUID = 1993157784144029481L;
 
+    private final PlayerInterface player;
+    
     // components
     private final JScrollBar seeker = new JScrollBar(JScrollBar.HORIZONTAL);
     private final JButton btnPlay = new JButton("Play");
@@ -36,11 +41,11 @@ public class PlayerControls extends JPanel implements Transformator, PlayerContr
     private boolean useYodaTime = false;
 
     // state
-    private long timeOffset = 0;
-    private long currentTime = 0;
+    private long startTime = 0;
     private long durationTime = 0;
 
-    public PlayerControls() {
+    public PlayerControls(PlayerInterface player) {
+        this.player = player;
         initComponents();
     }
 
@@ -64,18 +69,22 @@ public class PlayerControls extends JPanel implements Transformator, PlayerContr
         add(seeker);
 
         seeker.setMinimum(0);
+        seeker.setMaximum(0);
 
+        speedBar.setMinimum(1);
+        speedBar.setMaximum(10000);
+        
         seeker.addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
-                setCurretnTime(getSeekerTime());
+                player.setPosition(getPosition());
             }
         });
 
         speedBar.addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
-                
+                player.setSpeed(getSpeed());
             }
         });
         
@@ -89,9 +98,7 @@ public class PlayerControls extends JPanel implements Transformator, PlayerContr
         return seekerPrecision;
     }
 
-    @Override
-    public void setCurretnTime(long time) {
-        currentTime = time;
+    public void setPosition(long time) {
         int value = (int) (time / seekerPrecision);
         if (value > seeker.getMaximum()) {
             seeker.setMaximum(value);
@@ -108,8 +115,8 @@ public class PlayerControls extends JPanel implements Transformator, PlayerContr
     }
 
     @Override
-    public void setTimeDispOffset(long time) {
-        timeOffset = time;
+    public void setStartTime(long time) {
+        startTime = time;
     }
 
     @Override
@@ -117,14 +124,25 @@ public class PlayerControls extends JPanel implements Transformator, PlayerContr
         vis2d.addPanel(this, BorderLayout.SOUTH);
 
     }
+    
+    @Override
+    public void drawFrame(Structure frame) {
+        setStartTime(player.getStartTime());
+        setDurationTime(player.getDuration());
+        setPosition(frame.getTimeStamp());
+    }
 
-    private long getSeekerTime() {
-        return seeker.getValue() * seekerPrecision;
+    private long getPosition() {
+        return startTime + seeker.getValue() * seekerPrecision;
+    }
+    
+    private double getSpeed() {
+        return speedBar.getValue() / 100.0;
     }
 
     private void repaintCurrTime() {
         if (!useYodaTime) {
-            lblTime.setText(printTime(currentTime + timeOffset));
+            lblTime.setText(printTime(getPosition()));
         }
     }
 

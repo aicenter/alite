@@ -42,7 +42,7 @@ public class Differ extends MultipleInputProcessor implements StateHolder {
      * Push part of the world, deep copy.
      */
     public void push(Structure newPart) {
-        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_STATE)) {
+        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_COMPLETE)) {
             System.err.println("Differ should accept whole or a part of world, not "
                     + newPart.getType());
         }

@@ -98,13 +98,13 @@ public class MergeUpdater extends MultipleInputProcessor implements StateHolder 
         Structure ret = state;
         pulled = true;
         firstRun = false;
-        ret.setType(CommonKeys.STRUCT_STATE);
+        ret.setType(CommonKeys.STRUCT_COMPLETE);
         return ret;
     }
 
     /** merge current state with new part */
     public void push(Structure newPart) {
-        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_STATE)) {
+        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_COMPLETE)) {
             System.err.println("MergeUpdater should accept whole or a part of world, not "
                     + newPart.getType());
         }

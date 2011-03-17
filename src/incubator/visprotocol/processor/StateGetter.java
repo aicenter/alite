@@ -3,7 +3,7 @@ package incubator.visprotocol.processor;
 import incubator.visprotocol.structure.Structure;
 
 /**
- * Returns state from input, not pull, does not change the input inner state.
+ * Returns state from input, not pull, does not change the inputs inner state.
  * 
  * @author Ondrej Milenovsky
  * */
