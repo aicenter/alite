@@ -27,6 +27,7 @@ import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.TreePainter;
 import incubator.visprotocol.vis.output.vis2d.Vis2DBasicTransformators;
 import incubator.visprotocol.vis.output.vis2d.painter.Vis2DBasicPainters;
+import incubator.visprotocol.vis.player.Player;
 import incubator.visprotocol.vis.player.ui.PlayerControls;
 
 import java.awt.Color;
@@ -142,9 +143,9 @@ public class TestCreator implements Creator {
         } else if (mode == Mode.PLAYER_FROM_FILE) {
             FileReaderProtocol frp = new FileReaderProtocol(new File("record.grr"));
             streamCloser.addStreamProtocol(frp);
-            DiffUpdater updater = new DiffUpdater(frp);
-            painter = new TreePainter(updater);
-            vis2d.addTransformator(new PlayerControls());
+            Player player = new Player(frp);
+            painter = new TreePainter(new StateGetter(player), visInfoLayer);
+            vis2d.addTransformator(new PlayerControls(player));
             root = vis2d;
         }
 

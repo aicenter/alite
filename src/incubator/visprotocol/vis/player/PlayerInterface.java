@@ -13,4 +13,8 @@ public interface PlayerInterface {
     public void play();
 
     public void playBackwards();
+
+    public long getDuration();
+
+    public long getStartTime();
 }

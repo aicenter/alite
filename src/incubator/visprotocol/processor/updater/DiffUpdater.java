@@ -71,7 +71,7 @@ public class DiffUpdater extends MultipleInputProcessor implements StateHolder {
         }
 
         firstRun = false;
-        state.setType(CommonKeys.STRUCT_STATE);
+        state.setType(CommonKeys.STRUCT_COMPLETE);
         return state;
     }
 

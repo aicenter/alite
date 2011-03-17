@@ -96,7 +96,7 @@ public class TreePainter extends MultipleInputProcessor implements GroupPainter 
     }
 
     public void push(Structure newPart) {
-        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_STATE)) {
+        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_COMPLETE)) {
             System.err.println("RootPainter should accept whole or a part of world, not "
                     + newPart.getType());
         }

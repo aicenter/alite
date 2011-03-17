@@ -29,7 +29,7 @@ public abstract class CommonKeys {
     /** Diff from differ */
     public static final String STRUCT_DIFF = "diff";
     /** Whole world state */
-    public static final String STRUCT_STATE = "state";
+    public static final String STRUCT_COMPLETE = "state";
 
     static {
         COMMON_PARAMS.add(CHANGE.id);
