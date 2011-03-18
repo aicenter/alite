@@ -43,12 +43,13 @@ public class PlayerControls extends JPanel implements FrameListener {
     private long startTime = 0;
     private long durationTime = 0;
     private double speed = 1;
-    private boolean seekerLock = false;
+    private boolean seekerLock = true;
 
     public PlayerControls(PlayerInterface player) {
         this.player = player;
         player.addFrameListener(this);
         initComponents();
+        seekerLock = false;
     }
 
     private void initComponents() {
@@ -99,7 +100,9 @@ public class PlayerControls extends JPanel implements FrameListener {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
                 if (!seekerLock) {
+                    seekerLock = true;
                     player.setPosition(getPosition());
+                    seekerLock = false;
                 }
             }
         });
@@ -135,7 +138,9 @@ public class PlayerControls extends JPanel implements FrameListener {
 
     public void setDurationTime(long time) {
         durationTime = time;
+        seekerLock = true;
         seeker.setMaximum((int) (time / seekerPrecision));
+        seekerLock = false;
         repaintDurTime();
     }
 
