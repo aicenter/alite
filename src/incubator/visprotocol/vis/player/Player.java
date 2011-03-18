@@ -41,7 +41,6 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     private long lastFullFrame = Long.MIN_VALUE;
     private long duration = -1;
     private long startTime = 0;
-    private boolean positionLock = true;
     private boolean fullFramesDuringPush = false;
 
     public Player(StructProcessor... inputs) {
@@ -90,9 +89,6 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
 
     @Override
     public synchronized void setPosition(long position) {
-        if (positionLock) {
-            return;
-        }
         long lastPosition = this.position;
         this.position = Math.min(position, startTime + duration);
         if (lastPosition != position) {
@@ -111,38 +107,50 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     }
 
     @Override
-    public synchronized void play() {
+    public void play() {
         if (state == State.STOPPED) {
             wakeUp();
         }
-        changeState(State.PLAYING);
+        if (changeState(State.PLAYING) && (speed < 0)) {
+            speed = -speed;
+        }
     }
 
     @Override
-    public synchronized void playBackwards() {
+    public void playBackwards() {
         if (state == State.STOPPED) {
             wakeUp();
         }
-        changeState(State.BACKWARDS);
+        if (changeState(State.BACKWARDS) && (speed > 0)) {
+            speed = -speed;
+        }
     }
 
     @Override
-    public synchronized void pause() {
+    public void pause() {
         if (changeState(State.STOPPED)) {
             fallAsleep();
         }
     }
 
-    private synchronized void wakeUp() {
-        thread.notify();
+    private void wakeUp() {
+        speed = 0.1;
+        // TODO fix
+        // synchronized (thread) {
+        // thread.notify();
+        // }
     }
 
-    private synchronized void fallAsleep() {
-        try {
-            thread.wait();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    private void fallAsleep() {
+        speed = 0;
+        // TODO fix
+        // try {
+        // synchronized (thread) {
+        // thread.wait();
+        // }
+        // } catch (InterruptedException e) {
+        // e.printStackTrace();
+        // }
     }
 
     public void loadFromInputs() {
@@ -211,18 +219,33 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     }
 
     private synchronized void generateFrame() {
-        if (fullFrames.isEmpty()) {
+        if ((position == currFrame.getTimeStamp()) || fullFrames.isEmpty()) {
             return;
         }
-        positionLock = true;
-        currFrame = generateFrame(position);
+        // faster forward generation from last frame
+        long backFullFrame = fullFrames.floorKey(position);
+        if (backFullFrame < currFrame.getTimeStamp()) {
+            DiffUpdater updater = new DiffUpdater(currFrame);
+            long time = currFrame.getTimeStamp();
+            while (true) {
+                Entry<Long, Structure> entry = diffFrames.ceilingEntry(time + 1);
+                if ((entry == null) || (entry.getKey() > position)) {
+                    currFrame = updater.getState();
+                    break;
+                }
+                updater.push(entry.getValue());
+                time = entry.getKey();
+            }
+        } else {
+            currFrame = generateFrame(position);
+        }
         if (lastFullFrame + intervalFullStates <= position) {
+            lastFullFrame = Math.max(currFrame.getTimeStamp(), lastFullFrame);
             fullFrames.put(currFrame.getTimeStamp(), currFrame);
         }
         for (FrameListener listener : listeners) {
             listener.drawFrame(currFrame);
         }
-        positionLock = false;
     }
 
     private void generateFullFrame() {
@@ -243,7 +266,7 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
             updater = new DiffUpdater();
             updater.push(entry.getValue());
         } else {
-            updater = new DiffUpdater(entry.getValue());
+            updater = new DiffUpdater(entry.getValue().deepCopy());
         }
         long time = entry.getKey();
         // update until position
@@ -283,7 +306,6 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         loadFromInputs();
         state = State.PLAYING;
         position = startTime;
-        positionLock = false;
         while (state != State.TERMINATE) {
             generateFrame();
             try {

@@ -3,6 +3,7 @@ package incubator.visprotocol.protocol;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Structure;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -36,6 +37,7 @@ public class StreamInputProtocol implements StructProcessor, StreamProtocol {
     public Structure pull() {
         try {
             return (Structure) input.readObject();
+        } catch (EOFException e) {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
