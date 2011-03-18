@@ -1,12 +1,9 @@
 package incubator.visprotocol.vis.player.ui;
 
 import incubator.visprotocol.structure.Structure;
-import incubator.visprotocol.vis.output.Vis2DOutput;
-import incubator.visprotocol.vis.output.vis2d.Transformator;
 import incubator.visprotocol.vis.player.FrameListener;
 import incubator.visprotocol.vis.player.PlayerInterface;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.AdjustmentEvent;
@@ -20,7 +17,7 @@ import javax.swing.JScrollBar;
 /**
  * @author Ondrej Milenovsky
  * */
-public class PlayerControls extends JPanel implements Transformator, PlayerController, FrameListener {
+public class PlayerControls extends JPanel implements PlayerController, FrameListener {
 
     private static final long serialVersionUID = 1993157784144029481L;
 
@@ -119,12 +116,6 @@ public class PlayerControls extends JPanel implements Transformator, PlayerContr
         startTime = time;
     }
 
-    @Override
-    public void setToVis(Vis2DOutput vis2d) {
-        vis2d.addPanel(this, BorderLayout.SOUTH);
-
-    }
-    
     @Override
     public void drawFrame(Structure frame) {
         setStartTime(player.getStartTime());
