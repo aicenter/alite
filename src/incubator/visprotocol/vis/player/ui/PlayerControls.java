@@ -40,6 +40,7 @@ public class PlayerControls extends JPanel implements FrameListener {
     // state
     private long startTime = 0;
     private long durationTime = 0;
+    private double speed = 1;
 
     public PlayerControls(PlayerInterface player) {
         this.player = player;
@@ -82,7 +83,9 @@ public class PlayerControls extends JPanel implements FrameListener {
         speedBar.addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
-                player.setSpeed(getSpeed());
+                computeSpeed();
+                repaintSpeed();
+                player.setSpeed(speed);
             }
         });
         
@@ -126,8 +129,8 @@ public class PlayerControls extends JPanel implements FrameListener {
         return startTime + seeker.getValue() * seekerPrecision;
     }
     
-    private double getSpeed() {
-        return speedBar.getValue() / 100.0;
+    private void computeSpeed() {
+        speed =  speedBar.getValue() / 100.0;
     }
 
     private void repaintCurrTime() {
@@ -142,6 +145,10 @@ public class PlayerControls extends JPanel implements FrameListener {
         }
     }
 
+    private void repaintSpeed() {
+        lblSpeed.setText(String.format("%.3fx", speed));
+    }
+    
     public static String printTime(long time) {
         return String.format("%d:%02d:%02d:%03d", time / 3600000, time % 3600000 / 60000,
                 time % 60000 / 1000, time % 1000);
