@@ -106,7 +106,7 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         if (state == State.STOPPED) {
             wakeUp();
         }
-        state = State.PLAYING;
+        changeState(State.PLAYING);
     }
 
     @Override
@@ -114,14 +114,13 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         if (state == State.STOPPED) {
             wakeUp();
         }
-        state = State.BACKWARDS;
+        changeState(State.BACKWARDS);
     }
 
     @Override
     public synchronized void pause() {
-        if (state != State.STOPPED) {
+        if (changeState(State.STOPPED)) {
             fallAsleep();
-            state = State.STOPPED;
         }
     }
 

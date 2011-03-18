@@ -30,6 +30,7 @@ import incubator.visprotocol.vis.output.vis2d.painter.Vis2DBasicPainters;
 import incubator.visprotocol.vis.player.Player;
 import incubator.visprotocol.vis.player.ui.PlayerControls;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
@@ -143,7 +144,7 @@ public class TestCreator implements Creator {
             streamCloser.addStreamProtocol(frp);
             Player player = new Player(frp);
             painter = new TreePainter(new StateGetter(player), visInfoLayer);
-            vis2d.addTransformator(new PlayerControls(player));
+            vis2d.addPanel(new PlayerControls(player), BorderLayout.SOUTH);
             root = vis2d;
         }
 
