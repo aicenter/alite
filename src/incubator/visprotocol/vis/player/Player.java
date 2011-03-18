@@ -91,8 +91,9 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     public synchronized void setPosition(long position) {
         long lastPosition = this.position;
         this.position = Math.min(position, startTime + duration);
-        if (lastPosition != position) {
-            generateFrame();
+        if ((lastPosition != position) && (state == State.STOPPED)) {
+            // TODO
+            // generateFrame();
         }
     }
 
@@ -222,7 +223,7 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         if ((position == currFrame.getTimeStamp()) || fullFrames.isEmpty()) {
             return;
         }
-        // faster forward generation from last frame
+        // faster forward generation from last full frame
         long backFullFrame = fullFrames.floorKey(position);
         if (backFullFrame < currFrame.getTimeStamp()) {
             DiffUpdater updater = new DiffUpdater(currFrame);
@@ -307,15 +308,18 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         state = State.PLAYING;
         position = startTime;
         while (state != State.TERMINATE) {
-            generateFrame();
             try {
                 Thread.sleep(1000 / frameRate);
-                position += (long) (1000.0 * speed / (double) frameRate);
-                position = Math.min(startTime + duration, position);
-                generateFrame();
+                step();
             } catch (InterruptedException e) {
             }
         }
+    }
+
+    private synchronized void step() {
+        position += (long) (1000.0 * speed / (double) frameRate);
+        position = Math.min(startTime + duration, position);
+        generateFrame();
     }
 
     public static enum State {
