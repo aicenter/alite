@@ -89,9 +89,9 @@ public class TestCreator implements Creator {
         // musi generovat body pokazdy, u ostatnich staci jednou na zacatku.
         final Mode mode = Mode.PROTOCOL;
         // 100k se trochu trha, 200k se dost trha, 1M u protocolu dosla pamet
-        int nDynamicPoints = 1000;
+        int nDynamicPoints = 10;
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
-        int nStaticPoints = 10000;
+        int nStaticPoints = 10;
 
         // filter
         FilterStorage filter = new FilterStorage(Vis2DBasicPainters.ELEMENT_TYPES,
@@ -126,7 +126,7 @@ public class TestCreator implements Creator {
             MergeUpdater updater = new MergeUpdater(layers);
             painter = new TreePainter(updater, visInfoLayer);
             root = vis2d;
-        } else if ((mode == Mode.PROTOCOL) || (mode == Mode.SAVE_TO_FILE)) {
+        } else if (mode == Mode.PROTOCOL) {
             Differ differ = new Differ(layers);
             MemoryProtocol protocol = new MemoryProtocol(differ);
             DiffUpdater updater = new DiffUpdater(protocol);
@@ -135,9 +135,9 @@ public class TestCreator implements Creator {
         } else if (mode == Mode.SAVE_TO_FILE) {
             Differ differ = new Differ(layers);
             FileWriterProtocol fwp = new FileWriterProtocol(new File("record.rec"),
-                    new StateGetter(differ));
+                    differ);
             streamCloser.addStreamProtocol(fwp);
-            painter = new TreePainter(differ, visInfoLayer);
+            painter = new TreePainter(new StateGetter(differ), visInfoLayer);
             root = new MultiplePuller(vis2d, fwp);
         } else if (mode == Mode.PLAYER_FROM_FILE) {
             FileReaderProtocol frp = new FileReaderProtocol(new File("record.rec"));

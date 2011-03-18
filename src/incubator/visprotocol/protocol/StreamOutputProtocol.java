@@ -18,6 +18,8 @@ import java.util.List;
 public class StreamOutputProtocol extends MultipleInputProcessor implements StreamProtocol {
 
     private ObjectOutputStream output;
+    private int flushInterval = 1000;
+    private int lastFlush = -1;
 
     public StreamOutputProtocol(OutputStream output, StructProcessor... inputs) {
         this(output, Arrays.asList(inputs));
@@ -35,14 +37,24 @@ public class StreamOutputProtocol extends MultipleInputProcessor implements Stre
     public void close() {
         try {
             output.close();
+            output = null;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void push(Structure newPart) {
+        if(output == null) {
+            return;
+        }
         try {
             output.writeObject(newPart);
+            if (lastFlush < 0) {
+                lastFlush = (int)System.currentTimeMillis();
+            } else if (lastFlush + flushInterval < System.currentTimeMillis()) {
+                output.flush();
+                lastFlush = (int)System.currentTimeMillis();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
