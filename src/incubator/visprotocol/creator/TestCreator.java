@@ -16,12 +16,12 @@ import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.common.FillColorLayer;
 import incubator.visprotocol.vis.layer.common.Vis2DInfoLayer;
-import incubator.visprotocol.vis.layer.example.BrainzLayer;
-import incubator.visprotocol.vis.layer.example.LightsLayer;
+import incubator.visprotocol.vis.layer.example.StaticPoints;
+import incubator.visprotocol.vis.layer.example.DynamicPointsLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
 import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoLayer;
-import incubator.visprotocol.vis.layer.example.ZombieLayer;
+import incubator.visprotocol.vis.layer.example.PersonLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.TreePainter;
@@ -99,20 +99,18 @@ public class TestCreator implements Creator {
         ArrayList<StructProcessor> layers = new ArrayList<StructProcessor>();
         layers.add(new SimInfoLayer(exampleEnvironment, filter));
         if (mode == Mode.DIRECT) {
-            layers.add(new FillColorLayer(Color.BLACK, ".Undead land.Background", filter));
+            layers.add(new FillColorLayer(Color.BLACK, ".World.Background", filter));
         } else {
-            layers
-                    .add(new Once(
-                            new FillColorLayer(Color.BLACK, ".Undead land.Background", filter)));
+            layers.add(new Once(new FillColorLayer(Color.BLACK, ".World.Background", filter)));
         }
         layers.add(new PentagramLayer(exampleEnvironment, filter));
         if (mode == Mode.DIRECT) {
-            layers.add(new BrainzLayer(nStaticPoints, 10000, filter));
+            layers.add(new StaticPoints(nStaticPoints, 10000, filter));
         } else {
-            layers.add(new Once(new BrainzLayer(nStaticPoints, 10000, filter)));
+            layers.add(new Once(new StaticPoints(nStaticPoints, 10000, filter)));
         }
-        layers.add(new LightsLayer(nDynamicPoints, 10000, filter));
-        layers.add(new ZombieLayer(exampleEnvironment, filter));
+        layers.add(new DynamicPointsLayer(nDynamicPoints, 10000, filter));
+        layers.add(new PersonLayer(exampleEnvironment, filter));
         layers.add(new ScreenTextLayer(exampleEnvironment, filter));
         StructProcessor visInfoLayer = new Vis2DInfoLayer(vis2d, filter);
 
@@ -135,13 +133,13 @@ public class TestCreator implements Creator {
             root = vis2d;
         } else if (mode == Mode.SAVE_TO_FILE) {
             Differ differ = new Differ(layers);
-            FileWriterProtocol fwp = new FileWriterProtocol(new File("record.grr"),
+            FileWriterProtocol fwp = new FileWriterProtocol(new File("record.rec"),
                     new StateGetter(differ));
             streamCloser.addStreamProtocol(fwp);
             painter = new TreePainter(differ, visInfoLayer);
             root = new MultiplePuller(vis2d, fwp);
         } else if (mode == Mode.PLAYER_FROM_FILE) {
-            FileReaderProtocol frp = new FileReaderProtocol(new File("record.grr"));
+            FileReaderProtocol frp = new FileReaderProtocol(new File("record.rec"));
             streamCloser.addStreamProtocol(frp);
             Player player = new Player(frp);
             painter = new TreePainter(new StateGetter(player), visInfoLayer);

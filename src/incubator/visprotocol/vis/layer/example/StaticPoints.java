@@ -14,16 +14,15 @@ import java.util.ArrayList;
 import javax.vecmath.Point2d;
 
 /**
- * Random dynamic points changing color and appearing/disappearing.
+ * Random static points.
  * 
  * @author Ondrej Milenovsky
  * */
-public class LightsLayer extends TypedLayer {
+public class StaticPoints extends TypedLayer {
 
     private final ArrayList<Point2d> points;
-    private double prGenerate = 0.9;
 
-    public LightsLayer(int n, int size, FilterStorage filter) {
+    public StaticPoints(int n, int size, FilterStorage filter) {
         super(filter);
         points = new ArrayList<Point2d>(n);
         for (int i = 0; i < n; i++) {
@@ -35,19 +34,15 @@ public class LightsLayer extends TypedLayer {
     public Structure pull() {
         Structure struct = new Structure(CommonKeys.STRUCT_PART);
         if (hasType(PointKeys.TYPE)) {
-            Folder f = struct.getRoot("Undead land").getFolder("Lights");
-            boolean first = true;
+            Folder f = struct.getRoot("World").getFolder("Static");
+            setParameter(f, CommonKeys.NOT_CHANGE, true);
             for (int i = 0; i < points.size(); i++) {
-                if (Math.random() > prGenerate) {
-                    continue;
-                }
-                Element e = f.getElement("l" + i, PointKeys.TYPE);
+                Element e = f.getElement("p" + i, PointKeys.TYPE);
                 setParameter(e, PointKeys.CENTER, points.get(i));
-                setParameter(e, PointKeys.COLOR, new Color(0, 0, (int) (Math.random() * 256)));
-                if (first) {
-                    setParameter(e, PointKeys.SIZE, 30.0);
-                    setParameter(e, PointKeys.CONSTANT_SIZE, false);
-                    first = false;
+                if (i == 0) {
+                    setParameter(e, PointKeys.COLOR, new Color(255, 160, 160, 30));
+                    setParameter(e, PointKeys.SIZE, 4.0);
+                    setParameter(e, PointKeys.CONSTANT_SIZE, true);
                 }
             }
         }

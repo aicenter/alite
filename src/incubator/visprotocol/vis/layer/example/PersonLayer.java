@@ -21,11 +21,11 @@ import javax.vecmath.Point2d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class ZombieLayer extends TypedLayer {
+public class PersonLayer extends TypedLayer {
 
     private final ExampleEnvironment env;
 
-    public ZombieLayer(ExampleEnvironment env, FilterStorage filter) {
+    public PersonLayer(ExampleEnvironment env, FilterStorage filter) {
         super(filter);
         this.env = env;
     }
@@ -33,7 +33,7 @@ public class ZombieLayer extends TypedLayer {
     @Override
     public Structure pull() {
         Structure struct = new Structure(CommonKeys.STRUCT_PART);
-        Folder f = struct.getRoot("Undead land").getFolder("Zombies");
+        Folder f = struct.getRoot("World").getFolder("Persons");
         if (hasType(PointKeys.TYPE)) {
             Element e = f.getElement(env.getPersonName(), PointKeys.TYPE);
             Point2d pos = new Point2d(env.getPersonPosition().x, env.getPersonPosition().y);
@@ -50,7 +50,7 @@ public class ZombieLayer extends TypedLayer {
             setParameter(e, TextKeys.FONT, new Font("GothicE", Font.PLAIN, 40));
             setParameter(e, TextKeys.CONSTANT_SIZE, false);
             setParameter(e, TextKeys.COLOR, Color.YELLOW);
-            setParameter(e, TextKeys.TEXT, "Brainzzz");
+            setParameter(e, TextKeys.TEXT, "Person1");
 
             e = f.getElement(env.getPersonName() + "-text2", TextKeys.TYPE);
             pos = new Point2d(env.getPersonPosition().x, env.getPersonPosition().y + 50);
@@ -58,7 +58,7 @@ public class ZombieLayer extends TypedLayer {
             setParameter(e, TextKeys.FONT, new Font("Arial", Font.ITALIC, 14));
             setParameter(e, TextKeys.COLOR, new Color(160, 80, 0));
             setParameter(e, TextKeys.CONSTANT_SIZE, true);
-            setParameter(e, TextKeys.TEXT, "Fart...");
+            setParameter(e, TextKeys.TEXT, "Random...");
         }
         return struct;
     }
