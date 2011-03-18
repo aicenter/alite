@@ -6,6 +6,8 @@ import incubator.visprotocol.vis.player.PlayerInterface;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
@@ -41,6 +43,7 @@ public class PlayerControls extends JPanel implements FrameListener {
     private long startTime = 0;
     private long durationTime = 0;
     private double speed = 1;
+    private boolean seekerLock = false;
 
     public PlayerControls(PlayerInterface player) {
         this.player = player;
@@ -73,13 +76,33 @@ public class PlayerControls extends JPanel implements FrameListener {
         speedBar.setMinimum(1);
         speedBar.setMaximum(10000);
 
-        seeker.addAdjustmentListener(new AdjustmentListener() {
+        btnPlay.addActionListener(new ActionListener() {
             @Override
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                player.setPosition(getPosition());
+            public void actionPerformed(ActionEvent e) {
+                player.play();
+            }
+        });
+        btnPause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                player.pause();
+            }
+        });
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                player.playBackwards();
             }
         });
 
+        seeker.addAdjustmentListener(new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                if (!seekerLock) {
+                    player.setPosition(getPosition());
+                }
+            }
+        });
         speedBar.addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -104,7 +127,9 @@ public class PlayerControls extends JPanel implements FrameListener {
         if (value > seeker.getMaximum()) {
             seeker.setMaximum(value);
         }
+        seekerLock = true;
         seeker.setValue(value);
+        seekerLock = false;
         repaintCurrTime();
     }
 
