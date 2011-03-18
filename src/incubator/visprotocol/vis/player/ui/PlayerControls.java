@@ -22,7 +22,7 @@ public class PlayerControls extends JPanel implements FrameListener {
     private static final long serialVersionUID = 1993157784144029481L;
 
     private final PlayerInterface player;
-    
+
     // components
     private final JScrollBar seeker = new JScrollBar(JScrollBar.HORIZONTAL);
     private final JButton btnPlay = new JButton("Play");
@@ -34,7 +34,7 @@ public class PlayerControls extends JPanel implements FrameListener {
     private final JLabel lblDuration = new JLabel("0:00:00:000");
 
     // properties
-    private int seekerPrecision = 1000;
+    private int seekerPrecision = 100;
     private boolean useYodaTime = false;
 
     // state
@@ -72,7 +72,7 @@ public class PlayerControls extends JPanel implements FrameListener {
 
         speedBar.setMinimum(1);
         speedBar.setMaximum(10000);
-        
+
         seeker.addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
@@ -88,7 +88,7 @@ public class PlayerControls extends JPanel implements FrameListener {
                 player.setSpeed(speed);
             }
         });
-        
+
     }
 
     public void setSeekerPrecision(int precision) {
@@ -128,9 +128,9 @@ public class PlayerControls extends JPanel implements FrameListener {
     private long getPosition() {
         return startTime + seeker.getValue() * seekerPrecision;
     }
-    
+
     private void computeSpeed() {
-        speed =  speedBar.getValue() / 100.0;
+        speed = speedBar.getValue() / 8000.0;
     }
 
     private void repaintCurrTime() {
@@ -148,7 +148,7 @@ public class PlayerControls extends JPanel implements FrameListener {
     private void repaintSpeed() {
         lblSpeed.setText(String.format("%.3fx", speed));
     }
-    
+
     public static String printTime(long time) {
         return String.format("%d:%02d:%02d:%03d", time / 3600000, time % 3600000 / 60000,
                 time % 60000 / 1000, time % 1000);

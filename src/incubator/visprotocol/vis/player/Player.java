@@ -31,16 +31,18 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
 
     // properties
     private double speed = 1;
-    private long intervalFullStates = 10000;
+    private long intervalFullStates = 2000;
     private int frameRate = 25;
-    
+
     // state
     private long position = 0;
-    private State state = State.STOPPED;
+    private State state = State.STARTING;
     private Structure currFrame = new Structure(0L);
     private long lastFullFrame = Long.MIN_VALUE;
     private long duration = -1;
     private long startTime = 0;
+    private boolean positionLock = true;
+    private boolean fullFramesDuringPush = false;
 
     public Player(StructProcessor... inputs) {
         this(Arrays.asList(inputs));
@@ -51,9 +53,9 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         listeners = new LinkedHashSet<FrameListener>();
         diffFrames = new TreeMap<Long, Structure>();
         fullFrames = new TreeMap<Long, Structure>();
+        speed = 0.1;
         thread = new Thread(this);
         thread.start();
-        pause();
     }
 
     /** sets interval of fully generated frames */
@@ -88,8 +90,11 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
 
     @Override
     public synchronized void setPosition(long position) {
-        long lastPosition = position;
-        this.position = Math.min(position, duration);
+        if (positionLock) {
+            return;
+        }
+        long lastPosition = this.position;
+        this.position = Math.min(position, startTime + duration);
         if (lastPosition != position) {
             generateFrame();
         }
@@ -140,6 +145,27 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         }
     }
 
+    public void loadFromInputs() {
+        for (StructProcessor pr : getInputs()) {
+            System.out.println("Loading from input");
+            try {
+                while (true) {
+                    Structure struct = pr.pull();
+                    if (struct == null) {
+                        break;
+                    }
+                    push(struct);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println("Full frames: " + fullFrames.size());
+            System.out.println("Diff frames: " + diffFrames.size());
+            System.out.println("Start: " + startTime);
+            System.out.println("End: " + (startTime + duration));
+        }
+    }
+
     public synchronized void push(Structure newPart) {
         try {
             if (newPart.getTimeStamp() == null) {
@@ -155,11 +181,12 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
                 diffFrames.put(newPart.getTimeStamp(), newPart);
                 if (fullFrames.isEmpty()) {
                     lastFullFrame = startTime - intervalFullStates;
+                    generateFullFrame();
                 }
             }
             if (newPart.getTimeStamp() > duration) {
                 duration = newPart.getTimeStamp();
-                if (lastFullFrame + intervalFullStates < duration) {
+                if (fullFramesDuringPush && (lastFullFrame + intervalFullStates < duration)) {
                     generateFullFrame();
                 }
             }
@@ -174,7 +201,7 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         for (StructProcessor pr : getInputs()) {
             push(pr.pull());
         }
-        return null;
+        return currFrame;
     }
 
     /** returns current frame */
@@ -183,27 +210,19 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         return currFrame;
     }
 
-    @Override
-    public void run() {
-        while (state != State.TERMINATE) {
-            generateFrame();
-            try {
-                Thread.sleep(1000 / frameRate);
-                position += (long)(1000.0 / speed / (double)frameRate);
-                generateFrame();
-            } catch (InterruptedException e) {
-            }
-        }
-    }
-
     private synchronized void generateFrame() {
         if (fullFrames.isEmpty()) {
             return;
         }
+        positionLock = true;
         currFrame = generateFrame(position);
+        if (lastFullFrame + intervalFullStates <= position) {
+            fullFrames.put(currFrame.getTimeStamp(), currFrame);
+        }
         for (FrameListener listener : listeners) {
             listener.drawFrame(currFrame);
         }
+        positionLock = false;
     }
 
     private void generateFullFrame() {
@@ -231,7 +250,11 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         while (true) {
             entry = diffFrames.ceilingEntry(time);
             if ((entry == null) || (entry.getKey() > position)) {
-                return updater.pull();
+                Structure ret = updater.pull();
+                if (currFrame == null) {
+                    currFrame = ret;
+                }
+                return ret;
             }
             updater.push(entry.getValue());
             time = entry.getKey() + 1;
@@ -255,8 +278,26 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         state = State.TERMINATE;
     }
 
+    @Override
+    public void run() {
+        loadFromInputs();
+        state = State.PLAYING;
+        position = startTime;
+        positionLock = false;
+        while (state != State.TERMINATE) {
+            generateFrame();
+            try {
+                Thread.sleep(1000 / frameRate);
+                position += (long) (1000.0 * speed / (double) frameRate);
+                position = Math.min(startTime + duration, position);
+                generateFrame();
+            } catch (InterruptedException e) {
+            }
+        }
+    }
+
     public static enum State {
-        STOPPED, PLAYING, BACKWARDS, TERMINATE
+        STOPPED, PLAYING, BACKWARDS, TERMINATE, STARTING
     }
 
 }
