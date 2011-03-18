@@ -117,8 +117,8 @@ public class TextPainter implements Painter {
             pos = e.getParameter(TextKeys.CENTER);
             posChanged = true;
             if (align == Align.NONE) {
-                pos = new Point2d(pos.x -= vis2d.getFontMetrics(font).stringWidth(text) / 2.0,
-                        pos.y -= sizeY / 2.0);
+                pos = new Point2d(pos.x - vis2d.getFontMetrics(font).stringWidth(text) / 2.0, pos.y
+                        - sizeY / 2.0);
             }
         }
         if (!posChanged && (align != Align.NONE)) {
