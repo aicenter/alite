@@ -33,7 +33,7 @@ public class ScreenTextLayer extends TypedLayer {
     public Structure pull() {
         Structure struct = new Structure(CommonKeys.STRUCT_PART);
         if (hasType(TextKeys.TYPE)) {
-            Folder f = struct.getRoot("Undead land").getFolder("Text");
+            Folder f = struct.getRoot("World").getFolder("Text");
             Element e;
             // time
             e = f.getElement("upper_left", TextKeys.TYPE);
@@ -47,19 +47,19 @@ public class ScreenTextLayer extends TypedLayer {
             e = f.getElement("upper_center", TextKeys.TYPE);
             setParameter(e, TextKeys.COLOR, new Color(255, 100, 0));
             setParameter(e, TextKeys.FONT, new Font("GothicE", Font.PLAIN, 30));
-            setParameter(e, TextKeys.TEXT, "Welcome to Undead Land");
+            setParameter(e, TextKeys.TEXT, "Welcome");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.UPPER_CENTER);
             //
             e = f.getElement("upper_right", TextKeys.TYPE);
             setParameter(e, TextKeys.FONT_NAME, "arial");
             setParameter(e, TextKeys.COLOR, Color.CYAN);
             setParameter(e, TextKeys.FONT_SIZE, 10.0);
-            setParameter(e, TextKeys.TEXT, "Grrrrr");
+            setParameter(e, TextKeys.TEXT, "Text1");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.UPPER_RIGHT);
             //
             e = f.getElement("left_center", TextKeys.TYPE);
             setParameter(e, TextKeys.FONT_STYLE, Font.BOLD);
-            setParameter(e, TextKeys.TEXT, "Aaaaaaaa");
+            setParameter(e, TextKeys.TEXT, "Text2");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.CENTER_LEFT);
             //
             // e = f.getElement("center", TextKeys.TYPE);
@@ -74,19 +74,19 @@ public class ScreenTextLayer extends TypedLayer {
             setParameter(e, TextKeys.FONT, new Font("arial", Font.PLAIN, 10));
             setParameter(e, TextKeys.CONSTANT_SIZE, false);
             setParameter(e, TextKeys.TEXT,
-                    "I am the death unlimited and death is all I have to give");
+                    "Example environment");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.CENTER_RIGHT);
 
             e = f.getElement("right_center2", TextKeys.TYPE);
             setParameter(e, TextKeys.TEXT,
-                    "I'll tell you the meaning of life, it's not to live but to die!");
+                    "Using visprotocol");
             setParameter(e, TextKeys.POS, new Point2d(0, 11));
             //
             e = f.getElement("lower_left", TextKeys.TYPE);
             setParameter(e, TextKeys.FONT_STYLE, Font.ITALIC);
             setParameter(e, TextKeys.POS, new Point2d(20, -20));
             setParameter(e, TextKeys.CONSTANT_SIZE, true);
-            setParameter(e, TextKeys.TEXT, "Bla bla bla");
+            setParameter(e, TextKeys.TEXT, "Text3");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.LOWER_LEFT);
             //
             e = f.getElement("lower_center", TextKeys.TYPE);

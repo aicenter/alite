@@ -25,7 +25,7 @@ public class SimInfoLayer extends TypedLayer {
     public Structure pull() {
         Structure struct = new Structure(CommonKeys.STRUCT_PART, env.getTime());
         if (hasType("Name")) {
-            Element e = struct.getRoot("Undead land").getFolder("Other").getElement("Info", "Name");
+            Element e = struct.getRoot("World").getFolder("Other").getElement("Info", "Name");
             setParameter(e, "Name", "Undead land");
         }
         struct.setType(CommonKeys.STRUCT_PART);
