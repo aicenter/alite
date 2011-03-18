@@ -3,6 +3,7 @@ package incubator.visprotocol.vis.player;
 import incubator.visprotocol.processor.MultipleInputProcessor;
 import incubator.visprotocol.processor.StateHolder;
 import incubator.visprotocol.processor.StructProcessor;
+import incubator.visprotocol.processor.updater.DiffUpdater;
 import incubator.visprotocol.protocol.StreamProtocol;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
@@ -10,8 +11,9 @@ import incubator.visprotocol.structure.key.CommonKeys;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 /**
  * Player pulling from input.
@@ -24,13 +26,14 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     // pointers
     private final Set<FrameListener> listeners;
     private Thread thread;
-    private final PriorityQueue<Structure> data;
-    private final PriorityQueue<Structure> fullFrames;
+    private final TreeMap<Long, Structure> diffFrames;
+    private final TreeMap<Long, Structure> fullFrames;
 
     // properties
     private double speed = 1;
     private long intervalFullStates = 10000;
-
+    private int frameRate = 25;
+    
     // state
     private long position = 0;
     private State state = State.STOPPED;
@@ -46,8 +49,8 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     public Player(List<StructProcessor> inputs) {
         super(inputs);
         listeners = new LinkedHashSet<FrameListener>();
-        data = new PriorityQueue<Structure>();
-        fullFrames = new PriorityQueue<Structure>();
+        diffFrames = new TreeMap<Long, Structure>();
+        fullFrames = new TreeMap<Long, Structure>();
         thread = new Thread(this);
         thread.start();
         pause();
@@ -146,10 +149,10 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
                 startTime = newPart.getTimeStamp();
             }
             if (newPart.getType().equals(CommonKeys.STRUCT_COMPLETE)) {
-                fullFrames.add(newPart);
+                fullFrames.put(newPart.getTimeStamp(), newPart);
                 lastFullFrame = Math.max(newPart.getTimeStamp(), lastFullFrame);
             } else {
-                data.add(newPart);
+                diffFrames.put(newPart.getTimeStamp(), newPart);
                 if (fullFrames.isEmpty()) {
                     lastFullFrame = startTime - intervalFullStates;
                 }
@@ -185,9 +188,8 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         while (state != State.TERMINATE) {
             generateFrame();
             try {
-                // TODO presne spocitat delay
-                Thread.sleep((int) (1000 / speed));
-                position += 1000 / speed;
+                Thread.sleep(1000 / frameRate);
+                position += (long)(1000.0 / speed / (double)frameRate);
                 generateFrame();
             } catch (InterruptedException e) {
             }
@@ -206,12 +208,34 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
 
     private void generateFullFrame() {
         lastFullFrame += intervalFullStates;
-        fullFrames.add(generateFrame(lastFullFrame));
+        fullFrames.put(lastFullFrame, generateFrame(lastFullFrame));
     }
 
-    private Structure generateFrame(long where) {
-        // TODO
-        return null;
+    private Structure generateFrame(long position) {
+        // find latest full frame
+        DiffUpdater updater;
+        Entry<Long, Structure> entry = fullFrames.floorEntry(position);
+        if (entry == null) {
+            // no full frame, generate from first diff
+            entry = diffFrames.floorEntry(position);
+            if (entry == null) {
+                throw new RuntimeException("No data");
+            }
+            updater = new DiffUpdater();
+            updater.push(entry.getValue());
+        } else {
+            updater = new DiffUpdater(entry.getValue());
+        }
+        long time = entry.getKey();
+        // update until position
+        while (true) {
+            entry = diffFrames.ceilingEntry(time);
+            if ((entry == null) || (entry.getKey() > position)) {
+                return updater.pull();
+            }
+            updater.push(entry.getValue());
+            time = entry.getKey() + 1;
+        }
     }
 
     private boolean changeState(State newState) {
@@ -223,7 +247,7 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     }
 
     private boolean dataIsEmpty() {
-        return data.isEmpty() && fullFrames.isEmpty();
+        return diffFrames.isEmpty() && fullFrames.isEmpty();
     }
 
     @Override

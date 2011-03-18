@@ -31,7 +31,7 @@ public class DiffUpdater extends MultipleInputProcessor implements StateHolder {
     private boolean acceptPast = false;
 
     // state
-    private Structure state = new Structure();
+    private Structure state = new Structure(CommonKeys.STRUCT_COMPLETE);
     private boolean firstRun = true;
 
     public DiffUpdater(Structure state) {
@@ -71,7 +71,6 @@ public class DiffUpdater extends MultipleInputProcessor implements StateHolder {
         }
 
         firstRun = false;
-        state.setType(CommonKeys.STRUCT_COMPLETE);
         return state;
     }
 
