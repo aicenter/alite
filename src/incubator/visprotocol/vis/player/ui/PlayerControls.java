@@ -17,7 +17,7 @@ import javax.swing.JScrollBar;
 /**
  * @author Ondrej Milenovsky
  * */
-public class PlayerControls extends JPanel implements PlayerController, FrameListener {
+public class PlayerControls extends JPanel implements FrameListener {
 
     private static final long serialVersionUID = 1993157784144029481L;
 
@@ -43,6 +43,7 @@ public class PlayerControls extends JPanel implements PlayerController, FrameLis
 
     public PlayerControls(PlayerInterface player) {
         this.player = player;
+        player.addFrameListener(this);
         initComponents();
     }
 
@@ -104,14 +105,12 @@ public class PlayerControls extends JPanel implements PlayerController, FrameLis
         repaintCurrTime();
     }
 
-    @Override
     public void setDurationTime(long time) {
         durationTime = time;
         seeker.setMaximum((int) (time / seekerPrecision));
         repaintDurTime();
     }
 
-    @Override
     public void setStartTime(long time) {
         startTime = time;
     }

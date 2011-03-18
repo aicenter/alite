@@ -65,6 +65,7 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         return intervalFullStates;
     }
 
+    @Override
     public void addFrameListener(FrameListener listener) {
         listeners.add(listener);
     }
