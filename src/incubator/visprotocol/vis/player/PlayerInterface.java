@@ -17,4 +17,6 @@ public interface PlayerInterface {
     public long getDuration();
 
     public long getStartTime();
+    
+    public void addFrameListener(FrameListener listener);
 }
