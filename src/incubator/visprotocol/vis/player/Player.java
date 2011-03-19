@@ -320,6 +320,7 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     private synchronized void step() {
         position += (long) (1000.0 * speed / (double) frameRate);
         position = Math.min(startTime + duration, position);
+        position = Math.max(startTime, position);
         generateFrame();
     }
 
