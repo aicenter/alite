@@ -36,6 +36,7 @@ public class StreamOutputProtocol extends MultipleInputProcessor implements Stre
 
     public void close() {
         try {
+            output.flush();
             output.close();
             output = null;
         } catch (IOException e) {

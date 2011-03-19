@@ -39,7 +39,7 @@ public class PlayerControls extends JPanel implements FrameListener {
     private int seekerPrecision = 100;
     private boolean useYodaTime = false;
     private int speedMax = 10000;
-    private int speedDiv = 8000;
+    private int speedDiv = 5000;
 
     // state
     private long startTime = 0;
@@ -77,7 +77,7 @@ public class PlayerControls extends JPanel implements FrameListener {
         seeker.setMaximum(0);
 
         speedBar.setMinimum(1);
-        speedBar.setMaximum(speedMax);
+        speedBar.setMaximum(speedMax + 10);
         speedBar.setValue((int)(speed * speedDiv));
         player.setSpeed(speed);
         repaintSpeed();
