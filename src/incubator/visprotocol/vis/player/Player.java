@@ -5,15 +5,24 @@ import incubator.visprotocol.processor.StateHolder;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.processor.updater.DiffUpdater;
 import incubator.visprotocol.protocol.StreamProtocol;
+import incubator.visprotocol.structure.Element;
+import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
+import incubator.visprotocol.structure.key.FillColorKeys;
+import incubator.visprotocol.structure.key.TextKeys;
+import incubator.visprotocol.structure.key.struct.Align;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+
+import javax.vecmath.Point2d;
 
 /**
  * Player pulling from input.
@@ -37,7 +46,7 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     // state
     private long position = 0;
     private State state = State.STARTING;
-    private Structure currFrame = new Structure(0L);
+    private Structure currFrame = null;
     private long lastFullFrame = Long.MIN_VALUE;
     private long duration = -1;
     private long startTime = 0;
@@ -215,11 +224,14 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     /** returns current frame */
     @Override
     public Structure getState() {
+        if (currFrame == null) {
+            return getLoadingScreen();
+        }
         return currFrame;
     }
 
     private synchronized void generateFrame() {
-        if ((position == currFrame.getTimeStamp()) || fullFrames.isEmpty()) {
+        if ((currFrame != null) && (position == currFrame.getTimeStamp()) || fullFrames.isEmpty()) {
             return;
         }
         // faster forward generation from last full frame
@@ -276,9 +288,6 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
             entry = diffFrames.ceilingEntry(time);
             if ((entry == null) || (entry.getKey() > position)) {
                 Structure ret = updater.pull();
-                if (currFrame == null) {
-                    currFrame = ret;
-                }
                 return ret;
             }
             updater.push(entry.getValue());
@@ -296,6 +305,41 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
 
     private boolean dataIsEmpty() {
         return diffFrames.isEmpty() && fullFrames.isEmpty();
+    }
+
+    private Structure getLoadingScreen() {
+        Structure ret = new Structure(CommonKeys.STRUCT_COMPLETE, 0L);
+        Folder f = ret.getRoot("Root");
+        Element e;
+
+        e = f.getElement("Back", FillColorKeys.TYPE);
+        e.setParameter(FillColorKeys.COLOR, Color.BLACK);
+
+        e = f.getElement("Loading", TextKeys.TYPE);
+        e.setParameter(TextKeys.ALIGN_ON_SCREEN, Align.CENTER);
+        e.setParameter(TextKeys.TEXT, "Loading in progress");
+        e.setParameter(TextKeys.FONT, new Font("GothicE", Font.PLAIN, 30));
+        e.setParameter(TextKeys.CONSTANT_SIZE, true);
+        e.setParameter(TextKeys.COLOR, Color.RED);
+
+        e = f.getElement("Diffs", TextKeys.TYPE);
+        e.setParameter(TextKeys.FONT, new Font("Arial", Font.PLAIN, 10));
+        e.setParameter(TextKeys.TEXT, "Diff frames: " + diffFrames.size());
+        e.setParameter(TextKeys.COLOR, Color.WHITE);
+        e.setParameter(TextKeys.POS, new Point2d(0, 30));
+
+        e = f.getElement("Fulls", TextKeys.TYPE);
+        e.setParameter(TextKeys.TEXT, "Full frames: " + fullFrames.size());
+        e.setParameter(TextKeys.POS, new Point2d(0, 40));
+
+        e = f.getElement("Start", TextKeys.TYPE);
+        e.setParameter(TextKeys.TEXT, "Start time: " + startTime);
+        e.setParameter(TextKeys.POS, new Point2d(0, 50));
+
+        e = f.getElement("End", TextKeys.TYPE);
+        e.setParameter(TextKeys.TEXT, "End time: " + (startTime + duration));
+        e.setParameter(TextKeys.POS, new Point2d(0, 60));
+        return ret;
     }
 
     @Override
