@@ -93,6 +93,9 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
                     "Speed must be > 0, you can use stop() or playBackwards()");
         }
         this.speed = speed;
+        if (state == State.BACKWARDS) {
+            this.speed = -this.speed;
+        }
     }
 
     @Override
