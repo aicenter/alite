@@ -41,7 +41,7 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     private long lastFullFrame = Long.MIN_VALUE;
     private long duration = -1;
     private long startTime = 0;
-    private boolean fullFramesDuringPush = false;
+    private boolean fullFramesDuringPush = true;
 
     public Player(StructProcessor... inputs) {
         this(Arrays.asList(inputs));
@@ -52,7 +52,6 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         listeners = new LinkedHashSet<FrameListener>();
         diffFrames = new TreeMap<Long, Structure>();
         fullFrames = new TreeMap<Long, Structure>();
-        speed = 0.1;
         thread = new Thread(this);
         thread.start();
     }
@@ -225,7 +224,9 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         }
         // faster forward generation from last full frame
         long backFullFrame = fullFrames.floorKey(position);
-        if (backFullFrame < currFrame.getTimeStamp()) {
+        if ((currFrame != null) && (backFullFrame < currFrame.getTimeStamp())
+                && (fullFrames.floorKey(currFrame.getTimeStamp()) == backFullFrame)
+                && (currFrame.getTimeStamp() <= position)) {
             DiffUpdater updater = new DiffUpdater(currFrame);
             long time = currFrame.getTimeStamp();
             while (true) {
