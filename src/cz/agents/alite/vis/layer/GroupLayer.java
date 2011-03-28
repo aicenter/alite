@@ -20,58 +20,62 @@ public class GroupLayer extends AbstractLayer implements GroupVisLayer {
     }
 
     public LinkedList<VisLayer> getSubLayers() {
-	return subLayers;
+        return subLayers;
     }
 
     @Override
     public void init(Vis vis) {
-	for (VisLayer layer : getSubLayers()) {
-	    layer.init(vis);
-	}
+        for (VisLayer layer : getSubLayers()) {
+            layer.init(vis);
+        }
     }
 
     @Override
     public void addSubLayer(VisLayer layer) {
-	subLayers.add(layer);
+        subLayers.add(layer);
     }
 
     @Override
     public void removeSubLayer(VisLayer layer) {
-	subLayers.remove(layer);
+        subLayers.remove(layer);
     }
 
     @Override
     public void paint(Graphics2D canvas) {
-	// TODO slow, do it better way
-	List<VisLayer> toIterateThrough = new ArrayList<VisLayer>(subLayers);
-	for (VisLayer layer : toIterateThrough) {
-	    layer.paint(canvas);
-	}
+        // TODO slow, do it better way
+        List<VisLayer> toIterateThrough = new ArrayList<VisLayer>(subLayers);
+        for (VisLayer layer : toIterateThrough) {
+            layer.paint(canvas);
+        }
     }
 
     @Override
     public String getLayerDescription() {
-	String description = "All sub-layers are always shown:";
-	return buildLayersDescription(description);
+        String description = "All sub-layers are always shown:";
+        return buildLayersDescription(description);
     }
 
     public static GroupLayer create() {
-	return new GroupLayer();
+        return new GroupLayer();
     }
 
     protected String buildLayersDescription(String description) {
-	if (getHelpOverrideString() != null) {
-	    return getHelpOverrideString();
-	}
+        if (getHelpOverrideString() != null) {
+            return getHelpOverrideString();
+        }
 
-	for (VisLayer layer : subLayers) {
-	    if (!layer.getLayerDescription().isEmpty()) {
-		description += "<br/>   "
-			+ layer.getLayerDescription().replace("   ", "      ")
-				.replace("\n", "\n   ");
-	    }
-	}
-	return description;
+        for (VisLayer layer : subLayers) {
+            if (!layer.getLayerDescription().isEmpty()) {
+                description += "<br/>   "
+                        + layer.getLayerDescription().replace("   ", "      ").replace("\n",
+                                "\n   ");
+            }
+        }
+        return description;
     }
 
+    public void clear() {
+        subLayers.clear();
+    }
+    
 }

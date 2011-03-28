@@ -16,14 +16,21 @@ import cz.agents.alite.vis.layer.toggle.KeyToggleLayer;
  */
 public class VisInfoLayer extends CommonLayer {
 
+    private final Color color;
+    
     protected VisInfoLayer() {
+        this(Color.BLUE);
     }
 
+    protected VisInfoLayer(Color color) {
+        this.color = color;
+    }
+    
     @Override
     public void paint(Graphics2D canvas) {
         Dimension dim = Vis.getDrawingDimension();
 
-        canvas.setColor(Color.BLUE);
+        canvas.setColor(color);
         canvas.drawString(String.format("Zoom: %.2f", Vis.getZoomFactor()), 15, dim.height - 75);
         canvas.drawString(String.format("Offset: (%.2f, %.2f)", Vis.getOffset().x / Vis.getZoomFactor(), Vis.getOffset().y / Vis.getZoomFactor()), 15, dim.height - 55);
         canvas.drawString(String.format("Screen: (%.2f, %.2f)", Vis.getCursorPosition().x, Vis.getCursorPosition().y), 15, dim.height - 35);
@@ -37,6 +44,13 @@ public class VisInfoLayer extends CommonLayer {
         return toggle;
     }
 
+    public static VisLayer create(Color color) {
+        KeyToggleLayer toggle = KeyToggleLayer.create("i");
+        toggle.addSubLayer(new VisInfoLayer(color));
+
+        return toggle;
+    }
+    
     @Override
     public String getLayerDescription() {
         String description = "[Vis Info] The layer shows visualisation info in lower left corner (zoom factor, panning offser, mouse position).";
