@@ -16,12 +16,14 @@ import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.TreePainter;
+import incubator.visprotocol.vis.output.vis2d.Vis2DBasicTransformators;
 import incubator.visprotocol.vis.output.vis2d.painter.Vis2DBasicPainters;
 import incubator.visprotocol.vis.player.Player;
 import incubator.visprotocol.vis.player.ui.PlayerControls;
 
 import java.awt.BorderLayout;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 /**
@@ -37,7 +39,7 @@ public class VisFactory {
     private FilterStorage filter;
 
     private StructProcessor lastProtocol;
-    
+
     private StructProcessor layerDiffer;
     private StructProcessor layerMerger;
 
@@ -104,23 +106,31 @@ public class VisFactory {
 
     /** Creates and returns vis 2D on last protocol. */
     public Vis2DOutput createVis2DOutput(Vis2DParams params) {
-        Vis2DOutput ret = new Vis2DOutput(params);
+        Vis2DOutput ret = createVis2D(params);
         ret.addInput(getVis2dPainter());
-        ret.setStreamCloser(streamCloser);
         return ret;
     }
 
     /** Creates and returns vis 2D player on last protocol. */
     public Vis2DOutput createVis2DPlayerOutput(Vis2DParams params) {
-        Vis2DOutput ret = new Vis2DOutput(params);
+        if (!(lastProtocol instanceof FileReaderProtocol)) {
+            System.err.println("Player should be created on file reader protocol.");
+        }
+        Vis2DOutput ret = createVis2D(params);
         Player player = new Player(lastProtocol);
         TreePainter painter = new TreePainter(new StateGetter(player));
         ret.addPanel(new PlayerControls(player), BorderLayout.SOUTH);
         ret.addInput(painter);
+        return ret;
+    }
+
+    private Vis2DOutput createVis2D(Vis2DParams params) {
+        Vis2DOutput ret = new Vis2DOutput(params);
+        ret.addTransformators(Vis2DBasicTransformators.createBasicTransformators());
         ret.setStreamCloser(streamCloser);
         return ret;
     }
-    
+
     // Painters ////////////
 
     /**
@@ -148,20 +158,12 @@ public class VisFactory {
         layers.add(layer);
     }
 
-    /** adds layer which does not depend environment to last output */
-    public void addOutputLayer(StructProcessor layer) {
-    }
-
-    /** adds layer which does not depend environment to all output */
-    public void addOutputLayerAll(StructProcessor layer) {
-    }
-
-    // ////////
+    // Other ////////
 
     public FilterStorage getFilter() {
         return filter;
     }
-    
+
     private void clearPainters() {
         vis2dPainter = null;
     }
