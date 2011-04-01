@@ -179,7 +179,7 @@ public class TestCreator implements Creator {
         }
     }
 
-    public static class ExampleEnvironment implements ZombieProvider {
+    public static class ExampleEnvironment implements PersonProvider {
 
         private long exampleTime = 1;
 
