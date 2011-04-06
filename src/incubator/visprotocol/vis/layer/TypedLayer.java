@@ -1,8 +1,5 @@
 package incubator.visprotocol.vis.layer;
 
-import java.util.Arrays;
-import java.util.List;
-
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
@@ -11,7 +8,10 @@ import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.PointKeys;
 import incubator.visprotocol.structure.key.Typer;
 import incubator.visprotocol.utils.StructUtils;
-import incubator.visprotocol.vis.layer.element.PointElement;
+import incubator.visprotocol.vis.layer.element.AbstractElement;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Proxy layer using filter, methods are forwarded, so you call hasType(type) instead
@@ -92,30 +92,11 @@ public abstract class TypedLayer implements StructProcessor {
 
     // ELEMENTS //////////////////
 
-    /** sets parameter if not already set */
-    protected <C> boolean setElementParameter(Element e, Element last, Typer<C> param, C value) {
-        return setElementParameter(e, last, param.toString(), value);
-    }
-
-    /** sets parameter if not already set */
-    protected boolean setElementParameter(Element e, Element last, String param, Object value) {
-        if (!last.parameterEqual(param, value)) {
-            setParameter(e, param, value);
-            return true;
-        }
-        return false;
-    }
-
-    protected void addElement(Element e) {
-        currentFolder.addElement(e);
-    }
-
-    /** makes swallow copy */
-    protected Element addPoint(String name, PointElement point) {
-        Element e = new Element(name, PointKeys.TYPE);
+    /** makes swallow copy of the element so it can be used again */
+    protected Element addElement(String name, AbstractElement element) {
         Element last = StructUtils.getLastElement(currentFolder, PointKeys.TYPE);
-        setElementParameter(e, last, PointKeys.CENTER, point.pos);
-        addElement(e);
+        Element e = element.createElement(last, name, filter);
+        currentFolder.addElement(e);
         return e;
     }
 
