@@ -5,17 +5,17 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.vis.layer.FilterStorage;
-import incubator.visprotocol.vis.layer.TypedLayer;
+import incubator.visprotocol.vis.layer.AbstractLayer;
 
 /**
  * Generating struct timestamp
  * 
  * @author Ondrej Milenovsky
  * */
-public class SimInfoLayer extends TypedLayer {
+public class SimInfoLayer extends AbstractLayer {
 
     private final ExampleEnvironment env;
-    
+
     public SimInfoLayer(ExampleEnvironment env, FilterStorage filter) {
         super(filter);
         this.env = env;
@@ -30,6 +30,12 @@ public class SimInfoLayer extends TypedLayer {
         }
         struct.setType(CommonKeys.STRUCT_PART);
         return struct;
+    }
+
+    @Override
+    protected void generateFrame() {
+        // TODO Auto-generated method stub
+
     }
 
 }

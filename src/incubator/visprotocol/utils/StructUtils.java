@@ -64,9 +64,10 @@ public class StructUtils {
         return null;
     }
 
-    /** returns last element of the type from folder */
+    /** returns last element of the type from folder, do not use until iterator fixed */
+    @Deprecated
+    // TODO is possible to iterate backwards on linked hash set ? oracle has this in bug list
     public static Element getLastElement(Folder f, String type) {
-        // TODO is possible to iterate backwards on linked hash set ? oracle has this in bug list
         Element ret = null;
         for (Element e : f.getElements()) {
             if ((e.getType() == type) || e.getType().equals(type)) {

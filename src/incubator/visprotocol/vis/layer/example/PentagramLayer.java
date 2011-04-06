@@ -9,7 +9,7 @@ import incubator.visprotocol.structure.key.LineKeys;
 import incubator.visprotocol.structure.key.ShapeKeys;
 import incubator.visprotocol.structure.key.struct.Shape;
 import incubator.visprotocol.vis.layer.FilterStorage;
-import incubator.visprotocol.vis.layer.TypedLayer;
+import incubator.visprotocol.vis.layer.AbstractLayer;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import javax.vecmath.Point3d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class PentagramLayer extends TypedLayer {
+public class PentagramLayer extends AbstractLayer {
 
     private final ExampleEnvironment env;
     private double size = 10000;
@@ -42,6 +42,12 @@ public class PentagramLayer extends TypedLayer {
             fillPentagram(f, step + i, new Color(30 + i * 6, 0, 0), i);
         }
         return struct;
+    }
+
+    @Override
+    protected void generateFrame() {
+        // TODO Auto-generated method stub
+
     }
 
     private void fillPentagram(Folder f, int step, Color c, int number) {

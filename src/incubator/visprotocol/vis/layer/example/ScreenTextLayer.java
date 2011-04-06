@@ -8,7 +8,7 @@ import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.structure.key.struct.Align;
 import incubator.visprotocol.vis.layer.FilterStorage;
-import incubator.visprotocol.vis.layer.TypedLayer;
+import incubator.visprotocol.vis.layer.AbstractLayer;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,7 +20,7 @@ import javax.vecmath.Point3d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class ScreenTextLayer extends TypedLayer {
+public class ScreenTextLayer extends AbstractLayer {
 
     private final ExampleEnvironment env;
 
@@ -102,6 +102,12 @@ public class ScreenTextLayer extends TypedLayer {
 
         }
         return struct;
+    }
+
+    @Override
+    protected void generateFrame() {
+        // TODO Auto-generated method stub
+
     }
 
 }

@@ -9,7 +9,7 @@ import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.structure.key.struct.Align;
 import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.layer.FilterStorage;
-import incubator.visprotocol.vis.layer.TypedLayer;
+import incubator.visprotocol.vis.layer.AbstractLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 
 import java.awt.Color;
@@ -24,7 +24,7 @@ import javax.vecmath.Point3d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class Vis2DInfoLayer extends TypedLayer {
+public class Vis2DInfoLayer extends AbstractLayer {
 
     public static final String ROOT_ID = "root";
     public static final String POSX_ID = "posx";
@@ -83,6 +83,11 @@ public class Vis2DInfoLayer extends TypedLayer {
             setParameter(e, TextKeys.POS, new Point3d(0, fontSize * 2, 0));
         }
         return ret;
+    }
+    @Override
+    protected void generateFrame() {
+        // TODO Auto-generated method stub
+        
     }
 
     protected double cutNumber(double a) {

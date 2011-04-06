@@ -13,7 +13,7 @@ public abstract class AbstractElement {
     public abstract Element createElement(Element lastElement, String name, FilterStorage filter);
 
     public abstract String getType();
-    
+
     /** sets parameter to element if not filtred */
     protected <C> void setParameter(Element e, Typer<C> typer, C value, FilterStorage filter) {
         if (filter.typeHasParam(e.getType(), typer.id)) {
@@ -37,7 +37,7 @@ public abstract class AbstractElement {
     /** sets parameter if not already set */
     protected boolean setElementParameter(Element e, Element last, String param, Object value,
             FilterStorage filter) {
-        if (!last.parameterEqual(param, value)) {
+        if ((last == null) || !last.parameterEqual(param, value)) {
             setParameter(e, param, value, filter);
             return true;
         }
