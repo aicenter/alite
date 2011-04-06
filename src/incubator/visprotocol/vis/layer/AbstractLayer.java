@@ -22,6 +22,7 @@ import java.util.List;
 public abstract class AbstractLayer implements StructProcessor {
 
     private FilterStorage filter;
+
     private Folder currentFolder;
     private Structure struct = new Structure();
 
@@ -44,10 +45,15 @@ public abstract class AbstractLayer implements StructProcessor {
     public Structure pull() {
         struct = new Structure(CommonKeys.STRUCT_PART);
         generateFrame();
-        lastElements.clear();
         Structure ret = struct;
-        struct = null;
+        clear();
         return ret;
+    }
+
+    private void clear() {
+        struct = null;
+        currentFolder = null;
+        lastElements.clear();
     }
 
     protected abstract void generateFrame();
