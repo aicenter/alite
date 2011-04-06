@@ -14,10 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Proxy layer using filter, methods are forwarded, so you call hasType(type) instead
- * filter.hasType(type) + some useful methods. Before creating an element, always check
- * hasParam(type). Never call element.setParameter(param, value), call setParameter(element, param,
- * value). Before creating an element, always check hasType(type).
+ * Abstract layer to generate frames. In every frame the layer contains only empty structure, fill
+ * it.
  * 
  * @author Ondrej Milenovsky
  * */
@@ -26,7 +24,7 @@ public abstract class AbstractLayer implements StructProcessor {
     private FilterStorage filter;
     private Folder currentFolder;
     private Structure struct = new Structure();
-    
+
     private HashMap<String, Element> lastElements;
 
     public AbstractLayer(FilterStorage filter) {
@@ -36,6 +34,10 @@ public abstract class AbstractLayer implements StructProcessor {
 
     public FilterStorage getFilter() {
         return filter;
+    }
+
+    public Structure getStruct() {
+        return struct;
     }
 
     @Override
@@ -108,15 +110,14 @@ public abstract class AbstractLayer implements StructProcessor {
         last.updateParams(e);
         currentFolder.addElement(e);
     }
-    
-    
+
     /** makes swallow copy of the element so it can be used again */
     protected void addElement(String name, AbstractElement element) {
         String type = element.getType();
         if (!hasType(type)) {
             return;
         }
-        if(!lastElements.containsKey(type)) {
+        if (!lastElements.containsKey(type)) {
             lastElements.put(type, new Element("", type));
         }
         Element last = lastElements.get(type);
@@ -124,8 +125,9 @@ public abstract class AbstractLayer implements StructProcessor {
         addElement(e);
     }
 
+    /** sets timestamp to structure */
     protected void setTime(long time) {
         struct.setTimeStamp(time);
     }
-    
+
 }
