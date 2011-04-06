@@ -61,7 +61,12 @@ public class VisFactory {
 
     /** Creates and returns new memory protocol, rewrites last protocol. */
     public StructProcessor createMemoryProcotol() {
-        lastProtocol = new MemoryProtocol(getLayerDiffer());
+        if (layerDiffer == null) {
+            lastProtocol = new MemoryProtocol(getLayerDiffer());
+        } else {
+            // TODO remove after caching
+            lastProtocol = new MemoryProtocol(new StateGetter(getLayerDiffer()));
+        }
         return lastProtocol;
     }
 
@@ -85,11 +90,11 @@ public class VisFactory {
     // Updaters/differs ////////////
 
     /** Returns instance of differ on layers, always one instance. */
-    public StructProcessor getLayerDiffer() {
+    public Differ getLayerDiffer() {
         if (layerDiffer == null) {
             layerDiffer = new Differ(layers);
         }
-        return layerDiffer;
+        return (Differ) layerDiffer;
     }
 
     /** Returns instance of merge updater on layers, always one instance. */
