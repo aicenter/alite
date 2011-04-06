@@ -5,12 +5,13 @@ import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.common.FillColorLayer;
+import incubator.visprotocol.vis.layer.common.SimInfoLayer;
+import incubator.visprotocol.vis.layer.common.TimeHolder;
 import incubator.visprotocol.vis.layer.common.Vis2DInfoLayer;
 import incubator.visprotocol.vis.layer.example.DynamicPointsLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
 import incubator.visprotocol.vis.layer.example.PersonLayer;
 import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
-import incubator.visprotocol.vis.layer.example.SimInfoLayer;
 import incubator.visprotocol.vis.layer.example.StaticPoints;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
@@ -145,11 +146,11 @@ public class TestCreator implements Creator {
         }
     }
 
-    public static class ExampleEnvironment implements PersonProvider {
+    public static class ExampleEnvironment implements PersonProvider, TimeHolder {
 
         private long exampleTime = 1;
 
-        private String exampleString = "Green zombie";
+        private String exampleString = "Crazy person";
         private Point3d examplePosition = new Point3d();
         private int exampleInteger = 100;
 
@@ -168,7 +169,8 @@ public class TestCreator implements Creator {
             return exampleInteger;
         }
 
-        public long getTime() {
+        @Override
+        public long getCurrentTimeMillis() {
             return exampleTime;
         }
 

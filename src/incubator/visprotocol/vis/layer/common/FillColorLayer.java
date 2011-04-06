@@ -24,8 +24,8 @@ public class FillColorLayer extends AbstractLayer {
         this(color, path, DEFAULT_ID, filter);
     }
 
-    public FillColorLayer(Color color, String[] path, FilterStorage filter) {
-        this(color, path, DEFAULT_ID, filter);
+    public FillColorLayer(Color color, FilterStorage filter, String... path) {
+        this(color, DEFAULT_ID, filter, path);
     }
 
     public FillColorLayer(Color color, String path, String id, FilterStorage filter) {
@@ -34,7 +34,7 @@ public class FillColorLayer extends AbstractLayer {
         this.path = StructUtils.parsePath(path);
     }
 
-    public FillColorLayer(Color color, String[] path, String id, FilterStorage filter) {
+    public FillColorLayer(Color color, String id, FilterStorage filter, String... path) {
         super(filter);
         this.color = color;
         this.path = Arrays.asList(path);

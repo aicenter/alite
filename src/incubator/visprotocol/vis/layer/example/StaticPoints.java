@@ -28,7 +28,7 @@ public class StaticPoints extends AbstractLayer {
 
     @Override
     protected void generateFrame() {
-        changeFolder(".World.Static");
+        changeFolder("World", "Static");
         setStaticFolder();
         PointElement point = new PointElement(null, new Color(255, 160, 160, 30), 4, true);
         for (int i = 0; i < points.size(); i++) {
@@ -36,8 +36,6 @@ public class StaticPoints extends AbstractLayer {
             addElement("p" + i, point);
         }
     }
-    
-    
 
     // @Override
     // public Structure pull() {

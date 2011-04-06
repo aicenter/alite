@@ -88,7 +88,7 @@ public abstract class AbstractLayer implements StructProcessor {
         changeFolder(StructUtils.getFolderOfStruct(struct, path));
     }
 
-    protected void changeFolder(String[] path) {
+    protected void changeFolder(String... path) {
         changeFolder(StructUtils.getFolderOfStruct(struct, Arrays.asList(path)));
     }
 
@@ -124,4 +124,8 @@ public abstract class AbstractLayer implements StructProcessor {
         addElement(e);
     }
 
+    protected void setTime(long time) {
+        struct.setTimeStamp(time);
+    }
+    
 }
