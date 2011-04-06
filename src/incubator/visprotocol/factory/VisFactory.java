@@ -171,6 +171,7 @@ public class VisFactory {
 
     // Other ////////
 
+    // TODO remove filter
     public FilterStorage getFilter() {
         return filter;
     }
