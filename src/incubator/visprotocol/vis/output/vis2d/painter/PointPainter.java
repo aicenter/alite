@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 
 /**
  * Painter to paint single point from element.
@@ -29,7 +29,7 @@ public class PointPainter implements Painter {
 
     private Color color = Color.BLACK;
     private double width = 1;
-    private Point2d pos = new Point2d();
+    private Point3d pos = new Point3d();
     private boolean constantSize = false;
 
     public PointPainter(Vis2DOutput vis2dOutput) {

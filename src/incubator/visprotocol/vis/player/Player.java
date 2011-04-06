@@ -22,7 +22,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 
 /**
  * Player pulling from input.
@@ -329,19 +329,19 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
         e.setParameter(TextKeys.FONT, new Font("Arial", Font.PLAIN, 10));
         e.setParameter(TextKeys.TEXT, "Diff frames: " + diffFrames.size());
         e.setParameter(TextKeys.COLOR, Color.WHITE);
-        e.setParameter(TextKeys.POS, new Point2d(0, 30));
+        e.setParameter(TextKeys.POS, new Point3d(0, 30, 0));
 
         e = f.getElement("Fulls", TextKeys.TYPE);
         e.setParameter(TextKeys.TEXT, "Full frames: " + fullFrames.size());
-        e.setParameter(TextKeys.POS, new Point2d(0, 40));
+        e.setParameter(TextKeys.POS, new Point3d(0, 40, 0));
 
         e = f.getElement("Start", TextKeys.TYPE);
         e.setParameter(TextKeys.TEXT, "Start time: " + startTime);
-        e.setParameter(TextKeys.POS, new Point2d(0, 50));
+        e.setParameter(TextKeys.POS, new Point3d(0, 50, 0));
 
         e = f.getElement("End", TextKeys.TYPE);
         e.setParameter(TextKeys.TEXT, "End time: " + (startTime + duration));
-        e.setParameter(TextKeys.POS, new Point2d(0, 60));
+        e.setParameter(TextKeys.POS, new Point3d(0, 60, 0));
         return ret;
     }
 

@@ -11,7 +11,7 @@ import incubator.visprotocol.vis.layer.TypedLayer;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 
 /**
  * Random dynamic points changing color and appearing/disappearing.
@@ -20,14 +20,14 @@ import javax.vecmath.Point2d;
  * */
 public class DynamicPointsLayer extends TypedLayer {
 
-    private final ArrayList<Point2d> points;
+    private final ArrayList<Point3d> points;
     private double prGenerate = 0.9;
 
     public DynamicPointsLayer(int n, int size, FilterStorage filter) {
         super(filter);
-        points = new ArrayList<Point2d>(n);
+        points = new ArrayList<Point3d>(n);
         for (int i = 0; i < n; i++) {
-            points.add(new Point2d(Math.random() * size, Math.random() * size));
+            points.add(new Point3d(Math.random() * size, Math.random() * size, 0));
         }
     }
 

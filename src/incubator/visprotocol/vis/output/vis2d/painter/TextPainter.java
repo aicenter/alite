@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 
 /**
  * Painter to paint single text from element. Used to paint text on screen or text in environment.
@@ -48,7 +49,7 @@ public class TextPainter implements Painter {
     private final Vis2DOutput vis2d;
 
     private Color color = Color.BLACK;
-    private Point2d pos = new Point2d();
+    private Point3d pos = new Point3d();
     private boolean constantSize = false;
     private Font font = new Font("Arial", Font.PLAIN, 10);
     private Align align = Align.NONE;
@@ -117,12 +118,12 @@ public class TextPainter implements Painter {
             pos = e.getParameter(TextKeys.CENTER);
             posChanged = true;
             if (align == Align.NONE) {
-                pos = new Point2d(pos.x - vis2d.getFontMetrics(font).stringWidth(text) / 2.0, pos.y
-                        - sizeY / 2.0);
+                pos = new Point3d(pos.x - vis2d.getFontMetrics(font).stringWidth(text) / 2.0, pos.y
+                        - sizeY / 2.0, 0);
             }
         }
         if (!posChanged && (align != Align.NONE)) {
-            pos = new Point2d(0, 0);
+            pos = new Point3d(0, 0, 0);
         }
 
         int x1;

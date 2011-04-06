@@ -15,7 +15,7 @@ import incubator.visprotocol.vis.output.Vis2DOutput;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 
 /**
  * Layer to show zoom and pos. Cannot pass differ or updater, must be pluged directly to
@@ -75,12 +75,12 @@ public class Vis2DInfoLayer extends TypedLayer {
 
             e = f.getElement(POSY_ID, TextKeys.TYPE);
             setParameter(e, TextKeys.TEXT, "Posy: " + cutNumber(vis2d.getCursorPosition().y));
-            setParameter(e, TextKeys.POS, new Point2d(0, fontSize));
+            setParameter(e, TextKeys.POS, new Point3d(0, fontSize, 0));
 
             e = f.getElement(ZOOM_ID, TextKeys.TYPE);
             setParameter(e, TextKeys.TEXT, "Zoom: " + cutNumber(vis2d.getZoomFactor()));
             fontSize = StructUtils.updateValue(e, TextKeys.FONT_SIZE, fontSize);
-            setParameter(e, TextKeys.POS, new Point2d(0, fontSize * 2));
+            setParameter(e, TextKeys.POS, new Point3d(0, fontSize * 2, 0));
         }
         return ret;
     }

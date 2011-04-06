@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 
 /**
  * Painter to paint single shape from element. Could be oval or rectangle.
@@ -33,7 +33,7 @@ public class ShapePainter implements Painter {
 
     private Color color = Color.BLACK;
     private double width = 1;
-    private Point2d pos = new Point2d();
+    private Point3d pos = new Point3d();
     private boolean constantLineWidth = false;
     private boolean constantSize = false;
     private double sizeX = 10;

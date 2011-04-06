@@ -13,7 +13,7 @@ import incubator.visprotocol.vis.layer.TypedLayer;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 
 /**
  * Some text on screen including simulation time
@@ -42,7 +42,7 @@ public class ScreenTextLayer extends TypedLayer {
             setParameter(e, TextKeys.CONSTANT_SIZE, true);
             setParameter(e, TextKeys.TEXT, "Time: " + env.getTime());
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.UPPER_LEFT);
-            setParameter(e, TextKeys.POS, new Point2d(0, 50));
+            setParameter(e, TextKeys.POS, new Point3d(0, 50, 0));
             // title
             e = f.getElement("upper_center", TextKeys.TYPE);
             setParameter(e, TextKeys.COLOR, new Color(255, 100, 0));
@@ -73,18 +73,16 @@ public class ScreenTextLayer extends TypedLayer {
             setParameter(e, TextKeys.COLOR, Color.CYAN);
             setParameter(e, TextKeys.FONT, new Font("arial", Font.PLAIN, 10));
             setParameter(e, TextKeys.CONSTANT_SIZE, false);
-            setParameter(e, TextKeys.TEXT,
-                    "Example environment");
+            setParameter(e, TextKeys.TEXT, "Example environment");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.CENTER_RIGHT);
 
             e = f.getElement("right_center2", TextKeys.TYPE);
-            setParameter(e, TextKeys.TEXT,
-                    "Using visprotocol");
-            setParameter(e, TextKeys.POS, new Point2d(0, 11));
+            setParameter(e, TextKeys.TEXT, "Using visprotocol");
+            setParameter(e, TextKeys.POS, new Point3d(0, 11, 0));
             //
             e = f.getElement("lower_left", TextKeys.TYPE);
             setParameter(e, TextKeys.FONT_STYLE, Font.ITALIC);
-            setParameter(e, TextKeys.POS, new Point2d(20, -20));
+            setParameter(e, TextKeys.POS, new Point3d(20, -20, 0));
             setParameter(e, TextKeys.CONSTANT_SIZE, true);
             setParameter(e, TextKeys.TEXT, "Text3");
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.LOWER_LEFT);
