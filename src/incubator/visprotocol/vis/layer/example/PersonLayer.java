@@ -14,7 +14,7 @@ import incubator.visprotocol.vis.layer.TypedLayer;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 
 /**
  * Green zombie from the environment
@@ -36,7 +36,7 @@ public class PersonLayer extends TypedLayer {
         Folder f = struct.getRoot("World").getFolder("Persons");
         if (hasType(PointKeys.TYPE)) {
             Element e = f.getElement(env.getPersonName(), PointKeys.TYPE);
-            Point2d pos = new Point2d(env.getPersonPosition().x, env.getPersonPosition().y);
+            Point3d pos = new Point3d(env.getPersonPosition().x, env.getPersonPosition().y, 0);
             setParameter(e, PointKeys.CENTER, pos);
             setParameter(e, PointKeys.SIZE, 60.0);
             setParameter(e, PointKeys.COLOR, new Color(0, Math.min(255, env.getPersonHealth()), 0));
@@ -44,7 +44,7 @@ public class PersonLayer extends TypedLayer {
         }
         if (hasType(TextKeys.TYPE)) {
             Element e = f.getElement(env.getPersonName() + "-text", TextKeys.TYPE);
-            Point2d pos = new Point2d(env.getPersonPosition().x, env.getPersonPosition().y - 50);
+            Point3d pos = new Point3d(env.getPersonPosition().x, env.getPersonPosition().y - 50, 0);
             setParameter(e, TextKeys.CENTER, pos);
             setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.NONE);
             setParameter(e, TextKeys.FONT, new Font("GothicE", Font.PLAIN, 40));
@@ -53,7 +53,7 @@ public class PersonLayer extends TypedLayer {
             setParameter(e, TextKeys.TEXT, "Person1");
 
             e = f.getElement(env.getPersonName() + "-text2", TextKeys.TYPE);
-            pos = new Point2d(env.getPersonPosition().x, env.getPersonPosition().y + 50);
+            pos = new Point3d(env.getPersonPosition().x, env.getPersonPosition().y + 50, 0);
             setParameter(e, TextKeys.POS, pos);
             setParameter(e, TextKeys.FONT, new Font("Arial", Font.ITALIC, 14));
             setParameter(e, TextKeys.COLOR, new Color(160, 80, 0));

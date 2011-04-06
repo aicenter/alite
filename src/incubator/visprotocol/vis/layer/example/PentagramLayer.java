@@ -14,7 +14,7 @@ import incubator.visprotocol.vis.layer.TypedLayer;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 
 /**
  * The unholy layer >:-)
@@ -64,7 +64,7 @@ public class PentagramLayer extends TypedLayer {
                 setParameter(e, ShapeKeys.SHAPE, Shape.OVAL);
             }
             setParameter(e, ShapeKeys.COLOR, c);
-            setParameter(e, ShapeKeys.CENTER, new Point2d(cx, cy));
+            setParameter(e, ShapeKeys.CENTER, new Point3d(cx, cy, 0));
             setParameter(e, ShapeKeys.SIZE_X, sizeA);
             setParameter(e, ShapeKeys.SIZE_Y, size);
         }
@@ -77,11 +77,11 @@ public class PentagramLayer extends TypedLayer {
             }
             e.setParameter(LineKeys.COLOR, c);
 
-            ArrayList<Point2d> points = new ArrayList<Point2d>(6);
+            ArrayList<Point3d> points = new ArrayList<Point3d>(6);
             for (int i = 0; i < 5; i++) {
                 double a = Math.PI * 2 / 2.5 * i + Math.PI / 2.0 + 0.01;
-                points.add(new Point2d(cx + sizeX / 2.01 * Math.cos(a), cy + size / 2.01
-                        * Math.sin(a)));
+                points.add(new Point3d(cx + sizeX / 2.01 * Math.cos(a), cy + size / 2.01
+                        * Math.sin(a), 0));
             }
             points.add(points.get(0));
 

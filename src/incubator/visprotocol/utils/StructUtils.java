@@ -64,6 +64,18 @@ public class StructUtils {
         return null;
     }
 
+    /** returns last element of the type from folder */
+    public static Element getLastElement(Folder f, String type) {
+        // TODO is possible to iterate backwards on linked hash set ? oracle has this in bug list
+        Element ret = null;
+        for (Element e : f.getElements()) {
+            if ((e.getType() == type) || e.getType().equals(type)) {
+                ret = e;
+            }
+        }
+        return ret;
+    }
+
     public static Structure createStructure(String[] path) {
         Structure ret = new Structure();
         ret.setRoot(createFolder(path));
@@ -93,10 +105,10 @@ public class StructUtils {
     }
 
     public static Folder createFolder(String path) {
-        return createFolder(getFolderIds(path).toArray(new String[0]));
+        return createFolder(parsePath(path).toArray(new String[0]));
     }
 
-    public static List<String> getFolderIds(String path) {
+    public static List<String> parsePath(String path) {
         char sep = path.charAt(0);
         List<String> ret = new ArrayList<String>(3);
         String actual = "";
@@ -113,6 +125,14 @@ public class StructUtils {
         }
         if (!actual.equals("")) {
             ret.add(actual);
+        }
+        return ret;
+    }
+
+    public static Folder getFolderOfStruct(Structure struct, List<String> path) {
+        Folder ret = struct.getRoot(path.get(0));
+        for (int i = 1; i < path.size(); i++) {
+            ret = ret.getFolder(path.get(i));
         }
         return ret;
     }

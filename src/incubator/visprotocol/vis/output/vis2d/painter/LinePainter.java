@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.vecmath.Point2d;
+import javax.vecmath.Point3d;
 
 /**
  * Painter to paint single line from element, line can has more than two points.
@@ -32,7 +32,7 @@ public class LinePainter implements Painter {
 
     private Color color = Color.BLACK;
     private double width = 1;
-    private Collection<Point2d> points = new ArrayList<Point2d>(0);
+    private Collection<Point3d> points = new ArrayList<Point3d>(0);
     private boolean constantLinwWidth = false;
 
     public LinePainter(Vis2DOutput vis2dOutput) {
@@ -60,7 +60,7 @@ public class LinePainter implements Painter {
         int lastX = 0;
         int lastY = 0;
         boolean draw = false;
-        for (Point2d p : points) {
+        for (Point3d p : points) {
             int x = vis2dOutput.transX(p.x);
             int y = vis2dOutput.transY(p.y);
             if (draw) {
