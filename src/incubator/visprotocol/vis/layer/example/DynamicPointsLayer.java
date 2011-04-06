@@ -6,7 +6,7 @@ import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.PointKeys;
 import incubator.visprotocol.vis.layer.FilterStorage;
-import incubator.visprotocol.vis.layer.TypedLayer;
+import incubator.visprotocol.vis.layer.AbstractLayer;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import javax.vecmath.Point3d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class DynamicPointsLayer extends TypedLayer {
+public class DynamicPointsLayer extends AbstractLayer {
 
     private final ArrayList<Point3d> points;
     private double prGenerate = 0.9;
@@ -54,4 +54,9 @@ public class DynamicPointsLayer extends TypedLayer {
         return struct;
     }
 
+    @Override
+    protected void generateFrame() {
+        // TODO Auto-generated method stub
+
+    }
 }

@@ -14,13 +14,13 @@ import javax.vecmath.Point3d;
  * @author Ondrej Milenovsky
  * */
 public class PointElement extends AbstractElement {
-    public Point3d pos;
+    public Point3d center;
     public Color color;
     public double width;
     public boolean constantSize;
 
     public PointElement(Point3d pos, Color color, double width, boolean constatnSize) {
-        this.pos = pos;
+        this.center = pos;
         this.color = color;
         this.width = width;
         this.constantSize = constatnSize;
@@ -29,7 +29,7 @@ public class PointElement extends AbstractElement {
     @Override
     public Element createElement(Element lastElement, String name, FilterStorage filter) {
         Element e = new Element(name, PointKeys.TYPE);
-        setElementParameter(e, lastElement, PointKeys.CENTER, pos, filter);
+        setElementParameter(e, lastElement, PointKeys.CENTER, center, filter);
         setElementParameter(e, lastElement, PointKeys.COLOR, color, filter);
         setElementParameter(e, lastElement, PointKeys.SIZE, width, filter);
         setElementParameter(e, lastElement, PointKeys.CONSTANT_SIZE, constantSize, filter);

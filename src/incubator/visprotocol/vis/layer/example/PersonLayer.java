@@ -9,7 +9,7 @@ import incubator.visprotocol.structure.key.PointKeys;
 import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.structure.key.struct.Align;
 import incubator.visprotocol.vis.layer.FilterStorage;
-import incubator.visprotocol.vis.layer.TypedLayer;
+import incubator.visprotocol.vis.layer.AbstractLayer;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -21,7 +21,7 @@ import javax.vecmath.Point3d;
  * 
  * @author Ondrej Milenovsky
  * */
-public class PersonLayer extends TypedLayer {
+public class PersonLayer extends AbstractLayer {
 
     private final ExampleEnvironment env;
 
@@ -63,4 +63,9 @@ public class PersonLayer extends TypedLayer {
         return struct;
     }
 
+    @Override
+    protected void generateFrame() {
+        // TODO Auto-generated method stub
+
+    }
 }

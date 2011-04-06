@@ -5,12 +5,12 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
-import incubator.visprotocol.structure.key.PointKeys;
 import incubator.visprotocol.structure.key.Typer;
 import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.layer.element.AbstractElement;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,23 +21,34 @@ import java.util.List;
  * 
  * @author Ondrej Milenovsky
  * */
-public abstract class TypedLayer implements StructProcessor {
+public abstract class AbstractLayer implements StructProcessor {
 
     private FilterStorage filter;
     private Folder currentFolder;
     private Structure struct = new Structure();
+    
+    private HashMap<String, Element> lastElements;
 
-    public TypedLayer(FilterStorage filter) {
+    public AbstractLayer(FilterStorage filter) {
         this.filter = filter;
-    }
-
-    public void setFilter(FilterStorage filter) {
-        this.filter = filter;
+        lastElements = new HashMap<String, Element>();
     }
 
     public FilterStorage getFilter() {
         return filter;
     }
+
+    @Override
+    public Structure pull() {
+        struct = new Structure(CommonKeys.STRUCT_PART);
+        generateFrame();
+        lastElements.clear();
+        Structure ret = struct;
+        struct = null;
+        return ret;
+    }
+
+    protected abstract void generateFrame();
 
     // FILTER /////////////////////////
 
@@ -92,12 +103,25 @@ public abstract class TypedLayer implements StructProcessor {
 
     // ELEMENTS //////////////////
 
-    /** makes swallow copy of the element so it can be used again */
-    protected Element addElement(String name, AbstractElement element) {
-        Element last = StructUtils.getLastElement(currentFolder, PointKeys.TYPE);
-        Element e = element.createElement(last, name, filter);
+    private void addElement(Element e) {
+        Element last = lastElements.get(e.getType());
+        last.updateParams(e);
         currentFolder.addElement(e);
-        return e;
+    }
+    
+    
+    /** makes swallow copy of the element so it can be used again */
+    protected void addElement(String name, AbstractElement element) {
+        String type = element.getType();
+        if (!hasType(type)) {
+            return;
+        }
+        if(!lastElements.containsKey(type)) {
+            lastElements.put(type, new Element("", type));
+        }
+        Element last = lastElements.get(type);
+        Element e = element.createElement(last, name, filter);
+        addElement(e);
     }
 
 }

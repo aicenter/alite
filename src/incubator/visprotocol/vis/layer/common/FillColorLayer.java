@@ -7,7 +7,7 @@ import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.FillColorKeys;
 import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.layer.FilterStorage;
-import incubator.visprotocol.vis.layer.TypedLayer;
+import incubator.visprotocol.vis.layer.AbstractLayer;
 
 import java.awt.Color;
 
@@ -16,7 +16,7 @@ import java.awt.Color;
  * 
  * @author Ondrej Milenovsky
  * */
-public class FillColorLayer extends TypedLayer {
+public class FillColorLayer extends AbstractLayer {
 
     public static final String DEFAULT_ID = "Background";
     private final Structure struct;
@@ -55,5 +55,11 @@ public class FillColorLayer extends TypedLayer {
             return struct.deepCopy();
         }
         return new Structure(CommonKeys.STRUCT_PART);
+    }
+    
+    @Override
+    protected void generateFrame() {
+        // TODO Auto-generated method stub
+        
     }
 }
