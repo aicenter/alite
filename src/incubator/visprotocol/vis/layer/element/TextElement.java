@@ -35,6 +35,9 @@ public class TextElement extends AbstractElement {
     // and/or
     public Font font;
 
+    private TextElement() {
+    }
+
     public TextElement(String text, Point3d center, Color color, boolean constatnSize,
             Align alignOnScreen, Font font) {
         this.text = text;
@@ -43,10 +46,34 @@ public class TextElement extends AbstractElement {
         this.constantSize = constatnSize;
         this.alignOnScreen = alignOnScreen;
         this.font = font;
+        init();
     }
 
-    public TextElement(String text, Point3d pos, Color color, boolean constatnSize,
+    public TextElement(String text, Point3d center, Color color, boolean constatnSize,
             Point2d alignRatio, Font font) {
+        this.text = text;
+        this.center = center;
+        this.color = color;
+        this.constantSize = constatnSize;
+        this.alignRatio = alignRatio;
+        alignOnScreen = Align.RATIO;
+        this.font = font;
+        init();
+    }
+
+    public TextElement(String text, Color color, boolean constatnSize, Align alignOnScreen,
+            Point3d pos, Font font) {
+        this.text = text;
+        this.pos = pos;
+        this.color = color;
+        this.constantSize = constatnSize;
+        this.alignOnScreen = alignOnScreen;
+        this.font = font;
+        init();
+    }
+
+    public TextElement(String text, Color color, boolean constatnSize, Point2d alignRatio,
+            Point3d pos, Font font) {
         this.text = text;
         this.pos = pos;
         this.color = color;
@@ -54,6 +81,16 @@ public class TextElement extends AbstractElement {
         this.alignRatio = alignRatio;
         alignOnScreen = Align.RATIO;
         this.font = font;
+        init();
+    }
+
+    private void init() {
+        if (fontSize == 0) {
+            fontSize = font.getSize();
+        }
+        if (fontStyle == 0) {
+            fontStyle = font.getStyle();
+        }
     }
 
     @Override
@@ -81,5 +118,22 @@ public class TextElement extends AbstractElement {
     @Override
     public String getType() {
         return TextKeys.TYPE;
+    }
+
+    @Override
+    public TextElement copy() {
+        TextElement ret = new TextElement();
+        ret.center = center;
+        ret.pos = pos;
+        ret.text = text;
+        ret.color = color;
+        ret.constantSize = constantSize;
+        ret.alignOnScreen = alignOnScreen;
+        ret.alignRatio = alignRatio;
+        ret.font = font;
+        ret.fontName = fontName;
+        ret.fontSize = fontSize;
+        ret.fontStyle = fontStyle;
+        return ret;
     }
 }

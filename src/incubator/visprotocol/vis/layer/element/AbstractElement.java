@@ -37,11 +37,18 @@ public abstract class AbstractElement {
     /** sets parameter if not already set */
     protected boolean setElementParameter(Element e, Element last, String param, Object value,
             FilterStorage filter) {
+        if (value == null) {
+            return false;
+        }
         if ((last == null) || !last.parameterEqual(param, value)) {
             setParameter(e, param, value, filter);
             return true;
         }
         return false;
+    }
+
+    public AbstractElement copy() {
+        throw new RuntimeException("Not implemented");
     }
 
 }

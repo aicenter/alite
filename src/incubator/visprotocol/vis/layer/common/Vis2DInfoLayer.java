@@ -1,15 +1,9 @@
 package incubator.visprotocol.vis.layer.common;
 
-import incubator.visprotocol.structure.Element;
-import incubator.visprotocol.structure.Folder;
-import incubator.visprotocol.structure.Structure;
-import incubator.visprotocol.structure.key.CommonKeys;
-import incubator.visprotocol.structure.key.TextKeys;
-import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.structure.key.struct.Align;
-import incubator.visprotocol.utils.StructUtils;
-import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.AbstractLayer;
+import incubator.visprotocol.vis.layer.FilterStorage;
+import incubator.visprotocol.vis.layer.element.TextElement;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 
 import java.awt.Color;
@@ -32,20 +26,17 @@ public class Vis2DInfoLayer extends AbstractLayer {
     public static final String ZOOM_ID = "zoom";
 
     protected final Vis2DOutput vis2d;
-    protected final Element params;
+    protected final TextElement params;
     protected double precision;
 
     /**
      * Updates default setting by the element params. Note that Vis2DCommonPKeys.PRECISION can be
      * used.
      */
-    public Vis2DInfoLayer(Vis2DOutput vis2d, Element params, FilterStorage filter) {
+    public Vis2DInfoLayer(Vis2DOutput vis2d, TextElement params, FilterStorage filter, int precision) {
         this(vis2d, filter);
-        this.params.updateParams(params);
-        if (params.containsParameter(Vis2DCommonKeys.PRECISION)) {
-            int prec = params.getParameter(Vis2DCommonKeys.PRECISION);
-            precision = Math.pow(10, prec);
-        }
+        updateParams(params);
+        this.precision = Math.pow(10, precision);
     }
 
     /** Upper left position, Arial plain 10, white color */
@@ -53,41 +44,83 @@ public class Vis2DInfoLayer extends AbstractLayer {
         super(filter);
         this.vis2d = vis2d;
         precision = 1000;
-        Element e = new Element("", TextKeys.TYPE);
-        setParameter(e, TextKeys.COLOR, Color.WHITE);
-        setParameter(e, TextKeys.FONT, new Font("Arial", Font.PLAIN, 10));
-        setParameter(e, TextKeys.ALIGN_ON_SCREEN, Align.UPPER_LEFT);
-        setParameter(e, TextKeys.CONSTANT_SIZE, true);
-        this.params = e;
+        params = new TextElement(null, Color.WHITE, true, Align.UPPER_LEFT, new Point3d(0, 0,
+                0), new Font("Arial", Font.PLAIN, 10));
     }
 
-    @Override
-    public Structure pull() {
-        Structure ret = new Structure(CommonKeys.STRUCT_PART);
-        if (hasType(TextKeys.TYPE)) {
-            Folder f = ret.getRoot(ROOT_ID);
-            Element e;
-
-            e = f.getElement(POSX_ID, TextKeys.TYPE);
-            e.updateParams(params);
-            double fontSize = e.getParameter(TextKeys.FONT).getSize();
-            setParameter(e, TextKeys.TEXT, "Posx: " + cutNumber(vis2d.getCursorPosition().x));
-
-            e = f.getElement(POSY_ID, TextKeys.TYPE);
-            setParameter(e, TextKeys.TEXT, "Posy: " + cutNumber(vis2d.getCursorPosition().y));
-            setParameter(e, TextKeys.POS, new Point3d(0, fontSize, 0));
-
-            e = f.getElement(ZOOM_ID, TextKeys.TYPE);
-            setParameter(e, TextKeys.TEXT, "Zoom: " + cutNumber(vis2d.getZoomFactor()));
-            fontSize = StructUtils.updateValue(e, TextKeys.FONT_SIZE, fontSize);
-            setParameter(e, TextKeys.POS, new Point3d(0, fontSize * 2, 0));
+    private void updateParams(TextElement par) {
+        if (par.color != null) {
+            params.color = par.color;
         }
-        return ret;
+        if (par.font != null) {
+            params.font = par.font;
+        }
+        if (par.alignOnScreen != null) {
+            params.alignOnScreen = par.alignOnScreen;
+        }
+        if (par.alignRatio != null) {
+            params.alignRatio = par.alignRatio;
+        }
+        if (par.pos != null) {
+            params.pos = par.pos;
+        }
+        if (par.fontName != null) {
+            params.fontName = par.fontName;
+        }
+        if (par.fontSize > 0) {
+            params.fontSize = par.fontSize;
+        }
+        if (par.fontStyle >= 0) {
+            params.fontStyle = par.fontStyle;
+        }
+        params.constantSize = par.constantSize;
     }
+
+//    @Override
+//    public Structure pull() {
+//        Structure ret = new Structure(CommonKeys.STRUCT_PART);
+//        if (hasType(TextKeys.TYPE)) {
+//            Folder f = ret.getRoot(ROOT_ID);
+//            Element e;
+//
+//            e = f.getElement(POSX_ID, TextKeys.TYPE);
+//            double fontSize = e.getParameter(TextKeys.FONT).getSize();
+//            setParameter(e, TextKeys.TEXT, "Posx: " + cutNumber(vis2d.getCursorPosition().x));
+//
+//            e = f.getElement(POSY_ID, TextKeys.TYPE);
+//            setParameter(e, TextKeys.TEXT, "Posy: " + cutNumber(vis2d.getCursorPosition().y));
+//            setParameter(e, TextKeys.POS, new Point3d(0, fontSize, 0));
+//
+//            e = f.getElement(ZOOM_ID, TextKeys.TYPE);
+//            setParameter(e, TextKeys.TEXT, "Zoom: " + cutNumber(vis2d.getZoomFactor()));
+//            fontSize = StructUtils.updateValue(e, TextKeys.FONT_SIZE, fontSize);
+//            setParameter(e, TextKeys.POS, new Point3d(0, fontSize * 2, 0));
+//        }
+//        return ret;
+//    }
+
     @Override
     protected void generateFrame() {
-        // TODO Auto-generated method stub
-        
+        changeFolder(ROOT_ID);
+        TextElement e;
+        double fontSize = params.fontSize;
+        if (fontSize <= 0) {
+            fontSize = params.font.getSize();
+        }
+
+        e = params.copy();
+        e.text = "Posx: " + cutNumber(vis2d.getCursorPosition().x);
+        addElement(POSX_ID, e);
+
+        e = params.copy();
+        e.text = "Posy: " + cutNumber(vis2d.getCursorPosition().y);
+        e.pos = new Point3d(e.pos.x, e.pos.y + fontSize, e.pos.z);
+        addElement(POSY_ID, e);
+
+        e = params.copy();
+        e.text = "Zoom: " + cutNumber(vis2d.getZoomFactor());
+        e.pos = new Point3d(e.pos.x, e.pos.y + fontSize * 2, e.pos.z);
+        addElement(ZOOM_ID, e);
     }
 
     protected double cutNumber(double a) {
