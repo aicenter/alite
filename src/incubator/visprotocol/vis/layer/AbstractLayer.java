@@ -92,7 +92,7 @@ public abstract class AbstractLayer implements StructProcessor {
         changeFolder(StructUtils.getFolderOfStruct(struct, Arrays.asList(path)));
     }
 
-    protected void changeFolder(Folder folder) {
+    private void changeFolder(Folder folder) {
         currentFolder = folder;
     }
 
