@@ -3,11 +3,11 @@ package incubator.visprotocol.protocol;
 import incubator.visprotocol.processor.MultipleInputProcessor;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.utils.ProcessorUtils;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,7 +22,7 @@ public class StreamOutputProtocol extends MultipleInputProcessor implements Stre
     private int lastFlush = -1;
 
     public StreamOutputProtocol(OutputStream output, StructProcessor... inputs) {
-        this(output, Arrays.asList(inputs));
+        this(output, ProcessorUtils.asList(inputs));
     }
 
     public StreamOutputProtocol(OutputStream output, List<StructProcessor> inputs) {

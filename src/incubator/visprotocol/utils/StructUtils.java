@@ -23,6 +23,9 @@ import java.util.List;
  * */
 public class StructUtils {
 
+    private StructUtils() {
+    }
+
     /** if the element contains the parameter, update the value, else return old value */
     public static <C> C updateValue(Element e, Typer<C> typer, C value) {
         if (e.containsParameter(typer)) {

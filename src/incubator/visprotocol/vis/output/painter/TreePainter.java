@@ -6,8 +6,8 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
+import incubator.visprotocol.utils.ProcessorUtils;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class TreePainter extends MultipleInputProcessor implements GroupPainter 
     private boolean firstElements;
 
     public TreePainter(StructProcessor... inputs) {
-        this(Arrays.asList(inputs));
+        this(ProcessorUtils.asList(inputs));
     }
 
     public TreePainter(List<StructProcessor> inputs) {

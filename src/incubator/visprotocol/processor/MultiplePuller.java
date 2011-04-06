@@ -1,9 +1,9 @@
 package incubator.visprotocol.processor;
 
-import java.util.Arrays;
-import java.util.List;
-
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.utils.ProcessorUtils;
+
+import java.util.List;
 
 /**
  * Pulls all inputs, returns null.
@@ -13,7 +13,7 @@ import incubator.visprotocol.structure.Structure;
 public class MultiplePuller extends MultipleInputProcessor {
 
     public MultiplePuller(StructProcessor... inputs) {
-        this(Arrays.asList(inputs));
+        this(ProcessorUtils.asList(inputs));
     }
 
     public MultiplePuller(List<StructProcessor> inputs) {

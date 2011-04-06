@@ -1,5 +1,6 @@
 package incubator.visprotocol.factory;
 
+import incubator.visprotocol.processor.MultipleInputProcessor;
 import incubator.visprotocol.processor.StateGetter;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.processor.updater.DiffUpdater;
@@ -23,7 +24,6 @@ import incubator.visprotocol.vis.player.ui.PlayerControls;
 
 import java.awt.BorderLayout;
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 
 /**
@@ -34,8 +34,8 @@ import java.util.ArrayList;
  * */
 public class VisFactory {
 
-    private StreamProtocolCloser streamCloser = new StreamProtocolCloser();
-    private ArrayList<StructProcessor> layers = new ArrayList<StructProcessor>();
+    private StreamProtocolCloser streamCloser;
+    private ArrayList<StructProcessor> layers;
     private FilterStorage filter;
 
     private StructProcessor lastProtocol;
@@ -43,10 +43,12 @@ public class VisFactory {
     private StructProcessor layerDiffer;
     private StructProcessor layerMerger;
 
-    private StructProcessor vis2dPainter;
+    private MultipleInputProcessor painter;
 
     public VisFactory() {
         filter = new FilterStorage(Vis2DBasicPainters.ELEMENT_TYPES, Vis2DCommonKeys.COMMON_PARAMS);
+        layers = new ArrayList<StructProcessor>();
+        streamCloser = new StreamProtocolCloser();
     }
 
     // Protocols ////////////
@@ -54,14 +56,12 @@ public class VisFactory {
     /** Creates and returns new realtime protocol (=null), rewrites last protocol. */
     public StructProcessor createRealtimeProtocol() {
         lastProtocol = null;
-        clearPainters();
         return lastProtocol;
     }
 
     /** Creates and returns new memory protocol, rewrites last protocol. */
     public StructProcessor createMemoryProcotol() {
         lastProtocol = new MemoryProtocol(getLayerDiffer());
-        clearPainters();
         return lastProtocol;
     }
 
@@ -72,7 +72,6 @@ public class VisFactory {
     public StructProcessor createFileWriterProtocol(String fileName) {
         lastProtocol = new FileWriterProtocol(new File(fileName), getLayerDiffer());
         streamCloser.addStreamProtocol((StreamProtocol) lastProtocol);
-        clearPainters();
         return lastProtocol;
     }
 
@@ -80,7 +79,6 @@ public class VisFactory {
     public StructProcessor createFileReaderProtocol(String fileName) {
         lastProtocol = new FileReaderProtocol(new File(fileName));
         streamCloser.addStreamProtocol((StreamProtocol) lastProtocol);
-        clearPainters();
         return lastProtocol;
     }
 
@@ -107,7 +105,7 @@ public class VisFactory {
     /** Creates and returns vis 2D on last protocol. */
     public Vis2DOutput createVis2DOutput(Vis2DParams params) {
         Vis2DOutput ret = createVis2D(params);
-        ret.addInput(getVis2dPainter());
+        ret.addInput(createVis2dPainter(ret));
         return ret;
     }
 
@@ -119,8 +117,10 @@ public class VisFactory {
         Vis2DOutput ret = createVis2D(params);
         Player player = new Player(lastProtocol);
         TreePainter painter = new TreePainter(new StateGetter(player));
+        painter.addPainters(Vis2DBasicPainters.createBasicPainters(ret));
         ret.addPanel(new PlayerControls(player), BorderLayout.SOUTH);
         ret.addInput(painter);
+        this.painter = painter;
         return ret;
     }
 
@@ -137,18 +137,19 @@ public class VisFactory {
      * Returns instance of tree painter for vis 3D on last protocol, always one instance for last
      * protocol, new instance for new protocol.
      */
-    public StructProcessor getVis2dPainter() {
-        if (vis2dPainter == null) {
-            if (lastProtocol == null) {
-                vis2dPainter = new TreePainter(new MergeUpdater(layers));
-            } else {
-                if (lastProtocol instanceof StreamOutputProtocol) {
-                    throw new RuntimeException("Painter cannot be created on output protocol.");
-                }
-                vis2dPainter = new TreePainter(new DiffUpdater(lastProtocol));
+    private StructProcessor createVis2dPainter(Vis2DOutput vis2d) {
+        TreePainter painter;
+        if (lastProtocol == null) {
+            painter = new TreePainter(new MergeUpdater(layers));
+        } else {
+            if (lastProtocol instanceof StreamOutputProtocol) {
+                throw new RuntimeException("Painter cannot be created on output protocol.");
             }
+            painter = new TreePainter(new DiffUpdater(lastProtocol));
         }
-        return vis2dPainter;
+        painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
+        this.painter = painter;
+        return painter;
     }
 
     // Layers ////////////
@@ -158,14 +159,15 @@ public class VisFactory {
         layers.add(layer);
     }
 
+    /** adds output layer to last painter */
+    public void addOutputLayer(StructProcessor layer) {
+        painter.addInput(layer);
+    }
+
     // Other ////////
 
     public FilterStorage getFilter() {
         return filter;
-    }
-
-    private void clearPainters() {
-        vis2dPainter = null;
     }
 
 }

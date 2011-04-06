@@ -15,6 +15,10 @@ public abstract class MultipleInputProcessor implements StructProcessor {
     public MultipleInputProcessor(List<StructProcessor> inputs) {
         this.inputs = inputs;
     }
+    
+    public void addInput(StructProcessor input) {
+        inputs.add(input);
+    }
 
     protected boolean isEmpty() {
         return inputs.isEmpty();

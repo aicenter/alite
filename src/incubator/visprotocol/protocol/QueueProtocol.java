@@ -1,13 +1,13 @@
 package incubator.visprotocol.protocol;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
 import incubator.visprotocol.processor.MultipleInputProcessor;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.utils.ProcessorUtils;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * Implementation using queue.
@@ -19,7 +19,7 @@ public class QueueProtocol extends MultipleInputProcessor {
     private final Queue<Structure> queue;
 
     public QueueProtocol(StructProcessor... inputs) {
-        this(Arrays.asList(inputs));
+        this(ProcessorUtils.asList(inputs));
     }
 
     public QueueProtocol(List<StructProcessor> inputs) {

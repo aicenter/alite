@@ -12,10 +12,10 @@ import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.FillColorKeys;
 import incubator.visprotocol.structure.key.TextKeys;
 import incubator.visprotocol.structure.key.struct.Align;
+import incubator.visprotocol.utils.ProcessorUtils;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +53,7 @@ public class Player extends MultipleInputProcessor implements PlayerInterface, R
     private boolean fullFramesDuringPush = true;
 
     public Player(StructProcessor... inputs) {
-        this(Arrays.asList(inputs));
+        this(ProcessorUtils.asList(inputs));
     }
 
     public Player(List<StructProcessor> inputs) {

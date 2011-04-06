@@ -7,9 +7,9 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
+import incubator.visprotocol.utils.ProcessorUtils;
 import incubator.visprotocol.utils.StructUtils;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,7 +37,7 @@ public class MergeUpdater extends MultipleInputProcessor implements StateHolder 
     private boolean firstRun = true;
 
     public MergeUpdater(StructProcessor... inputs) {
-        this(Arrays.asList(inputs));
+        this(ProcessorUtils.asList(inputs));
     }
 
     public MergeUpdater(List<StructProcessor> inputs) {

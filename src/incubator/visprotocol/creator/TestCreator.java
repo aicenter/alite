@@ -1,40 +1,22 @@
 package incubator.visprotocol.creator;
 
-import incubator.visprotocol.processor.MultiplePuller;
-import incubator.visprotocol.processor.Once;
-import incubator.visprotocol.processor.StateGetter;
+import incubator.visprotocol.factory.VisFactory;
 import incubator.visprotocol.processor.StructProcessor;
-import incubator.visprotocol.processor.updater.DiffUpdater;
-import incubator.visprotocol.processor.updater.Differ;
-import incubator.visprotocol.processor.updater.MergeUpdater;
-import incubator.visprotocol.protocol.FileReaderProtocol;
-import incubator.visprotocol.protocol.FileWriterProtocol;
-import incubator.visprotocol.protocol.MemoryProtocol;
-import incubator.visprotocol.protocol.StreamProtocolCloser;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
-import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.common.FillColorLayer;
 import incubator.visprotocol.vis.layer.common.Vis2DInfoLayer;
-import incubator.visprotocol.vis.layer.example.StaticPoints;
 import incubator.visprotocol.vis.layer.example.DynamicPointsLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
+import incubator.visprotocol.vis.layer.example.PersonLayer;
 import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
 import incubator.visprotocol.vis.layer.example.SimInfoLayer;
-import incubator.visprotocol.vis.layer.example.PersonLayer;
+import incubator.visprotocol.vis.layer.example.StaticPoints;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
-import incubator.visprotocol.vis.output.painter.TreePainter;
-import incubator.visprotocol.vis.output.vis2d.Vis2DBasicTransformators;
-import incubator.visprotocol.vis.output.vis2d.painter.Vis2DBasicPainters;
-import incubator.visprotocol.vis.player.Player;
-import incubator.visprotocol.vis.player.ui.PlayerControls;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Random;
 
 import javax.vecmath.Point3d;
@@ -58,8 +40,8 @@ public class TestCreator implements Creator {
 
     private static final int DELAY = 20;
     private ExampleEnvironment exampleEnvironment;
-    private Vis2DOutput vis2d;
     private StructProcessor root;
+    private StructProcessor stream;
 
     @Override
     public void init(String[] args) {
@@ -79,84 +61,60 @@ public class TestCreator implements Creator {
     private void createAndRunVis() {
         Vis2DParams params = new Vis2DParams();
         params.worldBounds = new Rectangle2D.Double(-400, -600, 11000, 11000);
-        vis2d = new Vis2DOutput(params);
-        vis2d.addTransformators(Vis2DBasicTransformators.createBasicTransformators());
 
         // TODO bug kdyz je protocol, u dynamickych bodu se obcas neprepisou parametry
 
         // V realtime modu je to tak 3x rychlejsi nez protocol. Direct este rychlejsi, ale nema
         // ulozenej aktualni stav, hodne trhane dokaze i 1M bodu. Kdyz je direct, tak se z proxy
         // musi generovat body pokazdy, u ostatnich staci jednou na zacatku.
-        final Mode mode = Mode.PROTOCOL;
+        final Mode mode = Mode.PLAYER_FROM_FILE;
         // 100k se trochu trha, 200k se dost trha, 1M u protocolu dosla pamet
         int nDynamicPoints = 10;
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
         int nStaticPoints = 10;
 
-        // filter
-        FilterStorage filter = new FilterStorage(Vis2DBasicPainters.ELEMENT_TYPES,
-                Vis2DCommonKeys.COMMON_PARAMS);
+        VisFactory factory = new VisFactory();
+        FilterStorage filter = factory.getFilter();
+
         // layers
-        ArrayList<StructProcessor> layers = new ArrayList<StructProcessor>();
-        layers.add(new SimInfoLayer(exampleEnvironment, filter));
-        if (mode == Mode.DIRECT) {
-            layers.add(new FillColorLayer(Color.BLACK, ".World.Background", filter));
-        } else {
-            layers.add(new Once(new FillColorLayer(Color.BLACK, ".World.Background", filter)));
-        }
-        layers.add(new PentagramLayer(exampleEnvironment, filter));
-        if (mode == Mode.DIRECT) {
-            layers.add(new StaticPoints(nStaticPoints, 10000, filter));
-        } else {
-            layers.add(new Once(new StaticPoints(nStaticPoints, 10000, filter)));
-        }
-        layers.add(new DynamicPointsLayer(nDynamicPoints, 10000, filter));
-        layers.add(new PersonLayer(exampleEnvironment, filter));
-        layers.add(new ScreenTextLayer(exampleEnvironment, filter));
-        StructProcessor visInfoLayer = new Vis2DInfoLayer(vis2d, filter);
+        factory.addLayer(new SimInfoLayer(exampleEnvironment, filter));
+        factory.addLayer(new FillColorLayer(Color.BLACK, ".World.Background", filter));
+        factory.addLayer(new PentagramLayer(exampleEnvironment, filter));
+        factory.addLayer(new StaticPoints(nStaticPoints, 10000, filter));
+        factory.addLayer(new DynamicPointsLayer(nDynamicPoints, 10000, filter));
+        factory.addLayer(new PersonLayer(exampleEnvironment, filter));
+        factory.addLayer(new ScreenTextLayer(exampleEnvironment, filter));
 
-        // create the structure of processors
-        TreePainter painter = null;
-        StreamProtocolCloser streamCloser = new StreamProtocolCloser();
-        if (mode == Mode.DIRECT) {
-            layers.add(visInfoLayer);
-            painter = new TreePainter(layers);
-            root = vis2d;
-        } else if (mode == Mode.REALTIME) {
-            MergeUpdater updater = new MergeUpdater(layers);
-            painter = new TreePainter(updater, visInfoLayer);
-            root = vis2d;
+        Vis2DOutput vis2d = null;
+
+        if (mode == Mode.REALTIME) {
+            factory.createRealtimeProtocol();
+            vis2d = factory.createVis2DOutput(params);
+            factory.addOutputLayer(new Vis2DInfoLayer(vis2d, filter));
         } else if (mode == Mode.PROTOCOL) {
-            Differ differ = new Differ(layers);
-            MemoryProtocol protocol = new MemoryProtocol(differ);
-            DiffUpdater updater = new DiffUpdater(protocol);
-            painter = new TreePainter(updater, visInfoLayer);
-            root = vis2d;
+            factory.createMemoryProcotol();
+            vis2d = factory.createVis2DOutput(params);
+            factory.addOutputLayer(new Vis2DInfoLayer(vis2d, filter));
         } else if (mode == Mode.SAVE_TO_FILE) {
-            Differ differ = new Differ(layers);
-            FileWriterProtocol fwp = new FileWriterProtocol(new File("record.rec"),
-                    differ);
-            streamCloser.addStreamProtocol(fwp);
-            painter = new TreePainter(new StateGetter(differ), visInfoLayer);
-            root = new MultiplePuller(vis2d, fwp);
+            stream = factory.createFileWriterProtocol("record.rec");
+            factory.createMemoryProcotol();
+            vis2d = factory.createVis2DOutput(params);
+            factory.addOutputLayer(new Vis2DInfoLayer(vis2d, filter));
         } else if (mode == Mode.PLAYER_FROM_FILE) {
-            FileReaderProtocol frp = new FileReaderProtocol(new File("record.rec"));
-            streamCloser.addStreamProtocol(frp);
-            Player player = new Player(frp);
-            painter = new TreePainter(new StateGetter(player), visInfoLayer);
-            vis2d.addPanel(new PlayerControls(player), BorderLayout.SOUTH);
-            root = vis2d;
+            factory.createFileReaderProtocol("record.rec");
+            vis2d = factory.createVis2DPlayerOutput(params);
+            factory.addOutputLayer(new Vis2DInfoLayer(vis2d, filter));
         }
-
-        painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
-        vis2d.addInput(painter);
-        vis2d.setStreamCloser(streamCloser);
+        root = vis2d;
 
         // sampler
         MaxFPSRealTimeSampler sampler = new MaxFPSRealTimeSampler() {
             @Override
             protected void sample() {
                 root.pull();
+                if (stream != null) {
+                    stream.pull();
+                }
             }
         };
         sampler.start();
@@ -214,6 +172,7 @@ public class TestCreator implements Creator {
         /** proxies -> updater -> painter */
         REALTIME,
         /** proxies -> painter, but the current state is not stored */
+        @Deprecated
         DIRECT,
         /** protocol + save to file */
         SAVE_TO_FILE,

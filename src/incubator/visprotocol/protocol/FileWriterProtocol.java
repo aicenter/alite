@@ -1,12 +1,12 @@
 package incubator.visprotocol.protocol;
 
 import incubator.visprotocol.processor.StructProcessor;
+import incubator.visprotocol.utils.ProcessorUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,7 +17,7 @@ import java.util.List;
 public class FileWriterProtocol extends StreamOutputProtocol {
 
     public FileWriterProtocol(File file, StructProcessor... inputs) {
-        this(file, Arrays.asList(inputs));
+        this(file, ProcessorUtils.asList(inputs));
     }
 
     public FileWriterProtocol(File file, List<StructProcessor> inputs) {

@@ -1,9 +1,5 @@
 package incubator.visprotocol.processor.updater;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import incubator.visprotocol.processor.MultipleInputProcessor;
 import incubator.visprotocol.processor.StateHolder;
 import incubator.visprotocol.processor.StructProcessor;
@@ -12,6 +8,10 @@ import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.struct.ChangeFlag;
+import incubator.visprotocol.utils.ProcessorUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Holds current state, accepts updates from differ and updates current state. Default setting is
@@ -40,7 +40,7 @@ public class DiffUpdater extends MultipleInputProcessor implements StateHolder {
     }
 
     public DiffUpdater(StructProcessor... inputs) {
-        this(Arrays.asList(inputs));
+        this(ProcessorUtils.asList(inputs));
     }
 
     public DiffUpdater(List<StructProcessor> inputs) {
