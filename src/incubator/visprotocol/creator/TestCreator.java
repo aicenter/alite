@@ -75,7 +75,7 @@ public class TestCreator implements Creator {
         // 100k se trochu trha, 200k se dost trha, 1M u protocolu dosla pamet
         int nDynamicPoints = 10;
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
-        int nStaticPoints = 10000;
+        int nStaticPoints = 10;
 
         VisFactory factory = new VisFactory();
         FilterStorage filter = factory.getFilter(); // TODO remove filter

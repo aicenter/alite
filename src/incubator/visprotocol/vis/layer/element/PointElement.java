@@ -19,8 +19,8 @@ public class PointElement extends AbstractElement {
     public double width;
     public boolean constantSize;
 
-    public PointElement(Point3d pos, Color color, double width, boolean constatnSize) {
-        this.center = pos;
+    public PointElement(Point3d center, Color color, double width, boolean constatnSize) {
+        this.center = center;
         this.color = color;
         this.width = width;
         this.constantSize = constatnSize;
