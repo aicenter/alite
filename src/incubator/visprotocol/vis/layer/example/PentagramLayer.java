@@ -27,19 +27,6 @@ public class PentagramLayer extends AbstractLayer {
         this.env = env;
     }
 
-    // @Override
-    // public Structure pull() {
-    //
-    // Structure struct = new Structure(CommonKeys.STRUCT_PART);
-    // Folder f = struct.getRoot("World").getFolder("Pentagram");
-    //
-    // int step = (int) (env.getTime() * 0.075);
-    // for (int i = 0; i < 30; i++) {
-    // //fillPentagram(f, step + i, new Color(30 + i * 6, 0, 0), i);
-    // }
-    // return struct;
-    // }
-
     @Override
     protected void generateFrame() {
         changeFolder("World", "Pentagram");

@@ -44,8 +44,8 @@ public class Vis2DInfoLayer extends AbstractLayer {
         super(filter);
         this.vis2d = vis2d;
         precision = 1000;
-        params = new TextElement(null, Color.WHITE, true, Align.UPPER_LEFT, new Point3d(0, 0,
-                0), new Font("Arial", Font.PLAIN, 10));
+        params = new TextElement(null, Color.WHITE, true, Align.UPPER_LEFT, new Point3d(0, 0, 0),
+                new Font("Arial", Font.PLAIN, 10));
     }
 
     private void updateParams(TextElement par) {
@@ -75,29 +75,6 @@ public class Vis2DInfoLayer extends AbstractLayer {
         }
         params.constantSize = par.constantSize;
     }
-
-//    @Override
-//    public Structure pull() {
-//        Structure ret = new Structure(CommonKeys.STRUCT_PART);
-//        if (hasType(TextKeys.TYPE)) {
-//            Folder f = ret.getRoot(ROOT_ID);
-//            Element e;
-//
-//            e = f.getElement(POSX_ID, TextKeys.TYPE);
-//            double fontSize = e.getParameter(TextKeys.FONT).getSize();
-//            setParameter(e, TextKeys.TEXT, "Posx: " + cutNumber(vis2d.getCursorPosition().x));
-//
-//            e = f.getElement(POSY_ID, TextKeys.TYPE);
-//            setParameter(e, TextKeys.TEXT, "Posy: " + cutNumber(vis2d.getCursorPosition().y));
-//            setParameter(e, TextKeys.POS, new Point3d(0, fontSize, 0));
-//
-//            e = f.getElement(ZOOM_ID, TextKeys.TYPE);
-//            setParameter(e, TextKeys.TEXT, "Zoom: " + cutNumber(vis2d.getZoomFactor()));
-//            fontSize = StructUtils.updateValue(e, TextKeys.FONT_SIZE, fontSize);
-//            setParameter(e, TextKeys.POS, new Point3d(0, fontSize * 2, 0));
-//        }
-//        return ret;
-//    }
 
     @Override
     protected void generateFrame() {
