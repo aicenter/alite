@@ -7,6 +7,7 @@ import incubator.visprotocol.structure.Structure;
  * 
  * @author Ondrej Milenovsky
  * */
+// TODO remove after caching
 public class StateGetter implements StructProcessor {
     private final StateHolder input;
 
