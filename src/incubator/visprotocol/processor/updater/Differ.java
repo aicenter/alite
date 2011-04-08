@@ -10,6 +10,7 @@ import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.struct.ChangeFlag;
 import incubator.visprotocol.utils.ProcessorUtils;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -42,7 +43,8 @@ public class Differ extends MultipleInputProcessor implements StateHolder {
      * Push part of the world, deep copy.
      */
     public void push(Structure newPart) {
-        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_COMPLETE)) {
+        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_PART_STATIC,
+                CommonKeys.STRUCT_COMPLETE)) {
             System.err.println("Differ should accept whole or a part of world, not "
                     + newPart.getType());
         }
@@ -120,8 +122,15 @@ public class Differ extends MultipleInputProcessor implements StateHolder {
     /** returns differences between two states, clears current state */
     @Override
     public Structure pull() {
-        for (StructProcessor pr : getInputs()) {
-            push(pr.pull());
+        if(firstRun) {
+            copyInputsLinkedList();
+        }
+        for (Iterator<StructProcessor> it = getInputs().iterator(); it.hasNext();) {
+            Structure struct = it.next().pull();
+            push(struct);
+            if (struct.isType(CommonKeys.STRUCT_PART_STATIC)) {
+                it.remove();
+            }
         }
 
         firstRun = false;

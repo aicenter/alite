@@ -8,11 +8,11 @@ import incubator.visprotocol.vis.layer.FilterStorage;
  * 
  * @author Ondrej Milenovsky
  * */
-public class SimInfoLayer extends AbstractLayer {
+public class TimeLayer extends AbstractLayer {
 
     private final TimeHolder holder;
 
-    public SimInfoLayer(TimeHolder holder, FilterStorage filter) {
+    public TimeLayer(TimeHolder holder, FilterStorage filter) {
         super(filter);
         this.holder = holder;
     }

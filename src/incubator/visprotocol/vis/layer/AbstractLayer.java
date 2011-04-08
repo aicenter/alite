@@ -24,12 +24,21 @@ public abstract class AbstractLayer implements StructProcessor {
     private FilterStorage filter;
 
     private Folder currentFolder;
+    private boolean staticLayer;
+
     private Structure struct = new Structure();
 
     private HashMap<String, Element> lastElements;
 
+    /** creates layer with dynamoc elements */
     public AbstractLayer(FilterStorage filter) {
+        this(filter, false);
+    }
+
+    /** layer can be set as static, so it will be generated only once */
+    public AbstractLayer(FilterStorage filter, boolean staticLayer) {
         this.filter = filter;
+        this.staticLayer = staticLayer;
         lastElements = new HashMap<String, Element>();
     }
 
@@ -43,7 +52,11 @@ public abstract class AbstractLayer implements StructProcessor {
 
     @Override
     public Structure pull() {
-        struct = new Structure(CommonKeys.STRUCT_PART);
+        if (staticLayer) {
+            struct = new Structure(CommonKeys.STRUCT_PART_STATIC);
+        } else {
+            struct = new Structure(CommonKeys.STRUCT_PART);
+        }
         generateFrame();
         Structure ret = struct;
         clear();
@@ -102,11 +115,9 @@ public abstract class AbstractLayer implements StructProcessor {
 
     private void changeFolder(Folder folder) {
         currentFolder = folder;
-    }
-
-    /** current folder will be once generated and then never changed */
-    protected void setStaticFolder() {
-        currentFolder.setParameter(CommonKeys.NOT_CHANGE, true);
+        if (staticLayer) {
+            currentFolder.setParameter(CommonKeys.NOT_CHANGE, true);
+        }
     }
 
     // ELEMENTS //////////////////

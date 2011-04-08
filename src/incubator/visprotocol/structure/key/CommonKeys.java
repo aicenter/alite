@@ -26,6 +26,8 @@ public abstract class CommonKeys {
 
     /** Part of whole world state */
     public static final String STRUCT_PART = "part";
+    /** Part of whole world state, generated once */
+    public static final String STRUCT_PART_STATIC = "part_static";
     /** Diff from differ */
     public static final String STRUCT_DIFF = "diff";
     /** Whole world state */

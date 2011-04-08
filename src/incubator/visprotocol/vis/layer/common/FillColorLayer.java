@@ -20,22 +20,38 @@ public class FillColorLayer extends AbstractLayer {
     private final List<String> path;
     private final Color color;
 
+    /**
+     * leaf folder of the path will be set as static, so do not use it elsewhere for dynamic
+     * elements
+     */
     public FillColorLayer(Color color, String path, FilterStorage filter) {
         this(color, path, DEFAULT_ID, filter);
     }
 
+    /**
+     * leaf folder of the path will be set as static, so do not use it elsewhere for dynamic
+     * elements
+     */
     public FillColorLayer(Color color, FilterStorage filter, String... path) {
         this(color, DEFAULT_ID, filter, path);
     }
 
+    /**
+     * leaf folder of the path will be set as static, so do not use it elsewhere for dynamic
+     * elements
+     */
     public FillColorLayer(Color color, String path, String id, FilterStorage filter) {
-        super(filter);
+        super(filter, true);
         this.color = color;
         this.path = StructUtils.parsePath(path);
     }
 
+    /**
+     * leaf folder of the path will be set as static, so do not use it elsewhere for dynamic
+     * elements
+     */
     public FillColorLayer(Color color, String id, FilterStorage filter, String... path) {
-        super(filter);
+        super(filter, true);
         this.color = color;
         this.path = Arrays.asList(path);
     }
@@ -43,7 +59,6 @@ public class FillColorLayer extends AbstractLayer {
     @Override
     protected void generateFrame() {
         changeFolder(path);
-        setStaticFolder();
         addElement(DEFAULT_ID, new FillColorElement(color));
     }
 }
