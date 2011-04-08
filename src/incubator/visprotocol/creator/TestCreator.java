@@ -5,7 +5,7 @@ import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.common.FillColorLayer;
-import incubator.visprotocol.vis.layer.common.SimInfoLayer;
+import incubator.visprotocol.vis.layer.common.TimeLayer;
 import incubator.visprotocol.vis.layer.common.TimeHolder;
 import incubator.visprotocol.vis.layer.common.Vis2DInfoLayer;
 import incubator.visprotocol.vis.layer.example.DynamicPointsLayer;
@@ -82,7 +82,7 @@ public class TestCreator implements Creator {
         FilterStorage filter = factory.getFilter(); // TODO remove filter
 
         // layers
-        factory.addLayer(new SimInfoLayer(exampleEnvironment, filter));
+        factory.addLayer(new TimeLayer(exampleEnvironment, filter));
         factory.addLayer(new FillColorLayer(Color.BLACK, ".World.Background", filter));
         factory.addLayer(new PentagramLayer(exampleEnvironment, filter));
         factory.addLayer(new StaticPoints(nStaticPoints, 10000, filter));

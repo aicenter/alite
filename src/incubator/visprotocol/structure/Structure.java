@@ -69,11 +69,11 @@ public class Structure implements Serializable, Comparable<Structure> {
 
     /** if type is one of specified or default */
     public boolean isType(String... types) {
-        if (type.equals(DEFAULT_TYPE)) {
+        if ((type == DEFAULT_TYPE) || type.equals(DEFAULT_TYPE)) {
             return true;
         }
         for (String s : types) {
-            if (type.equals(s)) {
+            if ((type == s) || type.equals(s)) {
                 return true;
             }
         }

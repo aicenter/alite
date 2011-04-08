@@ -19,7 +19,7 @@ public class StaticPoints extends AbstractLayer {
     private final ArrayList<Point3d> points;
 
     public StaticPoints(int n, int size, FilterStorage filter) {
-        super(filter);
+        super(filter, true);
         points = new ArrayList<Point3d>(n);
         for (int i = 0; i < n; i++) {
             points.add(new Point3d(Math.random() * size, Math.random() * size, 0));
@@ -29,7 +29,6 @@ public class StaticPoints extends AbstractLayer {
     @Override
     protected void generateFrame() {
         changeFolder("World", "Static");
-        setStaticFolder();
         PointElement point = new PointElement(null, new Color(255, 160, 160, 30), 4, true);
         for (int i = 0; i < points.size(); i++) {
             point.center = points.get(i);

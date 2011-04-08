@@ -78,7 +78,7 @@ public class DiffUpdater extends MultipleInputProcessor implements StateHolder {
         if (!newPart.isType(CommonKeys.STRUCT_DIFF)) {
             System.err.println("DiffUpdater should accept only diffs, not " + newPart.getType());
         }
-        if (!acceptPast) {
+        if (!acceptPast && !newPart.isEmpty()) {
             if (newPart.getTimeStamp() == null) {
                 System.out.println("Warning: new part has no timestamp");
             } else if ((state.getTimeStamp() != null)

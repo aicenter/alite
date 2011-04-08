@@ -10,6 +10,7 @@ import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.utils.ProcessorUtils;
 import incubator.visprotocol.utils.StructUtils;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -92,8 +93,15 @@ public class MergeUpdater extends MultipleInputProcessor implements StateHolder 
     /** returns current state and clears it */
     @Override
     public Structure pull() {
-        for (StructProcessor pr : getInputs()) {
-            push(pr.pull());
+        if(firstRun) {
+            copyInputsLinkedList();
+        }
+        for (Iterator<StructProcessor> it = getInputs().iterator(); it.hasNext();) {
+            Structure struct = it.next().pull();
+            push(struct);
+            if (struct.isType(CommonKeys.STRUCT_PART_STATIC)) {
+                it.remove();
+            }
         }
         Structure ret = state;
         pulled = true;
@@ -104,7 +112,8 @@ public class MergeUpdater extends MultipleInputProcessor implements StateHolder 
 
     /** merge current state with new part */
     public void push(Structure newPart) {
-        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_COMPLETE)) {
+        if (!newPart.isType(CommonKeys.STRUCT_PART, CommonKeys.STRUCT_PART_STATIC,
+                CommonKeys.STRUCT_COMPLETE)) {
             System.err.println("MergeUpdater should accept whole or a part of world, not "
                     + newPart.getType());
         }
