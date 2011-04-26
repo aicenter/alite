@@ -40,12 +40,12 @@ public class EventProcessor {
 
     public void run() {
         Event event = eventQueue.poll();
-        
+
         while (event != null) {
             breforeRunningTest(event);
 
             currentTime = event.getTime();
-            
+
             while (!running) {
                 synchronized (thread) {
                     try {
