@@ -67,13 +67,15 @@ public class Vis extends Canvas {
     private boolean reinitializeBuffers = true;
     private BufferStrategy strategy;
     private Graphics2D graphics;
-
+    
+    private static Dimension size;
+    
     private Vis() {
         super();
 
         // canvas
         setBounds(0, 0, initDimX, initDimY);
-
+        size = new Dimension(initDimX, initDimY);
         window = new JFrame(initTitle);
 
         final JPanel panel = (JPanel) window.getContentPane();
@@ -96,6 +98,7 @@ public class Vis extends Canvas {
             @Override
             public void componentResized(ComponentEvent e) {
                 reinitializeBuffers = true;
+                refreshSize();
             }
 
             @Override
@@ -322,7 +325,11 @@ public class Vis extends Canvas {
     }
 
     public static Dimension getDrawingDimension() {
-        return getInstance().window.getContentPane().getSize();
+        return size;
+    }
+    
+    public static void refreshSize() {
+        size = getInstance().window.getContentPane().getSize();        
     }
 
     public static void setWindowBounds(Rectangle rect) {
