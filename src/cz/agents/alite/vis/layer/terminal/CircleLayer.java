@@ -1,6 +1,7 @@
 package cz.agents.alite.vis.layer.terminal;
 
 import java.awt.BasicStroke;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 
 import cz.agents.alite.vis.Vis;
@@ -19,6 +20,7 @@ public class CircleLayer extends TerminalLayer {
     public void paint(Graphics2D canvas) {
         canvas.setColor(circleElements.getColor());
         canvas.setStroke(new BasicStroke(circleElements.getStrokeWidth()));
+        Dimension dim = Vis.getDrawingDimension();
 
         for (Circle circle: circleElements.getCircles()) {
             int x1 = Vis.transX(circle.getPosition().x - circle.getRadius());
@@ -27,7 +29,7 @@ public class CircleLayer extends TerminalLayer {
             int y2 = Vis.transY(circle.getPosition().y + circle.getRadius());
             int diameterW = Vis.transW(circle.getRadius() * 2.0);
             int diameterH = Vis.transH(circle.getRadius() * 2.0);
-            if (x2 > 0 && x1 < Vis.getDrawingDimension().width  && y2 > 0 && y1 < Vis.getDrawingDimension().height) {
+            if (x2 > 0 && x1 < dim.width  && y2 > 0 && y1 < dim.height) {
                 canvas.drawOval(x1, y1, diameterW, diameterH);
             }
         }

@@ -1,6 +1,7 @@
 package cz.agents.alite.vis.layer.terminal;
 
 import java.awt.BasicStroke;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 
 import cz.agents.alite.vis.Vis;
@@ -20,14 +21,15 @@ public class PointLayer extends TerminalLayer {
         int radius = (int) (pointElements.getStrokeWidth() / 2.0);
         canvas.setColor(pointElements.getColor());
         canvas.setStroke(new BasicStroke(1));
+        Dimension dim = Vis.getDrawingDimension();
 
-        for (Point point: pointElements.getPoints()) {
+        for (Point point : pointElements.getPoints()) {
 
             int x1 = Vis.transX(point.getPosition().x) - radius;
             int y1 = Vis.transY(point.getPosition().y) - radius;
             int x2 = Vis.transX(point.getPosition().x) + radius;
             int y2 = Vis.transY(point.getPosition().y) + radius;
-            if (x2 > 0 && x1 < Vis.getDrawingDimension().width  && y2 > 0 && y1 < Vis.getDrawingDimension().height) {
+            if (x2 > 0 && x1 < dim.width && y2 > 0 && y1 < dim.height) {
                 canvas.fillOval(x1, y1, radius * 2, radius * 2);
             }
         }

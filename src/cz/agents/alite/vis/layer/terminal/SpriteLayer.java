@@ -1,5 +1,6 @@
 package cz.agents.alite.vis.layer.terminal;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 
@@ -19,12 +20,13 @@ public class SpriteLayer extends TerminalLayer {
 
     @Override
     public void paint(Graphics2D canvas) {
+        Dimension dim = Vis.getDrawingDimension();
         for (Sprite sprite : spriteElements.getSprites()) {
             int x1 = Vis.transX(sprite.getPosition().x) - sprite.getImage().getWidth() / 2;
             int y1 = Vis.transY(sprite.getPosition().y) - sprite.getImage().getHeight() / 2;
             int x2 = Vis.transX(sprite.getPosition().x) + sprite.getImage().getWidth() / 2;
             int y2 = Vis.transY(sprite.getPosition().y) + sprite.getImage().getHeight() / 2;
-            if (x2 > 0 && x1 < Vis.getDrawingDimension().width  && y2 > 0 && y1 < Vis.getDrawingDimension().height) {
+            if (x2 > 0 && x1 < dim.width  && y2 > 0 && y1 < dim.height) {
                 Vector3d vec = sprite.getDirection();
 
                 AffineTransform transform = AffineTransform.getTranslateInstance(x1, y1);
