@@ -1,6 +1,7 @@
 package cz.agents.alite.vis.layer.common;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 
 import cz.agents.alite.vis.Vis;
@@ -18,7 +19,8 @@ public class ColorLayer extends CommonLayer {
     @Override
     public void paint(Graphics2D canvas) {
         canvas.setColor(color);
-        canvas.fillRect(0, 0, Vis.getDrawingDimension().width, Vis.getDrawingDimension().height);
+        Dimension dim = Vis.getDrawingDimension();
+        canvas.fillRect(0, 0, dim.width, dim.height);
     }
 
     @Override
