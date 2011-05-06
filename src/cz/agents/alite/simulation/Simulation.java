@@ -36,7 +36,7 @@ public class Simulation extends EventProcessor {
     private long drawReload = 40;
     /** last time drawed */
     private long lastDrawed = 0;
-    
+
     private final List<EventListener> eventListeners = new LinkedList<EventListener>();
 
     public void run() {
@@ -55,7 +55,11 @@ public class Simulation extends EventProcessor {
         System.out.format(">>> RUNTIME: %.2fs\n", (System.currentTimeMillis() - runTime) / 1000.0);
 
     }
-    
+
+    public long getEventCount() {
+        return eventCount;
+    }
+
     public void addEventListener(EventListener listener) {
         eventListeners.add(listener);
     }
@@ -63,7 +67,7 @@ public class Simulation extends EventProcessor {
     public void removeEventListener(EventListener listener) {
         eventListeners.remove(listener);
     }
-    
+
     /** sets listener for synchronized drawing vis frames between events */
     public void setDrawListener(DrawListener listener) {
         drawListener = listener;
@@ -106,6 +110,7 @@ public class Simulation extends EventProcessor {
         this.drawReload = drawReload;
     }
 
+    /** 0 means maximum */
     public void setSimulationSpeed(final double simulationSpeed) {
         this.simulationSpeed = simulationSpeed;
     }
@@ -144,9 +149,9 @@ public class Simulation extends EventProcessor {
             }
         }
     }
-    
+
     private void callEventListeners() {
-        for(EventListener listener: eventListeners) {
+        for (EventListener listener : eventListeners) {
             listener.eventFired();
         }
     }
