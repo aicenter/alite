@@ -142,9 +142,4 @@ public abstract class AbstractLayer implements StructProcessor {
         addElement(e);
     }
 
-    /** sets timestamp to structure */
-    protected void setTime(long time) {
-        struct.setTimeStamp(time);
-    }
-
 }
