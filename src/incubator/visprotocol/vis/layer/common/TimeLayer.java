@@ -1,5 +1,7 @@
 package incubator.visprotocol.vis.layer.common;
 
+import incubator.visprotocol.structure.Structure;
+import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.vis.layer.AbstractLayer;
 import incubator.visprotocol.vis.layer.FilterStorage;
 
@@ -19,7 +21,11 @@ public class TimeLayer extends AbstractLayer {
 
     @Override
     protected void generateFrame() {
-        setTime(holder.getCurrentTimeMillis());
+    }
+
+    @Override
+    public Structure pull() {
+        return new Structure(CommonKeys.STRUCT_PART, holder.getCurrentTimeMillis());
     }
 
 }
