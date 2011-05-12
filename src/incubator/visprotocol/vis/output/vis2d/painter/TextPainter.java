@@ -17,7 +17,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
+
+import org.apache.commons.math.geometry.Vector3D;
 
 /**
  * Painter to paint single text from element. Used to paint text on screen or text in environment.
@@ -49,7 +50,7 @@ public class TextPainter implements Painter {
     private final Vis2DOutput vis2d;
 
     private Color color = Color.BLACK;
-    private Point3d pos = new Point3d();
+    private Vector3D pos = new Vector3D(0, 0, 0);
     private boolean constantSize = false;
     private Font font = new Font("Arial", Font.PLAIN, 10);
     private Align align = Align.NONE;
@@ -118,26 +119,26 @@ public class TextPainter implements Painter {
             pos = e.getParameter(TextKeys.CENTER);
             posChanged = true;
             if (align == Align.NONE) {
-                pos = new Point3d(pos.x - vis2d.getFontMetrics(font).stringWidth(text) / 2.0, pos.y
-                        - sizeY / 2.0, 0);
+                pos = new Vector3D(pos.getX() - vis2d.getFontMetrics(font).stringWidth(text) / 2.0,
+                        pos.getY() - sizeY / 2.0, 0);
             }
         }
         if (!posChanged && (align != Align.NONE)) {
-            pos = new Point3d(0, 0, 0);
+            pos = new Vector3D(0, 0, 0);
         }
 
         int x1;
         int y1;
 
         if (align == Align.NONE) {
-            x1 = vis2d.transX(pos.x);
-            y1 = (int) (vis2d.transY(pos.y) + sizeY / 2.0);
+            x1 = vis2d.transX(pos.getX());
+            y1 = (int) (vis2d.transY(pos.getY()) + sizeY / 2.0);
         } else {
             if (align != Align.RATIO) {
                 alignRatio = ALIGN_RATIOS.get(align);
             }
-            x1 = (int) ((vis2d.getWidth() - sizeX) * alignRatio.x + pos.x);
-            y1 = (int) ((vis2d.getHeight() - sizeY) * alignRatio.y + pos.y + sizeY);
+            x1 = (int) ((vis2d.getWidth() - sizeX) * alignRatio.x + pos.getX());
+            y1 = (int) ((vis2d.getHeight() - sizeY) * alignRatio.y + pos.getY() + sizeY);
         }
 
         int x2 = x1 + (int) sizeX;

@@ -1,12 +1,12 @@
 package incubator.visprotocol.creator;
 
-import javax.vecmath.Point3d;
+import org.apache.commons.math.geometry.Vector3D;
 
 public interface PersonProvider {
 
     public String getPersonName();
 
-    public Point3d getPersonPosition();
+    public Vector3D getPersonPosition();
 
     public int getPersonHealth();
 

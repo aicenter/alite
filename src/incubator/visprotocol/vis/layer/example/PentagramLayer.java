@@ -9,7 +9,7 @@ import incubator.visprotocol.vis.layer.element.ShapeElement;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import javax.vecmath.Point3d;
+import org.apache.commons.math.geometry.Vector3D;
 
 /**
  * The unholy layer >:-)
@@ -46,13 +46,13 @@ public class PentagramLayer extends AbstractLayer {
         double sizeX = size * Math.cos(step * Math.PI / 180.0);
         double sizeA = Math.abs(sizeX);
 
-        addElement("circle" + number, new ShapeElement(Shape.OVAL, new Point3d(cx, cy, 0), c,
+        addElement("circle" + number, new ShapeElement(Shape.OVAL, new Vector3D(cx, cy, 0), c,
                 sizeA, size, size / 90.0, false, false));
-        ArrayList<Point3d> points = new ArrayList<Point3d>(6);
+        ArrayList<Vector3D> points = new ArrayList<Vector3D>(6);
         for (int i = 0; i < 5; i++) {
             double a = Math.PI * 2 / 2.5 * i + Math.PI / 2.0 + 0.01;
-            points.add(new Point3d(cx + sizeX / 2.01 * Math.cos(a), cy + size / 2.01 * Math.sin(a),
-                    0));
+            points.add(new Vector3D(cx + sizeX / 2.01 * Math.cos(a),
+                    cy + size / 2.01 * Math.sin(a), 0));
         }
         points.add(points.get(0));
         addElement("star" + number, new LineElement(points, c, size / 90.0, false));

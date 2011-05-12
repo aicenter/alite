@@ -6,7 +6,8 @@ import incubator.visprotocol.vis.layer.FilterStorage;
 
 import java.awt.Color;
 
-import javax.vecmath.Point3d;
+
+import org.apache.commons.math.geometry.Vector3D;
 
 /**
  * Structure for point. One instance can be used many times with changed parameters
@@ -14,12 +15,12 @@ import javax.vecmath.Point3d;
  * @author Ondrej Milenovsky
  * */
 public class PointElement extends AbstractElement {
-    public final Point3d center;
+    public final Vector3D center;
     public final Color color;
     public final double width;
     public final boolean constantSize;
 
-    public PointElement(Point3d center, Color color, double width, boolean constatnSize) {
+    public PointElement(Vector3D center, Color color, double width, boolean constatnSize) {
         this.center = center;
         this.color = color;
         this.width = width;
