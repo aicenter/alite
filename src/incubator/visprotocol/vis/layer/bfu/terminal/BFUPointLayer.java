@@ -1,6 +1,6 @@
 package incubator.visprotocol.vis.layer.bfu.terminal;
 
-import incubator.visprotocol.vis.layer.bfu.BFUAbstractLayer;
+import incubator.visprotocol.vis.layer.bfu.BFUElementLayer;
 import incubator.visprotocol.vis.layer.element.PointElement;
 
 /**
@@ -8,16 +8,16 @@ import incubator.visprotocol.vis.layer.element.PointElement;
  * 
  * @author Ondrej Milenovsky
  * */
-public abstract class BFUPointLayer extends BFUAbstractLayer {
+public abstract class BFUPointLayer extends BFUElementLayer {
 
-    private static int count = 0;
+    private static int layerCount = 0;
     
     public BFUPointLayer(String name, boolean staticLayer) {
         super(name, staticLayer);
     }
     
     public BFUPointLayer(boolean staticLayer) {
-        this("Points " + count++, staticLayer);
+        this("Points " + layerCount++ + staticText(staticLayer), staticLayer);
     }
     
     @Override
