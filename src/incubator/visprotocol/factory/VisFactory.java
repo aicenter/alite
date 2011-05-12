@@ -209,9 +209,12 @@ public class VisFactory {
 
     // Other ////////
 
-    // TODO remove filter
     public FilterStorage getFilter() {
         return filter;
+    }
+    
+    public KeyLayerToggler createKeyLayerToggler() {
+        return new KeyLayerToggler(filter);
     }
 
 }
