@@ -130,6 +130,15 @@ public class StructUtils {
         return ret;
     }
 
+    public static String printPath(List<String> path) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : path) {
+            sb.append(".");
+            sb.append(s);
+        }
+        return sb.toString();
+    }
+
     public static Folder getFolderOfStruct(Structure struct, List<String> path) {
         Folder ret = struct.getRoot(path.get(0));
         for (int i = 1; i < path.size(); i++) {

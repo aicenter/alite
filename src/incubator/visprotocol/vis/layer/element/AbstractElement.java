@@ -16,14 +16,14 @@ public abstract class AbstractElement {
 
     /** sets parameter to element if not filtred */
     protected <C> void setParameter(Element e, Typer<C> typer, C value, FilterStorage filter) {
-        if (filter.typeHasParam(e.getType(), typer.id)) {
+        if ((filter == null) || filter.typeHasParam(e.getType(), typer.id)) {
             e.setParameter(typer, value);
         }
     }
 
     /** sets parameter to element if not filtred */
     protected void setParameter(Element e, String paramId, Object value, FilterStorage filter) {
-        if (filter.typeHasParam(e.getType(), paramId)) {
+        if ((filter == null) || filter.typeHasParam(e.getType(), paramId)) {
             e.setParameter(paramId, value);
         }
     }

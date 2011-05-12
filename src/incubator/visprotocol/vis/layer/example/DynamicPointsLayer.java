@@ -1,7 +1,6 @@
 package incubator.visprotocol.vis.layer.example;
 
 import incubator.visprotocol.vis.layer.AbstractLayer;
-import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.element.PointElement;
 
 import java.awt.Color;
@@ -19,8 +18,8 @@ public class DynamicPointsLayer extends AbstractLayer {
     private final ArrayList<Point3d> points;
     private double prGenerate = 0.9;
 
-    public DynamicPointsLayer(int n, int size, FilterStorage filter) {
-        super(filter);
+    public DynamicPointsLayer(int n, int size) {
+        super("Dynamic points");
         points = new ArrayList<Point3d>(n);
         for (int i = 0; i < n; i++) {
             points.add(new Point3d(Math.random() * size, Math.random() * size, 0));
@@ -29,7 +28,6 @@ public class DynamicPointsLayer extends AbstractLayer {
 
     @Override
     protected void generateFrame() {
-        changeFolder("World", "Dynamic");
         for (int i = 0; i < points.size(); i++) {
             if (Math.random() > prGenerate) {
                 continue;

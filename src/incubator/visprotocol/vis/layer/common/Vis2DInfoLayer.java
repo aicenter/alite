@@ -2,7 +2,6 @@ package incubator.visprotocol.vis.layer.common;
 
 import incubator.visprotocol.structure.key.struct.Align;
 import incubator.visprotocol.vis.layer.AbstractLayer;
-import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.element.TextElement;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 
@@ -33,15 +32,15 @@ public class Vis2DInfoLayer extends AbstractLayer {
      * Updates default setting by the element params. Note that Vis2DCommonPKeys.PRECISION can be
      * used.
      */
-    public Vis2DInfoLayer(Vis2DOutput vis2d, TextElement params, FilterStorage filter, int precision) {
-        this(vis2d, filter);
+    public Vis2DInfoLayer(Vis2DOutput vis2d, TextElement params, int precision) {
+        this(vis2d);
         updateParams(params);
         this.precision = Math.pow(10, precision);
     }
 
     /** Upper left position, Arial plain 10, white color */
-    public Vis2DInfoLayer(Vis2DOutput vis2d, FilterStorage filter) {
-        super(filter);
+    public Vis2DInfoLayer(Vis2DOutput vis2d) {
+        super(ROOT_ID);
         this.vis2d = vis2d;
         precision = 1000;
         params = new TextElement(null, Color.WHITE, true, Align.UPPER_LEFT, new Point3d(0, 0, 0),
@@ -78,7 +77,6 @@ public class Vis2DInfoLayer extends AbstractLayer {
 
     @Override
     protected void generateFrame() {
-        changeFolder(ROOT_ID);
         TextElement e;
         double fontSize = params.fontSize;
         if (fontSize <= 0) {

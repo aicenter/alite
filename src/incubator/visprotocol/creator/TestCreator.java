@@ -3,10 +3,9 @@ package incubator.visprotocol.creator;
 import incubator.visprotocol.factory.VisFactory;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
-import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.common.FillColorLayer;
-import incubator.visprotocol.vis.layer.common.TimeLayer;
 import incubator.visprotocol.vis.layer.common.TimeHolder;
+import incubator.visprotocol.vis.layer.common.TimeLayer;
 import incubator.visprotocol.vis.layer.common.Vis2DInfoLayer;
 import incubator.visprotocol.vis.layer.example.DynamicPointsLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
@@ -67,48 +66,45 @@ public class TestCreator implements Creator {
         Vis2DParams params = new Vis2DParams();
         params.worldBounds = new Rectangle2D.Double(-400, -600, 11000, 11000);
 
-        // TODO bug kdyz je protocol, u dynamickych bodu se obcas neprepisou parametry
-
         // V realtime modu je to tak 3x rychlejsi nez protocol. Direct este rychlejsi, ale nema
         // ulozenej aktualni stav, hodne trhane dokaze i 1M bodu. Kdyz je direct, tak se z proxy
         // musi generovat body pokazdy, u ostatnich staci jednou na zacatku.
-        final Mode mode = Mode.PROTOCOL;
+        final Mode mode = Mode.PLAYER_FROM_FILE;
         // 100k se trochu trha, 200k se dost trha, 1M u protocolu dosla pamet
         int nDynamicPoints = 10;
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
         int nStaticPoints = 10;
 
         VisFactory factory = new VisFactory();
-        FilterStorage filter = factory.getFilter(); // TODO remove filter
 
         // layers
-        factory.addLayer(new TimeLayer(exampleEnvironment, filter));
-        factory.addLayer(new FillColorLayer(Color.BLACK, ".World.Background", filter));
-        factory.addLayer(new PentagramLayer(exampleEnvironment, filter));
-        factory.addLayer(new StaticPoints(nStaticPoints, 10000, filter));
-        factory.addLayer(new DynamicPointsLayer(nDynamicPoints, 10000, filter));
-        factory.addLayer(new PersonLayer(exampleEnvironment, filter));
-        factory.addLayer(new ScreenTextLayer(exampleEnvironment, filter));
+        factory.addLayer(new TimeLayer(exampleEnvironment));
+        factory.addLayer(new FillColorLayer(Color.BLACK));
+        factory.addLayer(new PentagramLayer(exampleEnvironment));
+        factory.addLayer(new StaticPoints(nStaticPoints, 10000));
+        factory.addLayer(new DynamicPointsLayer(nDynamicPoints, 10000));
+        factory.addLayer(new PersonLayer(exampleEnvironment));
+        factory.addLayer(new ScreenTextLayer(exampleEnvironment));
 
         Vis2DOutput vis2d = null;
 
         if (mode == Mode.REALTIME) {
             factory.createRealtimeProtocol();
             vis2d = factory.createVis2DOutput(params);
-            factory.addOutputLayer(new Vis2DInfoLayer(vis2d, filter));
+            factory.addOutputLayer(new Vis2DInfoLayer(vis2d));
         } else if (mode == Mode.PROTOCOL) {
             factory.createMemoryProcotol();
             vis2d = factory.createVis2DOutput(params);
-            factory.addOutputLayer(new Vis2DInfoLayer(vis2d, filter));
+            factory.addOutputLayer(new Vis2DInfoLayer(vis2d));
         } else if (mode == Mode.SAVE_TO_FILE) {
             stream = factory.createFileWriterProtocol("record.rec");
             factory.createMemoryProcotol();
             vis2d = factory.createVis2DOutput(params);
-            factory.addOutputLayer(new Vis2DInfoLayer(vis2d, filter));
+            factory.addOutputLayer(new Vis2DInfoLayer(vis2d));
         } else if (mode == Mode.PLAYER_FROM_FILE) {
             factory.createFileReaderProtocol("record.rec");
             vis2d = factory.createVis2DPlayerOutput(params);
-            factory.addOutputLayer(new Vis2DInfoLayer(vis2d, filter));
+            factory.addOutputLayer(new Vis2DInfoLayer(vis2d));
         }
         root = vis2d;
 

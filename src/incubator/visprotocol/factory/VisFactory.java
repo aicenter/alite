@@ -13,6 +13,7 @@ import incubator.visprotocol.protocol.StreamOutputProtocol;
 import incubator.visprotocol.protocol.StreamProtocol;
 import incubator.visprotocol.protocol.StreamProtocolCloser;
 import incubator.visprotocol.structure.key.Vis2DCommonKeys;
+import incubator.visprotocol.vis.layer.AbstractLayer;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
@@ -25,6 +26,8 @@ import incubator.visprotocol.vis.player.ui.PlayerControls;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Factory to create layers, protocol and output. Layers added after creating protocols and outputs
@@ -45,10 +48,20 @@ public class VisFactory {
 
     private MultipleInputProcessor painter;
 
-    public VisFactory() {
+    private String projectName;
+
+    private Set<String> layerNames;
+
+    public VisFactory(String projectName) {
+        this.projectName = projectName;
         filter = new FilterStorage(Vis2DBasicPainters.ELEMENT_TYPES, Vis2DCommonKeys.COMMON_PARAMS);
         layers = new ArrayList<StructProcessor>();
         streamCloser = new StreamProtocolCloser();
+        layerNames = new HashSet<String>();
+    }
+
+    public VisFactory() {
+        this("World");
     }
 
     // Protocols ////////////
@@ -161,6 +174,17 @@ public class VisFactory {
 
     /** adds layer which generates elements from environment */
     public void addLayer(StructProcessor layer) {
+        if (layer instanceof AbstractLayer) {
+            AbstractLayer abstractLayer = (AbstractLayer) layer;
+            abstractLayer.setRoot(projectName);
+            abstractLayer.setFilter(filter);
+            String name = abstractLayer.getName();
+            if (layerNames.contains(name)) {
+                System.err.println("Warning! duplicate layer name (path): " + name);
+            } else {
+                layerNames.add(name);
+            }
+        }
         layers.add(layer);
     }
 

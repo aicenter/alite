@@ -3,7 +3,6 @@ package incubator.visprotocol.vis.layer.example;
 import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.key.struct.Align;
 import incubator.visprotocol.vis.layer.AbstractLayer;
-import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.element.PointElement;
 import incubator.visprotocol.vis.layer.element.TextElement;
 
@@ -21,14 +20,13 @@ public class PersonLayer extends AbstractLayer {
 
     private final ExampleEnvironment env;
 
-    public PersonLayer(ExampleEnvironment env, FilterStorage filter) {
-        super(filter);
+    public PersonLayer(ExampleEnvironment env) {
+        super("People");
         this.env = env;
     }
 
     @Override
     protected void generateFrame() {
-        changeFolder("World", "Persons");
         Point3d pos = new Point3d(env.getPersonPosition().x, env.getPersonPosition().y, 0);
         addElement(env.getPersonName(), new PointElement(pos, new Color(0, Math.min(255, env
                 .getPersonHealth()), 0), 60, false));
