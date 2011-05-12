@@ -9,7 +9,7 @@ import incubator.visprotocol.structure.key.Typer;
 import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.layer.element.AbstractElement;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,24 +30,49 @@ public abstract class AbstractLayer implements StructProcessor {
 
     private HashMap<String, Element> lastElements;
 
-    /** creates layer with dynamoc elements */
-    public AbstractLayer(FilterStorage filter) {
-        this(filter, false);
+    private List<String> path = new ArrayList<String>(2);
+
+    /** creates layer with dynamic elements */
+    public AbstractLayer(String name) {
+        this(name, false);
     }
 
     /** layer can be set as static, so it will be generated only once */
-    public AbstractLayer(FilterStorage filter, boolean staticLayer) {
-        this.filter = filter;
+    public AbstractLayer(String name, boolean staticLayer) {
         this.staticLayer = staticLayer;
         lastElements = new HashMap<String, Element>();
+        path.add("World");
+        path.add(name);
+    }
+
+    /** sets path of folder, discards name */
+    public void setPath(String... newPath) {
+        String root = path.get(0);
+        path = new ArrayList<String>(newPath.length + 1);
+        path.add(root);
+        for (int i = 0; i < newPath.length; i++) {
+            path.add(newPath[i]);
+        }
     }
 
     public FilterStorage getFilter() {
         return filter;
     }
 
+    public void setFilter(FilterStorage filter) {
+        this.filter = filter;
+    }
+
     public Structure getStruct() {
         return struct;
+    }
+
+    public void setRoot(String root) {
+        path.set(0, root);
+    }
+
+    public String getName() {
+        return StructUtils.printPath(path);
     }
 
     @Override
@@ -57,6 +82,7 @@ public abstract class AbstractLayer implements StructProcessor {
         } else {
             struct = new Structure(CommonKeys.STRUCT_PART);
         }
+        changeFolder(path);
         generateFrame();
         Structure ret = struct;
         clear();
@@ -74,47 +100,44 @@ public abstract class AbstractLayer implements StructProcessor {
     // FILTER /////////////////////////
 
     protected boolean hasType(String type) {
+        if (filter == null) {
+            return true;
+        }
         return filter.hasType(type);
     }
 
     protected boolean typeHasParam(String type, String param) {
+        if (filter == null) {
+            return true;
+        }
         return filter.typeHasParam(type, param);
     }
 
     protected boolean typeHasParam(String type, Typer<?> param) {
+        if (filter == null) {
+            return true;
+        }
         return filter.typeHasParam(type, param);
     }
 
     /** sets parameter to element if not filtred */
     protected void setParameter(Element e, String paramId, Object value) {
-        if (filter.typeHasParam(e.getType(), paramId)) {
+        if ((filter == null) || filter.typeHasParam(e.getType(), paramId)) {
             e.setParameter(paramId, value);
         }
     }
 
     /** sets parameter to element if not filtred */
     protected <C> void setParameter(Element e, Typer<C> typer, C value) {
-        if (filter.typeHasParam(e.getType(), typer.id)) {
+        if ((filter == null) || filter.typeHasParam(e.getType(), typer.id)) {
             e.setParameter(typer, value);
         }
     }
 
     // FOLDERS //////////////////
 
-    protected void changeFolder(String path) {
-        changeFolder(StructUtils.parsePath(path));
-    }
-
-    protected void changeFolder(List<String> path) {
-        changeFolder(StructUtils.getFolderOfStruct(struct, path));
-    }
-
-    protected void changeFolder(String... path) {
-        changeFolder(StructUtils.getFolderOfStruct(struct, Arrays.asList(path)));
-    }
-
-    private void changeFolder(Folder folder) {
-        currentFolder = folder;
+    private void changeFolder(List<String> path) {
+        currentFolder = StructUtils.getFolderOfStruct(struct, path);
         if (staticLayer) {
             currentFolder.setParameter(CommonKeys.NOT_CHANGE, true);
         }

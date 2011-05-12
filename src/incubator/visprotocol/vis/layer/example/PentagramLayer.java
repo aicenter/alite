@@ -3,7 +3,6 @@ package incubator.visprotocol.vis.layer.example;
 import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.key.struct.Shape;
 import incubator.visprotocol.vis.layer.AbstractLayer;
-import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.element.LineElement;
 import incubator.visprotocol.vis.layer.element.ShapeElement;
 
@@ -22,14 +21,13 @@ public class PentagramLayer extends AbstractLayer {
     private final ExampleEnvironment env;
     private double size = 10000;
 
-    public PentagramLayer(ExampleEnvironment env, FilterStorage filter) {
-        super(filter);
+    public PentagramLayer(ExampleEnvironment env) {
+        super("Pentagram");
         this.env = env;
     }
 
     @Override
     protected void generateFrame() {
-        changeFolder("World", "Pentagram");
         int step = (int) (env.getCurrentTimeMillis() * 0.075);
         for (int i = 0; i < 30; i++) {
             fillPentagram(step + i, new Color(30 + i * 6, 0, 0), i);
