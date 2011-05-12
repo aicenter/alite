@@ -5,7 +5,6 @@ import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.vis.layer.common.FillColorLayer;
 import incubator.visprotocol.vis.layer.common.TimeHolder;
-import incubator.visprotocol.vis.layer.common.TimeLayer;
 import incubator.visprotocol.vis.layer.common.Vis2DInfoLayer;
 import incubator.visprotocol.vis.layer.example.DynamicPointsLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
@@ -75,10 +74,9 @@ public class TestCreator implements Creator {
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
         int nStaticPoints = 10;
 
-        VisFactory factory = new VisFactory();
+        VisFactory factory = new VisFactory(exampleEnvironment, "Test world");
 
         // layers
-        factory.addLayer(new TimeLayer(exampleEnvironment));
         factory.addLayer(new FillColorLayer(Color.BLACK));
         factory.addLayer(new PentagramLayer(exampleEnvironment));
         factory.addLayer(new StaticPoints(nStaticPoints, 10000));

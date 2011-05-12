@@ -15,6 +15,8 @@ import incubator.visprotocol.protocol.StreamProtocolCloser;
 import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.vis.layer.AbstractLayer;
 import incubator.visprotocol.vis.layer.FilterStorage;
+import incubator.visprotocol.vis.layer.common.TimeHolder;
+import incubator.visprotocol.vis.layer.common.TimeLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.TreePainter;
@@ -52,16 +54,17 @@ public class VisFactory {
 
     private Set<String> layerNames;
 
-    public VisFactory(String projectName) {
+    public VisFactory(TimeHolder timeHolder, String projectName) {
         this.projectName = projectName;
         filter = new FilterStorage(Vis2DBasicPainters.ELEMENT_TYPES, Vis2DCommonKeys.COMMON_PARAMS);
         layers = new ArrayList<StructProcessor>();
         streamCloser = new StreamProtocolCloser();
         layerNames = new HashSet<String>();
+        addLayer(new TimeLayer(timeHolder));
     }
 
-    public VisFactory() {
-        this("World");
+    public VisFactory(TimeHolder timeHolder) {
+        this(timeHolder, "World");
     }
 
     // Protocols ////////////
