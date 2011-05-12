@@ -68,15 +68,16 @@ public class TestCreator implements Creator {
         // V realtime modu je to tak 3x rychlejsi nez protocol. Direct este rychlejsi, ale nema
         // ulozenej aktualni stav, hodne trhane dokaze i 1M bodu. Kdyz je direct, tak se z proxy
         // musi generovat body pokazdy, u ostatnich staci jednou na zacatku.
-        final Mode mode = Mode.PLAYER_FROM_FILE;
+        final Mode mode = Mode.PROTOCOL;
         // 100k se trochu trha, 200k se dost trha, 1M u protocolu dosla pamet
         int nDynamicPoints = 10;
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
         int nStaticPoints = 10;
 
-        VisFactory factory = new VisFactory(exampleEnvironment, "Test world");
+        VisFactory factory = new VisFactory("Test world");
 
         // layers
+        factory.addTimeLayer(exampleEnvironment);
         factory.addLayer(new FillColorLayer(Color.BLACK));
         factory.addLayer(new PentagramLayer(exampleEnvironment));
         factory.addLayer(new StaticPoints(nStaticPoints, 10000));

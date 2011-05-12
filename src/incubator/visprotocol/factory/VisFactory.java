@@ -53,18 +53,18 @@ public class VisFactory {
     private String projectName;
 
     private Set<String> layerNames;
+    private boolean timeLayerAdded = false;
 
-    public VisFactory(TimeHolder timeHolder, String projectName) {
+    public VisFactory(String projectName) {
         this.projectName = projectName;
         filter = new FilterStorage(Vis2DBasicPainters.ELEMENT_TYPES, Vis2DCommonKeys.COMMON_PARAMS);
         layers = new ArrayList<StructProcessor>();
         streamCloser = new StreamProtocolCloser();
         layerNames = new HashSet<String>();
-        addLayer(new TimeLayer(timeHolder));
     }
 
-    public VisFactory(TimeHolder timeHolder) {
-        this(timeHolder, "World");
+    public VisFactory() {
+        this("World");
     }
 
     // Protocols ////////////
@@ -91,6 +91,9 @@ public class VisFactory {
      * created on this protocol.
      */
     public StructProcessor createFileWriterProtocol(String fileName) {
+        if (!timeLayerAdded) {
+            System.err.println("Time layer should be added if using file protocol");
+        }
         lastProtocol = new FileWriterProtocol(new File(fileName), getLayerDiffer());
         streamCloser.addStreamProtocol((StreamProtocol) lastProtocol);
         return lastProtocol;
@@ -175,6 +178,11 @@ public class VisFactory {
 
     // Layers ////////////
 
+    public void addTimeLayer(TimeHolder timeHolder) {
+        addLayer(new TimeLayer(timeHolder));
+        timeLayerAdded = true;
+    }
+
     /** adds layer which generates elements from environment */
     public void addLayer(StructProcessor layer) {
         if (layer instanceof AbstractLayer) {
@@ -187,6 +195,9 @@ public class VisFactory {
             } else {
                 layerNames.add(name);
             }
+        }
+        if (layer instanceof TimeLayer) {
+            timeLayerAdded = true;
         }
         layers.add(layer);
     }
