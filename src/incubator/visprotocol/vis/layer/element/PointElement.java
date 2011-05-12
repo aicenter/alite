@@ -14,10 +14,10 @@ import javax.vecmath.Point3d;
  * @author Ondrej Milenovsky
  * */
 public class PointElement extends AbstractElement {
-    public Point3d center;
-    public Color color;
-    public double width;
-    public boolean constantSize;
+    public final Point3d center;
+    public final Color color;
+    public final double width;
+    public final boolean constantSize;
 
     public PointElement(Point3d center, Color color, double width, boolean constatnSize) {
         this.center = center;

@@ -27,10 +27,9 @@ public class StaticPoints extends AbstractLayer {
 
     @Override
     protected void generateFrame() {
-        PointElement point = new PointElement(null, new Color(255, 160, 160, 30), 4, true);
         for (int i = 0; i < points.size(); i++) {
-            point.center = points.get(i);
-            addElement("p" + i, point);
+            addElement("p" + i, new PointElement(points.get(i), new Color(255, 160, 160, 30), 4,
+                    true));
         }
     }
 

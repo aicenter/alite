@@ -12,7 +12,7 @@ import java.awt.Color;
  * @author Ondrej Milenovsky
  * */
 public class FillColorElement extends AbstractElement {
-    public Color color;
+    public final Color color;
 
     public FillColorElement(Color color) {
         this.color = color;

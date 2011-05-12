@@ -12,11 +12,11 @@ import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 
 /**
- * Structure for text. One instance can be used many times with changed parameters
+ * Mutable structure for text. One instance can be used many times with changed parameters
  * 
  * @author Ondrej Milenovsky
  * */
-public class TextElement extends AbstractElement {
+public class TextElementMut extends AbstractElement {
     public Point3d center;
     // or
     public Point3d pos;
@@ -35,10 +35,21 @@ public class TextElement extends AbstractElement {
     // and/or
     public Font font;
 
-    private TextElement() {
+    private TextElementMut(TextElementMut textElement) {
+        this.center = textElement.center;
+        this.pos = textElement.pos;
+        this.text = textElement.text;
+        this.color = textElement.color;
+        this.constantSize = textElement.constantSize;
+        this.alignOnScreen = textElement.alignOnScreen;
+        this.alignRatio = textElement.alignRatio;
+        this.font = textElement.font;
+        this.fontName = textElement.fontName;
+        this.fontSize = textElement.fontSize;
+        this.fontStyle = textElement.fontStyle;
     }
 
-    public TextElement(String text, Point3d center, Color color, boolean constatnSize,
+    public TextElementMut(String text, Point3d center, Color color, boolean constatnSize,
             Align alignOnScreen, Font font) {
         this.text = text;
         this.center = center;
@@ -49,7 +60,7 @@ public class TextElement extends AbstractElement {
         init();
     }
 
-    public TextElement(String text, Point3d center, Color color, boolean constatnSize,
+    public TextElementMut(String text, Point3d center, Color color, boolean constatnSize,
             Point2d alignRatio, Font font) {
         this.text = text;
         this.center = center;
@@ -61,7 +72,7 @@ public class TextElement extends AbstractElement {
         init();
     }
 
-    public TextElement(String text, Color color, boolean constatnSize, Align alignOnScreen,
+    public TextElementMut(String text, Color color, boolean constatnSize, Align alignOnScreen,
             Point3d pos, Font font) {
         this.text = text;
         this.pos = pos;
@@ -72,7 +83,7 @@ public class TextElement extends AbstractElement {
         init();
     }
 
-    public TextElement(String text, Color color, boolean constatnSize, Point2d alignRatio,
+    public TextElementMut(String text, Color color, boolean constatnSize, Point2d alignRatio,
             Point3d pos, Font font) {
         this.text = text;
         this.pos = pos;
@@ -121,19 +132,8 @@ public class TextElement extends AbstractElement {
     }
 
     @Override
-    public TextElement copy() {
-        TextElement ret = new TextElement();
-        ret.center = center;
-        ret.pos = pos;
-        ret.text = text;
-        ret.color = color;
-        ret.constantSize = constantSize;
-        ret.alignOnScreen = alignOnScreen;
-        ret.alignRatio = alignRatio;
-        ret.font = font;
-        ret.fontName = fontName;
-        ret.fontSize = fontSize;
-        ret.fontStyle = fontStyle;
+    public TextElementMut copy() {
+        TextElementMut ret = new TextElementMut(this);
         return ret;
     }
 }

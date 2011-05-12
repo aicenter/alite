@@ -15,15 +15,15 @@ import javax.vecmath.Point3d;
  * @author Ondrej Milenovsky
  * */
 public class ShapeElement extends AbstractElement {
-    public Shape shape;
-    public Point3d center;
-    public Color color;
-    public double lineWidth;
-    public double size;
-    public double sizeX;
-    public double sizeY;
-    public boolean constantSize;
-    public boolean constantLineWidth;
+    public final Shape shape;
+    public final Point3d center;
+    public final Color color;
+    public final double lineWidth;
+    public final double size;
+    public final double sizeX;
+    public final double sizeY;
+    public final boolean constantSize;
+    public final boolean constantLineWidth;
 
     public ShapeElement(Shape shape, Point3d center, Color color, double size, double lineWidth,
             boolean constatnSize, boolean constantLineWidth) {
@@ -34,6 +34,8 @@ public class ShapeElement extends AbstractElement {
         this.lineWidth = lineWidth;
         this.constantSize = constatnSize;
         this.constantLineWidth = constantLineWidth;
+        sizeX = 0;
+        sizeY = 0;
     }
 
     public ShapeElement(Shape shape, Point3d center, Color color, double sizeX, double sizeY,
@@ -46,6 +48,7 @@ public class ShapeElement extends AbstractElement {
         this.lineWidth = lineWidth;
         this.constantSize = constatnSize;
         this.constantLineWidth = constantLineWidth;
+        size = 0;
     }
 
     @Override
