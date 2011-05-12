@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.layer.common;
+package incubator.visprotocol.vis.layer.terminal;
 
 import incubator.visprotocol.vis.layer.AbstractLayer;
 import incubator.visprotocol.vis.layer.element.FillColorElement;
@@ -23,7 +23,6 @@ public class FillColorLayer extends AbstractLayer {
         super(name, true);
         this.color = color;
     }
-
 
     @Override
     protected void generateFrame() {

@@ -1,6 +1,5 @@
 package incubator.visprotocol.vis.layer;
 
-import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
@@ -19,7 +18,7 @@ import java.util.List;
  * 
  * @author Ondrej Milenovsky
  * */
-public abstract class AbstractLayer implements StructProcessor {
+public abstract class AbstractLayer implements VisLayer {
 
     private FilterStorage filter;
 

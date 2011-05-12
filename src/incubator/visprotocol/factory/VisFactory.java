@@ -13,10 +13,10 @@ import incubator.visprotocol.protocol.StreamOutputProtocol;
 import incubator.visprotocol.protocol.StreamProtocol;
 import incubator.visprotocol.protocol.StreamProtocolCloser;
 import incubator.visprotocol.structure.key.Vis2DCommonKeys;
-import incubator.visprotocol.vis.layer.AbstractLayer;
 import incubator.visprotocol.vis.layer.FilterStorage;
-import incubator.visprotocol.vis.layer.common.TimeHolder;
-import incubator.visprotocol.vis.layer.common.TimeLayer;
+import incubator.visprotocol.vis.layer.VisLayer;
+import incubator.visprotocol.vis.layer.terminal.TimeHolder;
+import incubator.visprotocol.vis.layer.terminal.TimeLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.TreePainter;
@@ -185,8 +185,8 @@ public class VisFactory {
 
     /** adds layer which generates elements from environment */
     public void addLayer(StructProcessor layer) {
-        if (layer instanceof AbstractLayer) {
-            AbstractLayer abstractLayer = (AbstractLayer) layer;
+        if (layer instanceof VisLayer) {
+            VisLayer abstractLayer = (VisLayer) layer;
             abstractLayer.setRoot(projectName);
             abstractLayer.setFilter(filter);
             String name = abstractLayer.getName();

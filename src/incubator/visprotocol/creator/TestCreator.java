@@ -3,19 +3,21 @@ package incubator.visprotocol.creator;
 import incubator.visprotocol.factory.VisFactory;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
-import incubator.visprotocol.vis.layer.common.FillColorLayer;
-import incubator.visprotocol.vis.layer.common.TimeHolder;
-import incubator.visprotocol.vis.layer.common.Vis2DInfoLayer;
+import incubator.visprotocol.vis.layer.bfu.terminal.BFUPointLayer;
+import incubator.visprotocol.vis.layer.element.PointElement;
 import incubator.visprotocol.vis.layer.example.DynamicPointsLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
 import incubator.visprotocol.vis.layer.example.PersonLayer;
 import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
-import incubator.visprotocol.vis.layer.example.StaticPoints;
+import incubator.visprotocol.vis.layer.terminal.FillColorLayer;
+import incubator.visprotocol.vis.layer.terminal.TimeHolder;
+import incubator.visprotocol.vis.layer.terminal.Vis2DInfoLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.vecmath.Point3d;
@@ -70,9 +72,9 @@ public class TestCreator implements Creator {
         // musi generovat body pokazdy, u ostatnich staci jednou na zacatku.
         final Mode mode = Mode.PROTOCOL;
         // 100k se trochu trha, 200k se dost trha, 1M u protocolu dosla pamet
-        int nDynamicPoints = 10;
+        final int nDynamicPoints = 10;
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
-        int nStaticPoints = 10;
+        final int nStaticPoints = 1000;
 
         VisFactory factory = new VisFactory("Test world");
 
@@ -80,7 +82,19 @@ public class TestCreator implements Creator {
         factory.addTimeLayer(exampleEnvironment);
         factory.addLayer(new FillColorLayer(Color.BLACK));
         factory.addLayer(new PentagramLayer(exampleEnvironment));
-        factory.addLayer(new StaticPoints(nStaticPoints, 10000));
+        // factory.addLayer(new StaticPoints(nStaticPoints, 10000));
+        factory.addLayer(new BFUPointLayer(true) {
+            @Override
+            protected Iterable<? extends PointElement> getPoints() {
+                ArrayList<PointElement> points = new ArrayList<PointElement>(nStaticPoints);
+                for (int i = 0; i < nStaticPoints; i++) {
+                    points.add(new PointElement(new Point3d(Math.random() * 10000,
+                            Math.random() * 10000, 0), new Color(255, 160, 160, 30), 4, true));
+                }
+                return points;
+            }
+        });
+
         factory.addLayer(new DynamicPointsLayer(nDynamicPoints, 10000));
         factory.addLayer(new PersonLayer(exampleEnvironment));
         factory.addLayer(new ScreenTextLayer(exampleEnvironment));
