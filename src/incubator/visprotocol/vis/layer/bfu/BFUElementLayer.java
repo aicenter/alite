@@ -10,17 +10,23 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Abstract layer for BFU layers
+ * Abstract layer for BFU layers, all specified layers extend this. Also can be used without
+ * extending for set of different elements.
  * 
  * @author Ondrej Milenovsky
  * */
-public abstract class BFUAbstractLayer implements VisLayer {
+public abstract class BFUElementLayer implements VisLayer {
 
     private final Layer layer;
-    private int count;
+    private int elementCount;
+    private static int layerCount = 0;
 
-    public BFUAbstractLayer(String name, boolean staticLayer) {
+    public BFUElementLayer(String name, boolean staticLayer) {
         layer = new Layer(name, staticLayer);
+    }
+
+    public BFUElementLayer(boolean staticLayer) {
+        this("Elements " + layerCount++ + staticText(staticLayer), staticLayer);
     }
 
     /** fill all elements to draw */
@@ -40,33 +46,37 @@ public abstract class BFUAbstractLayer implements VisLayer {
     }
 
     private String generateName(AbstractElement element) {
-        return element.getType() + " " + count++;
+        return element.getType() + " " + elementCount++;
     }
 
     private void resetCounter() {
-        count = 0;
+        elementCount = 0;
+    }
+
+    protected static String staticText(boolean staticLayer) {
+        return (staticLayer) ? " S" : "";
     }
 
     @Override
     public final Structure pull() {
         return layer.pull();
     }
-    
+
     @Override
     public final String getName() {
         return layer.getName();
     }
-    
+
     @Override
     public final void setFilter(FilterStorage filter) {
         layer.setFilter(filter);
     }
-    
+
     @Override
     public final void setRoot(String root) {
         layer.setRoot(root);
     }
-    
+
     private class Layer extends AbstractLayer {
         public Layer(String name, boolean staticLayer) {
             super(name, staticLayer);
