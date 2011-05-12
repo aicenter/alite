@@ -2,7 +2,7 @@ package incubator.visprotocol.vis.layer.terminal;
 
 import incubator.visprotocol.structure.key.struct.Align;
 import incubator.visprotocol.vis.layer.AbstractLayer;
-import incubator.visprotocol.vis.layer.element.TextElement;
+import incubator.visprotocol.vis.layer.element.TextElementMut;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 
 import java.awt.Color;
@@ -25,14 +25,14 @@ public class Vis2DInfoLayer extends AbstractLayer {
     public static final String ZOOM_ID = "zoom";
 
     protected final Vis2DOutput vis2d;
-    protected final TextElement params;
+    protected final TextElementMut params;
     protected double precision;
 
     /**
      * Updates default setting by the element params. Note that Vis2DCommonPKeys.PRECISION can be
      * used.
      */
-    public Vis2DInfoLayer(Vis2DOutput vis2d, TextElement params, int precision) {
+    public Vis2DInfoLayer(Vis2DOutput vis2d, TextElementMut params, int precision) {
         this(vis2d);
         updateParams(params);
         this.precision = Math.pow(10, precision);
@@ -43,11 +43,11 @@ public class Vis2DInfoLayer extends AbstractLayer {
         super(ROOT_ID);
         this.vis2d = vis2d;
         precision = 1000;
-        params = new TextElement(null, Color.WHITE, true, Align.UPPER_LEFT, new Point3d(0, 0, 0),
+        params = new TextElementMut(null, Color.WHITE, true, Align.UPPER_LEFT, new Point3d(0, 0, 0),
                 new Font("Arial", Font.PLAIN, 10));
     }
 
-    private void updateParams(TextElement par) {
+    private void updateParams(TextElementMut par) {
         if (par.color != null) {
             params.color = par.color;
         }
@@ -77,7 +77,7 @@ public class Vis2DInfoLayer extends AbstractLayer {
 
     @Override
     protected void generateFrame() {
-        TextElement e;
+        TextElementMut e;
         double fontSize = params.fontSize;
         if (fontSize <= 0) {
             fontSize = params.font.getSize();

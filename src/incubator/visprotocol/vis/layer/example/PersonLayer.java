@@ -4,7 +4,7 @@ import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.key.struct.Align;
 import incubator.visprotocol.vis.layer.AbstractLayer;
 import incubator.visprotocol.vis.layer.element.PointElement;
-import incubator.visprotocol.vis.layer.element.TextElement;
+import incubator.visprotocol.vis.layer.element.TextElementMut;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -31,10 +31,10 @@ public class PersonLayer extends AbstractLayer {
         addElement(env.getPersonName(), new PointElement(pos, new Color(0, Math.min(255, env
                 .getPersonHealth()), 0), 60, false));
         pos = new Point3d(env.getPersonPosition().x, env.getPersonPosition().y - 50, 0);
-        addElement("-text1", new TextElement(env.getPersonName(), pos, Color.YELLOW, false,
+        addElement("-text1", new TextElementMut(env.getPersonName(), pos, Color.YELLOW, false,
                 Align.NONE, new Font("GothicE", Font.PLAIN, 40)));
         pos = new Point3d(env.getPersonPosition().x, env.getPersonPosition().y + 50, 0);
-        addElement("-text2", new TextElement("Random...", new Color(160, 80, 0), true, Align.NONE,
+        addElement("-text2", new TextElementMut("Random...", new Color(160, 80, 0), true, Align.NONE,
                 pos, new Font("Arial", Font.ITALIC, 14)));
     }
 }
