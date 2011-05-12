@@ -31,7 +31,7 @@ public abstract class BFUAbstractLayer implements VisLayer {
         return null;
     }
 
-    protected Iterable<String> generateNames(Iterable<? extends AbstractElement> elements) {
+    private Iterable<String> generateNames(Iterable<? extends AbstractElement> elements) {
         ArrayList<String> names = new ArrayList<String>();
         for (AbstractElement element : elements) {
             names.add(generateName(element));
@@ -39,7 +39,7 @@ public abstract class BFUAbstractLayer implements VisLayer {
         return names;
     }
 
-    protected String generateName(AbstractElement element) {
+    private String generateName(AbstractElement element) {
         return element.getType() + " " + count++;
     }
 

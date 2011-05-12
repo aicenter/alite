@@ -1,7 +1,6 @@
 package incubator.visprotocol.vis.layer.bfu.terminal;
 
 import incubator.visprotocol.vis.layer.bfu.BFUAbstractLayer;
-import incubator.visprotocol.vis.layer.element.AbstractElement;
 import incubator.visprotocol.vis.layer.element.PointElement;
 
 /**
@@ -22,18 +21,8 @@ public abstract class BFUPointLayer extends BFUAbstractLayer {
     }
     
     @Override
-    protected final Iterable<? extends AbstractElement> getElements() {
+    protected final Iterable<? extends PointElement> getElements() {
         return getPoints();
-    }
-    
-    @Override
-    protected final String generateName(AbstractElement element) {
-        return super.generateName(element);
-    }
-    
-    @Override
-    protected final Iterable<String> generateNames(Iterable<? extends AbstractElement> elements) {
-        return super.generateNames(elements);
     }
     
     protected abstract Iterable<? extends PointElement> getPoints();
