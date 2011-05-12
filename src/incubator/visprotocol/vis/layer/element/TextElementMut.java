@@ -9,7 +9,8 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
+
+import org.apache.commons.math.geometry.Vector3D;
 
 /**
  * Mutable structure for text. One instance can be used many times with changed parameters
@@ -17,9 +18,9 @@ import javax.vecmath.Point3d;
  * @author Ondrej Milenovsky
  * */
 public class TextElementMut extends AbstractElement {
-    public Point3d center;
+    public Vector3D center;
     // or
-    public Point3d pos;
+    public Vector3D pos;
 
     public String text;
     public Color color;
@@ -49,7 +50,7 @@ public class TextElementMut extends AbstractElement {
         this.fontStyle = textElement.fontStyle;
     }
 
-    public TextElementMut(String text, Point3d center, Color color, boolean constatnSize,
+    public TextElementMut(String text, Vector3D center, Color color, boolean constatnSize,
             Align alignOnScreen, Font font) {
         this.text = text;
         this.center = center;
@@ -60,7 +61,7 @@ public class TextElementMut extends AbstractElement {
         init();
     }
 
-    public TextElementMut(String text, Point3d center, Color color, boolean constatnSize,
+    public TextElementMut(String text, Vector3D center, Color color, boolean constatnSize,
             Point2d alignRatio, Font font) {
         this.text = text;
         this.center = center;
@@ -73,7 +74,7 @@ public class TextElementMut extends AbstractElement {
     }
 
     public TextElementMut(String text, Color color, boolean constatnSize, Align alignOnScreen,
-            Point3d pos, Font font) {
+            Vector3D pos, Font font) {
         this.text = text;
         this.pos = pos;
         this.color = color;
@@ -84,7 +85,7 @@ public class TextElementMut extends AbstractElement {
     }
 
     public TextElementMut(String text, Color color, boolean constatnSize, Point2d alignRatio,
-            Point3d pos, Font font) {
+            Vector3D pos, Font font) {
         this.text = text;
         this.pos = pos;
         this.color = color;

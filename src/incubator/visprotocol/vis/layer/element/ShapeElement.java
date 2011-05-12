@@ -7,7 +7,8 @@ import incubator.visprotocol.vis.layer.FilterStorage;
 
 import java.awt.Color;
 
-import javax.vecmath.Point3d;
+
+import org.apache.commons.math.geometry.Vector3D;
 
 /**
  * Structure for shape. One instance can be used many times with changed parameters
@@ -16,7 +17,7 @@ import javax.vecmath.Point3d;
  * */
 public class ShapeElement extends AbstractElement {
     public final Shape shape;
-    public final Point3d center;
+    public final Vector3D center;
     public final Color color;
     public final double lineWidth;
     public final double size;
@@ -25,7 +26,7 @@ public class ShapeElement extends AbstractElement {
     public final boolean constantSize;
     public final boolean constantLineWidth;
 
-    public ShapeElement(Shape shape, Point3d center, Color color, double size, double lineWidth,
+    public ShapeElement(Shape shape, Vector3D center, Color color, double size, double lineWidth,
             boolean constatnSize, boolean constantLineWidth) {
         this.shape = shape;
         this.center = center;
@@ -38,7 +39,7 @@ public class ShapeElement extends AbstractElement {
         sizeY = 0;
     }
 
-    public ShapeElement(Shape shape, Point3d center, Color color, double sizeX, double sizeY,
+    public ShapeElement(Shape shape, Vector3D center, Color color, double sizeX, double sizeY,
             double lineWidth, boolean constatnSize, boolean constantLineWidth) {
         this.shape = shape;
         this.center = center;

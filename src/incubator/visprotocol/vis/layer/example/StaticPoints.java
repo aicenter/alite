@@ -6,7 +6,8 @@ import incubator.visprotocol.vis.layer.element.PointElement;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import javax.vecmath.Point3d;
+import org.apache.commons.math.geometry.Vector3D;
+
 
 /**
  * Random static points.
@@ -15,13 +16,13 @@ import javax.vecmath.Point3d;
  * */
 public class StaticPoints extends AbstractLayer {
 
-    private final ArrayList<Point3d> points;
+    private final ArrayList<Vector3D> points;
 
     public StaticPoints(int n, int size) {
         super("Static", true);
-        points = new ArrayList<Point3d>(n);
+        points = new ArrayList<Vector3D>(n);
         for (int i = 0; i < n; i++) {
-            points.add(new Point3d(Math.random() * size, Math.random() * size, 0));
+            points.add(new Vector3D(Math.random() * size, Math.random() * size, 0));
         }
     }
 

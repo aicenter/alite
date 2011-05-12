@@ -20,7 +20,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.vecmath.Point3d;
+import org.apache.commons.math.geometry.Vector3D;
 
 import cz.agents.alite.creator.Creator;
 
@@ -88,11 +88,12 @@ public class TestCreator implements Creator {
             protected Iterable<? extends PointElement> getPoints() {
                 ArrayList<PointElement> points = new ArrayList<PointElement>(nStaticPoints);
                 for (int i = 0; i < nStaticPoints; i++) {
-                    points.add(new PointElement(new Point3d(Math.random() * 10000,
+                    points.add(new PointElement(new Vector3D(Math.random() * 10000,
                             Math.random() * 10000, 0), new Color(255, 160, 160, 30), 4, true));
                 }
                 return points;
             }
+            // dal je mozno prepsat getNames() a vratit ID bodu
         });
 
         factory.addLayer(new DynamicPointsLayer(nDynamicPoints, 10000));
@@ -141,7 +142,7 @@ public class TestCreator implements Creator {
     private void createAndRunSimulation() {
         Random random = new Random();
         while (true) {
-            exampleEnvironment.examplePosition = new Point3d(random.nextDouble() * 200.0 + 100.0,
+            exampleEnvironment.examplePosition = new Vector3D(random.nextDouble() * 200.0 + 100.0,
                     random.nextDouble() * 200.0 + 100.0, random.nextDouble() * 20.0 + 100.0);
             exampleEnvironment.exampleInteger = random.nextInt(256);
 
@@ -160,7 +161,7 @@ public class TestCreator implements Creator {
         private long exampleTime = 1;
 
         private String exampleString = "Crazy person";
-        private Point3d examplePosition = new Point3d();
+        private Vector3D examplePosition = new Vector3D(0, 0, 0);
         private int exampleInteger = 100;
 
         @Override
@@ -169,7 +170,7 @@ public class TestCreator implements Creator {
         }
 
         @Override
-        public Point3d getPersonPosition() {
+        public Vector3D getPersonPosition() {
             return examplePosition;
         }
 

@@ -8,7 +8,8 @@ import incubator.visprotocol.vis.output.Vis2DOutput;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.vecmath.Point3d;
+import org.apache.commons.math.geometry.Vector3D;
+
 
 /**
  * Layer to show zoom and pos. Cannot pass differ or updater, must be pluged directly to
@@ -43,7 +44,7 @@ public class Vis2DInfoLayer extends AbstractLayer {
         super(ROOT_ID);
         this.vis2d = vis2d;
         precision = 1000;
-        params = new TextElementMut(null, Color.WHITE, true, Align.UPPER_LEFT, new Point3d(0, 0, 0),
+        params = new TextElementMut(null, Color.WHITE, true, Align.UPPER_LEFT, new Vector3D(0, 0, 0),
                 new Font("Arial", Font.PLAIN, 10));
     }
 
@@ -89,12 +90,12 @@ public class Vis2DInfoLayer extends AbstractLayer {
 
         e = params.copy();
         e.text = "Posy: " + cutNumber(vis2d.getCursorPosition().y);
-        e.pos = new Point3d(e.pos.x, e.pos.y + fontSize, e.pos.z);
+        e.pos = new Vector3D(e.pos.getX(), e.pos.getY() + fontSize, e.pos.getZ());
         addElement(POSY_ID, e);
 
         e = params.copy();
         e.text = "Zoom: " + cutNumber(vis2d.getZoomFactor());
-        e.pos = new Point3d(e.pos.x, e.pos.y + fontSize * 2, e.pos.z);
+        e.pos = new Vector3D(e.pos.getX(), e.pos.getY() + fontSize * 2, e.pos.getZ());
         addElement(ZOOM_ID, e);
     }
 

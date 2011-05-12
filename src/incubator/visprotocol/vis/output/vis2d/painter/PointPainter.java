@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.vecmath.Point3d;
+import org.apache.commons.math.geometry.Vector3D;
 
 /**
  * Painter to paint single point from element.
@@ -29,7 +29,7 @@ public class PointPainter implements Painter {
 
     private Color color = Color.BLACK;
     private double width = 1;
-    private Point3d pos = new Point3d();
+    private Vector3D pos = new Vector3D(0, 0, 0);
     private boolean constantSize = false;
 
     public PointPainter(Vis2DOutput vis2dOutput) {
@@ -53,8 +53,8 @@ public class PointPainter implements Painter {
 
         graphics2d.setColor(color);
 
-        int x1 = vis2dOutput.transX(pos.x) - radius;
-        int y1 = vis2dOutput.transY(pos.y) - radius;
+        int x1 = vis2dOutput.transX(pos.getX()) - radius;
+        int y1 = vis2dOutput.transY(pos.getY()) - radius;
         int x2 = x1 + 2 * radius;
         int y2 = y1 + 2 * radius;
         if (vis2dOutput.containsRect(x1, y1, x2, y2)) {

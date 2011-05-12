@@ -7,7 +7,7 @@ import incubator.visprotocol.vis.layer.FilterStorage;
 import java.awt.Color;
 import java.util.List;
 
-import javax.vecmath.Point3d;
+import org.apache.commons.math.geometry.Vector3D;
 
 /**
  * Structure for line. One instance can be used many times with changed parameters
@@ -15,12 +15,12 @@ import javax.vecmath.Point3d;
  * @author Ondrej Milenovsky
  * */
 public class LineElement extends AbstractElement {
-    public final List<Point3d> points;
+    public final List<Vector3D> points;
     public final Color color;
     public final double lineWidth;
     public final boolean constantLineWidth;
 
-    public LineElement(List<Point3d> points, Color color, double lineWidth,
+    public LineElement(List<Vector3D> points, Color color, double lineWidth,
             boolean constatnLineWidth) {
         this.points = points;
         this.color = color;

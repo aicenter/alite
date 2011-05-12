@@ -6,7 +6,8 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.vecmath.Point2d;
-import javax.vecmath.Point3d;
+
+import org.apache.commons.math.geometry.Vector3D;
 
 /**
  * Keys for TextPainter. Use center or pos. Use font and/or [font name, font size and font flags].
@@ -18,9 +19,9 @@ public abstract class TextKeys {
     public static final String TYPE = "Text";
 
     /** Center, do not use pos. If used align, center is same as pos. */
-    public static final Typer<Point3d> CENTER = new Typer<Point3d>("center");
+    public static final Typer<Vector3D> CENTER = new Typer<Vector3D>("center");
     /** Upper left corner, do not use center. */
-    public static final Typer<Point3d> POS = new Typer<Point3d>("pos");
+    public static final Typer<Vector3D> POS = new Typer<Vector3D>("pos");
     public static final Typer<Color> COLOR = new Typer<Color>("color");
     public static final Typer<Boolean> CONSTANT_SIZE = new Typer<Boolean>("const_size");
     /**

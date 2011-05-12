@@ -9,7 +9,7 @@ import incubator.visprotocol.vis.layer.element.TextElementMut;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.vecmath.Point3d;
+import org.apache.commons.math.geometry.Vector3D;
 
 /**
  * Green zombie from the environment
@@ -27,14 +27,15 @@ public class PersonLayer extends AbstractLayer {
 
     @Override
     protected void generateFrame() {
-        Point3d pos = new Point3d(env.getPersonPosition().x, env.getPersonPosition().y, 0);
+        Vector3D pos = new Vector3D(env.getPersonPosition().getX(), env.getPersonPosition().getY(),
+                0);
         addElement(env.getPersonName(), new PointElement(pos, new Color(0, Math.min(255, env
                 .getPersonHealth()), 0), 60, false));
-        pos = new Point3d(env.getPersonPosition().x, env.getPersonPosition().y - 50, 0);
+        pos = new Vector3D(env.getPersonPosition().getX(), env.getPersonPosition().getY() - 50, 0);
         addElement("-text1", new TextElementMut(env.getPersonName(), pos, Color.YELLOW, false,
                 Align.NONE, new Font("GothicE", Font.PLAIN, 40)));
-        pos = new Point3d(env.getPersonPosition().x, env.getPersonPosition().y + 50, 0);
-        addElement("-text2", new TextElementMut("Random...", new Color(160, 80, 0), true, Align.NONE,
-                pos, new Font("Arial", Font.ITALIC, 14)));
+        pos = new Vector3D(env.getPersonPosition().getX(), env.getPersonPosition().getY() + 50, 0);
+        addElement("-text2", new TextElementMut("Random...", new Color(160, 80, 0), true,
+                Align.NONE, pos, new Font("Arial", Font.ITALIC, 14)));
     }
 }

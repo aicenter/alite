@@ -4,7 +4,7 @@ import incubator.visprotocol.structure.key.struct.Shape;
 
 import java.awt.Color;
 
-import javax.vecmath.Point3d;
+import org.apache.commons.math.geometry.Vector3D;
 
 /**
  * Points for ShapePainter (oval or rectangle). Linewidth < 0 means fill. Use diameter or [size x
@@ -18,7 +18,7 @@ public abstract class ShapeKeys {
 
     public static final Typer<Shape> SHAPE = new Typer<Shape>("shape");
 
-    public static final Typer<Point3d> CENTER = new Typer<Point3d>("center");
+    public static final Typer<Vector3D> CENTER = new Typer<Vector3D>("center");
     /** Do not use size x and y, they will be replaced with size */
     public static final Typer<Double> SIZE = new Typer<Double>("size");
     /** Do not use diameter */
