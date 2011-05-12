@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.layer.common;
+package incubator.visprotocol.vis.layer.terminal;
 
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
