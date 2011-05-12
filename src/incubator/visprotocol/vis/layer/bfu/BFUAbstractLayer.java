@@ -48,25 +48,25 @@ public abstract class BFUAbstractLayer implements VisLayer {
     }
 
     @Override
-    public Structure pull() {
+    public final Structure pull() {
         return layer.pull();
     }
     
     @Override
-    public String getName() {
+    public final String getName() {
         return layer.getName();
     }
     
     @Override
-    public void setFilter(FilterStorage filter) {
+    public final void setFilter(FilterStorage filter) {
         layer.setFilter(filter);
     }
     
     @Override
-    public void setRoot(String root) {
+    public final void setRoot(String root) {
         layer.setRoot(root);
     }
-
+    
     private class Layer extends AbstractLayer {
         public Layer(String name, boolean staticLayer) {
             super(name, staticLayer);

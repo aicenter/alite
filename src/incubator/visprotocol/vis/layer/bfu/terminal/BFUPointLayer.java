@@ -22,8 +22,18 @@ public abstract class BFUPointLayer extends BFUAbstractLayer {
     }
     
     @Override
-    protected Iterable<? extends AbstractElement> getElements() {
+    protected final Iterable<? extends AbstractElement> getElements() {
         return getPoints();
+    }
+    
+    @Override
+    protected final String generateName(AbstractElement element) {
+        return super.generateName(element);
+    }
+    
+    @Override
+    protected final Iterable<String> generateNames(Iterable<? extends AbstractElement> elements) {
+        return super.generateNames(elements);
     }
     
     protected abstract Iterable<? extends PointElement> getPoints();
