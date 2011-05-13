@@ -17,7 +17,7 @@ public abstract class BFUShapeLayer extends BFUElementLayer {
     }
     
     public BFUShapeLayer(boolean staticLayer) {
-        this("Shapes " + (layerCount++) + staticText(staticLayer), staticLayer);
+        this("Shapes " + (++layerCount) + staticText(staticLayer), staticLayer);
     }
     
     @Override
