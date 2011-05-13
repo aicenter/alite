@@ -43,6 +43,7 @@ public class FolderExplorer extends JPanel implements Runnable {
         setPreferredSize(new Dimension(200, 500));
         tree = new JTree();
         tree.setModel(null);
+        tree.setCellRenderer(new CheckBoxNodeRenderer());
         add(new JScrollPane(tree), BorderLayout.CENTER);
     }
 
@@ -67,12 +68,12 @@ public class FolderExplorer extends JPanel implements Runnable {
     private void refresh(DefaultMutableTreeNode node, Folder folder) {
         if (node.isLeaf()) {
             for (Folder f : folder.getFolders()) {
-                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(f.getId());
+                DefaultMutableTreeNode newNode = new CheckBoxNode(f.getId());
                 node.add(newNode);
                 refresh(newNode, f);
             }
             for (Element e : folder.getElements()) {
-                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(e.getId());
+                DefaultMutableTreeNode newNode = new CheckBoxNode(e.getId());
                 node.add(newNode);
             }
         }
