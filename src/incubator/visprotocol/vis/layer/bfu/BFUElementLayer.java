@@ -11,7 +11,7 @@ import java.util.Iterator;
 
 /**
  * Abstract layer for BFU layers, all specified layers extend this. Also can be used without
- * extending for set of different elements.
+ * extending for set of different elements. Non static layers should generate names!
  * 
  * @author Ondrej Milenovsky
  * */
@@ -26,7 +26,7 @@ public abstract class BFUElementLayer implements VisLayer {
     }
 
     public BFUElementLayer(boolean staticLayer) {
-        this("Elements " + layerCount++ + staticText(staticLayer), staticLayer);
+        this("Elements " + (layerCount++) + staticText(staticLayer), staticLayer);
     }
 
     /** fill all elements to draw */
@@ -34,6 +34,9 @@ public abstract class BFUElementLayer implements VisLayer {
 
     /** fill names to all elements in same order */
     protected Iterable<String> getNames() {
+        if (!layer.isStaticLayer()) {
+            System.err.println("Non static layer without IDs");
+        }
         return null;
     }
 

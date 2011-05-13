@@ -4,7 +4,7 @@ import incubator.visprotocol.vis.layer.bfu.BFUElementLayer;
 import incubator.visprotocol.vis.layer.element.PointElement;
 
 /**
- * Layer to draw points
+ * Layer to draw points. Non static layers should generate names!
  * 
  * @author Ondrej Milenovsky
  * */
@@ -17,7 +17,7 @@ public abstract class BFUPointLayer extends BFUElementLayer {
     }
     
     public BFUPointLayer(boolean staticLayer) {
-        this("Points " + layerCount++ + staticText(staticLayer), staticLayer);
+        this("Points " + (layerCount++) + staticText(staticLayer), staticLayer);
     }
     
     @Override
