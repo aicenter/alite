@@ -138,11 +138,11 @@ public class TestCreator implements Creator {
 
         if (mode == Mode.REALTIME) {
             factory.createRealtimeProtocol();
-            vis2d = factory.createVis2DOutput(params);
+            vis2d = factory.createVis2DOutputExplorer(params);
             factory.addOutputLayer(new Vis2DInfoLayer(vis2d));
         } else if (mode == Mode.PROTOCOL) {
             factory.createMemoryProcotol();
-            vis2d = factory.createVis2DOutput(params);
+            vis2d = factory.createVis2DOutputExplorer(params);
             factory.addOutputLayer(new Vis2DInfoLayer(vis2d));
         } else if (mode == Mode.SAVE_TO_FILE) {
             stream = factory.createFileWriterProtocol("record.rec");

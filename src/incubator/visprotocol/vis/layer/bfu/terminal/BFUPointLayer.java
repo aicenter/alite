@@ -17,7 +17,7 @@ public abstract class BFUPointLayer extends BFUElementLayer {
     }
     
     public BFUPointLayer(boolean staticLayer) {
-        this("Points " + (layerCount++) + staticText(staticLayer), staticLayer);
+        this("Points " + (++layerCount) + staticText(staticLayer), staticLayer);
     }
     
     @Override

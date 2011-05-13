@@ -17,7 +17,7 @@ public abstract class BFULineLayer extends BFUElementLayer {
     }
     
     public BFULineLayer(boolean staticLayer) {
-        this("Lines " + (layerCount++) + staticText(staticLayer), staticLayer);
+        this("Lines " + (++layerCount) + staticText(staticLayer), staticLayer);
     }
     
     @Override

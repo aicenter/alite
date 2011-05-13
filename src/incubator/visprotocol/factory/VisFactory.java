@@ -2,6 +2,7 @@ package incubator.visprotocol.factory;
 
 import incubator.visprotocol.processor.MultipleInputProcessor;
 import incubator.visprotocol.processor.StateGetter;
+import incubator.visprotocol.processor.StateHolder;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.processor.updater.DiffUpdater;
 import incubator.visprotocol.processor.updater.Differ;
@@ -13,6 +14,7 @@ import incubator.visprotocol.protocol.StreamOutputProtocol;
 import incubator.visprotocol.protocol.StreamProtocol;
 import incubator.visprotocol.protocol.StreamProtocolCloser;
 import incubator.visprotocol.structure.key.Vis2DCommonKeys;
+import incubator.visprotocol.vis.explorer.FolderExplorer;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.VisLayer;
 import incubator.visprotocol.vis.layer.terminal.TimeHolder;
@@ -48,6 +50,8 @@ public class VisFactory {
     private StructProcessor layerDiffer;
     private StructProcessor layerMerger;
 
+    private StructProcessor lastUpdater;
+
     private MultipleInputProcessor painter;
 
     private String projectName;
@@ -72,6 +76,7 @@ public class VisFactory {
     /** Creates and returns new realtime protocol (=null), rewrites last protocol. */
     public StructProcessor createRealtimeProtocol() {
         lastProtocol = null;
+        lastUpdater = null;
         return lastProtocol;
     }
 
@@ -83,6 +88,7 @@ public class VisFactory {
             // TODO remove after caching
             lastProtocol = new MemoryProtocol(new StateGetter(getLayerDiffer()));
         }
+        lastUpdater = null;
         return lastProtocol;
     }
 
@@ -96,6 +102,7 @@ public class VisFactory {
         }
         lastProtocol = new FileWriterProtocol(new File(fileName), getLayerDiffer());
         streamCloser.addStreamProtocol((StreamProtocol) lastProtocol);
+        lastUpdater = null;
         return lastProtocol;
     }
 
@@ -103,6 +110,7 @@ public class VisFactory {
     public StructProcessor createFileReaderProtocol(String fileName) {
         lastProtocol = new FileReaderProtocol(new File(fileName));
         streamCloser.addStreamProtocol((StreamProtocol) lastProtocol);
+        lastUpdater = null;
         return lastProtocol;
     }
 
@@ -130,6 +138,16 @@ public class VisFactory {
     public Vis2DOutput createVis2DOutput(Vis2DParams params) {
         Vis2DOutput ret = createVis2D(params);
         ret.addInput(createVis2dPainter(ret));
+        return ret;
+    }
+
+    /** Creates and returns vis 2D on last protocol with folder explorer. */
+    public Vis2DOutput createVis2DOutputExplorer(Vis2DParams params) {
+        Vis2DOutput ret = createVis2D(params);
+        ret.addInput(createVis2dPainter(ret));
+
+        FolderExplorer explorer = new FolderExplorer(new StateGetter((StateHolder)lastUpdater));
+        ret.addPanel(explorer, BorderLayout.EAST);
         return ret;
     }
 
@@ -164,12 +182,18 @@ public class VisFactory {
     private StructProcessor createVis2dPainter(Vis2DOutput vis2d) {
         TreePainter painter;
         if (lastProtocol == null) {
-            painter = new TreePainter(new MergeUpdater(layers));
+            if (lastUpdater == null) {
+                lastUpdater = new MergeUpdater(layers);
+            }
+            painter = new TreePainter(lastUpdater);
         } else {
             if (lastProtocol instanceof StreamOutputProtocol) {
                 throw new RuntimeException("Painter cannot be created on output protocol.");
             }
-            painter = new TreePainter(new DiffUpdater(lastProtocol));
+            if (lastUpdater == null) {
+                lastUpdater = new DiffUpdater(lastProtocol);
+            }
+            painter = new TreePainter(lastUpdater);
         }
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
         this.painter = painter;
@@ -212,7 +236,7 @@ public class VisFactory {
     public FilterStorage getFilter() {
         return filter;
     }
-    
+
     public KeyLayerToggler createKeyLayerToggler() {
         return new KeyLayerToggler(filter);
     }

@@ -17,7 +17,7 @@ public abstract class BFUTextLayer extends BFUElementLayer {
     }
     
     public BFUTextLayer(boolean staticLayer) {
-        this("Texts " + (layerCount++) + staticText(staticLayer), staticLayer);
+        this("Texts " + (++layerCount) + staticText(staticLayer), staticLayer);
     }
     
     @Override

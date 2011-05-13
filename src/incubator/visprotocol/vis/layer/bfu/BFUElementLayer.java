@@ -26,7 +26,7 @@ public abstract class BFUElementLayer implements VisLayer {
     }
 
     public BFUElementLayer(boolean staticLayer) {
-        this("Elements " + (layerCount++) + staticText(staticLayer), staticLayer);
+        this("Elements " + (++layerCount) + staticText(staticLayer), staticLayer);
     }
 
     /** fill all elements to draw */
