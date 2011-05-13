@@ -5,7 +5,6 @@ import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.vis.layer.bfu.terminal.BFUPointLayer;
 import incubator.visprotocol.vis.layer.element.PointElement;
-import incubator.visprotocol.vis.layer.example.DynamicPointsLayer;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
 import incubator.visprotocol.vis.layer.example.PersonLayer;
 import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
@@ -76,6 +75,13 @@ public class TestCreator implements Creator {
         // staticky body, tech to zvladne hodne, tady je direct nejpomalejsi
         final int nStaticPoints = 1000;
 
+        final ArrayList<Vector3D> points = new ArrayList<Vector3D>(nDynamicPoints);
+        final ArrayList<Boolean> pointShow = new ArrayList<Boolean>(nDynamicPoints);
+        for (int i = 0; i < nDynamicPoints; i++) {
+            points.add(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0));
+            pointShow.add(true);
+        }
+
         VisFactory factory = new VisFactory("Test world");
 
         // layers
@@ -93,10 +99,38 @@ public class TestCreator implements Creator {
                 }
                 return points;
             }
-            // dal je mozno prepsat getNames() a vratit ID bodu
         });
 
-        factory.addLayer(new DynamicPointsLayer(nDynamicPoints, 10000));
+        // factory.addLayer(new DynamicPointsLayer(nDynamicPoints, 10000));
+        factory.addLayer(new BFUPointLayer(false) {
+            @Override
+            protected Iterable<? extends PointElement> getPoints() {
+                ArrayList<PointElement> elements = new ArrayList<PointElement>();
+                for (int i = 0; i < points.size(); i++) {
+                    if (Math.random() > 0.9) {
+                        pointShow.set(i, false);
+                        continue;
+                    }
+                    pointShow.set(i, true);
+                    elements.add(new PointElement(points.get(i), new Color(0, 0, (int) (Math
+                            .random() * 256)), 30, false));
+                }
+                return elements;
+            }
+
+            // this is strongly recommended, but works without it
+            @Override
+            protected Iterable<String> getNames() {
+                ArrayList<String> names = new ArrayList<String>();
+                for (int i = 0; i < nDynamicPoints; i++) {
+                    if (pointShow.get(i)) {
+                        names.add("p " + i);
+                    }
+                }
+                return names;
+            }
+        });
+
         factory.addLayer(new PersonLayer(exampleEnvironment));
         factory.addLayer(new ScreenTextLayer(exampleEnvironment));
 

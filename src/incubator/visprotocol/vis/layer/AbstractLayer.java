@@ -74,6 +74,10 @@ public abstract class AbstractLayer implements VisLayer {
         return StructUtils.printPath(path);
     }
 
+    public boolean isStaticLayer() {
+        return staticLayer;
+    }
+    
     @Override
     public Structure pull() {
         if (staticLayer) {
