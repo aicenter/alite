@@ -35,6 +35,8 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
     private final StructProcessor input;
     private FilterStorage filter;
     private int resizable = 0;
+    
+    private boolean treeChanged = false;
 
     private int refreshInterval = 1000;
 
@@ -107,10 +109,12 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
             ChangeFlag change = f.getParameter(CommonKeys.CHANGE);
             if (change == ChangeFlag.DELETE) {
                 node.remove(f.getId());
+                treeChanged = true;
             } else if ((change == ChangeFlag.CREATE) || (!node.hasChild(f.getId()))) {
                 CheckBoxNode newNode = new CheckBoxNode(f.getId(), true);
                 node.add(newNode);
                 update(newNode, f);
+                treeChanged = true;
             } else {
                 if (!f.parameterEqual(CommonKeys.NOT_CHANGE, true)) {
                     update(node.getChild(f.getId()), f);
@@ -121,9 +125,11 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
             ChangeFlag change = e.getParameter(CommonKeys.CHANGE);
             if (change == ChangeFlag.DELETE) {
                 node.remove(e.getId());
+                treeChanged = true;
             } else if ((change == ChangeFlag.CREATE) || (!node.hasChild(e.getId()))) {
                 CheckBoxNode newNode = new CheckBoxNode(e.getId(), true);
                 node.add(newNode);
+                treeChanged = true;
             }
         }
     }
@@ -131,6 +137,9 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
     @Override
     public void mousePressed(MouseEvent e) {
         TreePath path = tree.getSelectionPath();
+        if(path == null) {
+            return;
+        }
         Object node = path.getLastPathComponent();
         if (node instanceof CheckBoxNode) {
             CheckBoxNode cbNode = (CheckBoxNode) node;
@@ -165,6 +174,10 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
         update();
         return null;
     }
+    
+    public void setRefreshInterval(int refreshInterval) {
+        this.refreshInterval = refreshInterval;
+    }
 
     @Override
     public void run() {
@@ -173,8 +186,10 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
                 Thread.sleep(refreshInterval);
             } catch (InterruptedException e) {
             }
-            tree.firePropertyChange(JTree.ROOT_VISIBLE_PROPERTY, !tree.isRootVisible(), tree
-                    .isRootVisible());
+            if(treeChanged) {
+                ((DefaultTreeModel)tree.getModel()).reload();
+                treeChanged = false;
+            }
         }
     }
 
