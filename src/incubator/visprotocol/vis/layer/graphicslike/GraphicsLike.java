@@ -36,7 +36,7 @@ import org.apache.commons.math.geometry.Vector3D;
  * @author Ondrej Milenovsky
  * */
 // TODO not working well (clearing not working, allows only one pull)
-public class GraphicsLike implements VisLayer {
+public class GraphicsLike implements VisLayer, Runnable {
 
     // pointers
     private FilterStorage filter;
@@ -47,6 +47,11 @@ public class GraphicsLike implements VisLayer {
     private int folderCount = 0;
     private final HashMap<String, Element> lastElements;
     private final HashMap<String, Integer> elementCount;
+
+    private int flushInterval = 100;
+    private Thread flushThread;
+    private boolean threadRunning;
+    private boolean started = false;
 
     // state
     private boolean constatnSize = true;
@@ -93,20 +98,10 @@ public class GraphicsLike implements VisLayer {
 
     @Override
     public Structure pull() {
-        if (currentFolder.getElements().isEmpty()) {
-            Structure ret = new Structure(CommonKeys.STRUCT_PART);
-            StructUtils.getFolderOfStruct(struct, path);
-            return ret;
-        }
-        Structure ret = struct;
-        newStruct();
-        nextFolder();
-        return ret;
+        return struct;
     }
 
     public void clear() {
-        lastElements.clear();
-        elementCount.clear();
         folderCount = 0;
         newStruct();
         nextFolder();
@@ -118,7 +113,9 @@ public class GraphicsLike implements VisLayer {
     }
 
     private void nextFolder() {
-        currentFolder = mainFolder.getFolder(++folderCount + "");
+        lastElements.clear();
+        elementCount.clear();
+        currentFolder = new Folder(++folderCount + "");
         currentFolder.setParameter(CommonKeys.NOT_CHANGE, true);
     }
 
@@ -137,6 +134,10 @@ public class GraphicsLike implements VisLayer {
         Element last = lastElements.get(e.getType());
         last.updateParams(e);
         currentFolder.addElement(e);
+        if (!started) {
+            started = true;
+            startFlushing();
+        }
     }
 
     /** makes swallow copy of the element so it can be used again */
@@ -225,6 +226,43 @@ public class GraphicsLike implements VisLayer {
         TextElementMut element = new TextElementMut(text, color, constatnSize, align, pos, font);
         element.fontSize = fontSize;
         addElement("Text on screen " + count, element);
+    }
+
+    // Flushing //////////////
+    public void flush() {
+        if (currentFolder.getElements().isEmpty()) {
+            return;
+        }
+        mainFolder.addFolder(currentFolder);
+        nextFolder();
+    }
+
+    public void setFlushInterval(int flushInterval) {
+        this.flushInterval = flushInterval;
+    }
+
+    public void startFlushing() {
+        if (flushThread == null) {
+            flushThread = new Thread(this);
+            threadRunning = true;
+            flushThread.start();
+        }
+    }
+
+    public void stopFlushing() {
+        threadRunning = false;
+    }
+
+    @Override
+    public void run() {
+        while (threadRunning) {
+            try {
+                Thread.sleep(flushInterval);
+            } catch (InterruptedException e) {
+            }
+            flush();
+        }
+
     }
 
 }

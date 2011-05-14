@@ -173,7 +173,8 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
                 Thread.sleep(refreshInterval);
             } catch (InterruptedException e) {
             }
-            invalidate();
+            tree.firePropertyChange(JTree.ROOT_VISIBLE_PROPERTY, !tree.isRootVisible(), tree
+                    .isRootVisible());
         }
     }
 

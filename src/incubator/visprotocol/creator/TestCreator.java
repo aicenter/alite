@@ -145,14 +145,14 @@ public class TestCreator implements Creator {
 
         // graphics like layer test
         gr = new GraphicsLike();
-        //factory.addLayer(gr);
+        factory.addLayer(gr);
         gr.setColor(Color.GREEN);
         gr.setConstatnSize(false);
         gr.setWidth(20);
         gr.setFont(new Font("Arial", Font.PLAIN, 100));
 
         Vis2DOutput vis2d = null;
-        boolean folderExplorer = false;
+        boolean folderExplorer = true;
 
         if (mode == Mode.REALTIME) {
             factory.createRealtimeProtocol();
