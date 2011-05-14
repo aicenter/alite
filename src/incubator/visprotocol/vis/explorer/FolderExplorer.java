@@ -5,34 +5,40 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
+import incubator.visprotocol.vis.layer.FilterStorage;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 /**
  * Folder explorer to filter layers
  * 
  * @author Ondrej Milenovsky
  * */
-public class FolderExplorer extends JPanel implements Runnable {
+public class FolderExplorer extends JPanel implements Runnable, MouseListener {
 
     private static final long serialVersionUID = -3988610515367861313L;
 
     private JTree tree;
 
-    private final StructProcessor input;
-
     private int refreshInterval = 500;
 
+    private final StructProcessor input;
+    private FilterStorage filter;
+
     /** inputs must return whole structure, not diffs */
-    public FolderExplorer(StructProcessor input) {
+    public FolderExplorer(StructProcessor input, FilterStorage filter) {
         this.input = input;
+        this.filter = filter;
         initComponens();
         Thread thread = new Thread(this);
         thread.start();
@@ -44,6 +50,7 @@ public class FolderExplorer extends JPanel implements Runnable {
         tree = new JTree();
         tree.setModel(null);
         tree.setCellRenderer(new CheckBoxNodeRenderer());
+        tree.addMouseListener(this);
         add(new JScrollPane(tree), BorderLayout.CENTER);
     }
 
@@ -77,6 +84,38 @@ public class FolderExplorer extends JPanel implements Runnable {
                 node.add(newNode);
             }
         }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        TreePath path = tree.getSelectionPath();
+        Object node = path.getLastPathComponent();
+        if (node instanceof CheckBoxNode) {
+            CheckBoxNode cbNode = (CheckBoxNode) node;
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                cbNode.setSelected(!cbNode.isSelected());
+                // TODO update filter
+            } else if (e.getButton() == MouseEvent.BUTTON3) {
+                // TODO popup menu
+            }
+        }
+        tree.setSelectionInterval(0, 0);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
     }
 
     @Override
