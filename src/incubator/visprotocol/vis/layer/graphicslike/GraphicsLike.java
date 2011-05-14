@@ -30,10 +30,12 @@ import javax.vecmath.Point2d;
 import org.apache.commons.math.geometry.Vector3D;
 
 /**
- * 
+ * Similar usage to Graphics. Stores elements to static folders, no changing of elements, only
+ * adding and clearing.
  * 
  * @author Ondrej Milenovsky
  * */
+// TODO not working well (clearing not working, allows only one pull)
 public class GraphicsLike implements VisLayer {
 
     // pointers

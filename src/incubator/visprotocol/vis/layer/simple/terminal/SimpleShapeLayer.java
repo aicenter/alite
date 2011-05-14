@@ -1,22 +1,22 @@
-package incubator.visprotocol.vis.layer.bfu.terminal;
+package incubator.visprotocol.vis.layer.simple.terminal;
 
-import incubator.visprotocol.vis.layer.bfu.BFUElementLayer;
 import incubator.visprotocol.vis.layer.element.ShapeElement;
+import incubator.visprotocol.vis.layer.simple.SimpleElementLayer;
 
 /**
  * Layer to draw shapes (ovals and rectangles). Non static layers should generate names!
  * 
  * @author Ondrej Milenovsky
  * */
-public abstract class BFUShapeLayer extends BFUElementLayer {
+public abstract class SimpleShapeLayer extends SimpleElementLayer {
 
     private static int layerCount = 0;
     
-    public BFUShapeLayer(String name, boolean staticLayer) {
+    public SimpleShapeLayer(String name, boolean staticLayer) {
         super(name, staticLayer);
     }
     
-    public BFUShapeLayer(boolean staticLayer) {
+    public SimpleShapeLayer(boolean staticLayer) {
         this("Shapes " + (++layerCount) + staticText(staticLayer), staticLayer);
     }
     

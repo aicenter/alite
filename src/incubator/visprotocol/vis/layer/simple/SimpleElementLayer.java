@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.layer.bfu;
+package incubator.visprotocol.vis.layer.simple;
 
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.vis.layer.AbstractLayer;
@@ -10,22 +10,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Abstract layer for BFU layers, all specified layers extend this. Also can be used without
+ * Abstract layer for simple layers, all specified layers extend this. Also can be used without
  * extending for set of different elements. Non static layers should generate names!
  * 
  * @author Ondrej Milenovsky
  * */
-public abstract class BFUElementLayer implements VisLayer {
+public abstract class SimpleElementLayer implements VisLayer {
 
     private final Layer layer;
     private int elementCount;
     private static int layerCount = 0;
 
-    public BFUElementLayer(String name, boolean staticLayer) {
+    public SimpleElementLayer(String name, boolean staticLayer) {
         layer = new Layer(name, staticLayer);
     }
 
-    public BFUElementLayer(boolean staticLayer) {
+    public SimpleElementLayer(boolean staticLayer) {
         this("Elements " + (++layerCount) + staticText(staticLayer), staticLayer);
     }
 

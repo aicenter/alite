@@ -4,12 +4,12 @@ import incubator.visprotocol.factory.VisFactory;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
 import incubator.visprotocol.structure.key.struct.Shape;
-import incubator.visprotocol.vis.layer.bfu.terminal.BFUPointLayer;
 import incubator.visprotocol.vis.layer.element.PointElement;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
 import incubator.visprotocol.vis.layer.example.PersonLayer;
 import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
 import incubator.visprotocol.vis.layer.graphicslike.GraphicsLike;
+import incubator.visprotocol.vis.layer.simple.terminal.SimplePointLayer;
 import incubator.visprotocol.vis.layer.terminal.FillColorLayer;
 import incubator.visprotocol.vis.layer.terminal.TimeHolder;
 import incubator.visprotocol.vis.layer.terminal.Vis2DInfoLayer;
@@ -98,7 +98,7 @@ public class TestCreator implements Creator {
         factory.addLayer(new FillColorLayer(Color.BLACK));
         factory.addLayer(new PentagramLayer(exampleEnvironment));
         // factory.addLayer(new StaticPoints(nStaticPoints, 10000));
-        factory.addLayer(new BFUPointLayer(true) {
+        factory.addLayer(new SimplePointLayer(true) {
             @Override
             protected Iterable<? extends PointElement> getPoints() {
                 ArrayList<PointElement> points = new ArrayList<PointElement>(nStaticPoints);
@@ -111,7 +111,7 @@ public class TestCreator implements Creator {
         });
 
         // factory.addLayer(new DynamicPointsLayer(nDynamicPoints, 10000));
-        factory.addLayer(new BFUPointLayer(false) {
+        factory.addLayer(new SimplePointLayer(false) {
             @Override
             protected Iterable<? extends PointElement> getPoints() {
                 ArrayList<PointElement> elements = new ArrayList<PointElement>();
