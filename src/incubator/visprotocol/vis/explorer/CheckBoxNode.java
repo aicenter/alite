@@ -58,6 +58,10 @@ public class CheckBoxNode implements MutableTreeNode {
     }
 
     public void remove(String id) {
+        // TODO remove this and fix some bug
+        if (!hasChild(id)) {
+            return;
+        }
         try {
             children.remove(id).setParent(null);
         } catch (NullPointerException e) {
