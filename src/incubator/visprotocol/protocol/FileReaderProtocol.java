@@ -1,5 +1,8 @@
 package incubator.visprotocol.protocol;
 
+import incubator.visprotocol.processor.StateHolder;
+import incubator.visprotocol.structure.Structure;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,7 +13,9 @@ import java.io.InputStream;
  * 
  * @author Ondrej Milenovsky
  * */
-public class FileReaderProtocol extends StreamInputProtocol {
+public class FileReaderProtocol extends StreamInputProtocol implements StateHolder {
+
+    private Structure struct;
 
     public FileReaderProtocol(File file) {
         super(init(file));
@@ -23,5 +28,16 @@ public class FileReaderProtocol extends StreamInputProtocol {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Structure pull() {
+        struct = super.pull();
+        return struct;
+    }
+
+    @Override
+    public Structure getState() {
+        return struct;
     }
 }
