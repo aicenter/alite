@@ -35,7 +35,7 @@ import org.apache.commons.math.geometry.Vector3D;
  * 
  * @author Ondrej Milenovsky
  * */
-// TODO not working well (clearing not working, allows only one pull)
+// TODO not working well (clearing not working)
 public class GraphicsLike implements VisLayer, Runnable {
 
     // pointers
@@ -98,7 +98,7 @@ public class GraphicsLike implements VisLayer, Runnable {
 
     @Override
     public Structure pull() {
-        return struct;
+        return struct.deepCopy();
     }
 
     public void clear() {
