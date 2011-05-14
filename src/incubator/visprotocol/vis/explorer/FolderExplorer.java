@@ -26,7 +26,7 @@ import javax.swing.tree.TreePath;
  * 
  * @author Ondrej Milenovsky
  * */
-public class FolderExplorer extends JPanel implements MouseListener, StructProcessor {
+public class FolderExplorer extends JPanel implements MouseListener, StructProcessor, Runnable {
 
     private static final long serialVersionUID = -3988610515367861313L;
 
@@ -36,10 +36,12 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
     private FilterStorage filter;
     private int resizable = 0;
 
+    private int refreshInterval = 1000;
+
     public FolderExplorer(StructProcessor input, FilterStorage filter) {
         this.input = input;
         this.filter = filter;
-        initComponens();
+        init();
     }
 
     public FolderExplorer(StructProcessor input, FilterStorage filter, boolean leftSide) {
@@ -50,7 +52,13 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
         } else {
             resizable = 2;
         }
+        init();
+    }
+
+    private void init() {
         initComponens();
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     private void initComponens() {
@@ -76,7 +84,7 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
         }
     }
 
-    public void refresh() {
+    public void update() {
         Structure struct = input.pull();
         if (!struct.getType().equals(CommonKeys.STRUCT_DIFF)) {
             System.err.println("Explorer must accept diffs");
@@ -91,10 +99,10 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
         } else {
             root = (CheckBoxNode) tree.getModel().getRoot();
         }
-        refresh(root, struct.getRoot());
+        update(root, struct.getRoot());
     }
 
-    private void refresh(CheckBoxNode node, Folder folder) {
+    private void update(CheckBoxNode node, Folder folder) {
         for (Folder f : folder.getFolders()) {
             ChangeFlag change = f.getParameter(CommonKeys.CHANGE);
             if (change == ChangeFlag.DELETE) {
@@ -102,10 +110,10 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
             } else if ((change == ChangeFlag.CREATE) || (!node.hasChild(f.getId()))) {
                 CheckBoxNode newNode = new CheckBoxNode(f.getId(), true);
                 node.add(newNode);
-                refresh(newNode, f);
+                update(newNode, f);
             } else {
                 if (!f.parameterEqual(CommonKeys.NOT_CHANGE, true)) {
-                    refresh(node.getChild(f.getId()), f);
+                    update(node.getChild(f.getId()), f);
                 }
             }
         }
@@ -154,8 +162,19 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
 
     @Override
     public Structure pull() {
-        refresh();
+        update();
         return null;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                Thread.sleep(refreshInterval);
+            } catch (InterruptedException e) {
+            }
+            invalidate();
+        }
     }
 
 }

@@ -145,7 +145,7 @@ public class TestCreator implements Creator {
 
         // graphics like layer test
         gr = new GraphicsLike();
-        // factory.addLayer(gr);
+        //factory.addLayer(gr);
         gr.setColor(Color.GREEN);
         gr.setConstatnSize(false);
         gr.setWidth(20);
@@ -191,18 +191,18 @@ public class TestCreator implements Creator {
                     for (int i = 0; i < n; i++) {
                         gr.setConstatnSize(false);
                         gr.drawPoint(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0));
-                        gr.drawLine(Arrays.asList(new Vector3D(Math.random() * 10000,
-                                Math.random() * 10000, 0), new Vector3D(Math.random() * 10000, Math
-                                .random() * 10000, 0)));
-                        gr.drawShape(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0),
-                                150, 100, Shape.RECT);
-                        gr.setFontSize(100);
-                        gr.drawText("Grr", new Vector3D(Math.random() * 10000,
-                                Math.random() * 10000, 0));
-                        gr.setConstatnSize(true);
-                        gr.setFontSize(10);
-                        gr.drawTextOnScreen("X", new Vector3D(0, 0, 0), new Point2d(Math.random(),
-                                Math.random()));
+//                        gr.drawLine(Arrays.asList(new Vector3D(Math.random() * 10000,
+//                                Math.random() * 10000, 0), new Vector3D(Math.random() * 10000, Math
+//                                .random() * 10000, 0)));
+//                        gr.drawShape(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0),
+//                                150, 100, Shape.RECT);
+//                        gr.setFontSize(100);
+//                        gr.drawText("Grr", new Vector3D(Math.random() * 10000,
+//                                Math.random() * 10000, 0));
+//                        gr.setConstatnSize(true);
+//                        gr.setFontSize(10);
+//                        gr.drawTextOnScreen("X", new Vector3D(0, 0, 0), new Point2d(Math.random(),
+//                                Math.random()));
                     }
                 } else if (Math.random() < 0.01) {
                     // gr.clear();
