@@ -3,6 +3,7 @@ package incubator.visprotocol.creator;
 import incubator.visprotocol.factory.VisFactory;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
+import incubator.visprotocol.structure.key.struct.Shape;
 import incubator.visprotocol.vis.layer.bfu.terminal.BFUPointLayer;
 import incubator.visprotocol.vis.layer.element.PointElement;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
@@ -16,9 +17,13 @@ import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+
+import javax.vecmath.Point2d;
 
 import org.apache.commons.math.geometry.Vector3D;
 
@@ -47,7 +52,7 @@ public class TestCreator implements Creator {
     private ExampleEnvironment exampleEnvironment;
     private StructProcessor root;
     private StructProcessor stream;
-    
+
     // for testing
     public static GraphicsLike gr;
 
@@ -143,10 +148,9 @@ public class TestCreator implements Creator {
         factory.addLayer(gr);
         gr.setColor(Color.GREEN);
         gr.setConstatnSize(false);
-        gr.setWidth(100);
-        gr.drawPoint(new Vector3D(2000, 2000, 0));
-        
-        
+        gr.setWidth(20);
+        gr.setFont(new Font("Arial", Font.PLAIN, 100));
+
         Vis2DOutput vis2d = null;
 
         if (mode == Mode.REALTIME) {
@@ -181,6 +185,24 @@ public class TestCreator implements Creator {
                 if (stream != null) {
                     stream.pull();
                 }
+                if (Math.random() < 0.1) {
+                    gr.setConstatnSize(false);
+                    gr.drawPoint(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0));
+                    gr.drawLine(Arrays.asList(new Vector3D(Math.random() * 10000,
+                            Math.random() * 10000, 0), new Vector3D(Math.random() * 10000, Math
+                            .random() * 10000, 0)));
+                    gr.drawShape(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0),
+                            150, 100, Shape.RECT);
+                    gr.setFontSize(100);
+                    gr.drawText("Grr",
+                            new Vector3D(Math.random() * 10000, Math.random() * 10000, 0));
+                    gr.setConstatnSize(true);
+                    gr.setFontSize(10);
+                    gr.drawTextOnScreen("X", new Vector3D(0, 0, 0), new Point2d(Math.random(), Math
+                            .random()));
+                } else if (Math.random() < 0.01) {
+                    gr.clear();
+                }
             }
         };
         sampler.start();
@@ -199,9 +221,6 @@ public class TestCreator implements Creator {
                 Thread.sleep(DELAY);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            if(Math.random() < 0.1) {
-                gr.drawPoint(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0));
             }
         }
     }

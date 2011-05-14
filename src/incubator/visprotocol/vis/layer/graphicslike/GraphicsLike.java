@@ -4,18 +4,28 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
+import incubator.visprotocol.structure.key.LineKeys;
 import incubator.visprotocol.structure.key.PointKeys;
+import incubator.visprotocol.structure.key.ShapeKeys;
+import incubator.visprotocol.structure.key.TextKeys;
+import incubator.visprotocol.structure.key.struct.Align;
+import incubator.visprotocol.structure.key.struct.Shape;
 import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.VisLayer;
 import incubator.visprotocol.vis.layer.element.AbstractElement;
+import incubator.visprotocol.vis.layer.element.LineElement;
 import incubator.visprotocol.vis.layer.element.PointElement;
+import incubator.visprotocol.vis.layer.element.ShapeElement;
+import incubator.visprotocol.vis.layer.element.TextElementMut;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.vecmath.Point2d;
 
 import org.apache.commons.math.geometry.Vector3D;
 
@@ -41,11 +51,12 @@ public class GraphicsLike implements VisLayer {
     private Color color = Color.BLACK;
     private double width = 1;
     private Font font = new Font("Arial", Font.PLAIN, 10);
+    private double fontSize = 10;
 
     public GraphicsLike() {
         this("Graphics");
     }
-    
+
     public GraphicsLike(String name) {
         path.add("World");
         path.add(name);
@@ -71,6 +82,7 @@ public class GraphicsLike implements VisLayer {
 
     public void setRoot(String root) {
         path.set(0, root);
+        clear();
     }
 
     public String getName() {
@@ -155,18 +167,62 @@ public class GraphicsLike implements VisLayer {
 
     public void setFont(Font font) {
         this.font = font;
+        fontSize = font.getSize();
+    }
+
+    public void setFontSize(double fontSize) {
+        this.fontSize = fontSize;
+        font = new Font(font.getName(), font.getStyle(), (int) fontSize);
     }
 
     // DRAWING ///////////////////
 
-    public void drawPoint(Vector3D point) {
-        int count = 0;
-        if (elementCount.containsKey(PointKeys.TYPE)) {
-            count = elementCount.get(PointKeys.TYPE);
+    private int getElementCount(String type) {
+        int count = 1;
+        if (elementCount.containsKey(type)) {
+            count = elementCount.get(type) + 1;
+            elementCount.put(type, count);
         }
-        count++;
-        elementCount.put(PointKeys.TYPE, count);
+        return count;
+    }
+
+    public void drawPoint(Vector3D point) {
+        int count = getElementCount(PointKeys.TYPE);
         addElement("Point " + count, new PointElement(point, color, width, constatnSize));
+    }
+
+    public void drawLine(List<Vector3D> points) {
+        int count = getElementCount(LineKeys.TYPE);
+        addElement("Line " + count, new LineElement(points, color, width, constatnSize));
+    }
+
+    public void drawShape(Vector3D center, double sizeX, double sizeY, Shape shape) {
+        int count = getElementCount(ShapeKeys.TYPE);
+        addElement(shape + " " + count, new ShapeElement(shape, center, color, sizeX, sizeY, width,
+                false, constatnSize));
+    }
+
+    public void drawText(String text, Vector3D center) {
+        int count = getElementCount(TextKeys.TYPE);
+        TextElementMut element = new TextElementMut(text, center, color, constatnSize, Align.NONE,
+                font);
+        element.fontSize = fontSize;
+        addElement("Text " + count, element);
+    }
+
+    public void drawTextOnScreen(String text, Vector3D pos, Align align) {
+        int count = getElementCount(TextKeys.TYPE);
+        TextElementMut element = new TextElementMut(text, color, constatnSize, align, pos, font);
+        element.fontSize = fontSize;
+        addElement("Text on screen " + count, element);
+    }
+
+    /** align (0, 0) means upper left corner, (0.5, 1) means middle down */
+    public void drawTextOnScreen(String text, Vector3D pos, Point2d align) {
+        int count = getElementCount(TextKeys.TYPE);
+        TextElementMut element = new TextElementMut(text, color, constatnSize, align, pos, font);
+        element.fontSize = fontSize;
+        addElement("Text on screen " + count, element);
     }
 
 }
