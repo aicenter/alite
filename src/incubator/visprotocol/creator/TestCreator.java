@@ -8,6 +8,7 @@ import incubator.visprotocol.vis.layer.element.PointElement;
 import incubator.visprotocol.vis.layer.example.PentagramLayer;
 import incubator.visprotocol.vis.layer.example.PersonLayer;
 import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
+import incubator.visprotocol.vis.layer.graphicslike.GraphicsLike;
 import incubator.visprotocol.vis.layer.terminal.FillColorLayer;
 import incubator.visprotocol.vis.layer.terminal.TimeHolder;
 import incubator.visprotocol.vis.layer.terminal.Vis2DInfoLayer;
@@ -46,6 +47,9 @@ public class TestCreator implements Creator {
     private ExampleEnvironment exampleEnvironment;
     private StructProcessor root;
     private StructProcessor stream;
+    
+    // for testing
+    public static GraphicsLike gr;
 
     @Override
     public void init(String[] args) {
@@ -134,6 +138,15 @@ public class TestCreator implements Creator {
         factory.addLayer(new PersonLayer(exampleEnvironment));
         factory.addLayer(new ScreenTextLayer(exampleEnvironment));
 
+        // graphics like layer test
+        gr = new GraphicsLike();
+        factory.addLayer(gr);
+        gr.setColor(Color.GREEN);
+        gr.setConstatnSize(false);
+        gr.setWidth(100);
+        gr.drawPoint(new Vector3D(2000, 2000, 0));
+        
+        
         Vis2DOutput vis2d = null;
 
         if (mode == Mode.REALTIME) {
@@ -186,6 +199,9 @@ public class TestCreator implements Creator {
                 Thread.sleep(DELAY);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+            if(Math.random() < 0.1) {
+                gr.drawPoint(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0));
             }
         }
     }
