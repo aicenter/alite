@@ -7,8 +7,8 @@ import java.awt.Font;
 import javax.swing.JCheckBox;
 import javax.swing.JTree;
 import javax.swing.UIManager;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 
 /**
@@ -64,7 +64,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
                 leafRenderer.setBackground(textBackground);
             }
 
-            if ((value != null) && (value instanceof DefaultMutableTreeNode)) {
+            if ((value != null) && (value instanceof MutableTreeNode)) {
                 CheckBoxNode node = (CheckBoxNode) value;
                 leafRenderer.setText(node.getText());
                 leafRenderer.setSelected(node.isSelected());
