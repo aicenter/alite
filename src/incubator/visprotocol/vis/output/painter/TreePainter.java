@@ -7,6 +7,7 @@ import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.utils.ProcessorUtils;
+import incubator.visprotocol.vis.layer.FilterStorage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,15 +27,17 @@ public class TreePainter extends MultipleInputProcessor implements GroupPainter 
 
     private final Map<String, Painter> painters;
     private boolean firstElements;
+    private FilterStorage filter;
 
-    public TreePainter(StructProcessor... inputs) {
-        this(ProcessorUtils.asList(inputs));
+    public TreePainter(FilterStorage filter, StructProcessor... inputs) {
+        this(filter, ProcessorUtils.asList(inputs));
     }
 
-    public TreePainter(List<StructProcessor> inputs) {
+    public TreePainter(FilterStorage filter, List<StructProcessor> inputs) {
         super(inputs);
         painters = new HashMap<String, Painter>();
         firstElements = true;
+        this.filter = filter;
     }
 
     public void setFirstElements(boolean firstElements) {

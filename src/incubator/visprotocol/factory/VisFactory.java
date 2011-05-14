@@ -65,6 +65,7 @@ public class VisFactory {
         layers = new ArrayList<StructProcessor>();
         streamCloser = new StreamProtocolCloser();
         layerNames = new HashSet<String>();
+        layerMerger = new MergeUpdater(layers);
     }
 
     public VisFactory() {
@@ -76,18 +77,13 @@ public class VisFactory {
     /** Creates and returns new realtime protocol (=null), rewrites last protocol. */
     public StructProcessor createRealtimeProtocol() {
         lastProtocol = null;
-        lastUpdater = null;
+        lastUpdater = layerMerger;
         return lastProtocol;
     }
 
     /** Creates and returns new memory protocol, rewrites last protocol. */
     public StructProcessor createMemoryProcotol() {
-        if (layerDiffer == null) {
-            lastProtocol = new MemoryProtocol(getLayerDiffer());
-        } else {
-            // TODO remove after caching
-            lastProtocol = new MemoryProtocol(new StateGetter(getLayerDiffer()));
-        }
+        lastProtocol = new MemoryProtocol(getLayerDiffer());
         lastUpdater = null;
         return lastProtocol;
     }
@@ -110,60 +106,61 @@ public class VisFactory {
     public StructProcessor createFileReaderProtocol(String fileName) {
         lastProtocol = new FileReaderProtocol(new File(fileName));
         streamCloser.addStreamProtocol((StreamProtocol) lastProtocol);
-        lastUpdater = null;
+        lastUpdater = new DiffUpdater(lastProtocol);
         return lastProtocol;
     }
 
     // Updaters/differs ////////////
 
     /** Returns instance of differ on layers, always one instance. */
-    public Differ getLayerDiffer() {
+    public StructProcessor getLayerDiffer() {
         if (layerDiffer == null) {
             layerDiffer = new Differ(layers);
+            return (Differ) layerDiffer;
         }
-        return (Differ) layerDiffer;
-    }
-
-    /** Returns instance of merge updater on layers, always one instance. */
-    public StructProcessor getLayerMerger() {
-        if (layerMerger == null) {
-            layerMerger = new MergeUpdater(layers);
-        }
-        return layerMerger;
+        return new StateGetter((StateHolder) layerDiffer);
     }
 
     // Outputs ////////////
 
-    /** Creates and returns vis 2D on last protocol. */
-    public Vis2DOutput createVis2DOutput(Vis2DParams params) {
-        Vis2DOutput ret = createVis2D(params);
-        ret.addInput(createVis2dPainter(ret));
-        return ret;
+    private FolderExplorer createFolderExplorer(Vis2DOutput vis2d) {
+        StructProcessor input;
+        if (lastProtocol == null) {
+            input = getLayerDiffer();
+        } else {
+            input = new StateGetter((StateHolder) lastProtocol);
+        }
+        FolderExplorer explorer = new FolderExplorer(input, filter);
+        vis2d.addPanel(explorer, BorderLayout.EAST);
+        vis2d.addInput(explorer);
+        return explorer;
     }
 
-    /** Creates and returns vis 2D on last protocol with folder explorer. */
-    public Vis2DOutput createVis2DOutputExplorer(Vis2DParams params) {
+    /** Creates and returns vis 2D on last protocol, with folder explorer. */
+    public Vis2DOutput createVis2DOutput(Vis2DParams params, boolean folderExplorer) {
         Vis2DOutput ret = createVis2D(params);
         ret.addInput(createVis2dPainter(ret));
-
-        FolderExplorer explorer = new FolderExplorer(new StateGetter((StateHolder) lastUpdater),
-                filter);
-        ret.addPanel(explorer, BorderLayout.EAST);
+        if (folderExplorer) {
+            createFolderExplorer(ret);
+        }
         return ret;
     }
 
     /** Creates and returns vis 2D player on last protocol. */
-    public Vis2DOutput createVis2DPlayerOutput(Vis2DParams params) {
+    public Vis2DOutput createVis2DPlayerOutput(Vis2DParams params, boolean folderExplorer) {
         if (!(lastProtocol instanceof FileReaderProtocol)) {
             System.err.println("Player should be created on file reader protocol.");
         }
         Vis2DOutput ret = createVis2D(params);
         Player player = new Player(lastProtocol);
-        TreePainter painter = new TreePainter(new StateGetter(player));
+        TreePainter painter = new TreePainter(filter, new StateGetter(player));
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(ret));
         ret.addPanel(new PlayerControls(player), BorderLayout.SOUTH);
         ret.addInput(painter);
         this.painter = painter;
+        if (folderExplorer) {
+            createFolderExplorer(ret);
+        }
         return ret;
     }
 
@@ -184,9 +181,9 @@ public class VisFactory {
         TreePainter painter;
         if (lastProtocol == null) {
             if (lastUpdater == null) {
-                lastUpdater = new MergeUpdater(layers);
+                lastUpdater = layerMerger;
             }
-            painter = new TreePainter(lastUpdater);
+            painter = new TreePainter(filter, lastUpdater);
         } else {
             if (lastProtocol instanceof StreamOutputProtocol) {
                 throw new RuntimeException("Painter cannot be created on output protocol.");
@@ -194,7 +191,7 @@ public class VisFactory {
             if (lastUpdater == null) {
                 lastUpdater = new DiffUpdater(lastProtocol);
             }
-            painter = new TreePainter(lastUpdater);
+            painter = new TreePainter(filter, lastUpdater);
         }
         painter.addPainters(Vis2DBasicPainters.createBasicPainters(vis2d));
         this.painter = painter;

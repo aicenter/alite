@@ -5,6 +5,6 @@ import incubator.visprotocol.structure.Structure;
 /**
  * @author Ondrej Milenovsky
  * */
-public interface StateHolder {
+public interface StateHolder extends StructProcessor {
     public Structure getState();
 }

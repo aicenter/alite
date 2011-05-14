@@ -47,7 +47,7 @@ class CheckBoxNodeRenderer implements TreeCellRenderer {
             boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
         Component returnValue;
-        if (value instanceof CheckBoxNode) {
+        if ((value instanceof CheckBoxNode) && ((CheckBoxNode) value).isCheckable()) {
 
             String stringValue = tree.convertValueToText(value, selected, expanded, leaf, row,
                     false);

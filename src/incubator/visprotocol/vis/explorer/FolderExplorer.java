@@ -5,17 +5,19 @@ import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
+import incubator.visprotocol.structure.key.struct.ChangeFlag;
 import incubator.visprotocol.vis.layer.FilterStorage;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
@@ -24,63 +26,95 @@ import javax.swing.tree.TreePath;
  * 
  * @author Ondrej Milenovsky
  * */
-public class FolderExplorer extends JPanel implements Runnable, MouseListener {
+public class FolderExplorer extends JPanel implements MouseListener, StructProcessor {
 
     private static final long serialVersionUID = -3988610515367861313L;
 
     private JTree tree;
 
-    private int refreshInterval = 500;
-
     private final StructProcessor input;
     private FilterStorage filter;
+    private int resizable = 0;
 
-    /** inputs must return whole structure, not diffs */
     public FolderExplorer(StructProcessor input, FilterStorage filter) {
         this.input = input;
         this.filter = filter;
         initComponens();
-        Thread thread = new Thread(this);
-        thread.start();
+    }
+
+    public FolderExplorer(StructProcessor input, FilterStorage filter, boolean leftSide) {
+        this.input = input;
+        this.filter = filter;
+        if (leftSide) {
+            resizable = 1;
+        } else {
+            resizable = 2;
+        }
+        initComponens();
     }
 
     private void initComponens() {
-        setLayout(new BorderLayout());
         setPreferredSize(new Dimension(200, 500));
+
         tree = new JTree();
         tree.setModel(null);
         tree.setCellRenderer(new CheckBoxNodeRenderer());
         tree.addMouseListener(this);
-        add(new JScrollPane(tree), BorderLayout.CENTER);
+        // Component toAdd = new JScrollPane(tree);
+        if (resizable == 0) {
+            setLayout(new BorderLayout());
+            add(new JScrollPane(tree), BorderLayout.CENTER);
+        } else {
+            setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = gbc.gridy = 0;
+            gbc.gridwidth = gbc.gridheight = 1;
+            gbc.fill = GridBagConstraints.BOTH;
+            gbc.anchor = GridBagConstraints.WEST;
+            gbc.weightx = gbc.weighty = 100;
+            // add(toAdd, gbc);
+        }
     }
 
     public void refresh() {
         Structure struct = input.pull();
-        if (!struct.getType().equals(CommonKeys.STRUCT_COMPLETE)) {
-            System.err.println("Explorer must accept whole part");
+        if (!struct.getType().equals(CommonKeys.STRUCT_DIFF)) {
+            System.err.println("Explorer must accept diffs");
         }
         if (struct.isEmpty()) {
             return;
         }
-        DefaultMutableTreeNode root;
+        CheckBoxNode root;
         if (tree.getModel() == null) {
-            root = new DefaultMutableTreeNode(struct.getRoot().getId());
+            root = new CheckBoxNode(struct.getRoot().getId());
             tree.setModel(new DefaultTreeModel(root));
         } else {
-            root = (DefaultMutableTreeNode) tree.getModel().getRoot();
+            root = (CheckBoxNode) tree.getModel().getRoot();
         }
         refresh(root, struct.getRoot());
     }
 
-    private void refresh(DefaultMutableTreeNode node, Folder folder) {
-        if (node.isLeaf()) {
-            for (Folder f : folder.getFolders()) {
-                DefaultMutableTreeNode newNode = new CheckBoxNode(f.getId());
+    private void refresh(CheckBoxNode node, Folder folder) {
+        for (Folder f : folder.getFolders()) {
+            ChangeFlag change = f.getParameter(CommonKeys.CHANGE);
+            if (change == ChangeFlag.DELETE) {
+                node.remove(f.getId());
+            } else if ((change == ChangeFlag.CREATE) || (!node.hasChild(f.getId()))) {
+                CheckBoxNode newNode = new CheckBoxNode(f.getId(), true);
                 node.add(newNode);
                 refresh(newNode, f);
+            } else {
+                if (!f.parameterEqual(CommonKeys.NOT_CHANGE, true)) {
+                    refresh(node.getChild(f.getId()), f);
+                }
             }
-            for (Element e : folder.getElements()) {
-                DefaultMutableTreeNode newNode = new CheckBoxNode(e.getId());
+        }
+        for (Element e : folder.getElements()) {
+            ChangeFlag change = e.getParameter(CommonKeys.CHANGE);
+            if (change == ChangeFlag.DELETE) {
+                node.remove(e.getId());
+            } else if ((change == ChangeFlag.CREATE) || (!node.hasChild(e.getId()))) {
+                CheckBoxNode newNode = new CheckBoxNode(e.getId(), true);
                 node.add(newNode);
             }
         }
@@ -119,14 +153,9 @@ public class FolderExplorer extends JPanel implements Runnable, MouseListener {
     }
 
     @Override
-    public void run() {
-        while (true) {
-            try {
-                Thread.sleep(refreshInterval);
-            } catch (InterruptedException e) {
-            }
-            refresh();
-        }
+    public Structure pull() {
+        refresh();
+        return null;
     }
 
 }
