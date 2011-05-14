@@ -1,22 +1,22 @@
-package incubator.visprotocol.vis.layer.bfu.terminal;
+package incubator.visprotocol.vis.layer.simple.terminal;
 
-import incubator.visprotocol.vis.layer.bfu.BFUElementLayer;
 import incubator.visprotocol.vis.layer.element.PointElement;
+import incubator.visprotocol.vis.layer.simple.SimpleElementLayer;
 
 /**
  * Layer to draw points. Non static layers should generate names!
  * 
  * @author Ondrej Milenovsky
  * */
-public abstract class BFUPointLayer extends BFUElementLayer {
+public abstract class SimplePointLayer extends SimpleElementLayer {
 
     private static int layerCount = 0;
     
-    public BFUPointLayer(String name, boolean staticLayer) {
+    public SimplePointLayer(String name, boolean staticLayer) {
         super(name, staticLayer);
     }
     
-    public BFUPointLayer(boolean staticLayer) {
+    public SimplePointLayer(boolean staticLayer) {
         this("Points " + (++layerCount) + staticText(staticLayer), staticLayer);
     }
     
