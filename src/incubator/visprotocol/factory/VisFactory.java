@@ -146,7 +146,8 @@ public class VisFactory {
         Vis2DOutput ret = createVis2D(params);
         ret.addInput(createVis2dPainter(ret));
 
-        FolderExplorer explorer = new FolderExplorer(new StateGetter((StateHolder)lastUpdater));
+        FolderExplorer explorer = new FolderExplorer(new StateGetter((StateHolder) lastUpdater),
+                filter);
         ret.addPanel(explorer, BorderLayout.EAST);
         return ret;
     }
