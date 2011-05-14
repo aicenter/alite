@@ -127,6 +127,7 @@ public class Folder extends Element {
         elements.put(e.getId(), e);
     }
 
+    /**no folders, no elements and no parameters*/
     public boolean isEmpty() {
         return elements.isEmpty() && folders.isEmpty() && super.isEmpty();
     }

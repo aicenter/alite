@@ -27,7 +27,7 @@ public abstract class AbstractLayer implements VisLayer {
 
     private Structure struct = new Structure();
 
-    private HashMap<String, Element> lastElements;
+    private final HashMap<String, Element> lastElements;
 
     private List<String> path = new ArrayList<String>(2);
 
@@ -80,6 +80,7 @@ public abstract class AbstractLayer implements VisLayer {
     
     @Override
     public Structure pull() {
+        // TODO static maybe will be deleted when deeper path
         if (staticLayer) {
             struct = new Structure(CommonKeys.STRUCT_PART_STATIC);
         } else {
