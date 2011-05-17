@@ -1,49 +1,50 @@
 package incubator.visprotocol.vis.layer.simple.terminal;
 
-import incubator.visprotocol.structure.key.PointKeys;
+import incubator.visprotocol.structure.key.LineKeys;
 import incubator.visprotocol.vis.layer.simple.SimpleAbstractLayer;
 
 import java.awt.Color;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.math.geometry.Vector3D;
 
 /**
- * Layer to draw points. Non static layers should generate names!
+ * Layer to draw lines. Non static layers should generate names!
  * 
  * @author Ondrej Milenovsky
  * */
-public abstract class SimplePointLayer extends SimpleAbstractLayer {
+public abstract class LineLayer extends SimpleAbstractLayer {
 
     private static int layerCount = 0;
 
-    public SimplePointLayer(String name) {
+    public LineLayer(String name) {
         super(name);
     }
 
-    public SimplePointLayer() {
-        this("Points " + ++layerCount);
+    public LineLayer() {
+        this("Lines " + ++layerCount);
     }
 
     @Override
     protected String getDefaultElementName() {
-        return "Point";
+        return "Line";
     }
 
     @Override
     protected final void generateFrame() {
         boolean constantSize = isConstantSize();
-        Iterator<Vector3D> itPoints = getPoints().iterator();
+        Iterator<List<Vector3D>> itLines = getLines().iterator();
         Iterator<Color> itColors = getColors().iterator();
-        Iterator<Double> itSizes = getSizes().iterator();
-        if (!itPoints.hasNext()) {
+        Iterator<Double> itWidths = getWidths().iterator();
+        if (!itLines.hasNext()) {
             return;
         }
         if (!itColors.hasNext()) {
             throw new RuntimeException("Colors are empty, must contain at least one item");
         }
-        if (!itSizes.hasNext()) {
-            throw new RuntimeException("Sizes are empty, must contain at least one item");
+        if (!itWidths.hasNext()) {
+            throw new RuntimeException("Widths are empty, must contain at least one item");
         }
 
         Iterator<String> itNames = null;
@@ -53,8 +54,8 @@ public abstract class SimplePointLayer extends SimpleAbstractLayer {
         }
 
         Color lastColor = null;
-        double lastSize = 0;
-        while (itPoints.hasNext()) {
+        double lastWidth = 0;
+        while (itLines.hasNext()) {
             String name = null;
             if ((itNames != null) && (itNames.hasNext())) {
                 name = itNames.next();
@@ -62,22 +63,22 @@ public abstract class SimplePointLayer extends SimpleAbstractLayer {
             if (itColors.hasNext()) {
                 lastColor = itColors.next();
             }
-            if (itSizes.hasNext()) {
-                lastSize = itSizes.next();
+            if (itWidths.hasNext()) {
+                lastWidth = itWidths.next();
             }
-            addElement(name, PointKeys.TYPE).with(PointKeys.CENTER, itPoints.next()).with(
-                    PointKeys.CONSTANT_SIZE, constantSize).with(PointKeys.COLOR, lastColor).with(
-                    PointKeys.SIZE, lastSize).end();
+            addElement(name, LineKeys.TYPE).with(LineKeys.POINTS, itLines.next()).with(
+                    LineKeys.CONSTANT_LINE_WIDTH, constantSize).with(LineKeys.COLOR, lastColor).with(
+                    LineKeys.LINE_WIDTH, lastWidth).end();
         }
     }
 
-    /** create center positions for the points */
-    protected abstract Iterable<Vector3D> getPoints();
+    /** create line points for the lines */
+    protected abstract Iterable<List<Vector3D>> getLines();
 
-    /** create colors for the points (can contain only one item) */
+    /** create colors for the lines (can contain only one item) */
     protected abstract Iterable<Color> getColors();
 
-    /** create sizes for the points (can contain only one item) */
-    protected abstract Iterable<Double> getSizes();
+    /** create widths for the lines (can contain only one item) */
+    protected abstract Iterable<Double> getWidths();
 
 }

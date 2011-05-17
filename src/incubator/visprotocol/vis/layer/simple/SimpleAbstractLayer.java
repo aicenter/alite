@@ -25,6 +25,7 @@ public abstract class SimpleAbstractLayer implements VisLayer {
 
     private static int layerCount = 0;
     
+    
     private boolean elementNotEnded = false;
 
     private FilterStorage filter;
@@ -174,6 +175,25 @@ public abstract class SimpleAbstractLayer implements VisLayer {
         return (List<C>) Arrays.asList(item);
     }
 
+    /** size of shape */
+    protected static class Size {
+        public final double size;
+        public final double sizeX;
+        public final double sizeY;
+
+        public Size(double size) {
+            this.size = size;
+            sizeX = 0;
+            sizeY = 0;
+        }
+
+        public Size(double sizeX, double sizeY) {
+            size = 0;
+            this.sizeX = sizeX;
+            this.sizeY = sizeY;
+        }
+    }    
+    
     protected class Param {
         private final Element e;
 
