@@ -33,12 +33,13 @@ public class FolderExplorer extends JPanel implements MouseListener, StructProce
     private JTree tree;
 
     private final StructProcessor input;
+    @SuppressWarnings("unused")
     private FilterStorage filter;
     private int resizable = 0;
     
     private boolean treeChanged = false;
 
-    private int refreshInterval = 1000;
+    private int refreshInterval = 2000;
 
     public FolderExplorer(StructProcessor input, FilterStorage filter) {
         this.input = input;

@@ -10,5 +10,5 @@ import incubator.visprotocol.processor.StructProcessor;
 public interface VisLayer extends StructProcessor {
     public void setFilter(FilterStorage filter);
     public void setRoot(String root);
-    public String getName();
+    public String getId();
 }

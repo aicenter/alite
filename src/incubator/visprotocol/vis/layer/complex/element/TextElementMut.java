@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.layer.element;
+package incubator.visprotocol.vis.layer.complex.element;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.key.TextKeys;

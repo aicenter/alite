@@ -13,11 +13,11 @@ import incubator.visprotocol.structure.key.struct.Shape;
 import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.VisLayer;
-import incubator.visprotocol.vis.layer.element.AbstractElement;
-import incubator.visprotocol.vis.layer.element.LineElement;
-import incubator.visprotocol.vis.layer.element.PointElement;
-import incubator.visprotocol.vis.layer.element.ShapeElement;
-import incubator.visprotocol.vis.layer.element.TextElementMut;
+import incubator.visprotocol.vis.layer.complex.element.AbstractElement;
+import incubator.visprotocol.vis.layer.complex.element.LineElement;
+import incubator.visprotocol.vis.layer.complex.element.PointElement;
+import incubator.visprotocol.vis.layer.complex.element.ShapeElement;
+import incubator.visprotocol.vis.layer.complex.element.TextElementMut;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -92,7 +92,7 @@ public class GraphicsLike implements VisLayer, Runnable {
         clear();
     }
 
-    public String getName() {
+    public String getId() {
         return StructUtils.printPath(path);
     }
 

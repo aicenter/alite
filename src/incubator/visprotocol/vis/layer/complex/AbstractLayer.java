@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.layer;
+package incubator.visprotocol.vis.layer.complex;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
@@ -6,7 +6,9 @@ import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
 import incubator.visprotocol.structure.key.Typer;
 import incubator.visprotocol.utils.StructUtils;
-import incubator.visprotocol.vis.layer.element.AbstractElement;
+import incubator.visprotocol.vis.layer.FilterStorage;
+import incubator.visprotocol.vis.layer.VisLayer;
+import incubator.visprotocol.vis.layer.complex.element.AbstractElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +72,7 @@ public abstract class AbstractLayer implements VisLayer {
         path.set(0, root);
     }
 
-    public String getName() {
+    public String getId() {
         return StructUtils.printPath(path);
     }
 

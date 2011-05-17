@@ -17,8 +17,8 @@ import incubator.visprotocol.structure.key.Vis2DCommonKeys;
 import incubator.visprotocol.vis.explorer.FolderExplorer;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.VisLayer;
-import incubator.visprotocol.vis.layer.terminal.TimeHolder;
-import incubator.visprotocol.vis.layer.terminal.TimeLayer;
+import incubator.visprotocol.vis.layer.complex.terminal.TimeHolder;
+import incubator.visprotocol.vis.layer.complex.terminal.TimeLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 import incubator.visprotocol.vis.output.painter.TreePainter;
@@ -211,7 +211,7 @@ public class VisFactory {
             VisLayer abstractLayer = (VisLayer) layer;
             abstractLayer.setRoot(projectName);
             abstractLayer.setFilter(filter);
-            String name = abstractLayer.getName();
+            String name = abstractLayer.getId();
             if (layerNames.contains(name)) {
                 System.err.println("Warning! duplicate layer name (path): " + name);
             } else {
