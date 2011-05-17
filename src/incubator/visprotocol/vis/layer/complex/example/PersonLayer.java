@@ -1,10 +1,10 @@
-package incubator.visprotocol.vis.layer.example;
+package incubator.visprotocol.vis.layer.complex.example;
 
 import incubator.visprotocol.creator.TestCreator.ExampleEnvironment;
 import incubator.visprotocol.structure.key.struct.Align;
-import incubator.visprotocol.vis.layer.AbstractLayer;
-import incubator.visprotocol.vis.layer.element.PointElement;
-import incubator.visprotocol.vis.layer.element.TextElementMut;
+import incubator.visprotocol.vis.layer.complex.AbstractLayer;
+import incubator.visprotocol.vis.layer.complex.element.PointElement;
+import incubator.visprotocol.vis.layer.complex.element.TextElementMut;
 
 import java.awt.Color;
 import java.awt.Font;

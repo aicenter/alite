@@ -1,8 +1,8 @@
-package incubator.visprotocol.vis.layer.terminal;
+package incubator.visprotocol.vis.layer.complex.terminal;
 
 import incubator.visprotocol.structure.Structure;
 import incubator.visprotocol.structure.key.CommonKeys;
-import incubator.visprotocol.vis.layer.AbstractLayer;
+import incubator.visprotocol.vis.layer.complex.AbstractLayer;
 
 /**
  * Generating struct timestamp

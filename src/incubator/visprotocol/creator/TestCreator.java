@@ -3,16 +3,14 @@ package incubator.visprotocol.creator;
 import incubator.visprotocol.factory.VisFactory;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
-import incubator.visprotocol.structure.key.struct.Shape;
-import incubator.visprotocol.vis.layer.element.PointElement;
-import incubator.visprotocol.vis.layer.example.PentagramLayer;
-import incubator.visprotocol.vis.layer.example.PersonLayer;
-import incubator.visprotocol.vis.layer.example.ScreenTextLayer;
+import incubator.visprotocol.vis.layer.complex.example.PentagramLayer;
+import incubator.visprotocol.vis.layer.complex.example.PersonLayer;
+import incubator.visprotocol.vis.layer.complex.example.ScreenTextLayer;
+import incubator.visprotocol.vis.layer.complex.terminal.FillColorLayer;
+import incubator.visprotocol.vis.layer.complex.terminal.TimeHolder;
+import incubator.visprotocol.vis.layer.complex.terminal.Vis2DInfoLayer;
 import incubator.visprotocol.vis.layer.graphicslike.GraphicsLike;
 import incubator.visprotocol.vis.layer.simple.terminal.SimplePointLayer;
-import incubator.visprotocol.vis.layer.terminal.FillColorLayer;
-import incubator.visprotocol.vis.layer.terminal.TimeHolder;
-import incubator.visprotocol.vis.layer.terminal.Vis2DInfoLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 
@@ -20,10 +18,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
-
-import javax.vecmath.Point2d;
 
 import org.apache.commons.math.geometry.Vector3D;
 
@@ -98,33 +93,67 @@ public class TestCreator implements Creator {
         factory.addLayer(new FillColorLayer(Color.BLACK));
         factory.addLayer(new PentagramLayer(exampleEnvironment));
         // factory.addLayer(new StaticPoints(nStaticPoints, 10000));
-        factory.addLayer(new SimplePointLayer(true) {
+        factory.addLayer(new SimplePointLayer() {
+
             @Override
-            protected Iterable<? extends PointElement> getPoints() {
-                ArrayList<PointElement> points = new ArrayList<PointElement>(nStaticPoints);
+            protected Iterable<Color> getColors() {
+                return oneItem(new Color(255, 160, 160, 30));
+            }
+
+            @Override
+            protected Iterable<Double> getSizes() {
+                return oneItem(4.0);
+            }
+
+            @Override
+            protected Iterable<Vector3D> getPoints() {
+                ArrayList<Vector3D> points = new ArrayList<Vector3D>(nStaticPoints);
                 for (int i = 0; i < nStaticPoints; i++) {
-                    points.add(new PointElement(new Vector3D(Math.random() * 10000,
-                            Math.random() * 10000, 0), new Color(255, 160, 160, 30), 4, true));
+                    points.add(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0));
                 }
                 return points;
+            }
+
+            @Override
+            protected boolean isStaticLayer() {
+                return true;
             }
         });
 
         // factory.addLayer(new DynamicPointsLayer(nDynamicPoints, 10000));
-        factory.addLayer(new SimplePointLayer(false) {
+        factory.addLayer(new SimplePointLayer() {
             @Override
-            protected Iterable<? extends PointElement> getPoints() {
-                ArrayList<PointElement> elements = new ArrayList<PointElement>();
+            protected Iterable<Color> getColors() {
+                ArrayList<Color> colors = new ArrayList<Color>();
+                for (int i = 0; i < nDynamicPoints; i++) {
+                    if (pointShow.get(i)) {
+                        colors.add(new Color(0, 0, (int) (Math
+                                .random() * 256)));
+                    }
+                }
+                return colors;
+            }
+            @Override
+            protected Iterable<Double> getSizes() {
+                return oneItem(30.0);
+            }
+            
+            @Override
+            protected Iterable<Vector3D> getPoints() {
+                ArrayList<Vector3D> elements = new ArrayList<Vector3D>();
                 for (int i = 0; i < points.size(); i++) {
                     if (Math.random() > 0.9) {
                         pointShow.set(i, false);
                         continue;
                     }
                     pointShow.set(i, true);
-                    elements.add(new PointElement(points.get(i), new Color(0, 0, (int) (Math
-                            .random() * 256)), 30, false));
+                    elements.add(points.get(i));
                 }
                 return elements;
+            }
+            @Override
+            protected boolean isConstantSize() {
+                return false;
             }
 
             // this is strongly recommended, but works without it
@@ -145,14 +174,14 @@ public class TestCreator implements Creator {
 
         // graphics like layer test
         gr = new GraphicsLike();
-        factory.addLayer(gr);
+        // factory.addLayer(gr);
         gr.setColor(Color.GREEN);
         gr.setConstatnSize(false);
         gr.setWidth(20);
         gr.setFont(new Font("Arial", Font.PLAIN, 100));
 
         Vis2DOutput vis2d = null;
-        boolean folderExplorer = true;
+        boolean folderExplorer = false;
 
         if (mode == Mode.REALTIME) {
             factory.createRealtimeProtocol();
@@ -191,18 +220,6 @@ public class TestCreator implements Creator {
                     for (int i = 0; i < n; i++) {
                         gr.setConstatnSize(false);
                         gr.drawPoint(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0));
-//                        gr.drawLine(Arrays.asList(new Vector3D(Math.random() * 10000,
-//                                Math.random() * 10000, 0), new Vector3D(Math.random() * 10000, Math
-//                                .random() * 10000, 0)));
-//                        gr.drawShape(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0),
-//                                150, 100, Shape.RECT);
-//                        gr.setFontSize(100);
-//                        gr.drawText("Grr", new Vector3D(Math.random() * 10000,
-//                                Math.random() * 10000, 0));
-//                        gr.setConstatnSize(true);
-//                        gr.setFontSize(10);
-//                        gr.drawTextOnScreen("X", new Vector3D(0, 0, 0), new Point2d(Math.random(),
-//                                Math.random()));
                     }
                 } else if (Math.random() < 0.01) {
                     // gr.clear();

@@ -1,7 +1,7 @@
 package incubator.visprotocol.factory;
 
-import incubator.visprotocol.vis.layer.AbstractLayer;
 import incubator.visprotocol.vis.layer.FilterStorage;
+import incubator.visprotocol.vis.layer.complex.AbstractLayer;
 
 /**
  * Will toggle layers when pressing a key
@@ -18,7 +18,7 @@ public class KeyLayerToggler {
     }
     
     public void registerKey(AbstractLayer layer, char key) {
-        registerKey(layer.getName(), key);
+        registerKey(layer.getId(), key);
     }
     
     public void registerKey(String layerPath, char key) {
