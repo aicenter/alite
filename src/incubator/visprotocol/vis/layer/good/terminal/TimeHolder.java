@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.layer.complex.terminal;
+package incubator.visprotocol.vis.layer.good.terminal;
 
 /**
  * Interface to get current time from environment

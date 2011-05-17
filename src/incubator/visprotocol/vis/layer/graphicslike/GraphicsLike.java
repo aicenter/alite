@@ -13,11 +13,11 @@ import incubator.visprotocol.structure.key.struct.Shape;
 import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.VisLayer;
-import incubator.visprotocol.vis.layer.complex.element.AbstractElement;
-import incubator.visprotocol.vis.layer.complex.element.LineElement;
-import incubator.visprotocol.vis.layer.complex.element.PointElement;
-import incubator.visprotocol.vis.layer.complex.element.ShapeElement;
-import incubator.visprotocol.vis.layer.complex.element.TextElementMut;
+import incubator.visprotocol.vis.layer.good.element.AbstractElement;
+import incubator.visprotocol.vis.layer.good.element.LineElement;
+import incubator.visprotocol.vis.layer.good.element.PointElement;
+import incubator.visprotocol.vis.layer.good.element.ShapeElement;
+import incubator.visprotocol.vis.layer.good.element.TextElementMut;
 
 import java.awt.Color;
 import java.awt.Font;
