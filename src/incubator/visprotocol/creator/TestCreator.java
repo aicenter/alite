@@ -3,6 +3,7 @@ package incubator.visprotocol.creator;
 import incubator.visprotocol.factory.VisFactory;
 import incubator.visprotocol.processor.StructProcessor;
 import incubator.visprotocol.sampler.MaxFPSRealTimeSampler;
+import incubator.visprotocol.structure.key.struct.Shape;
 import incubator.visprotocol.vis.layer.complex.example.PentagramLayer;
 import incubator.visprotocol.vis.layer.complex.example.PersonLayer;
 import incubator.visprotocol.vis.layer.complex.example.ScreenTextLayer;
@@ -10,7 +11,8 @@ import incubator.visprotocol.vis.layer.complex.terminal.FillColorLayer;
 import incubator.visprotocol.vis.layer.complex.terminal.TimeHolder;
 import incubator.visprotocol.vis.layer.complex.terminal.Vis2DInfoLayer;
 import incubator.visprotocol.vis.layer.graphicslike.GraphicsLike;
-import incubator.visprotocol.vis.layer.simple.terminal.SimplePointLayer;
+import incubator.visprotocol.vis.layer.simple.terminal.PointLayer;
+import incubator.visprotocol.vis.layer.simple.terminal.ShapeLayer;
 import incubator.visprotocol.vis.output.Vis2DOutput;
 import incubator.visprotocol.vis.output.Vis2DParams;
 
@@ -91,9 +93,48 @@ public class TestCreator implements Creator {
         // layers
         factory.addTimeLayer(exampleEnvironment);
         factory.addLayer(new FillColorLayer(Color.BLACK));
+        
+        factory.addLayer(new ShapeLayer("Rectangles") {
+            
+            @Override
+            protected Iterable<Double> getWidths() {
+                return oneItem(3.0);
+            }
+            
+            @Override
+            protected Iterable<Size> getSizes() {
+                return oneItem(new Size(100, 200));
+            }
+            
+            @Override
+            protected Iterable<Shape> getShapes() {
+                return oneItem(Shape.RECT);
+            }
+            
+            @Override
+            protected Iterable<Color> getColors() {
+                return oneItem(new Color(0, 200, 0, 100));
+            }
+            
+            @Override
+            protected Iterable<Vector3D> getCenters() {
+                ArrayList<Vector3D> points = new ArrayList<Vector3D>(nStaticPoints);
+                for (int i = 0; i < 5; i++) {
+                    points.add(new Vector3D(Math.random() * 10000, Math.random() * 10000, 0));
+                }
+                return points;
+            }
+            
+            @Override
+            protected boolean isStaticLayer() {
+                return true;
+            }
+        });
+        
+        
         factory.addLayer(new PentagramLayer(exampleEnvironment));
         // factory.addLayer(new StaticPoints(nStaticPoints, 10000));
-        factory.addLayer(new SimplePointLayer() {
+        factory.addLayer(new PointLayer() {
 
             @Override
             protected Iterable<Color> getColors() {
@@ -121,7 +162,7 @@ public class TestCreator implements Creator {
         });
 
         // factory.addLayer(new DynamicPointsLayer(nDynamicPoints, 10000));
-        factory.addLayer(new SimplePointLayer() {
+        factory.addLayer(new PointLayer() {
             @Override
             protected Iterable<Color> getColors() {
                 ArrayList<Color> colors = new ArrayList<Color>();
@@ -168,6 +209,7 @@ public class TestCreator implements Creator {
                 return names;
             }
         });
+        
 
         factory.addLayer(new PersonLayer(exampleEnvironment));
         factory.addLayer(new ScreenTextLayer(exampleEnvironment));
