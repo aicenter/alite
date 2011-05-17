@@ -1,7 +1,7 @@
 package incubator.visprotocol.factory;
 
 import incubator.visprotocol.vis.layer.FilterStorage;
-import incubator.visprotocol.vis.layer.complex.AbstractLayer;
+import incubator.visprotocol.vis.layer.good.AbstractLayer;
 
 /**
  * Will toggle layers when pressing a key

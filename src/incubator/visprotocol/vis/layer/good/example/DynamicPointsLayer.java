@@ -1,7 +1,7 @@
-package incubator.visprotocol.vis.layer.complex.example;
+package incubator.visprotocol.vis.layer.good.example;
 
-import incubator.visprotocol.vis.layer.complex.AbstractLayer;
-import incubator.visprotocol.vis.layer.complex.element.PointElement;
+import incubator.visprotocol.vis.layer.good.AbstractLayer;
+import incubator.visprotocol.vis.layer.good.element.PointElement;
 
 import java.awt.Color;
 import java.util.ArrayList;

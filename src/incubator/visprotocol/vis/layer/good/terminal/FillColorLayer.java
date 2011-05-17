@@ -1,7 +1,7 @@
-package incubator.visprotocol.vis.layer.complex.terminal;
+package incubator.visprotocol.vis.layer.good.terminal;
 
-import incubator.visprotocol.vis.layer.complex.AbstractLayer;
-import incubator.visprotocol.vis.layer.complex.element.FillColorElement;
+import incubator.visprotocol.vis.layer.good.AbstractLayer;
+import incubator.visprotocol.vis.layer.good.element.FillColorElement;
 
 import java.awt.Color;
 

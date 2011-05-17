@@ -1,4 +1,4 @@
-package incubator.visprotocol.vis.layer.complex;
+package incubator.visprotocol.vis.layer.good;
 
 import incubator.visprotocol.structure.Element;
 import incubator.visprotocol.structure.Folder;
@@ -8,7 +8,7 @@ import incubator.visprotocol.structure.key.Typer;
 import incubator.visprotocol.utils.StructUtils;
 import incubator.visprotocol.vis.layer.FilterStorage;
 import incubator.visprotocol.vis.layer.VisLayer;
-import incubator.visprotocol.vis.layer.complex.element.AbstractElement;
+import incubator.visprotocol.vis.layer.good.element.AbstractElement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
