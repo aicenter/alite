@@ -33,7 +33,7 @@ public class RandomStructGenerator {
     public RandomStructGenerator(int folders, int elements, int params, int maxFolders) {
         this.folders = folders;
         this.elements = elements;
-        this.params = 10;
+        this.params = params;
         this.maxFolders = maxFolders;
     }
 
