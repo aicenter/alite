@@ -97,6 +97,39 @@ public class EventProcessor {
         eventQueue.add(event);
     }
 
+    /**
+     * Add an event into the queue of the event processor.
+     * {@ EventHandler} represents specific implementation, which handles only
+     * one event. Delta time is 1 ms. 
+     *  
+     * 
+     * @param eventHandler - through its callback method is informed about end of event.
+     * 
+     * 
+     */
+    public void addEvent(EventHandler eventHandler) {
+    	addEvent(eventHandler, 1);
+    }
+    
+    /**
+     * Add an event into the queue of the event processor.
+     * {@ EventHandler} represents specific implementation, which handles only
+     * one event. 
+     *  
+     * 
+     * @param eventHandler - through its callback method is informed about end of event.
+     * 
+     * @param deltaTime the duration (in milliseconds) from now till the time when the event should take
+     *            place (be send to its recipients)
+     */
+    public void addEvent(EventHandler eventHandler, long deltaTime) {
+        if (deltaTime < 1) {
+            throw new IllegalArgumentException("deltaTime must be greater then zero!");
+        }
+        Event event = new Event(currentTime + deltaTime, null, eventHandler, null, null);
+        eventQueue.add(event);
+    }
+    
     public void addEventHandler(EventHandler entity) {
         entityList.add(entity);
     }
