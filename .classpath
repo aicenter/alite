@@ -5,6 +5,5 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="libs/vecmath.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="libs/commons-math-2.2/commons-math-2.2.jar" sourcepath="libs/commons-math-2.2/commons-math-2.2-sources.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
