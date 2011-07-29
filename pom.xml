@@ -45,6 +45,12 @@
 			<name>privacy20.felk.cvut.cz-snapshots</name>
 			<url>http://147.32.84.125:8080/artifactory/libs-snapshot-local</url>
 		</snapshotRepository>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>privacy20</id>
+			<name>privacy20.felk.cvut.cz-snapshots</name>
+			<url>http://147.32.84.125:8080/artifactory/libs-release-local</url>
+		</repository>
 	</distributionManagement>
   
 	
