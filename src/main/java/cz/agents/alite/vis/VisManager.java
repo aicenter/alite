@@ -11,12 +11,16 @@ import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 import cz.agents.alite.vis.layer.VisLayer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The VisManager is a singleton holding the visualization layers and providing
@@ -53,11 +57,11 @@ public class VisManager {
         new Thread(new Runnable() {
 
             @Override
-            public void run() {
+                                public void run() {
                 Thread.currentThread().setPriority(VIS_THREAD_PRIORITY);
                 while (true) {
                     long startNanos = System.nanoTime();
-                    update();
+                                    update();
                     long endNanos = System.nanoTime();
 
                     long sleepNanos = (long) (1.0 / FPS_MAX * 1000000000.0)
@@ -70,8 +74,8 @@ public class VisManager {
                         Thread.sleep(sleepMillis, (int) sleepNanos);
                     } catch (InterruptedException ex) {
 
-                    }
-                }
+                                }
+    }
             }
         }).start();
     }
@@ -82,6 +86,14 @@ public class VisManager {
      */
     public static void setInitParam(String title, int dimX, int dimY) {
         Vis.setInitParam(title, dimX, dimY);
+    }
+    
+    /**
+     * sets initial parameters of the window, call this before creating the
+     * window
+     */
+    public static void setInitParam(String title, int dimX, int dimY, int sizeX, int sizeY) {
+        Vis.setInitParam(title, dimX, dimY, sizeX, sizeY);
     }
 
     public static synchronized void init() {
