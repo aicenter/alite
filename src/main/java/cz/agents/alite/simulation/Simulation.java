@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import cz.agents.alite.common.event.Event;
+import cz.agents.alite.common.event.EventHandler;
 import cz.agents.alite.common.event.EventProcessor;
 import cz.agents.alite.environment.Sensor;
 
@@ -40,20 +41,25 @@ public class Simulation extends EventProcessor {
 
 	private final List<EventListener> eventListeners = new LinkedList<EventListener>();
 
-	private final long sleepTimeIfWaitToOtherEvent;
-	private final boolean SLEEP_TIME_FLAG; // reason for using flag is back compatibility
+	private long sleepTimeIfWaitToOtherEvent = 0 ;
+	private boolean sleepTimeFlag = false; // reason for using flag is back compatibility
 
-	public Simulation(long sleepTimeIfWaitToOtherEvent) {
-		super();
-		this.sleepTimeIfWaitToOtherEvent = sleepTimeIfWaitToOtherEvent;
-		this.SLEEP_TIME_FLAG = true;
+	/**
+	 * Through this constructor is possible to set duration of simulation.
+	 * 
+	 * @param simulationEndTime
+	 */
+	public Simulation(long simulationEndTime) {		
+		addEvent(new FinishSimulationEventHandler(this), simulationEndTime);
 	}
-
-	public Simulation() {
-		this.SLEEP_TIME_FLAG = false;
-		this.sleepTimeIfWaitToOtherEvent = 0;
+	
+	/**
+	 * If you create instance of Simulation through this constructor, that 
+	 * simulation run to infinity.
+	 */
+	public Simulation() {	
 	}
-
+	
 	public void run() {
 		runTime = System.currentTimeMillis();
 		System.out.println("\n>>> SIMULATION START\n");
@@ -117,6 +123,15 @@ public class Simulation extends EventProcessor {
 	}
 
 	/**
+	 * Sets sleep time for jumping time between two event, with long time gap 
+	 * @param sleepTimeIfWaitToOtherEvent
+	 */
+	public void setSleepTimeIfWaitToOtherEvent(long sleepTimeIfWaitToOtherEvent) {
+		this.sleepTimeIfWaitToOtherEvent = sleepTimeIfWaitToOtherEvent;
+		this.sleepTimeFlag = true;
+	}
+	
+	/**
 	 * sets min interval between drawings, time for simulation to reload for new
 	 * drawing
 	 */
@@ -161,7 +176,7 @@ public class Simulation extends EventProcessor {
 			timeToSleep = drawFrame(timeToSleep);
 		}
 
-		if(SLEEP_TIME_FLAG){
+		if(sleepTimeFlag){
         	if(timeToSleep > sleepTimeIfWaitToOtherEvent){
         		timeToSleep = sleepTimeIfWaitToOtherEvent;
         	}else{
@@ -211,5 +226,27 @@ public class Simulation extends EventProcessor {
 		// recompute event delay
 		return timeToSleep + startTime - System.currentTimeMillis();
 	}
+	
+	private class FinishSimulationEventHandler implements EventHandler{
+        
+        private final Simulation simulation;
+
+        public FinishSimulationEventHandler(Simulation simulation) {
+            super();
+            this.simulation = simulation;
+        }
+
+        public EventProcessor getEventProcessor() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        public void handleEvent(Event arg0) {
+            // If simulation Queue will b 
+            simulation.clearQueue();
+            
+        }
+        
+    }
 
 }
