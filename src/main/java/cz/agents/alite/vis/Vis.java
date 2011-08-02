@@ -47,10 +47,8 @@ public class Vis extends Canvas {
     private static String initTitle = "ALite Operator";
     private static int initDimX = DIM_X;
     private static int initDimY = DIM_Y;
-
-    // TODO: refactor - aggr
-    private static final double SCALE_X = DIM_X / 1500.0;
-    private static final double SCALE_Y = DIM_Y / 1500.0;
+	private static int initSizeX = 1500;
+	private static int initSizeY = 1500;
 
     private static Vis instance = null;
 
@@ -73,6 +71,8 @@ public class Vis extends Canvas {
     private Vis() {
         super();
 
+        zoomFactorBack = zoomFactor = getMinimalZoomFactor(initDimX, initDimY);
+        
         // canvas
         setBounds(0, 0, initDimX, initDimY);
         size = new Dimension(initDimX, initDimY);
@@ -123,17 +123,17 @@ public class Vis extends Canvas {
                 int rotation = mouseWheelEvent.getWheelRotation()
                         * mouseWheelEvent.getScrollAmount();
                 if (rotation < 0) {
-                    offset.x -= transInvX(mouseWheelEvent.getX()) * SCALE_X * zoomFactor
+                    offset.x -= transInvX(mouseWheelEvent.getX()) * zoomFactor
                             * (zoomStep - 1.0);
-                    offset.y -= transInvY(mouseWheelEvent.getY()) * SCALE_Y * zoomFactor
+                    offset.y -= transInvY(mouseWheelEvent.getY()) * zoomFactor
                             * (zoomStep - 1.0);
 
                     zoomFactor *= zoomStep;
                 } else {
                     zoomFactor /= zoomStep;
 
-                    offset.x += transInvX(getWidth() / 2) * SCALE_X * zoomFactor * (zoomStep - 1.0);
-                    offset.y += transInvY(getHeight() / 2) * SCALE_Y * zoomFactor
+                    offset.x += transInvX(getWidth() / 2) * zoomFactor * (zoomStep - 1.0);
+                    offset.y += transInvY(getHeight() / 2) * zoomFactor
                             * (zoomStep - 1.0);
                 }
 
@@ -226,6 +226,14 @@ public class Vis extends Canvas {
         initDimY = dimY;
         initTitle = title;
     }
+	
+	public static void setInitParam(String title, int dimX, int dimY, int sizeX, int sizeY) {
+        initDimX = dimX;
+        initDimY = dimY;
+		initSizeX = sizeX;
+		initSizeY = sizeY;
+        initTitle = title;
+    }
 
     private boolean reinitializeBuffers() {
         if (reinitializeBuffers) {
@@ -244,14 +252,18 @@ public class Vis extends Canvas {
         return false;
     }
 
-    public static synchronized Vis getInstance() {
+    public static Vis getInstance() {
         if (instance == null) {
-            instance = new Vis();
+			synchronized (Vis.class) {
+				if (instance == null) {
+					instance = new Vis();
 
-            // show window
-            instance.window.setVisible(true);
-            instance.window.requestFocus();
-            instance.requestFocus();
+					// show window
+					instance.window.setVisible(true);
+					instance.window.requestFocus();
+					instance.requestFocus();
+				}
+			}
         }
 
         return instance;
@@ -273,43 +285,51 @@ public class Vis extends Canvas {
     }
 
     public static int transX(double x) {
-        return (int) (offsetBack.x + x * zoomFactorBack * SCALE_X);
+        return (int) (offsetBack.x + x * zoomFactorBack);
     }
 
     public static int transY(double y) {
-        return (int) (offsetBack.y + y * zoomFactorBack * SCALE_Y);
+        return (int) (offsetBack.y + y * zoomFactorBack);
     }
 
     public static int transW(double w) {
-        return (int) (w * zoomFactorBack * SCALE_X);
+        return (int) (w * zoomFactorBack);
     }
 
     public static int transH(double h) {
-        return (int) (h * zoomFactorBack * SCALE_Y);
+        return (int) (h * zoomFactorBack);
     }
 
     public static double transInvX(int x) {
-        return (x - offsetBack.x) / zoomFactorBack / SCALE_X;
+        return (x - offsetBack.x) / zoomFactorBack;
     }
 
     public static double transInvY(int y) {
-        return (y - offsetBack.y) / zoomFactorBack / SCALE_Y;
+        return (y - offsetBack.y) / zoomFactorBack;
     }
 
     public static double transInvW(int w) {
-        return w / zoomFactorBack / SCALE_X;
+        return w / zoomFactorBack;
     }
 
     public static double transInvH(int h) {
-        return h / zoomFactorBack / SCALE_Y;
+        return h / zoomFactorBack;
     }
 
     public static int getWorldDimX() {
-        return (int) (getInstance().getWidth() / SCALE_X);
+        return (int) getInstance().size.getWidth();
     }
 
     public static int getWorldDimY() {
-        return (int) (getInstance().getHeight() / SCALE_Y);
+        return (int) getInstance().size.getHeight();
+    }
+    
+    public static int getWorldSizeX() {
+        return initSizeX;
+    }
+    
+    public static int getWorldSizeY() {
+        return initSizeY;
     }
 
     public static double getZoomFactor() {
@@ -368,12 +388,12 @@ public class Vis extends Canvas {
         int windowHeight = getInstance().window.getContentPane().getHeight();
 
         if (windowWidth > windowHeight) {
-            if (zoomFactor < (double) windowWidth / DIM_X) {
-                zoomFactor = (double) windowWidth / DIM_X;
+            if (zoomFactor < (double) windowWidth / initSizeX) {
+                zoomFactor = (double) windowWidth / initSizeX;
             }
         } else {
-            if (zoomFactor < (double) windowHeight / DIM_Y) {
-                zoomFactor = (double) windowHeight / DIM_Y;
+            if (zoomFactor < (double) windowHeight / initSizeY) {
+                zoomFactor = (double) windowHeight / initSizeY;
             }
         }
 
@@ -383,11 +403,19 @@ public class Vis extends Canvas {
         if (offset.y > 0) {
             offset.y = 0;
         }
-        if (transInvXCurrent(windowWidth) > DIM_X) {
-            offset.x = -transSCurrent(DIM_X) + windowWidth;
+        if (transInvXCurrent(windowWidth) > initSizeX) {
+            offset.x = -transSCurrent(initSizeX) + windowWidth;
         }
-        if (transInvYCurrent(windowHeight) > DIM_Y) {
-            offset.y = -transSCurrent(DIM_Y) + windowHeight;
+        if (transInvYCurrent(windowHeight) > initSizeY) {
+            offset.y = -transSCurrent(initSizeY) + windowHeight;
+        }
+    }
+
+    private double getMinimalZoomFactor(int windowWidth, int windowHeight) {
+        if (windowWidth > windowHeight) {
+            return (double) windowWidth / initSizeX;
+        } else {
+            return (double) windowHeight / initSizeY;
         }
     }
     
