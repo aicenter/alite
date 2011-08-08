@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.URL;
 import java.util.Arrays;
 
 import cz.agents.alite.vis.Vis;
@@ -52,6 +53,10 @@ public class LogoLayer extends ImageLayer {
     }
 
     public static VisLayer create(File file) {
+        return create(ImageLayer.loadImage(file));
+    }
+
+    public static VisLayer create(URL file) {
         return create(ImageLayer.loadImage(file));
     }
 
