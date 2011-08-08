@@ -3,6 +3,8 @@ package cz.agents.alite.vis.layer.terminal;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 
@@ -21,6 +23,17 @@ public abstract class ImageLayer extends TerminalLayer {
     }
 
     public static BufferedImage loadImage(File file) {
+    	BufferedImage img = null;
+    	try {
+			img = loadImage(file.toURL());
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return img;
+    }
+    
+    public static BufferedImage loadImage(URL file) {
         BufferedImage img = null;
 
         try {
