@@ -25,15 +25,15 @@ import javax.vecmath.Point2d;
 
 /**
  * Vis is a singleton holding the visualization window and the drawing canvas.
- * 
+ *
  * Additionally, it also provides panning and zooming functionality for all visual elements drawn
  * using the transformation methods (transX(), transY(), transW(), transH()).
- * 
+ *
  * The Vis singleton do not need to be explicitly initialized. The static calls do the
  * initialization automatically. But also, it can be explicitly initialized with specified window
  * bounds (position and size) by the initWithBounds method.
- * 
- * 
+ *
+ *
  * @author Antonin Komneda
  */
 public class Vis extends Canvas {
@@ -47,8 +47,8 @@ public class Vis extends Canvas {
     private static String initTitle = "ALite Operator";
     private static int initDimX = DIM_X;
     private static int initDimY = DIM_Y;
-	private static int initSizeX = 1500;
-	private static int initSizeY = 1500;
+    private static int initSizeX = 1500;
+    private static int initSizeY = 1500;
 
     private static Vis instance = null;
 
@@ -65,14 +65,14 @@ public class Vis extends Canvas {
     private boolean reinitializeBuffers = true;
     private BufferStrategy strategy;
     private Graphics2D graphics;
-    
+
     private static Dimension size;
-    
+
     private Vis() {
         super();
 
         zoomFactorBack = zoomFactor = getMinimalZoomFactor(initDimX, initDimY);
-        
+
         // canvas
         setBounds(0, 0, initDimX, initDimY);
         size = new Dimension(initDimX, initDimY);
@@ -226,12 +226,12 @@ public class Vis extends Canvas {
         initDimY = dimY;
         initTitle = title;
     }
-	
-	public static void setInitParam(String title, int dimX, int dimY, int sizeX, int sizeY) {
+
+    public static void setInitParam(String title, int dimX, int dimY, int sizeX, int sizeY) {
         initDimX = dimX;
         initDimY = dimY;
-		initSizeX = sizeX;
-		initSizeY = sizeY;
+        initSizeX = sizeX;
+        initSizeY = sizeY;
         initTitle = title;
     }
 
@@ -254,16 +254,16 @@ public class Vis extends Canvas {
 
     public static Vis getInstance() {
         if (instance == null) {
-			synchronized (Vis.class) {
-				if (instance == null) {
-					instance = new Vis();
+            synchronized (Vis.class) {
+                if (instance == null) {
+                    instance = new Vis();
 
-					// show window
-					instance.window.setVisible(true);
-					instance.window.requestFocus();
-					instance.requestFocus();
-				}
-			}
+                    // show window
+                    instance.window.setVisible(true);
+                    instance.window.requestFocus();
+                    instance.requestFocus();
+                }
+            }
         }
 
         return instance;
@@ -317,17 +317,17 @@ public class Vis extends Canvas {
     }
 
     public static int getWorldDimX() {
-        return (int) getInstance().size.getWidth();
+        return (int) Vis.size.getWidth();
     }
 
     public static int getWorldDimY() {
-        return (int) getInstance().size.getHeight();
+        return (int) Vis.size.getHeight();
     }
-    
+
     public static int getWorldSizeX() {
         return initSizeX;
     }
-    
+
     public static int getWorldSizeY() {
         return initSizeY;
     }
@@ -347,9 +347,9 @@ public class Vis extends Canvas {
     public static Dimension getDrawingDimension() {
         return size;
     }
-    
+
     public static void refreshSize() {
-        size = getInstance().window.getContentPane().getSize();        
+        size = getInstance().window.getContentPane().getSize();
     }
 
     public static void setWindowBounds(Rectangle rect) {
@@ -418,7 +418,7 @@ public class Vis extends Canvas {
             return (double) windowHeight / initSizeY;
         }
     }
-    
+
     public static void setPosition(double offsetX, double offsetY, double zoom) {
         offset.set(offsetX * zoom, offsetY * zoom);
         zoomFactor = zoom;

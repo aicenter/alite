@@ -11,16 +11,12 @@ import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ScheduledFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
 import cz.agents.alite.vis.layer.VisLayer;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The VisManager is a singleton holding the visualization layers and providing
@@ -87,7 +83,7 @@ public class VisManager {
     public static void setInitParam(String title, int dimX, int dimY) {
         Vis.setInitParam(title, dimX, dimY);
     }
-    
+
     /**
      * sets initial parameters of the window, call this before creating the
      * window
