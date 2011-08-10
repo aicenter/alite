@@ -23,16 +23,15 @@ public abstract class ImageLayer extends TerminalLayer {
     }
 
     public static BufferedImage loadImage(File file) {
-    	BufferedImage img = null;
-    	try {
-			img = loadImage(file.toURL());
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return img;
+        BufferedImage img = null;
+        try {
+            img = loadImage(file.toURI().toURL());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return img;
     }
-    
+
     public static BufferedImage loadImage(URL file) {
         BufferedImage img = null;
 
