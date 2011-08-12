@@ -16,11 +16,11 @@ package cz.agents.alite.common.event;
  */
 public final class Event implements Comparable<Event> {
 
-    private long time;
-    private EventType type;
-    private String owner;
-    private Object content;
-    private EventHandler recipient;
+    private final long time;
+    private final EventType type;
+    private final String owner;
+    private final Object content;
+    private final EventHandler recipient;
 
     Event(long time, EventType type, EventHandler recipient, String owner, Object content) {
         this.time = time;

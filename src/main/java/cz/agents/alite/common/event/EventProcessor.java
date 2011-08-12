@@ -62,11 +62,25 @@ public class EventProcessor {
         running = false;
     }
 
-    /** ends the simulation */
+    /**
+     * Ends the the event processor by clearing the event queue.
+     */
     public void clearQueue() {
         eventQueue.clear();
     }
 
+    /**
+     * Add an immediate event into the queue of the event processor.
+     *
+     * @param type
+     *            the type of the event (see {@link EventType})
+     * @param recipient
+     *            the target of the event (use <code>null</code> for all registered event handlers)
+     * @param owner
+     *            a "deprecated" version of the recipient
+     * @param content
+     *            the payload of the event (by the user specified data)
+     */
     public void addEvent(EventType type, EventHandler recipient, String owner, Object content) {
         addEvent(type, recipient, owner, content, 1);
     }
@@ -98,9 +112,9 @@ public class EventProcessor {
     }
 
     /**
-     * Add an event into the queue of the event processor.
+     * Add an immediate event into the queue of the event processor.
      * {@ EventHandler} represents specific implementation, which handles only
-     * one event. Delta time is 1 ms.
+     * one event.
      *
      *
      * @param eventHandler - through its callback method is informed about end of event.
