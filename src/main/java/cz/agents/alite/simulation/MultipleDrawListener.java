@@ -4,15 +4,16 @@ import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 /**
  * List of Draw Listeners to draw. When simulation allows to draw, it draws all sublisteners. When
  * one listener is complete, it must be added again to draw again. If listener must interrupt
  * drawing because of timeout, it will return false, will not be removed from list and next time
  * will be drawed first.
- * 
+ *
  * @author Ondrej Milenovsky
  * */
 public class MultipleDrawListener implements DrawListener {
@@ -89,8 +90,7 @@ public class MultipleDrawListener implements DrawListener {
                 String text = listener.getName() + ": Drawing frame exceeted timeout. "
                         + "Each implementation of DrawListener must not exceet the timeout! "
                         + "Exceeted " + (System.currentTimeMillis() - deadline) + "ms";
-                Logger.getLogger(MultipleDrawListener.class.getName()).log(Level.WARNING, text);
-                System.err.println(text);
+                Logger.getLogger(MultipleDrawListener.class.getName()).log(Level.WARN, text);
                 return false;
             }
         }

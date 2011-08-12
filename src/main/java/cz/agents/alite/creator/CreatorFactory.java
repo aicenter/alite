@@ -1,7 +1,7 @@
 package cz.agents.alite.creator;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 /**
  * The {@link CreatorFactory} dynamically instantiates a particular {@link Creator}
@@ -26,7 +26,7 @@ public class CreatorFactory {
             creator.init(args);
             return creator;
         } catch (Exception ex) {
-            Logger.getLogger(CreatorFactory.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CreatorFactory.class.getName()).log(Level.FATAL, null, ex);
         }
         return null;
     }

@@ -1,8 +1,9 @@
 package cz.agents.alite.communication.acquaintance.iterative;
 
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import cz.agents.alite.common.capability.CapabilityRegister;
 import cz.agents.alite.communication.Communicator;
@@ -130,7 +131,7 @@ public abstract class CNPTaskBaseSyncIter extends CNPTaskBase {
         try {
             super.invokeTask(task, taskListener, allocationCallback);
         } catch (UnknownTaskTypeException ex) {
-            Logger.getLogger(CNPTaskBaseSyncIterRA.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CNPTaskBaseSyncIterRA.class.getName()).log(Level.ERROR, null, ex);
         }
     }
 
