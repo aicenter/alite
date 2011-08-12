@@ -12,6 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 /**
  *  Default agent TaskBase.
  *  It cooperates with any other TaskBase using DirectoredCNP.
@@ -193,8 +196,7 @@ public class CNPTaskBase implements TaskBase {
             Task what = (Task) request;
             PlanBase planner = planBases.get(what.getTaskType());
             if (planner == null) {
-                System.out.println("TODO - LOG SEVERE PROBLEM WITH REGISTERING TASK TYPE");
-                Thread.dumpStack();
+                Logger.getLogger(CNPTaskBase.class.getName()).log(Level.ERROR, "REGISTERING TASK TYPE");
                 return null;
             }
             return planner.evaluateInsertion(what);
@@ -205,8 +207,7 @@ public class CNPTaskBase implements TaskBase {
             final Task what = (Task) getRequest(session);
             PlanBase planner = planBases.get(what.getTaskType());
             if (planner == null) {
-                System.out.println("TODO - LOG SEVERE PROBLEM WITH PLANNING TASK TYPE");
-                Thread.dumpStack();
+                Logger.getLogger(CNPTaskBase.class.getName()).log(Level.ERROR, "PLANNING TASK TYPE");
             } else {
                 if (planner.insertTask(what, new TaskListener() {
 
@@ -236,8 +237,7 @@ public class CNPTaskBase implements TaskBase {
             Task what = (Task) getRequest(session);
             PlanBase planner = planBases.get(what.getTaskType());
             if (planner == null) {
-                System.out.println("TODO - LOG SEVERE PROBLEM WITH CANCELING TASK TYPE");
-                Thread.dumpStack();
+                Logger.getLogger(CNPTaskBase.class.getName()).log(Level.ERROR, "CANCELING TASK TYPE");
             } else {
                 planner.removeTask(what);
                 tasksPlanned.remove(what);

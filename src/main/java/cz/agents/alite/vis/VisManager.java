@@ -11,10 +11,11 @@ import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import cz.agents.alite.vis.layer.VisLayer;
 
@@ -156,14 +157,13 @@ public class VisManager {
         try {
             visLayer.paint(graphics);
         } catch (ConcurrentModificationException e) {
-            Logger.getLogger(VisManager.class.getName()).log(Level.FINEST,
-                    "Skipped layer drawing.");
+            Logger.getLogger(VisManager.class.getName()).log(Level.DEBUG, "Skipped layer drawing.");
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             String stacktrace = sw.toString();
             Logger.getLogger(VisManager.class.getName()).log(
-                    Level.WARNING,
+                    Level.WARN,
                     "Vis layer " + visLayer
                             + " has thrown the following exception:\n"
                             + stacktrace);

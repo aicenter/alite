@@ -4,26 +4,27 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 /**
  * The event processor is a wrapper for an event-queue cycle.
- * 
+ *
  * On the fly, the processor lines up events added into it, and "sends" them to their particular
  * recipients in a particular order. By sending, it is meant to call a {@link EventHandler}
  * .handleEvent() method, with the event as an argument. An event handler needs to be registered
  * into the processor to receive the events.
- * 
+ *
  * The event is sent to all event handlers registered with the EventProcessor, if its recipient is
  * <code>null</code> and it is sent to the particular event handler otherwise.
- * 
+ *
  * The event-queue cycle can be paused/un-paused by the setRunning() method. By the default, the
  * cycle is started running.
- * 
+ *
  * The time of currently processed events can be obtained by the getCurrentTime() method.
- * 
- * 
+ *
+ *
  * @author Antonin Komenda
  */
 public class EventProcessor {
@@ -48,8 +49,7 @@ public class EventProcessor {
                     try {
                         thread.wait();
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(EventProcessor.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                        Logger.getLogger(EventProcessor.class.getName()).log(Level.ERROR, null, ex);
                     }
                 }
             }
@@ -73,8 +73,8 @@ public class EventProcessor {
 
     /**
      * Add an event into the queue of the event processor.
-     * 
-     * 
+     *
+     *
      * @param type
      *            the type of the event (see {@link EventType})
      * @param recipient
@@ -100,25 +100,25 @@ public class EventProcessor {
     /**
      * Add an event into the queue of the event processor.
      * {@ EventHandler} represents specific implementation, which handles only
-     * one event. Delta time is 1 ms. 
-     *  
-     * 
+     * one event. Delta time is 1 ms.
+     *
+     *
      * @param eventHandler - through its callback method is informed about end of event.
-     * 
-     * 
+     *
+     *
      */
     public void addEvent(EventHandler eventHandler) {
-    	addEvent(eventHandler, 1);
+        addEvent(eventHandler, 1);
     }
-    
+
     /**
      * Add an event into the queue of the event processor.
      * {@ EventHandler} represents specific implementation, which handles only
-     * one event. 
-     *  
-     * 
+     * one event.
+     *
+     *
      * @param eventHandler - through its callback method is informed about end of event.
-     * 
+     *
      * @param deltaTime the duration (in milliseconds) from now till the time when the event should take
      *            place (be send to its recipients)
      */
@@ -129,7 +129,7 @@ public class EventProcessor {
         Event event = new Event(currentTime + deltaTime, null, eventHandler, null, null);
         eventQueue.add(event);
     }
-    
+
     public void addEventHandler(EventHandler entity) {
         entityList.add(entity);
     }

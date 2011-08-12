@@ -1,7 +1,11 @@
 package cz.agents.alite.communication.acquaintance.iterative;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import cz.agents.alite.common.capability.CapabilityRegister;
 import cz.agents.alite.communication.Communicator;
+import cz.agents.alite.communication.acquaintance.CNPTaskBase;
 import cz.agents.alite.communication.acquaintance.PlanCost;
 import cz.agents.alite.communication.acquaintance.Task;
 import cz.agents.alite.communication.acquaintance.Task.TaskListener;
@@ -40,8 +44,7 @@ public class CNPTaskBaseSyncIterRA extends CNPTaskBaseSyncIter {
 
                     public void allocated() {
                         if (estR.isLower((PlanCost) tasksOwned.get(task).getWinnerResponse())) {
-                            System.out.println("TODO - LOG SEVERE PROBLEM WITH REALLOCATION");
-                            Thread.dumpStack();
+                            Logger.getLogger(CNPTaskBase.class.getName()).log(Level.ERROR, "REALLOCATION");
                         }
                         if (!lastResource.equals(tasksOwned.get(task).getWinner())) {
                             //improved by delegation
