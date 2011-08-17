@@ -40,6 +40,10 @@ public class Simulation extends EventProcessor {
     /** last time drawed */
     private long lastDrawed = 0;
 
+    private boolean turnOnEventStepSimulation = false;
+    private long durationOfOneEventStep = 1000;
+    private boolean waitingOnInterruption = false;
+    
     private final List<EventListener> eventListeners = new LinkedList<EventListener>();
 
     private long sleepTimeIfWaitToOtherEvent = 0 ;
@@ -156,7 +160,54 @@ public class Simulation extends EventProcessor {
     public void setPrintouts(int n) {
         this.printouts = n;
     }
+        
+    /**
+     * Turn on firing next event after some sleep time, which is represented by durationOfOneEventStep.
+     */
+    public void turnOnEventStepSimulation(){
+    	turnOnEventStepSimulation = true;
+    }
+    
+    /**
+     * Turn off firing next event after some sleep time, which is represented by durationOfOneEventStep.
+     */
+    public void turnOffEventStepSimulation(){
+    	turnOnEventStepSimulation = false;
+    }
 
+    public void setDurationOfOneEventStep(long durationOfOneEventStep){
+    	this.durationOfOneEventStep = durationOfOneEventStep;
+    }
+    
+    
+    /**
+     * Turn on waiting simulation on next event to calling method interruptionWaitingOnNextEvent
+     * or waiting time expires Long.MAX_VALUE
+     * 
+     */
+    public void turnOnWaitingOnNextEventToInterruption(){
+    	waitingOnInterruption = true;
+    }
+    
+    public void turnOffWaitingOnNextEventToInterruption(){
+    	if(waitingOnInterruption){
+    		synchronized (this) {
+    		    notify();
+    		}
+
+    	}
+    	waitingOnInterruption = false;
+    }
+    
+    public void interruptionWaitingOnNextEvent(){
+    	if(waitingOnInterruption){
+    		synchronized (this) {
+    		    notify();
+    		}
+
+    	}
+    }
+    
     @Override
     protected void breforeRunningTest(Event event) {
         ++eventCount;
@@ -168,7 +219,19 @@ public class Simulation extends EventProcessor {
                                     .currentTimeMillis() - runTime) / 1000.0,
                             eventCount, getCurrentQueueLength());
         }
-
+        
+        if(waitingOnInterruption){
+        	try {
+        		synchronized (this) {
+        			wait(Long.MAX_VALUE);
+        		}
+			} catch (InterruptedException e) {
+				if(waitingOnInterruption == false){
+					e.printStackTrace();
+				}
+			}
+        }
+        
         long timeToSleep = (long) ((event.getTime() - getCurrentTime()) * simulationSpeed);
         callEventListeners();
         // draws frame for vis
@@ -185,7 +248,11 @@ public class Simulation extends EventProcessor {
             }
 
         }
-
+        
+        if(turnOnEventStepSimulation){
+        	timeToSleep = durationOfOneEventStep;
+        }
+        
         if ((simulationSpeed > 0) && (timeToSleep > 0)) {
             try {
                 Thread.sleep(timeToSleep);
