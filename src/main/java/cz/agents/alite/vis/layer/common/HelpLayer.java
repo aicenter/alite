@@ -8,6 +8,8 @@ import java.awt.event.KeyListener;
 
 import cz.agents.alite.vis.Vis;
 import cz.agents.alite.vis.VisManager;
+import cz.agents.alite.vis.layer.AbstractLayer;
+import cz.agents.alite.vis.layer.GroupLayer;
 import cz.agents.alite.vis.layer.VisLayer;
 import cz.agents.alite.vis.layer.terminal.SpriteLayer;
 import cz.agents.alite.vis.layer.toggle.KeyToggleLayer;
@@ -142,12 +144,25 @@ public class HelpLayer extends CommonLayer {
         }
     }
 
-    public static VisLayer create() {
-        KeyToggleLayer toggle = KeyToggleLayer.create(KeyEvent.VK_F1);
-        toggle.setEnabled(false);
-        toggle.addSubLayer(new HelpLayer(toggle));
+    public static VisLayer create(final Color color) {
+        GroupLayer group = GroupLayer.create();
 
-        return toggle;
+        group.addSubLayer(createHelpToggle());
+        group.addSubLayer(new AbstractLayer() {
+
+            @Override
+            public void paint(Graphics2D canvas) {
+                canvas.setColor(color);
+                canvas.drawString("Press F1 for help", Vis.getDrawingDimension().width - 115, 60);
+            }
+
+        });
+
+        return group;
+    }
+
+    public static VisLayer create() {
+        return create(Color.BLUE);
     }
 
     @Override
@@ -155,6 +170,15 @@ public class HelpLayer extends CommonLayer {
         String description = "[Help] The layer shows this help.";
         return buildLayersDescription(description);
     }
+
+    private static VisLayer createHelpToggle() {
+        KeyToggleLayer toggle = KeyToggleLayer.create(KeyEvent.VK_F1);
+        toggle.setEnabled(false);
+        toggle.addSubLayer(new HelpLayer(toggle));
+
+        return toggle;
+    }
+
 
     private boolean showLayerHelp(int index, VisLayer layer) {
         switch (index) {

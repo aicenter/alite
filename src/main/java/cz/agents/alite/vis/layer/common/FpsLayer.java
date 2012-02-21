@@ -8,11 +8,14 @@ import cz.agents.alite.vis.layer.toggle.KeyToggleLayer;
 
 public class FpsLayer extends CommonLayer {
 
+    private final Color color;
+
     private int fps;
     private int fpsCount = 0;
     private long time = System.currentTimeMillis();
 
-    protected FpsLayer() {
+    protected FpsLayer(Color color) {
+        this.color = color;
     }
 
     @Override
@@ -25,15 +28,19 @@ public class FpsLayer extends CommonLayer {
             fpsCount = 0;
         }
 
-        canvas.setColor(Color.BLUE);
+        canvas.setColor(color);
         canvas.drawString("FPS: " + fps, 15, 40);
     }
 
-    public static VisLayer create() {
+    public static VisLayer create(final Color color) {
         KeyToggleLayer toggle = KeyToggleLayer.create("f");
-        toggle.addSubLayer(new FpsLayer());
+        toggle.addSubLayer(new FpsLayer(color));
 
         return toggle;
+    }
+
+    public static VisLayer create() {
+        return create(Color.BLUE);
     }
 
     @Override
