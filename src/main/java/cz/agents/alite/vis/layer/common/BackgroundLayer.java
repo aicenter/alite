@@ -31,7 +31,7 @@ public class BackgroundLayer extends ImageLayer {
     @Override
     public void paint(Graphics2D canvas) {
         for (Image image : getImageElements().getImages()) {
-            canvas.drawImage(image.getImage(), Vis.transX(0), Vis.transY(0), Vis.transW(Vis.getWorldDimX()), Vis.transH(Vis.getWorldDimY()), null);
+            canvas.drawImage(image.getImage(), Vis.transX(0), Vis.transY(0), Vis.transW(Vis.getWorldSizeX()), Vis.transH(Vis.getWorldSizeY()), null);
         }
     }
 
