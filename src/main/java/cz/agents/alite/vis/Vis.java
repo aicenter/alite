@@ -57,6 +57,7 @@ public class Vis extends Canvas {
     private static final Point2d offset = new Point2d(0, 0);
     private static final Point2d lastOffset = new Point2d(0, 0);
     private static boolean panning = false;
+    private static Rectangle pannningBounds = new Rectangle(0, 0, initSizeX, initSizeY);
     private static double zoomFactorBack = 1.0;
     private static final Point2d offsetBack = new Point2d(0, 0);
 
@@ -397,17 +398,18 @@ public class Vis extends Canvas {
             }
         }
 
-        if (offset.x > 0) {
-            offset.x = 0;
+        if (offset.x > -pannningBounds.x) {
+            offset.x = -pannningBounds.x;
         }
-        if (offset.y > 0) {
-            offset.y = 0;
+        if (offset.y > -pannningBounds.y) {
+            offset.y = -pannningBounds.y;
         }
-        if (transInvXCurrent(windowWidth) > initSizeX) {
-            offset.x = -transSCurrent(initSizeX) + windowWidth;
+
+        if (transInvXCurrent(windowWidth) > pannningBounds.x + pannningBounds.width) {
+            offset.x = -transSCurrent((int) pannningBounds.x + pannningBounds.width) + windowWidth;
         }
-        if (transInvYCurrent(windowHeight) > initSizeY) {
-            offset.y = -transSCurrent(initSizeY) + windowHeight;
+        if (transInvYCurrent(windowHeight) > pannningBounds.y + pannningBounds.height) {
+            offset.y = -transSCurrent((int) pannningBounds.y + pannningBounds.height) + windowHeight;
         }
     }
 
@@ -422,6 +424,10 @@ public class Vis extends Canvas {
     public static void setPosition(double offsetX, double offsetY, double zoom) {
         offset.set(offsetX * zoom, offsetY * zoom);
         zoomFactor = zoom;
+    }
+
+    public static void setPanningBounds(Rectangle bounds) {
+        pannningBounds = bounds;
     }
 
 }

@@ -2,6 +2,7 @@ package cz.agents.alite.vis;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.imageio.ImageIO;
+import javax.vecmath.Point2d;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -91,6 +93,10 @@ public class VisManager {
      */
     public static void setInitParam(String title, int dimX, int dimY, int sizeX, int sizeY) {
         Vis.setInitParam(title, dimX, dimY, sizeX, sizeY);
+    }
+
+    public static void setPanningBounds(Rectangle bounds) {
+        Vis.setPanningBounds(bounds);
     }
 
     public static synchronized void init() {
