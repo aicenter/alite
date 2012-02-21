@@ -84,7 +84,7 @@ public class HelpLayer extends CommonLayer {
         canvas.drawString("Scroll help by PgUp/PgDn keys.", x + width - 195, y + height - 15);
 
         // info text
-        String infoText = "A-Lite Operator\n" +
+        String infoText = Vis.getTitle() + "\n" +
                 "\n" +
                 "[Basic Controls] World can be zoomed and panned.\n" +
                 "Zooming can be done by mouse wheel and it magnifies area under mouse cursor.\n" +
@@ -97,51 +97,49 @@ public class HelpLayer extends CommonLayer {
 
         int offsetY = 0;
 
-        boolean layerShowed;
         int index = 0;
         do {
-            layerShowed = false;
+            String layerText = "";
             for (VisLayer layer : VisManager.getLayers()) {
                 if (showLayerHelp(index, layer)) {
-                    layerShowed = true;
-
-                    String description = layer.getLayerDescription().replace("<br/>", "\n");
-                    if (infoText != null) {
-                        description = infoText + description;
-                        infoText = null;
-                    }
-                    String[] strings = description.split("\n");
-
-                    for (String string : strings) {
-                        if (offsetY >= pageHeight*offsetPages) {
-                            showing = true;
-                        }
-                        if (offsetY >= pageHeight*offsetPages + pageHeight * 2.0 - 20) {
-                            showing = false;
-                        }
-
-                        if (showing) {
-                            canvas.drawString(string, x + 10, (int) (y + offsetY + 20 - pageHeight * offsetPages));
-                        }
-
-                        offsetY += canvas.getFontMetrics().getHeight();
-                    }
-                    offsetY += canvas.getFontMetrics().getHeight();
+                    layerText += layer.getLayerDescription().replace("<br/>", "\n") + "\n\n";
                 }
             }
-            if (index == 0){
-                infoText = "   ----------- toggleable -----------\n\n";
+            if (index == 0 && !layerText.isEmpty()) {
+                infoText += layerText;
             }
-            if (index == 1){
-                infoText = "   ----------- non-toggleable -----------\n\n";
+            if (index == 1 && !layerText.isEmpty()) {
+                infoText += "   ----------- Toggleable Layers -----------\n\n";
+                infoText += layerText;
             }
-            if (index == 2){
-                infoText = "   ----------- entities -----------\n\n";
+            if (index == 2 && !layerText.isEmpty()) {
+                infoText += "   ----------- Non-toggleable Layers -----------\n\n";
+                infoText += layerText;
+            }
+            if (index == 3 && !layerText.isEmpty()) {
+                infoText += "   ----------- Entities -----------\n\n";
+                infoText += layerText;
             }
 
             index++;
-        } while (layerShowed);
+        } while (index < 5);
 
+        String[] strings = infoText.split("\n");
+
+        for (String string : strings) {
+            if (offsetY >= pageHeight*offsetPages) {
+                showing = true;
+            }
+            if (offsetY >= pageHeight*offsetPages + pageHeight * 2.0 - 20) {
+                showing = false;
+            }
+
+            if (showing) {
+                canvas.drawString(string, x + 10, (int) (y + offsetY + 20 - pageHeight * offsetPages));
+            }
+
+            offsetY += canvas.getFontMetrics().getHeight();
+        }
     }
 
     public static VisLayer create() {

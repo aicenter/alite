@@ -44,7 +44,7 @@ public class Vis extends Canvas {
     public static final int DIM_X = 900;
     public static final int DIM_Y = 900;
 
-    private static String initTitle = "ALite Operator";
+    private static String initTitle = "Alite Operator";
     private static int initDimX = DIM_X;
     private static int initDimY = DIM_Y;
     private static int initSizeX = 1500;
@@ -315,6 +315,10 @@ public class Vis extends Canvas {
 
     public static double transInvH(int h) {
         return h / zoomFactorBack;
+    }
+
+    public static String getTitle() {
+        return initTitle;
     }
 
     public static int getWorldDimX() {
