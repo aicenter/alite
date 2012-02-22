@@ -147,7 +147,6 @@ public class HelpLayer extends CommonLayer {
     public static VisLayer create(final Color color) {
         GroupLayer group = GroupLayer.create();
 
-        group.addSubLayer(createHelpToggle());
         group.addSubLayer(new AbstractLayer() {
 
             @Override
@@ -157,6 +156,7 @@ public class HelpLayer extends CommonLayer {
             }
 
         });
+        group.addSubLayer(createHelpToggle());
 
         return group;
     }
