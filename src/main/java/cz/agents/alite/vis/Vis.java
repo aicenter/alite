@@ -18,6 +18,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.io.ObjectInputStream.GetField;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -41,14 +42,14 @@ public class Vis extends Canvas {
     private static final long serialVersionUID = 1093434407555503398L;
 
     // TODO: refactor - conf
-    public static final int DIM_X = 900;
-    public static final int DIM_Y = 900;
+    public static final int CANVAS_WIDTH = 900;
+    public static final int CANVAS_HEIGHT = 900;
 
-    private static String initTitle = "Alite Operator";
-    private static int initDimX = DIM_X;
-    private static int initDimY = DIM_Y;
-    private static int initSizeX = 1500;
-    private static int initSizeY = 1500;
+    private static String initTitle = "ALite Operator";
+    private static int initCanvasWidth = CANVAS_WIDTH;
+    private static int initCanvasHeight = CANVAS_HEIGHT;
+    private static int initWorldSizeX = 1500;
+    private static int initWorldSizeY = 1500;
 
     private static Vis instance = null;
 
@@ -57,7 +58,7 @@ public class Vis extends Canvas {
     private static final Point2d offset = new Point2d(0, 0);
     private static final Point2d lastOffset = new Point2d(0, 0);
     private static boolean panning = false;
-    private static Rectangle pannningBounds = new Rectangle(0, 0, initSizeX, initSizeY);
+    private static Rectangle pannningBounds = new Rectangle(0, 0, initWorldSizeX, initWorldSizeY);
     private static double zoomFactorBack = 1.0;
     private static final Point2d offsetBack = new Point2d(0, 0);
 
@@ -72,15 +73,15 @@ public class Vis extends Canvas {
     private Vis() {
         super();
 
-        zoomFactorBack = zoomFactor = getMinimalZoomFactor(initDimX, initDimY);
+        zoomFactorBack = zoomFactor = getMinimalZoomFactor(initCanvasWidth, initCanvasHeight);
 
         // canvas
-        setBounds(0, 0, initDimX, initDimY);
-        size = new Dimension(initDimX, initDimY);
+        setBounds(0, 0, initCanvasWidth, initCanvasHeight);
+        size = new Dimension(initCanvasWidth, initCanvasHeight);
         window = new JFrame(initTitle);
 
         final JPanel panel = (JPanel) window.getContentPane();
-        panel.setBounds(0, 0, initDimX, initDimY);
+        panel.setBounds(0, 0, initCanvasWidth, initCanvasHeight);
         panel.add(this);
 
         window.addWindowListener(new WindowAdapter() {
@@ -222,17 +223,18 @@ public class Vis extends Canvas {
     /**
      * sets initial parameters of the window, call this before creating the window
      */
-    public static void setInitParam(String title, int dimX, int dimY) {
-        initDimX = dimX;
-        initDimY = dimY;
+    public static void setInitParam(String title, int canvasWidth, int canvasHeight) {
+        initCanvasWidth = canvasWidth;
+        initCanvasHeight = canvasHeight;
         initTitle = title;
     }
 
-    public static void setInitParam(String title, int dimX, int dimY, int sizeX, int sizeY) {
-        initDimX = dimX;
-        initDimY = dimY;
-        initSizeX = sizeX;
-        initSizeY = sizeY;
+    public static void setInitParam(String title, int canvasWidth, int canvasHeight, int worldSizeX, int worldSizeY) {
+        initCanvasWidth = canvasWidth;
+        initCanvasHeight = canvasHeight;
+        initWorldSizeX = worldSizeX;
+        initWorldSizeY = worldSizeY;
+        pannningBounds = new Rectangle(0,0,worldSizeX,worldSizeY);
         initTitle = title;
     }
 
@@ -317,10 +319,6 @@ public class Vis extends Canvas {
         return h / zoomFactorBack;
     }
 
-    public static String getTitle() {
-        return initTitle;
-    }
-
     public static int getWorldDimX() {
         return (int) Vis.size.getWidth();
     }
@@ -330,11 +328,11 @@ public class Vis extends Canvas {
     }
 
     public static int getWorldSizeX() {
-        return initSizeX;
+        return initWorldSizeX;
     }
 
     public static int getWorldSizeY() {
-        return initSizeY;
+        return initWorldSizeY;
     }
 
     public static double getZoomFactor() {
@@ -393,14 +391,29 @@ public class Vis extends Canvas {
         int windowHeight = getInstance().window.getContentPane().getHeight();
 
         if (windowWidth > windowHeight) {
-            if (zoomFactor < (double) windowWidth / initSizeX) {
-                zoomFactor = (double) windowWidth / initSizeX;
+            if (zoomFactor < (double) windowWidth / initWorldSizeX) {
+                zoomFactor = (double) windowWidth / initWorldSizeX;
             }
         } else {
-            if (zoomFactor < (double) windowHeight / initSizeY) {
-                zoomFactor = (double) windowHeight / initSizeY;
+            if (zoomFactor < (double) windowHeight / initWorldSizeY) {
+                zoomFactor = (double) windowHeight / initWorldSizeY;
             }
         }
+
+        /*
+        if (offset.x > 0) {
+            offset.x = 0;
+        }
+        if (offset.y > 0) {
+            offset.y = 0;
+        }
+        if (transInvXCurrent(windowWidth) > initWorldSizeX) {
+            offset.x = -transSCurrent(initWorldSizeX) + windowWidth;
+        }
+        if (transInvYCurrent(windowHeight) > initWorldSizeY) {
+            offset.y = -transSCurrent(initWorldSizeY) + windowHeight;
+        }*/
+
 
         if (offset.x > -pannningBounds.x) {
             offset.x = -pannningBounds.x;
@@ -419,9 +432,9 @@ public class Vis extends Canvas {
 
     private double getMinimalZoomFactor(int windowWidth, int windowHeight) {
         if (windowWidth > windowHeight) {
-            return (double) windowWidth / initSizeX;
+            return (double) windowWidth / initWorldSizeX;
         } else {
-            return (double) windowHeight / initSizeY;
+            return (double) windowHeight / initWorldSizeY;
         }
     }
 
@@ -432,6 +445,10 @@ public class Vis extends Canvas {
 
     public static void setPanningBounds(Rectangle bounds) {
         pannningBounds = bounds;
+    }
+
+    public static String getTitle() {
+        return initTitle;
     }
 
 }
