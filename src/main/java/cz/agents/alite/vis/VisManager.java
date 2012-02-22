@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.imageio.ImageIO;
-import javax.vecmath.Point2d;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;

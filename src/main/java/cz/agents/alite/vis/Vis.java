@@ -18,7 +18,6 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
-import java.io.ObjectInputStream.GetField;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
