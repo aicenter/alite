@@ -24,8 +24,14 @@ public class EventBasedCommunicationChannel extends DirectCommunicationChannel i
      *
      * @param communicator
      */
+    @Deprecated
     public EventBasedCommunicationChannel(CommunicationReceiver communicator, EventProcessor eventProcessor) throws CommunicationChannelException {
         super(communicator);
+        this.eventProcessor = eventProcessor;
+    }
+
+    public EventBasedCommunicationChannel(CommunicationReceiver communicator, EventProcessor eventProcessor, ReceiverTable channelReceiverTable) throws CommunicationChannelException {
+        super(communicator, channelReceiverTable);
         this.eventProcessor = eventProcessor;
     }
 
