@@ -13,6 +13,8 @@ import org.junit.Test;
 import cz.agents.alite.communication.channel.CommunicationChannelException;
 import cz.agents.alite.communication.channel.DirectCommunicationChannel;
 import cz.agents.alite.communication.channel.UnknownReceiversException;
+import cz.agents.alite.communication.channel.DirectCommunicationChannel.DefaultReceiverTable;
+import cz.agents.alite.communication.channel.DirectCommunicationChannel.ReceiverTable;
 import cz.agents.alite.communication.content.error.ErrorContent;
 import cz.agents.alite.communication.content.error.ErrorMessageHandler;
 import cz.agents.alite.communication.protocol.Performative;
@@ -21,6 +23,8 @@ import cz.agents.alite.communication.protocol.ProtocolContent;
 import cz.agents.alite.communication.protocol.ProtocolMessageHandler;
 
 public class TestMessaging {
+
+    private final static ReceiverTable singletonTable = new DefaultReceiverTable();
 
     private static final String data = "DATA";
     private static final String addressReceiver = "addressReceiver";
@@ -46,6 +50,7 @@ public class TestMessaging {
     private static DefaultCommunicator communicatorSender;
     private static DefaultCommunicator communicatorReceiver;
 
+
     @BeforeClass
     public static void setUpBeforeClass() throws CommunicationChannelException {
         received = new MessageWrapper();
@@ -55,8 +60,8 @@ public class TestMessaging {
         communicatorReceiver = new DefaultCommunicator(addressReceiver);
 
         // create communication channels
-        communicatorSender.addChannel(new DirectCommunicationChannel(communicatorSender));
-        communicatorReceiver.addChannel(new DirectCommunicationChannel(communicatorReceiver));
+        communicatorSender.addChannel(new DirectCommunicationChannel(communicatorSender, singletonTable));
+        communicatorReceiver.addChannel(new DirectCommunicationChannel(communicatorReceiver, singletonTable));
     }
 
     @Before
