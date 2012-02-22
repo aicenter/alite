@@ -1,9 +1,10 @@
 package cz.agents.alite.communication.channel;
 
-import cz.agents.alite.communication.CommunicationReceiver;
-import cz.agents.alite.communication.Message;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import cz.agents.alite.communication.CommunicationReceiver;
+import cz.agents.alite.communication.Message;
 
 /**
  * Asynchronous version of {@link DirectCommunicationChannel}.
@@ -16,6 +17,7 @@ import java.util.concurrent.Executors;
 public class DirectCommunicationChannelAsync extends DirectCommunicationChannel {
 
     static final int availableProcessors = Runtime.getRuntime().availableProcessors();
+    // TODO: change executors similarily to DirectCommunicationChannel reciever tables
     static final ExecutorService executor = Executors.newFixedThreadPool(availableProcessors);
     //static final ExecutorService executor = Executors.newFixedThreadPool(1);
 
@@ -23,8 +25,13 @@ public class DirectCommunicationChannelAsync extends DirectCommunicationChannel 
      *
      * @param communicator
      */
+    @Deprecated
     public DirectCommunicationChannelAsync(CommunicationReceiver communicator) throws CommunicationChannelException {
         super(communicator);
+    }
+
+    public DirectCommunicationChannelAsync(CommunicationReceiver communicator, ReceiverTable channelReceiverTable) throws CommunicationChannelException {
+        super(communicator, channelReceiverTable);
     }
 
     /**
