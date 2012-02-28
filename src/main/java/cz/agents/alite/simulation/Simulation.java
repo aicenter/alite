@@ -178,29 +178,26 @@ public class Simulation extends EventProcessor {
     public void setDurationOfOneEventStep(long durationOfOneEventStep){
         this.durationOfOneEventStep = durationOfOneEventStep;
     }
-
-
+    
     /**
      * Turn on waiting simulation on next event to calling method interruptionWaitingOnNextEvent
      * or waiting time expires Long.MAX_VALUE
      *
      */
     public void turnOnWaitingOnNextEventToInterruption(){
-        waitingOnInterruption = true;
+    	waitingOnInterruption = true; // FUTURE: use state pattern   
+    	setRunning(false);
+        	
     }
 
     public void turnOffWaitingOnNextEventToInterruption(){
-        interruptionWaitingOnNextEvent();
-        waitingOnInterruption = false;
+    	waitingOnInterruption = false; // FUTURE: use state pattern 
+    	setRunning(true);
     }
 
     public void interruptionWaitingOnNextEvent(){
         if(waitingOnInterruption){
-            synchronized (this) {
-                // TODO: use internal wait of parent EventProcessor
-                notify();
-            }
-
+            setRunning(true);
         }
     }
 
@@ -216,17 +213,9 @@ public class Simulation extends EventProcessor {
                             eventCount, getCurrentQueueLength());
         }
 
-        // TODO: use internal wait of parent EventProcessor
+        
         if(waitingOnInterruption){
-            try {
-                synchronized (this) {
-                    wait(Long.MAX_VALUE);
-                }
-            } catch (InterruptedException e) {
-                if(waitingOnInterruption == false){
-                    e.printStackTrace();
-                }
-            }
+        	setRunning(false);        
         }
 
         long timeToSleep = (long) ((event.getTime() - getCurrentTime()) * simulationSpeed);
