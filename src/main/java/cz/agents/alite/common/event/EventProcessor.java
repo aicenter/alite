@@ -29,12 +29,13 @@ import org.apache.log4j.Logger;
  */
 public class EventProcessor {
 
-    private boolean running = true;
-    private boolean finished = false;
+    private volatile boolean running = true;
+    private volatile boolean finished = false;
+    private volatile long currentTime = 0;
+
+    private Thread thread = Thread.currentThread();
     private final Queue<Event> eventQueue = new PriorityQueue<Event>();
     private final List<EventHandler> entityList = new LinkedList<EventHandler>();
-    private Thread thread = Thread.currentThread();
-    private long currentTime = 0;
 
     public void run() {
         Event event = eventQueue.poll();
@@ -47,7 +48,9 @@ public class EventProcessor {
             while (!running) {
                 synchronized (thread) {
                     try {
-                        thread.wait();
+                        if (!running) {
+                            thread.wait();
+                        }
                     } catch (InterruptedException ex) {
                         Logger.getLogger(EventProcessor.class.getName()).log(Level.ERROR, null, ex);
                     }
@@ -64,6 +67,8 @@ public class EventProcessor {
 
     /**
      * Ends the the event processor by clearing the event queue.
+     *
+     * This method has to be called from the same thread as the run() method was called!
      */
     public void clearQueue() {
         eventQueue.clear();
@@ -71,6 +76,8 @@ public class EventProcessor {
 
     /**
      * Add an immediate event into the queue of the event processor.
+     *
+     * This method has to be called from the same thread as the run() method was called!
      *
      * @param type
      *            the type of the event (see {@link EventType})
@@ -88,6 +95,7 @@ public class EventProcessor {
     /**
      * Add an event into the queue of the event processor.
      *
+     * This method has to be called from the same thread as the run() method was called!
      *
      * @param type
      *            the type of the event (see {@link EventType})
@@ -116,10 +124,9 @@ public class EventProcessor {
      * {@ EventHandler} represents specific implementation, which handles only
      * one event.
      *
+     * This method has to be called from the same thread as the run() method was called!
      *
      * @param eventHandler - through its callback method is informed about end of event.
-     *
-     *
      */
     public void addEvent(EventHandler eventHandler) {
         addEvent(eventHandler, 1);
@@ -130,6 +137,7 @@ public class EventProcessor {
      * {@ EventHandler} represents specific implementation, which handles only
      * one event.
      *
+     * This method has to be called from the same thread as the run() method was called!
      *
      * @param eventHandler - through its callback method is informed about end of event.
      *
@@ -144,10 +152,25 @@ public class EventProcessor {
         eventQueue.add(event);
     }
 
-    public void addEventHandler(EventHandler entity) {
-        entityList.add(entity);
+    /**
+     * Adds an EventHandler to list of all event handlers of this processor. All added handlers,
+     * by this method, are used for handling of events without a recipient.
+     *
+     * This method has to be called from the same thread as the run() method was called!
+     *
+     * @param eventHandler
+     */
+    public void addEventHandler(EventHandler eventHandler) {
+        entityList.add(eventHandler);
     }
 
+    /**
+     * Method pauses and un-pauses the processing of the events.
+     *
+     * The method can be called from other threads (than the run() method was called).
+     *
+     * @param running
+     */
     public void setRunning(boolean running) {
         this.running = running;
         if (running) {
@@ -157,18 +180,30 @@ public class EventProcessor {
         }
     }
 
+    /**
+     * The method can be called from other threads (than the run() method was called).
+     */
     public boolean isRunning() {
         return running;
     }
 
+    /**
+     * The method can be called from other threads (than the run() method was called).
+     */
     public boolean isFinished() {
         return finished;
     }
 
+    /**
+     * The method can be called from other threads (than the run() method was called).
+     */
     public long getCurrentTime() {
         return currentTime;
     }
 
+    /**
+     * The method can be called from other threads (than the run() method was called).
+     */
     public int getCurrentQueueLength() {
         return eventQueue.size();
     }

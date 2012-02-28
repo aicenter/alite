@@ -14,6 +14,9 @@ import cz.agents.alite.planner.spatialmaneuver.maneuver.ManeuverSpecification.Le
  * @author Antonin Komenda
  */
 abstract public class Maneuver implements Comparable<Maneuver> {
+
+    private static double TOLERANCE = 1e-5;
+
     private Point3d end;
     private Vector3d endDirection;
     private Integer hashCode;
@@ -198,7 +201,7 @@ abstract public class Maneuver implements Comparable<Maneuver> {
         Maneuver other = o;
         if(other == this) {
             return 0;
-        } else if (g + h == other.g + other.h) {
+        } else if (Math.abs((g + h) - (other.g + other.h)) < TOLERANCE) {
             return (hashCode() > other.hashCode())? 1 : -1;
         } else if(g + h < other.g + other.h) {
             return -1;

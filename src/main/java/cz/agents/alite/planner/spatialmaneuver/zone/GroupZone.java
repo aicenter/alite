@@ -1,10 +1,11 @@
 package cz.agents.alite.planner.spatialmaneuver.zone;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import javax.vecmath.Point3d;
 
-public class GroupZone implements Zone {
+public class GroupZone implements Zone, Serializable {
 
     private static final long serialVersionUID = 970667587315494845L;
 

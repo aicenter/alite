@@ -1,13 +1,14 @@
 package cz.agents.alite.planner.spatialmaneuver.maneuver;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ExpandManeuvers {
+public class ExpandManeuvers implements Serializable {
 
     private final static long serialVersionUID = 18L;
-    protected List<ExpandManeuver> maneuver;
+    protected transient List<ExpandManeuver> maneuver;
 
     /**
      * Gets the value of the maneuver property.

@@ -50,7 +50,7 @@ public class Vis extends Canvas {
     private static int initWorldSizeX = 1500;
     private static int initWorldSizeY = 1500;
 
-    private static Vis instance = null;
+    private static volatile Vis instance = null;
 
     // TODO: refactor - aggr
     private static double zoomFactor = 1.0;

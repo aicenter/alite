@@ -72,6 +72,11 @@ public class StartOperator<N, E, G extends AbstractGraph<N, E>> implements Opera
         return (int)Math.round(Math.signum((getCost()+getHeuristicEstimate()) - (o.getCost()+o.getHeuristicEstimate())));
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     @SuppressWarnings("rawtypes")
     @Override
     public boolean equals(Object o) {
