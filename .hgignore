@@ -1,0 +1,9 @@
+
+syntax: glob
+./build
+./.settings
+syntax: regexp
+^target$
+
+syntax: regexp
+^libs$
