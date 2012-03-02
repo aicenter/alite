@@ -1,13 +1,19 @@
 package cz.agents.alite.communication.content;
 
+import java.io.Serializable;
+
 /**
  * Basic content wrapper for the messaging.
  *
  * @author Jiri Vokrinek
  */
-public class Content {
+public class Content implements Serializable {
 
-    private final Object data;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3523260995414320200L;
+	private final Object data;
 
     /**
      *
