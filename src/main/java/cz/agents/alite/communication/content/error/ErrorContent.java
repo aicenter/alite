@@ -10,6 +10,11 @@ import cz.agents.alite.communication.content.Content;
 public class ErrorContent extends Content {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7857744158681575964L;
+
+	/**
      *
      * @param exception
      */

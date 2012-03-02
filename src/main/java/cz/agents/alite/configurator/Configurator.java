@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 
 
 /**
- * Static class used to retrieve configuration. Serves as a Bridge to actual configuration implementation.
+ * Static class used to retrieve configuration. Instantiates one instance of given {@link ConfiguratorInterface} implementation. Provide utility methods to safely convert parameter types.
  * @author Michal Stolba
  *
  */
