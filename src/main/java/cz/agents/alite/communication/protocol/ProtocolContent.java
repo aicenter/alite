@@ -10,7 +10,11 @@ import cz.agents.alite.communication.content.Content;
  */
 public class ProtocolContent extends Content {
 
-    private final Protocol protocol;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4365846092504434052L;
+	private final Protocol protocol;
     private final Performative performative;
     private final String session;
 
