@@ -1,5 +1,6 @@
 package cz.agents.alite.communication;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -9,9 +10,13 @@ import cz.agents.alite.communication.content.Content;
  *
  * @author Jiri Vokrinek
  */
-public final class Message {
+public final class Message implements Serializable {
 
-    private final long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5903646003802722160L;
+	private final long id;
     private final String sender;
     private final Collection<String> receivers = new LinkedList<String>();
     private final Content content;
