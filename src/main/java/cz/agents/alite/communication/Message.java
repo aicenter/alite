@@ -18,7 +18,7 @@ public final class Message implements Serializable {
 	private static final long serialVersionUID = 5903646003802722160L;
 	private final long id;
     private final String sender;
-    private final Collection<String> receivers = new LinkedList<String>();
+    private final LinkedList<String> receivers = new LinkedList<String>();
     private final Content content;
 
     Message(String sender, Content content, long id) {
