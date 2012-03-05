@@ -1,11 +1,13 @@
 package cz.agents.alite.communication.protocol;
 
+import java.io.Serializable;
+
 /**
  * Performatives for use in the protocols.
  *
  * @author Jiri Vokrinek
  */
-public enum Performative {
+public enum Performative implements Serializable {
 
     /**
      *
