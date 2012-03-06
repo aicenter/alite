@@ -21,7 +21,11 @@ import java.util.LinkedHashSet;
 //TODO: state machine
 public abstract class CnpResponder extends Cnp {
 
-    private final LinkedHashMap<String, Object> sentProposals = new LinkedHashMap<String, Object>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1639722104325217129L;
+	private final LinkedHashMap<String, Object> sentProposals = new LinkedHashMap<String, Object>();
     private final LinkedHashMap<String, Message> cnpRequests = new LinkedHashMap<String, Message>();
     private final LinkedHashSet<String> openCnp = new LinkedHashSet<String>();
     private MessageHandler messagehandler;

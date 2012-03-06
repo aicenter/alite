@@ -10,7 +10,11 @@ import cz.agents.alite.communication.protocol.DefaultProtocol;
  */
 public class RequestInform extends DefaultProtocol {
 
-    static final String REQUEST_INFORM_PROTOCOL_NAME = "REQUEST_INFORM_PROTOCOL";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -2442871114714805160L;
+	static final String REQUEST_INFORM_PROTOCOL_NAME = "REQUEST_INFORM_PROTOCOL";
 
     /**
      * 

@@ -11,7 +11,11 @@ import java.util.Set;
  */
 public abstract class DirectoredCnpInitiator extends CnpInitiator {
 
-    private final CapabilityRegister directory;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3966857589401130970L;
+	private final CapabilityRegister directory;
 
     /**
      *

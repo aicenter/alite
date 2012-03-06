@@ -19,7 +19,11 @@ import java.util.LinkedHashMap;
  */
 public abstract class RequestInformResponder extends RequestInform {
 
-    private final LinkedHashMap<String, Message> requests = new LinkedHashMap<String, Message>();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -158049298923566486L;
+	private final LinkedHashMap<String, Message> requests = new LinkedHashMap<String, Message>();
     private MessageHandler messagehandler;
 
     /**

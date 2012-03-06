@@ -21,7 +21,11 @@ import java.util.Set;
  */
 public abstract class TokenRing extends DefaultProtocol {
 
-    static final String TOKEN_RING_PROTOCOL_NAME = "TOKEN_RING_PROTOCOL";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5508014407544160037L;
+	static final String TOKEN_RING_PROTOCOL_NAME = "TOKEN_RING_PROTOCOL";
     private final String agentName;
     private String nextAgentAddress = null;
     private String master = null;
@@ -44,7 +48,12 @@ public abstract class TokenRing extends DefaultProtocol {
 
         new RequestInformResponder(communicator, getName()) {
 
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -4192123723428673641L;
+
+			@Override
             protected void handleRequest(final Object request, final String session) {
                 // handle it locally if not handled previously
                 if (!activeTokens.remove(request)) {
@@ -95,7 +104,12 @@ public abstract class TokenRing extends DefaultProtocol {
         refresh();
         new RequestInformInitiator(communicator, getName(), token, nextAgentAddress) {
 
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 110606778806251834L;
+
+			@Override
             protected void processInform(Object inform, String session) {
                 if (callback != null) {
                     callback.tokenBack();

@@ -11,6 +11,11 @@ import cz.agents.alite.common.capability.CapabilityRegister;
 public abstract class DirectoredCnpResponder extends CnpResponder {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1249251757402156926L;
+
+	/**
      *
      * @param communicator
      * @param directory

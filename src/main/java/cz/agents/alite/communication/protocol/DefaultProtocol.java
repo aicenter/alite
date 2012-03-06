@@ -9,7 +9,11 @@ import cz.agents.alite.communication.Communicator;
  */
 public abstract class DefaultProtocol implements Protocol {
 
-    private final String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -748664058720997371L;
+	private final String name;
     /**
      * The {@link Communicator} used by the protocol.
      */
