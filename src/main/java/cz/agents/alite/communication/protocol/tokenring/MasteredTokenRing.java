@@ -19,7 +19,11 @@ import java.util.LinkedList;
  */
 public abstract class MasteredTokenRing extends TokenRing {
 
-    private final SimpleProtocol simpleProtocol;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2088672875565257329L;
+	private final SimpleProtocol simpleProtocol;
     private final LinkedList<Object> waitingTokens = new LinkedList<Object>();
     private boolean tokenOnTheWay = false;
 
@@ -33,7 +37,12 @@ public abstract class MasteredTokenRing extends TokenRing {
         super(communicator, directory, name);
         simpleProtocol = new SimpleProtocol(communicator, name) {
 
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = -7754959591601602134L;
+
+			@Override
             protected void processMessage(Object content) {
                 invokeToken(content);
             }

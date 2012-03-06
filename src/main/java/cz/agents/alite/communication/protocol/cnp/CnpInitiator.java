@@ -22,7 +22,11 @@ import java.util.Set;
 //TODO: state machine
 public abstract class CnpInitiator extends Cnp {
 
-    private final Object contentData;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3908350387844219619L;
+	private final Object contentData;
     private final Set<String> participantAddress;
     private final HashSet<String> pendingParticipants;
     private final LinkedHashMap<String, Object> responses = new LinkedHashMap<String, Object>();

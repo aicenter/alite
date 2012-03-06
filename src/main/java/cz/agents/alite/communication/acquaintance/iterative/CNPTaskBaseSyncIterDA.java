@@ -38,7 +38,12 @@ public class CNPTaskBaseSyncIterDA extends CNPTaskBaseSyncIter {
         addresses.remove(lastResource);
         new DirectoredCnpInitiator(communicator, directory, task.getTaskType(), task, addresses) {
 
-            @Override
+            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 5346745586940940549L;
+
+			@Override
             protected String evaluateReplies(LinkedHashMap<String, Object> responses) {
                 String agentWinner = null;
                 PlanCost costLowest = estR;

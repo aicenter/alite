@@ -18,7 +18,11 @@ import java.util.Collection;
  */
 public abstract class SimpleProtocol extends DefaultProtocol {
 
-    static final String SIMPLE_PROTOCOL_NAME = "SIMPLE_PROTOCOL";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -753643232507728195L;
+	static final String SIMPLE_PROTOCOL_NAME = "SIMPLE_PROTOCOL";
     private final MessageHandler messagehandler;
 
     /**

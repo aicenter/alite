@@ -11,7 +11,11 @@ import cz.agents.alite.communication.protocol.DefaultProtocol;
  */
 public class Query extends DefaultProtocol {
 
-    static final String QUERY_PROTOCOL_NAME = "QUERY_PROTOCOL";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7044772692922734328L;
+	static final String QUERY_PROTOCOL_NAME = "QUERY_PROTOCOL";
 
     /**
      *

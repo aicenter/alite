@@ -32,7 +32,12 @@ public class TestMessaging {
     private static final String addressSender = "addressSender";
     private static final Protocol protocol = new Protocol() {
 
-        @Override
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 2299773651783064706L;
+
+		@Override
         public String getName() {
             return "TEST";
         }
