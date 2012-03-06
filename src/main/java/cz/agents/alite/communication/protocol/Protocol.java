@@ -1,12 +1,11 @@
 package cz.agents.alite.communication.protocol;
 
-import java.io.Serializable;
 
 /**
  *
  * @author Jiri Vokrinek
  */
-public interface Protocol extends Serializable {
+public interface Protocol {
 
     /**
      * Returns name of the protocol. It should be buid as PROTOCOL_PREFFIX + protocol instance name

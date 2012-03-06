@@ -51,7 +51,7 @@ public abstract class ProtocolMessageHandler implements MessageHandler {
     public void notify(Message message) {
         if (ProtocolContent.class.equals(message.getContent().getClass())) {
             ProtocolContent content = (ProtocolContent) message.getContent();
-            if (content.getProtocol().equals(protocol)) {
+            if (content.getProtocolName().equals(protocol.getName())) {
                 if (performative == null || content.getPerformative().equals(performative)) {
                     if (session == null || content.getSession().equals(session)) {
                         handleMessage(message, content);
