@@ -122,12 +122,7 @@ public class CNPTaskBase implements TaskBase {
         public DirectoredCnpInitiatorImpl(Communicator communicator, CapabilityRegister directory, final Task task, final TaskListener taskListener, final AllocationCallback allocationCallback) {
             new DirectoredCnpInitiator(communicator, directory, task.getTaskType(), task) {
 
-                /**
-				 * 
-				 */
-				private static final long serialVersionUID = -1172833094675742968L;
-
-				@Override
+                @Override
                 protected String evaluateReplies(LinkedHashMap<String, Object> responses) {
                     String agentWinner = null;
                     PlanCost costLowest = null;
@@ -192,12 +187,7 @@ public class CNPTaskBase implements TaskBase {
 
     private class DirectoredCnpResponderImpl extends DirectoredCnpResponder {
 
-        /**
-		 * 
-		 */
-		private static final long serialVersionUID = 3092146367728645772L;
-
-		public DirectoredCnpResponderImpl(Communicator communicator, CapabilityRegister directory, String name) {
+        public DirectoredCnpResponderImpl(Communicator communicator, CapabilityRegister directory, String name) {
             super(communicator, directory, name);
         }
 

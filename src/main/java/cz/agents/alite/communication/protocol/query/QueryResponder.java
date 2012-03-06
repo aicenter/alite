@@ -17,11 +17,7 @@ import cz.agents.alite.communication.protocol.Performative;
  */
 public abstract class QueryResponder extends Query {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 2701132121921037509L;
-	private final MessageHandler messagehandler;
+    private final MessageHandler messagehandler;
     final String entityAddress;
 
     /**

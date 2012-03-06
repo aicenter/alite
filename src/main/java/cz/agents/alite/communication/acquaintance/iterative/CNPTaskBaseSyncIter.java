@@ -49,12 +49,7 @@ public abstract class CNPTaskBaseSyncIter extends CNPTaskBase {
 
         synchroRing = new MasteredTokenRing(communicator, directory, name) {
 
-            /**
-			 * 
-			 */
-			private static final long serialVersionUID = 4343586289686491452L;
-
-			@Override
+            @Override
             protected void handleToken(Object token, TokenProcessCallback callback) {
                 tokenCallback = callback;
                 invokeNextTask();
@@ -63,12 +58,7 @@ public abstract class CNPTaskBaseSyncIter extends CNPTaskBase {
 
         new RequestInformResponder(communicator, ESTIMATE_REMOVAL_REQUEST_NAME) {
 
-            /**
-			 * 
-			 */
-			private static final long serialVersionUID = 170237092335518143L;
-
-			@Override
+            @Override
             protected void handleRequest(Object request, String session) {
                 Task task = (Task) request;
                 inform(session, planBases.get(task.getTaskType()).evaluateRemoval(task));
@@ -96,12 +86,7 @@ public abstract class CNPTaskBaseSyncIter extends CNPTaskBase {
 
         new RequestInformInitiator(communicator, ESTIMATE_REMOVAL_REQUEST_NAME, task, tasksOwned.get(task).getWinner()) {
 
-            /**
-			 * 
-			 */
-			private static final long serialVersionUID = -7505180252648015997L;
-
-			@Override
+            @Override
             protected void processInform(Object inform, String session) {
                 final PlanCost estR = (PlanCost) inform;
                 System.out.println(this.toString() + " Improving " + task + " with cost " + estR.toString());
