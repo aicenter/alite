@@ -14,7 +14,7 @@ public class ProtocolContent extends Content {
 	 * 
 	 */
 	private static final long serialVersionUID = -4365846092504434052L;
-	private final Protocol protocol;
+	private final String protocolName;
     private final Performative performative;
     private final String session;
 
@@ -32,7 +32,7 @@ public class ProtocolContent extends Content {
             throw new IllegalArgumentException("null is not permitted");
         }
 
-        this.protocol = protocol;
+        this.protocolName = protocol.getName();
         this.performative = performative;
         this.session = session;
 
@@ -60,8 +60,8 @@ public class ProtocolContent extends Content {
      *
      * @return the value of protocol
      */
-    public Protocol getProtocol() {
-        return protocol;
+    public String getProtocolName() {
+        return protocolName;
     }
 
     /**
