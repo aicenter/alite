@@ -11,11 +11,7 @@ import cz.agents.alite.communication.protocol.DefaultProtocol;
  */
 public class SubscribeProtocol extends DefaultProtocol {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4930724114099793345L;
-	static final String SUBSCRIBE_PROTOCOL_NAME = "SUBSCRIBE_PROTOCOL";
+    static final String SUBSCRIBE_PROTOCOL_NAME = "SUBSCRIBE_PROTOCOL";
 
     /**
      *

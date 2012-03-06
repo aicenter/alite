@@ -20,11 +20,7 @@ import java.util.Set;
  */
 public abstract class QueryInitiator extends Query {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -4241722660190310659L;
-	final String entityAddress;
+    final String entityAddress;
     private final Object query;
     private final Set<String> responderAddresses;
     private final Set<String> pendingResponders;

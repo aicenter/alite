@@ -17,11 +17,7 @@ import java.util.Set;
  */
 public abstract class SubscribeProtocolSender extends SubscribeProtocol {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -8763635181676946727L;
-	final String agentName;
+    final String agentName;
     private final CapabilityRegister directory;
 
     /**

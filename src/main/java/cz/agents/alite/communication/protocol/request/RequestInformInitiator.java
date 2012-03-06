@@ -17,11 +17,7 @@ import cz.agents.alite.communication.protocol.ProtocolMessageHandler;
  */
 public abstract class RequestInformInitiator extends RequestInform {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1568475612910065249L;
-	private final Object contentData;
+    private final Object contentData;
     private final String participantAddres;
     private final String session;
     private MessageHandler messagehandler;

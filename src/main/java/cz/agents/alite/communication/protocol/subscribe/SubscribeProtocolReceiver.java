@@ -15,11 +15,7 @@ import cz.agents.alite.common.capability.CapabilityRegister;
  */
 public abstract class SubscribeProtocolReceiver extends SubscribeProtocolSender {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5586364954814623473L;
-	private final MessageHandler messagehandler;
+    private final MessageHandler messagehandler;
 
     /**
      *

@@ -10,11 +10,7 @@ import cz.agents.alite.communication.protocol.DefaultProtocol;
  */
 public class Cnp extends DefaultProtocol {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 8904071173467813875L;
-	static final String CNP_PROTOCOL_NAME = "CONTRACT_NET_PROTOCOL";
+    static final String CNP_PROTOCOL_NAME = "CONTRACT_NET_PROTOCOL";
 
     /**
      *

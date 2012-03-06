@@ -12,11 +12,7 @@ import java.util.Set;
  */
 public abstract class DirectoredSimpleProtocol extends SimpleProtocol {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -5129097915240120366L;
-	private final CapabilityRegister directory;
+    private final CapabilityRegister directory;
 
     /**
      * Default constructor. It registers this protocol in the {@link DirectoryFacilitatorSingleton}
