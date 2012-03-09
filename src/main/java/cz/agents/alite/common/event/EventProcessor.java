@@ -33,6 +33,7 @@ public class EventProcessor {
     private volatile boolean finished = false;
     private volatile long currentTime = 0;
 
+    private long eventIdCounter = 0;
     private Thread thread = Thread.currentThread();
     private final Queue<Event> eventQueue = new PriorityQueue<Event>();
     private final List<EventHandler> entityList = new LinkedList<EventHandler>();
@@ -115,7 +116,7 @@ public class EventProcessor {
         if (deltaTime < 1) {
             throw new IllegalArgumentException("deltaTime must be greater then zero!");
         }
-        Event event = new Event(currentTime + deltaTime, type, recipient, owner, content);
+        Event event = new Event(eventIdCounter++, currentTime + deltaTime, type, recipient, owner, content);
         eventQueue.add(event);
     }
 
@@ -148,7 +149,7 @@ public class EventProcessor {
         if (deltaTime < 1) {
             throw new IllegalArgumentException("deltaTime must be greater then zero!");
         }
-        Event event = new Event(currentTime + deltaTime, null, eventHandler, null, null);
+        Event event = new Event(eventIdCounter++, currentTime + deltaTime, null, eventHandler, null, null);
         eventQueue.add(event);
     }
 
@@ -212,7 +213,7 @@ public class EventProcessor {
     }
 
     protected void fireEvent(EventType type, EventHandler recipient, String owner, Object content) {
-        fireEvent(new Event(currentTime, type, recipient, owner, content));
+        fireEvent(new Event(eventIdCounter++, currentTime, type, recipient, owner, content));
     }
 
     private void fireEvent(Event event) {
