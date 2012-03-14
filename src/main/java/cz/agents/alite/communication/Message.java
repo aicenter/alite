@@ -82,4 +82,10 @@ public final class Message implements Serializable {
     public String getSender() {
         return sender;
     }
+    
+    public String toString(){
+    	return "[Sender: " + sender +"\n" +
+    			"Receivers: " + receivers + "\n" +
+    			"Content: " + content + "]";
+    }
 }
