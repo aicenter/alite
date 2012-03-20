@@ -16,13 +16,17 @@ package cz.agents.alite.common.event;
  */
 public final class Event implements Comparable<Event> {
 
+    private final long id;
     private final long time;
     private final EventType type;
     private final String owner;
     private final Object content;
     private final EventHandler recipient;
 
-    Event(long time, EventType type, EventHandler recipient, String owner, Object content) {
+
+
+    Event(long id, long time, EventType type, EventHandler recipient, String owner, Object content) {
+        this.id = id;
         this.time = time;
         this.recipient = recipient;
         this.type = type;
@@ -56,7 +60,14 @@ public final class Event implements Comparable<Event> {
 
     @Override
     public int compareTo(Event event) {
-        return (time < event.time ? -1 : (time == event.time ? 0 : 1));
+        if (time == event.time) {
+            if (id == event.id) {
+                throw new RuntimeException("Found same event ids in comparation!");
+            }
+            return (id < event.id ? -1 : 1);
+        } else {
+            return (time < event.time ? -1 : (time == event.time ? 0 : 1));
+        }
     }
 
     @Override
