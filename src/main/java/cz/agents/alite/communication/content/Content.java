@@ -31,4 +31,8 @@ public class Content implements Serializable {
     public Object getData() {
         return data;
     }
+    
+    public String toString(){
+    	return data.toString();
+    }
 }
