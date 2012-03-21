@@ -5,8 +5,6 @@ import javax.vecmath.Vector3d;
 
 public class BoxZone implements Zone {
 
-    private static final long serialVersionUID = 7280812238303400113L;
-
     private Vector3d axes;
 
     public BoxZone(Vector3d axes) {

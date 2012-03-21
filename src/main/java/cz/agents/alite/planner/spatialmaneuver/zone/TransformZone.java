@@ -6,8 +6,6 @@ import javax.vecmath.Vector3d;
 
 public class TransformZone implements Zone {
 
-    private static final long serialVersionUID = 137614667088288358L;
-
     private Zone zone;
 
     private Vector3d translation;

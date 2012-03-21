@@ -8,8 +8,6 @@ import cz.agents.alite.planner.spatialmaneuver.GeometryUtils;
 
 public class PrismZone implements Zone {
 
-    private static final long serialVersionUID = 7280812238303400113L;
-
     private Point2d[] points;
     private double[] xs;
     private double[] ys;

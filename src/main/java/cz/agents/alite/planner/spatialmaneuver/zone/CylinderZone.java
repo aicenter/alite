@@ -5,8 +5,6 @@ import javax.vecmath.Vector2d;
 
 public class CylinderZone implements Zone {
 
-    private static final long serialVersionUID = 7280812238303400113L;
-
     private Vector2d semiAxes;
     private double halfHeight;
 
