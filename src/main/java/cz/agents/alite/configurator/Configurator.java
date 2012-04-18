@@ -1,6 +1,5 @@
 package cz.agents.alite.configurator;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -12,7 +11,7 @@ import org.apache.log4j.Logger;
 
 
 /**
- * Static class used to retrieve configuration. Instantiates one instance of given {@link ConfiguratorInterface} implementation. Provide utility methods to safely convert parameter types.
+ * Provide static access to a {@link ConfigurationInterface} instance and utility methods to safely convert parameter types.
  * @author Michal Stolba
  *
  */
@@ -20,51 +19,20 @@ public class Configurator {
 
     private static final Logger LOGGER = Logger.getLogger(Configurator.class);
 
-    private static ConfiguratorInterface config;
+    private static ConfigurationInterface config;
     private static boolean initialized = false;
 
     /**
      * Initialization - load configuration files
      * @param args Configuration files
      */
-    public static <C extends ConfiguratorInterface> void init(String[] args,String rootDir, Class<C> clazz){
-        init(Arrays.asList(args),rootDir,clazz);
-
+    public static void init(ConfigurationInterface configImpl){
+        config = configImpl;
+        initialized = true;
     }
 
 
-    /**
-     * Initialization - load configuration files
-     * @param args Configuration files
-     */
-    public static <C extends ConfiguratorInterface> void init(List<String> args,String rootDir, Class<C> clazz){
-    	if(!initialized){
-            try {
-				config = clazz.newInstance();
-				initialized = true;
-			} catch (InstantiationException e) {
-				LOGGER.error("Configurator initialization error!",e);
-			} catch (IllegalAccessException e) {
-				LOGGER.error("Configurator initialization error!",e);
-			}
-            
-        }
-
-        if(initialized){
-        	config.setRoot(rootDir);
-	        boolean replace = true;
-	        for(String s : args){
-	            if(replace){
-	                config.loadConfigReplace(s);
-	                replace = false;
-	            }else{
-	                config.loadConfigMerge(s);
-	            }
-	        }
-        }
-
-
-    }
+   
 
     
 
@@ -76,10 +44,11 @@ public class Configurator {
     public static Object getParam(String name){
         if(!initialized){
             LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
+            
             return null;
         }
 
-        return config.getParam(name);
+        return config.getObject(name);
     }
 
     /**
@@ -93,11 +62,7 @@ public class Configurator {
             LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
             return defaultValue;
         }
-        if(config.getParam(name) == null){
-            return defaultValue;
-        }else{
-            return config.getParam(name);
-        }
+        return config.getObject(name,defaultValue);
     }
 
     public static String getParamString(String name, String defaultValue){
@@ -105,11 +70,7 @@ public class Configurator {
             LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
             return defaultValue;
         }
-        if(config.getParam(name) == null){
-            return defaultValue;
-        }else{
-            return (String)config.getParam(name);
-        }
+        return config.getString(name, defaultValue);
     }
 
 
@@ -119,11 +80,7 @@ public class Configurator {
             return defaultValue;
         }
 
-        if(config.getParam(name) == null){
-            return defaultValue;
-        }else{
-            return (Boolean)config.getParam(name);
-        }
+        return config.getBoolean(name, defaultValue);
     }
 
     public static Double getParamDouble(String name, Double defaultValue){
@@ -131,11 +88,7 @@ public class Configurator {
             LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
             return defaultValue;
         }
-        if(config.getParam(name) == null){
-            return defaultValue;
-        }else{
-            return (Double)config.getParam(name);
-        }
+        return config.getDouble(name, defaultValue);
     }
 
     public static Integer getParamInt(String name, Integer defaultValue){
@@ -143,31 +96,28 @@ public class Configurator {
             LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
             return defaultValue;
         }
-        if(config.getParam(name) == null){
-            return defaultValue;
-        }else{
-            return (Integer)config.getParam(name);
-        }
+        return config.getInt(name, defaultValue);
     }
 
+    
+    
     /**
      * Get parameter in form of Map, should be Map;keyClass, valueClass&gt;
      * @param name
      * @return
      */
     public static <K,V> Map<K,V> getParamMap(String name, Class<K> keyClass, Class<V> valueClass){
-        if(!initialized || config.getParam(name) == null){
-            if (!initialized) {
-                LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
-            }
+    	
+        if(!initialized){
+            LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
             return new HashMap<K,V>();
         }
-
+        
         // prepare empty typed map
         Map<K,V> typedMap = new HashMap<K, V>();
 
         // check if the param is a map
-        Object paramObject = config.getParam(name);
+        Object paramObject = config.getObject(name);
         if (paramObject instanceof Map) {
             Map<?,?> paramMap = (Map<?,?>) paramObject;
 
@@ -182,21 +132,8 @@ public class Configurator {
         return typedMap;
     }
 
-    /**
-     * Get parameter in form of untyped Map
-     * @param name
-     * @return
-     */
-    public static Map<?,?> getParamMap(String name) {
-        if(!initialized || config.getParam(name) == null){
-            if (!initialized) {
-                LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
-            }
-            return new HashMap<Object,Object>();
-        }
-
-        return (Map<?,?>) config.getParam(name);
-    }
+    
+    
 
 
     /**
@@ -205,18 +142,17 @@ public class Configurator {
      * @return
      */
     public static <E> List<E> getParamList(String name, Class<E> elementClass) {
-        if(!initialized || config.getParam(name) == null) {
-            if (!initialized) {
-                LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
-            }
+    	
+        if(!initialized ) {
+        	LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
             return new LinkedList<E>();
         }
-
+        
         // prepare empty typed list
         List<E> typedList = new LinkedList<E>();
 
         // check if the param is a list
-        Object paramObject = config.getParam(name);
+        Object paramObject = config.getObject(name);
         if (paramObject instanceof List) {
             List<?> paramList = (List<?>) paramObject;
 
@@ -231,21 +167,8 @@ public class Configurator {
         return typedList;
     }
 
-    /**
-     * Get parameter in form of untyped List
-     * @param name
-     * @return
-     */
-    public static List<?> getParamList(String name) {
-        if(!initialized || config.getParam(name) == null){
-            if (!initialized) {
-                LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
-            }
-            return new LinkedList<Object>();
-        }
-
-        return (List<?>) config.getParam(name);
-    }
+    
+    
 
 
     /**
@@ -254,10 +177,8 @@ public class Configurator {
      * @return
      */
     public static <K,V> List<Map<K,V>> getParamListOfMaps(String name, Class<K> keyClass, Class<V> valueClass) {
-        if(!initialized || config.getParam(name) == null){
-            if (!initialized) {
-                LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
-            }
+        if(!initialized){
+            LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
             return new LinkedList<Map<K,V>>();
         }
 
@@ -265,7 +186,7 @@ public class Configurator {
         List<Map<K,V>> typedList = new LinkedList<Map<K,V>>();
 
         // check if the param is a list
-        Object paramObject = config.getParam(name);
+        Object paramObject = config.getObject(name);
         if (paramObject instanceof List) {
             List<?> paramList = (List<?>) paramObject;
 
