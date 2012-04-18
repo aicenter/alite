@@ -32,6 +32,7 @@ public class PrismZone implements Zone {
 
     @Override
     public boolean testLine(final Point3d point1, final Point3d point2, Point3d outPoint) {
+        // TODO: test if point1 or point2 are in the polygon and return true if so
         Point2d oldPoint = points[points.length - 1];
         for (Point2d point : points) {
             boolean intersects = GeometryUtils.isLineIntersectingLine(
