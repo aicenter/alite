@@ -117,7 +117,7 @@ public class Configurator {
         Map<K,V> typedMap = new HashMap<K, V>();
 
         // check if the param is a map
-        Object paramObject = config.getObject(name);
+        Object paramObject = config.getObject(name,new HashMap<K, V>());
         if (paramObject instanceof Map) {
             Map<?,?> paramMap = (Map<?,?>) paramObject;
 
@@ -152,7 +152,7 @@ public class Configurator {
         List<E> typedList = new LinkedList<E>();
 
         // check if the param is a list
-        Object paramObject = config.getObject(name);
+        Object paramObject = config.getObject(name,new LinkedList<E>());
         if (paramObject instanceof List) {
             List<?> paramList = (List<?>) paramObject;
 
@@ -186,7 +186,7 @@ public class Configurator {
         List<Map<K,V>> typedList = new LinkedList<Map<K,V>>();
 
         // check if the param is a list
-        Object paramObject = config.getObject(name);
+        Object paramObject = config.getObject(name,new LinkedList<Map<K,V>>());
         if (paramObject instanceof List) {
             List<?> paramList = (List<?>) paramObject;
 
