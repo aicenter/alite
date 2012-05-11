@@ -58,6 +58,10 @@ public class DefaultPlanBase implements PlanBase {
         this.executor = executor;
         executor.registerExecutorFeedback(new MyExecutorFeedback(this));
     }
+    
+    protected DefaultPlan getTasks() {
+        return tasks;
+    }
 
     void taskDone(Task task) {
         tasks.remove(task);
