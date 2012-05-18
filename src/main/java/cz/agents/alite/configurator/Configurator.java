@@ -266,7 +266,7 @@ public class Configurator {
                 typedList.add(elementClass.cast(paramElementObject));
             }
         } else {
-            throw new ClassCastException("Used getParamList for non-List parameter!");
+            throw new ClassCastException("Used for non-List parameter!");
         }
 
         return typedList;
