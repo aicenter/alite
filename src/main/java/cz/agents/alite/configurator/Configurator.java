@@ -32,9 +32,9 @@ public class Configurator {
     }
 
 
-   
 
-    
+
+
 
     /**
      * Get param of generic type
@@ -44,7 +44,7 @@ public class Configurator {
     public static Object getParam(String name){
         if(!initialized){
             LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
-            
+
             return null;
         }
 
@@ -99,20 +99,20 @@ public class Configurator {
         return config.getInt(name, defaultValue);
     }
 
-    
-    
+
+
     /**
      * Get parameter in form of Map, should be Map;keyClass, valueClass&gt;
      * @param name
      * @return
      */
     public static <K,V> Map<K,V> getParamMap(String name, Class<K> keyClass, Class<V> valueClass){
-    	
+
         if(!initialized){
             LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
             return new HashMap<K,V>();
         }
-        
+
         // prepare empty typed map
         Map<K,V> typedMap = new HashMap<K, V>();
 
@@ -132,8 +132,8 @@ public class Configurator {
         return typedMap;
     }
 
-    
-    
+
+
 
 
     /**
@@ -142,12 +142,12 @@ public class Configurator {
      * @return
      */
     public static <E> List<E> getParamList(String name, Class<E> elementClass) {
-    	
+
         if(!initialized ) {
-        	LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
+            LOGGER.warn("CONFIGURATOR NOT INITIALIZED!");
             return new LinkedList<E>();
         }
-        
+
         // prepare empty typed list
         List<E> typedList = new LinkedList<E>();
 
@@ -167,8 +167,8 @@ public class Configurator {
         return typedList;
     }
 
-    
-    
+
+
 
 
     /**
@@ -213,20 +213,20 @@ public class Configurator {
 
         return typedList;
     }
-    
-    
-    
+
+
+
     /**
      * Safely cast Object to a Map, should be Map;keyClass, valueClass&gt;
      * @param name
      * @return
      */
     public static <K,V> Map<K,V> safelyCastObjectToMap(Object obj, Class<K> keyClass, Class<V> valueClass){
-        
-    	if(obj == null){
-    		return null;
-    	}
-    	
+
+        if(obj == null){
+            return null;
+        }
+
         // prepare empty typed map
         Map<K,V> typedMap = new HashMap<K, V>();
 
@@ -239,20 +239,20 @@ public class Configurator {
                 typedMap.put(keyClass.cast(entry.getKey()), valueClass.cast(entry.getValue()));
             }
         } else {
-            throw new ClassCastException("Used getParamMap for non-Map parameter!");
+            throw new ClassCastException("Used for non-Map parameter!");
         }
 
         return typedMap;
     }
-    
-    
+
+
     /**
      * Safely cast Object to a List&lt;elementClass&gt;
      * @param name
      * @return
      */
     public static <E> List<E> safelyCastObjectToList(Object paramObject, Class<E> elementClass) {
-        
+
 
         // prepare empty typed list
         List<E> typedList = new LinkedList<E>();
