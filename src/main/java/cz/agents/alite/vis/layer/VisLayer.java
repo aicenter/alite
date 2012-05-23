@@ -23,6 +23,8 @@ public interface VisLayer {
 
     public void init(Vis vis);
 
+    public void deinit(Vis vis);
+
     public void paint(Graphics2D canvas);
 
     public String getLayerDescription();

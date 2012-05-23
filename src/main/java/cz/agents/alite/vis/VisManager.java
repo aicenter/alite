@@ -55,11 +55,11 @@ public class VisManager {
         new Thread(new Runnable() {
 
             @Override
-                                public void run() {
+            public void run() {
                 Thread.currentThread().setPriority(VIS_THREAD_PRIORITY);
                 while (true) {
                     long startNanos = System.nanoTime();
-                                    update();
+                    update();
                     long endNanos = System.nanoTime();
 
                     long sleepNanos = (long) (1.0 / FPS_MAX * 1000000000.0)
@@ -71,9 +71,8 @@ public class VisManager {
                     try {
                         Thread.sleep(sleepMillis, (int) sleepNanos);
                     } catch (InterruptedException ex) {
-
-                                }
-    }
+                    }
+                }
             }
         }).start();
     }
@@ -119,6 +118,7 @@ public class VisManager {
     }
 
     public static void unregisterLayer(VisLayer layer) {
+        layer.deinit(Vis.getInstance());
         layers.remove(layer);
     }
 
@@ -128,6 +128,7 @@ public class VisManager {
 
     public static void unregisterLayers() {
         for (VisLayer layer : layers) {
+            layer.deinit(Vis.getInstance());
             layers.remove(layer);
         }
     }

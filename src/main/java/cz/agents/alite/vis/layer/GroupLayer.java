@@ -9,7 +9,7 @@ import cz.agents.alite.vis.Vis;
 
 /**
  * A default implementation of the {@link GroupVisLayer} interface.
- * 
+ *
  * @author Antonin Komenda
  */
 public class GroupLayer extends AbstractLayer implements GroupVisLayer {
@@ -27,6 +27,13 @@ public class GroupLayer extends AbstractLayer implements GroupVisLayer {
     public void init(Vis vis) {
         for (VisLayer layer : getSubLayers()) {
             layer.init(vis);
+        }
+    }
+
+    @Override
+    public void deinit(Vis vis) {
+        for (VisLayer layer : getSubLayers()) {
+            layer.deinit(vis);
         }
     }
 
@@ -77,5 +84,5 @@ public class GroupLayer extends AbstractLayer implements GroupVisLayer {
     public void clear() {
         subLayers.clear();
     }
-    
+
 }
