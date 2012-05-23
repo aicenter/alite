@@ -30,6 +30,7 @@ public class HelpLayer extends CommonLayer {
 
     private final ToggleLayer toggleLayer;
     private int offsetPages = 0;
+    private KeyListener keyListener;
 
     protected HelpLayer(ToggleLayer toggleLayer) {
         this.toggleLayer = toggleLayer;
@@ -39,7 +40,7 @@ public class HelpLayer extends CommonLayer {
     public void init(Vis vis) {
         super.init(vis);
 
-        vis.addKeyListener(new KeyListener() {
+        keyListener = new KeyListener() {
 
             @Override
             public void keyTyped(KeyEvent e) {
@@ -65,7 +66,15 @@ public class HelpLayer extends CommonLayer {
                     toggleLayer.setEnabled(false);
                 }
             }
-        });
+        };
+        vis.addKeyListener(keyListener);
+    }
+
+    @Override
+    public void deinit(Vis vis) {
+        super.deinit(vis);
+
+        vis.removeKeyListener(keyListener);
     }
 
     @Override

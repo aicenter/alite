@@ -6,7 +6,7 @@ import cz.agents.alite.vis.Vis;
 
 /**
  * A default implementation of the {@link VisLayer} interface.
- * 
+ *
  * @author Antonin Komenda
  */
 public abstract class AbstractLayer implements VisLayer {
@@ -18,28 +18,32 @@ public abstract class AbstractLayer implements VisLayer {
     }
 
     @Override
+    public void deinit(Vis vis) {
+    }
+
+    @Override
     public void paint(Graphics2D canvas) {
     }
 
     @Override
     public String getLayerDescription() {
-	return buildLayersDescription(getClass().toString() + " layer\n");
+    return buildLayersDescription(getClass().toString() + " layer\n");
     }
 
     @Override
     public void setHelpOverrideString(String helpOverrideString) {
-	this.helpOverrideString = helpOverrideString;
+    this.helpOverrideString = helpOverrideString;
     }
 
     protected String getHelpOverrideString() {
-	return helpOverrideString;
+    return helpOverrideString;
     }
 
     protected String buildLayersDescription(String description) {
-	if (helpOverrideString != null) {
-	    return helpOverrideString;
-	}
-	return description;
+    if (helpOverrideString != null) {
+        return helpOverrideString;
+    }
+    return description;
     }
 
 }

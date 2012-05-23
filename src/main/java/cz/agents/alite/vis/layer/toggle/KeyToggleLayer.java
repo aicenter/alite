@@ -17,6 +17,7 @@ public class KeyToggleLayer extends ToggleLayer {
 
     private final String toggleKey;
     private final Integer toggleKeyCode;
+    private KeyListener keyListener;
 
     protected KeyToggleLayer(String toggleKey) {
         this.toggleKey = toggleKey;
@@ -32,7 +33,7 @@ public class KeyToggleLayer extends ToggleLayer {
     public void init(Vis vis) {
         super.init(vis);
 
-        vis.addKeyListener(new KeyListener() {
+        keyListener = new KeyListener() {
 
             @Override
             public void keyTyped(KeyEvent e) {
@@ -51,7 +52,15 @@ public class KeyToggleLayer extends ToggleLayer {
                     setEnabled(!getEnabled());
                 }
             }
-        });
+        };
+        vis.addKeyListener(keyListener);
+    }
+
+    @Override
+    public void deinit(Vis vis) {
+        super.deinit(vis);
+
+        vis.removeKeyListener(keyListener);
     }
 
     @Override
