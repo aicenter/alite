@@ -74,7 +74,7 @@ public class VisManager {
                     }
                 }
             }
-        }).start();
+        }, "Alite VisManager Thread").start();
     }
 
     /**
