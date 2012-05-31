@@ -192,7 +192,8 @@ public class HelpLayer extends CommonLayer {
     private boolean showLayerHelp(int index, VisLayer layer) {
         switch (index) {
         case 0:
-            if ((layer instanceof KeyToggleLayer) && ((KeyToggleLayer) layer).getToggleKey() == "s") {
+            if ((layer instanceof KeyToggleLayer)
+                    && (((KeyToggleLayer) layer).getToggleKey() == "s" || ((KeyToggleLayer) layer).getToggleKey() == "e")) {
                 return true;
             }
             break;
