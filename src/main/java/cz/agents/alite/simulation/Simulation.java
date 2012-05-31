@@ -25,6 +25,8 @@ import cz.agents.alite.environment.Sensor;
  */
 public class Simulation extends EventProcessor {
 
+    private Logger LOGGER = Logger.getLogger(Simulation.class);
+
     private double simulationSpeed = 0;
     private long eventCount = 0;
     private long runTime;
@@ -67,19 +69,16 @@ public class Simulation extends EventProcessor {
 
     public void run() {
         runTime = System.currentTimeMillis();
-        System.out.println("\n>>> SIMULATION START\n");
+        LOGGER.info(">>> SIMULATION START");
 
         fireEvent(SimulationEventType.SIMULATION_STARTED, null, null, null);
         super.run();
         fireEvent(SimulationEventType.SIMULATION_FINISHED, null, null, null);
 
-        System.out.println("\n>>> SIMULATION FINISH");
-        System.out.println();
-        System.out.format(">>> END TIME: %dms\n", getCurrentTime());
-        System.out.format(">>> EVENT COUNT: %d\n", eventCount);
-        System.out.println();
-        System.out.format(">>> RUNTIME: %.2fs\n",
-                (System.currentTimeMillis() - runTime) / 1000.0);
+        LOGGER.info(">>> SIMULATION FINISH");
+        LOGGER.info(String.format(">>> END TIME: %dms", getCurrentTime()));
+        LOGGER.info(String.format(">>> EVENT COUNT: %d", eventCount));
+        LOGGER.info(String.format(">>> RUNTIME: %.2fs", (System.currentTimeMillis() - runTime) / 1000.0));
 
     }
 
@@ -178,21 +177,21 @@ public class Simulation extends EventProcessor {
     public void setDurationOfOneEventStep(long durationOfOneEventStep){
         this.durationOfOneEventStep = durationOfOneEventStep;
     }
-    
+
     /**
      * Turn on waiting simulation on next event to calling method interruptionWaitingOnNextEvent
      * or waiting time expires Long.MAX_VALUE
      *
      */
     public void turnOnWaitingOnNextEventToInterruption(){
-    	waitingOnInterruption = true; // FUTURE: use state pattern   
-    	setRunning(false);
-        	
+        waitingOnInterruption = true; // FUTURE: use state pattern
+        setRunning(false);
+
     }
 
     public void turnOffWaitingOnNextEventToInterruption(){
-    	waitingOnInterruption = false; // FUTURE: use state pattern 
-    	setRunning(true);
+        waitingOnInterruption = false; // FUTURE: use state pattern
+        setRunning(true);
     }
 
     public void interruptionWaitingOnNextEvent(){
@@ -205,17 +204,16 @@ public class Simulation extends EventProcessor {
     protected void breforeRunningTest(Event event) {
         ++eventCount;
         if (eventCount % printouts == 0) {
-            System.out
-                    .format(
-                            ">>> TIME: %ds / RUNTIME: %.2fs / EVENTS: %d / QUEUE: %d \n",
+            LOGGER.debug(String.format(
+                            ">>> SIM. TIME: %ds / RUNTIME: %.2fs / EVENTS: %d / QUEUE: %d",
                             getCurrentTime() / 1000, (System
                                     .currentTimeMillis() - runTime) / 1000.0,
-                            eventCount, getCurrentQueueLength());
+                            eventCount, getCurrentQueueLength()));
         }
 
-        
+
         if(waitingOnInterruption){
-        	setRunning(false);        
+            setRunning(false);
         }
 
         long timeToSleep = (long) ((event.getTime() - getCurrentTime()) * simulationSpeed);
