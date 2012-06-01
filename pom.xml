@@ -16,10 +16,10 @@
         purpose, it rather associates number of highly refined functional elements, which can be variably combined and extended
         into a wide spectrum of possible systems.
 
-        http://merle.felk.cvut.cz/redmine/projects/alite/wiki
+        http://jones.felk.cvut.cz/redmine/projects/alite/wiki
         http://agents.felk.cvut.cz/projects#alite
     </description>
-    <url>http://merle.felk.cvut.cz/redmine/projects/alite/wiki</url>
+    <url>http://jones.felk.cvut.cz/redmine/projects/alite/wiki</url>
 
     <parent>
         <groupId>cz.agents</groupId>
