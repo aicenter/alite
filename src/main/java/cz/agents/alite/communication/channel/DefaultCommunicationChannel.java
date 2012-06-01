@@ -26,4 +26,8 @@ public abstract class DefaultCommunicationChannel implements CommunicationChanne
     public void receiveMessage(Message message) {
         communicationReceiver.receiveMessage(message);
     }
+
+    protected CommunicationReceiver getCommunicationReceiver() {
+        return communicationReceiver;
+    }
 }
