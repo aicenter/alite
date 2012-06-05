@@ -33,6 +33,10 @@ public class Content implements Serializable {
     }
     
     public String toString(){
-    	return data.toString();
+    	if(data == null){
+    		return "";
+    	}else{
+    		return data.toString();
+    	}
     }
 }
