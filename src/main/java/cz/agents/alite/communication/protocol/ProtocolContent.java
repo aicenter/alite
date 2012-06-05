@@ -71,6 +71,10 @@ public class ProtocolContent extends Content {
     public String getSession() {
         return session;
     }
+    
+    public String toString(){
+    	return "[protocol:"+protocolName+", performative:"+performative+", session:"+session+", data:"+super.toString()+"]";
+    }
     /*
      *
      * performative
