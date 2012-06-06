@@ -1,0 +1,40 @@
+
+Alite
+~~~~~
+
+A multipurpose toolkit (not only) for Agent Oriented Prototyping.
+
+Alite is a software toolkit helping with particular implementation steps during construction of multi-agent simulations and multi-agent systems in general. The goals of the toolkit are to provide highly modular, variable, and open set of functionalities defined by clear and simple API. The toolkit does not serve as a pre-designed framework for one complex purpose, it rather associates number of highly refined functional elements, which can be variably combined and extended into a wide spectrum of possible systems.
+
+Alite is developed at:
+~~~~~~~~~~~~~~~~~~~~~~
+
+Agent Technology Center (ATG)
+Department of Computer Science and Engineering
+Czech Technical University in Prague
+Czech Republic
+
+
+Prerequisites:
+~~~~~~~~~~~~~~
+
+Java 6.0+
+Maven 2+ (for dependency acquiring)
+
+
+Authors:
+~~~~~~~~
+
+Main authors (contact persons): 
+  Antonin Komenda <antonin.komenda@agents.fel.cvut.cz>
+  Jiri Vokrinek <jiri.vokrinek@agents.fel.cvut.cz>
+
+For a full author listing see: http://jones.felk.cvut.cz/redmine/projects/alite
+
+
+More information:
+~~~~~~~~~~~~~~~~~
+
+http://jones.felk.cvut.cz/redmine/projects/alite/wiki
+http://jones.felk.cvut.cz/redmine/projects/alite
+http://agents.cz/projects#alite
