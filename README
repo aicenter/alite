@@ -4,7 +4,13 @@ Alite
 
 A multipurpose toolkit (not only) for Agent Oriented Prototyping.
 
-Alite is a software toolkit helping with particular implementation steps during construction of multi-agent simulations and multi-agent systems in general. The goals of the toolkit are to provide highly modular, variable, and open set of functionalities defined by clear and simple API. The toolkit does not serve as a pre-designed framework for one complex purpose, it rather associates number of highly refined functional elements, which can be variably combined and extended into a wide spectrum of possible systems.
+Alite is a software toolkit helping with particular implementation steps during construction
+of multi-agent simulations and multi-agent systems in general. The goals of the toolkit are
+to provide highly modular, variable, and open set of functionalities defined by clear and simple API.
+The toolkit does not serve as a pre-designed framework for one complex purpose, it rather associates
+number of highly refined functional elements, which can be variably combined and extended into
+a wide spectrum of possible systems.
+
 
 Alite is developed at:
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -19,13 +25,17 @@ Prerequisites:
 ~~~~~~~~~~~~~~
 
 Java 6.0+
-Maven 2+ (for dependency acquiring)
+Maven 2+
+  for dependency acquiring use this settings file at:
+    http://jones.felk.cvut.cz/redmine/attachments/download/71/settings.xml
+  or additionally consult:
+    http://jones.felk.cvut.cz/redmine/projects/alite/wiki/Mercurial#Maven
 
 
 Authors:
 ~~~~~~~~
 
-Main authors (contact persons): 
+Main authors (contact persons):
   Antonin Komenda <antonin.komenda@agents.fel.cvut.cz>
   Jiri Vokrinek <jiri.vokrinek@agents.fel.cvut.cz>
 
