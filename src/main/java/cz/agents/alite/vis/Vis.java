@@ -354,6 +354,10 @@ public class Vis extends Canvas {
         size = getInstance().window.getContentPane().getSize();
     }
 
+    public static Rectangle getWindowBounds() {
+        return getInstance().window.getBounds();
+    }
+
     public static void setWindowBounds(Rectangle rect) {
         getInstance().window.setBounds(rect);
     }
