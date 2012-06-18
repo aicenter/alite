@@ -1,11 +1,15 @@
 package cz.agents.alite.vis.layer.terminal;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-
 import cz.agents.alite.vis.Vis;
 import cz.agents.alite.vis.element.StyledLine;
 import cz.agents.alite.vis.element.aggregation.StyledLineElements;
+
+import java.awt.BasicStroke;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 public class StyledLineLayer extends TerminalLayer {
 
@@ -18,12 +22,16 @@ public class StyledLineLayer extends TerminalLayer {
     @Override
     public void paint(Graphics2D canvas) {
         canvas.setStroke(new BasicStroke(1));
+
+        Dimension dim = Vis.getDrawingDimension();
+        Rectangle2D drawingRectangle = new Rectangle(dim);
+
         for (StyledLine line : lineElements.getLines()) {
-            drawLine(line, canvas);
+            drawLine(line, canvas, drawingRectangle);
         }
     }
 
-    private void drawLine(StyledLine line, Graphics2D canvas) {
+    private void drawLine(StyledLine line, Graphics2D canvas, Rectangle2D drawingRectangle) {
         canvas.setColor(line.getColor());
         canvas.setStroke(new BasicStroke(line.getStrokeWidth()));
 
@@ -32,10 +40,10 @@ public class StyledLineLayer extends TerminalLayer {
         int xTo = Vis.transX(line.getTo().x);
         int yTo = Vis.transY(line.getTo().y);
 
-        // TODO: both points lies in out of the rectangle, but intersects it
-        if ((x > 0 && x < Vis.getDrawingDimension().width  && y > 0 && y < Vis.getDrawingDimension().height)
-                || (xTo > 0 && xTo < Vis.getDrawingDimension().width && yTo > 0 && yTo < Vis.getDrawingDimension().height)) {
-            canvas.drawLine(x, y, xTo, yTo);
+        Line2D line2d = new Line2D.Double(x, y, xTo, yTo);
+
+        if (line2d.intersects(drawingRectangle)) {
+            canvas.draw(line2d);
         }
     }
 
