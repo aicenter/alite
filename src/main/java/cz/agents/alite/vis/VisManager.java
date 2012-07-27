@@ -89,8 +89,8 @@ public class VisManager {
      * sets initial parameters of the window, call this before creating the
      * window
      */
-    public static void setInitParam(String title, int dimX, int dimY, int sizeX, int sizeY) {
-        Vis.setInitParam(title, dimX, dimY, sizeX, sizeY);
+    public static void setInitParam(String title, int canvasWidth, int canvasHeight, int worldSizeX, int worldSizeY) {
+        Vis.setInitParam(title, canvasHeight, canvasHeight, worldSizeX, worldSizeY);
     }
 
     public static void setPanningBounds(Rectangle bounds) {
