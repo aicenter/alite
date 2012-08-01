@@ -394,12 +394,12 @@ public class Vis extends Canvas {
         int windowHeight = getInstance().window.getContentPane().getHeight();
 
         if (windowWidth > windowHeight) {
-            if (zoomFactor < (double) windowWidth / initWorldSizeX) {
-                zoomFactor = (double) windowWidth / initWorldSizeX;
+            if (zoomFactor < (double) windowWidth / pannningBounds.width) {
+                zoomFactor = (double) windowWidth / pannningBounds.width;
             }
         } else {
-            if (zoomFactor < (double) windowHeight / initWorldSizeY) {
-                zoomFactor = (double) windowHeight / initWorldSizeY;
+            if (zoomFactor < (double) windowHeight / pannningBounds.height) {
+                zoomFactor = (double) windowHeight / pannningBounds.height;
             }
         }
 
