@@ -93,7 +93,7 @@ public class VisManager {
      */
     public static void setInitParam(final String title, final int canvasWidth, final int canvasHeight, final int worldSizeX, final int worldSizeY) {
         setInitParam(title, canvasWidth, canvasHeight);
-        setSceneParams(new SceneParams(){
+        setSceneParam(new SceneParams(){
 
             @Override
             public Rectangle getWorldBounds() {
@@ -109,7 +109,7 @@ public class VisManager {
         Vis.setPanningBounds(bounds);
     }
 
-    public static void setSceneParams(SceneParams sceneParams) {
+    public static void setSceneParam(SceneParams sceneParams) {
         Vis.setSceneParams(sceneParams);
     }
 
@@ -193,7 +193,7 @@ public class VisManager {
     }
 
     /**
-     * Extend this class to set custom scene parameters using the {@link VisManager#setSceneParams(SceneParams) method.}
+     * Extend this class to set custom scene parameters using the {@link VisManager#setSceneParam(SceneParams) method.}
      */
     public static class SceneParams {
 
