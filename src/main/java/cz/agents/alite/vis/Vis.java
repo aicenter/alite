@@ -329,10 +329,20 @@ public class Vis extends Canvas {
         return (int) Vis.size.getHeight();
     }
 
+    public static Rectangle getWorldBounds() {
+        return worldBounds;
+    }
+
+    /**
+     * @deprecated
+     */
     public static int getWorldSizeX() {
         return worldBounds.width;
     }
 
+    /**
+     * @deprecated
+     */
     public static int getWorldSizeY() {
         return worldBounds.height;
     }
