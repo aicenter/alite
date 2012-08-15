@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.imageio.ImageIO;
+import javax.vecmath.Point2d;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -80,21 +81,36 @@ public class VisManager {
     /**
      * sets initial parameters of the window, call this before creating the
      * window
+     *
      */
-    public static void setInitParam(String title, int dimX, int dimY) {
-        Vis.setInitParam(title, dimX, dimY);
+    public static void setInitParam(final String title, final int canvasWidth, final int canvasHeight) {
+        Vis.setInitParam(title, canvasWidth, canvasHeight);
     }
 
     /**
      * sets initial parameters of the window, call this before creating the
      * window
      */
-    public static void setInitParam(String title, int canvasWidth, int canvasHeight, int worldSizeX, int worldSizeY) {
-        Vis.setInitParam(title, canvasHeight, canvasHeight, worldSizeX, worldSizeY);
+    public static void setInitParam(final String title, final int canvasWidth, final int canvasHeight, final int worldSizeX, final int worldSizeY) {
+        setInitParam(title, canvasWidth, canvasHeight);
+        setSceneParams(new SceneParams(){
+
+            @Override
+            public Rectangle getWorldBounds() {
+                return new Rectangle(0, 0, worldSizeX, worldSizeY);
+            }
+        });
     }
 
+    /**
+     * @deprecated use setSceneParams instead
+     */
     public static void setPanningBounds(Rectangle bounds) {
         Vis.setPanningBounds(bounds);
+    }
+
+    public static void setSceneParams(SceneParams sceneParams) {
+        Vis.setSceneParams(sceneParams);
     }
 
     public static synchronized void init() {
@@ -174,6 +190,26 @@ public class VisManager {
                             + " has thrown the following exception:\n"
                             + stacktrace);
         }
+    }
+
+    /**
+     * Extend this class to set custom scene parameters using the {@link VisManager#setSceneParams(SceneParams) method.}
+     */
+    public static class SceneParams {
+
+        public Rectangle getWorldBounds() {
+            return new Rectangle(-Integer.MAX_VALUE/2, -Integer.MAX_VALUE/2, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        }
+
+        public Point2d getDefaultLookAt() {
+            Rectangle world = getWorldBounds();
+            return new Point2d(world.x + world.width/2, world.y + world.height/2);
+        }
+
+        public double getDefaultZoomFactor() {
+            return 1.0;
+        }
+
     }
 
 }
