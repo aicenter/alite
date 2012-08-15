@@ -23,6 +23,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
 
+import cz.agents.alite.vis.VisManager.SceneParams;
+
 /**
  * Vis is a singleton holding the visualization window and the drawing canvas.
  *
@@ -30,9 +32,7 @@ import javax.vecmath.Point2d;
  * using the transformation methods (transX(), transY(), transW(), transH()).
  *
  * The Vis singleton do not need to be explicitly initialized. The static calls do the
- * initialization automatically. But also, it can be explicitly initialized with specified window
- * bounds (position and size) by the initWithBounds method.
- *
+ * initialization automatically.
  *
  * @author Antonin Komneda
  */
@@ -40,15 +40,11 @@ public class Vis extends Canvas {
 
     private static final long serialVersionUID = 1093434407555503398L;
 
-    // TODO: refactor - conf
-    public static final int CANVAS_WIDTH = 900;
-    public static final int CANVAS_HEIGHT = 900;
-
-    private static String initTitle = "ALite Operator";
-    private static int initCanvasWidth = CANVAS_WIDTH;
-    private static int initCanvasHeight = CANVAS_HEIGHT;
-    private static int initWorldSizeX = 1500;
-    private static int initWorldSizeY = 1500;
+    private static String initTitle;
+    private static int initCanvasWidth;
+    private static int initCanvasHeight;
+    private static Point2d initLookAt;
+    private static double initZoomFactor;
 
     private static volatile Vis instance = null;
 
@@ -57,7 +53,7 @@ public class Vis extends Canvas {
     private static final Point2d offset = new Point2d(0, 0);
     private static final Point2d lastOffset = new Point2d(0, 0);
     private static boolean panning = false;
-    private static Rectangle pannningBounds = new Rectangle(0, 0, initWorldSizeX, initWorldSizeY);
+    private static Rectangle worldBounds;
     private static double zoomFactorBack = 1.0;
     private static final Point2d offsetBack = new Point2d(0, 0);
 
@@ -72,7 +68,9 @@ public class Vis extends Canvas {
     private Vis() {
         super();
 
-        zoomFactorBack = zoomFactor = getMinimalZoomFactor(initCanvasWidth, initCanvasHeight);
+        double minZoomFactor = getMinimalZoomFactor(initCanvasWidth, initCanvasHeight);
+        zoomFactorBack = zoomFactor = Math.max(initZoomFactor, minZoomFactor);
+
 
         // canvas
         setBounds(0, 0, initCanvasWidth, initCanvasHeight);
@@ -83,8 +81,13 @@ public class Vis extends Canvas {
         panel.setBounds(0, 0, initCanvasWidth, initCanvasHeight);
         panel.add(this);
 
+        int offsetX = (int) ((transInvW(initCanvasWidth)/2.0 - initLookAt.x));
+        int offsetY = (int) ((transInvH(initCanvasHeight)/2.0 - initLookAt.y));
+        setPosition(offsetX, offsetY, zoomFactor);
+
         window.addWindowListener(new WindowAdapter() {
 
+            @Override
             public void windowClosing(WindowEvent evt) {
                 System.exit(0);
             }
@@ -222,19 +225,18 @@ public class Vis extends Canvas {
     /**
      * sets initial parameters of the window, call this before creating the window
      */
+
     public static void setInitParam(String title, int canvasWidth, int canvasHeight) {
+        initTitle = title;
         initCanvasWidth = canvasWidth;
         initCanvasHeight = canvasHeight;
-        initTitle = title;
+        setSceneParams(new SceneParams());
     }
 
-    public static void setInitParam(String title, int canvasWidth, int canvasHeight, int worldSizeX, int worldSizeY) {
-        initCanvasWidth = canvasWidth;
-        initCanvasHeight = canvasHeight;
-        initWorldSizeX = worldSizeX;
-        initWorldSizeY = worldSizeY;
-        pannningBounds = new Rectangle(0,0,worldSizeX,worldSizeY);
-        initTitle = title;
+    public static void setSceneParams(SceneParams sceneParams) {
+        worldBounds = sceneParams.getWorldBounds();
+        initZoomFactor = sceneParams.getDefaultZoomFactor();
+        initLookAt = sceneParams.getDefaultLookAt();
     }
 
     private boolean reinitializeBuffers() {
@@ -279,6 +281,7 @@ public class Vis extends Canvas {
         getInstance().strategy.show();
 
         if (getInstance().reinitializeBuffers()) {
+            refreshSize();
             limitTransformation();
         }
 
@@ -327,11 +330,11 @@ public class Vis extends Canvas {
     }
 
     public static int getWorldSizeX() {
-        return initWorldSizeX;
+        return worldBounds.width;
     }
 
     public static int getWorldSizeY() {
-        return initWorldSizeY;
+        return worldBounds.height;
     }
 
     public static double getZoomFactor() {
@@ -377,67 +380,42 @@ public class Vis extends Canvas {
         }
     }
 
-    private static double transInvXCurrent(int x) {
-        return (x - offset.x) / zoomFactor;
-    }
-
-    private static double transInvYCurrent(int y) {
-        return (y - offset.y) / zoomFactor;
-    }
-
-    private static int transSCurrent(int s) {
-        return (int) (s * zoomFactor);
-    }
-
     private static void limitTransformation() {
-        int windowWidth = getInstance().window.getContentPane().getWidth();
-        int windowHeight = getInstance().window.getContentPane().getHeight();
+        int windowWidth = size.width;
+        int windowHeight = size.height;
 
         if (windowWidth > windowHeight) {
-            if (zoomFactor < (double) windowWidth / pannningBounds.width) {
-                zoomFactor = (double) windowWidth / pannningBounds.width;
+            if (zoomFactor < (double) windowWidth / worldBounds.width) {
+                zoomFactor = (double) windowWidth / worldBounds.width;
             }
         } else {
-            if (zoomFactor < (double) windowHeight / pannningBounds.height) {
-                zoomFactor = (double) windowHeight / pannningBounds.height;
+            if (zoomFactor < (double) windowHeight / worldBounds.height) {
+                zoomFactor = (double) windowHeight / worldBounds.height;
             }
         }
 
-        /*
-        if (offset.x > 0) {
-            offset.x = 0;
-        }
-        if (offset.y > 0) {
-            offset.y = 0;
-        }
-        if (transInvXCurrent(windowWidth) > initWorldSizeX) {
-            offset.x = -transSCurrent(initWorldSizeX) + windowWidth;
-        }
-        if (transInvYCurrent(windowHeight) > initWorldSizeY) {
-            offset.y = -transSCurrent(initWorldSizeY) + windowHeight;
-        }*/
-
-
-        if (offset.x > -pannningBounds.x) {
-            offset.x = -pannningBounds.x;
-        }
-        if (offset.y > -pannningBounds.y) {
-            offset.y = -pannningBounds.y;
+        if (offset.x/zoomFactor + worldBounds.x > 0) {
+            offset.x = -(worldBounds.x) * zoomFactor;
         }
 
-        if (transInvXCurrent(windowWidth) > pannningBounds.x + pannningBounds.width) {
-            offset.x = -transSCurrent((int) pannningBounds.x + pannningBounds.width) + windowWidth;
+        if (offset.y/zoomFactor + worldBounds.y > 0) {
+            offset.y = -(worldBounds.y) * zoomFactor;
         }
-        if (transInvYCurrent(windowHeight) > pannningBounds.y + pannningBounds.height) {
-            offset.y = -transSCurrent((int) pannningBounds.y + pannningBounds.height) + windowHeight;
+
+        if (worldBounds.x + offset.x/zoomFactor + worldBounds.width < windowWidth / zoomFactor) {
+            offset.x = (windowWidth / zoomFactor - worldBounds.x - worldBounds.width)*zoomFactor;
+        }
+
+        if (worldBounds.y + offset.y/zoomFactor + worldBounds.height < windowHeight / zoomFactor) {
+            offset.y = (windowHeight/zoomFactor - worldBounds.y - worldBounds.height)*zoomFactor;
         }
     }
 
     private double getMinimalZoomFactor(int windowWidth, int windowHeight) {
         if (windowWidth > windowHeight) {
-            return (double) windowWidth / initWorldSizeX;
+            return (double) windowWidth / worldBounds.width;
         } else {
-            return (double) windowHeight / initWorldSizeY;
+            return (double) windowHeight / worldBounds.height;
         }
     }
 
@@ -446,8 +424,11 @@ public class Vis extends Canvas {
         zoomFactor = zoom;
     }
 
+    /**
+     * @deprecated use setSceneParams instead
+     */
     public static void setPanningBounds(Rectangle bounds) {
-        pannningBounds = bounds;
+        worldBounds = bounds;
     }
 
     public static String getTitle() {
