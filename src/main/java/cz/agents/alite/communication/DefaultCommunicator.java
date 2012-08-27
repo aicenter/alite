@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import cz.agents.alite.communication.channel.CommunicationChannel;
 import cz.agents.alite.communication.channel.CommunicationChannelException;
-import cz.agents.alite.communication.channel.DefaultCommunicationChannel;
 import cz.agents.alite.communication.content.Content;
 import cz.agents.alite.communication.content.error.ErrorContent;
 
@@ -16,7 +16,7 @@ import cz.agents.alite.communication.content.error.ErrorContent;
 public class DefaultCommunicator implements Communicator {
 
     private final String address;
-    private final LinkedList<DefaultCommunicationChannel> channels = new LinkedList<DefaultCommunicationChannel>();
+    private final List<CommunicationChannel> channels = new LinkedList<CommunicationChannel>();
     private final List<MessageHandler> messageHandlers = new CopyOnWriteArrayList<MessageHandler>();
 
     private static long counter = System.currentTimeMillis();
@@ -34,7 +34,7 @@ public class DefaultCommunicator implements Communicator {
      *
      * @param channel
      */
-    public void addChannel(DefaultCommunicationChannel channel) {
+    public void addChannel(CommunicationChannel channel) {
         channels.add(channel);
     }
 
@@ -73,7 +73,7 @@ public class DefaultCommunicator implements Communicator {
 
     @Override
     public void sendMessage(Message message) {
-        for (DefaultCommunicationChannel channel : channels) {
+        for (CommunicationChannel channel : channels) {
             try {
                 channel.sendMessage(message);
             } catch (CommunicationChannelException e) {

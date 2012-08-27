@@ -34,7 +34,7 @@ public interface Communicator extends CommunicationSender, CommunicationReceiver
     void addMessageHandler(MessageHandler handler);
 
     /**
-     * Degisters a message handler.
+     * Unregisters a message handler.
      *
      * @param handler
      */

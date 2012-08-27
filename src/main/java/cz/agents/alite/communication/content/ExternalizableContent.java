@@ -12,20 +12,18 @@ import java.io.ObjectOutput;
  */
 public class ExternalizableContent extends Content implements Externalizable {
 
-    
-	private Object data;
+    private Object data;
 
-	
-   public ExternalizableContent() {
-	   super(null);
-   }
-	
+    public ExternalizableContent() {
+        super(null);
+    }
+
     /**
      *
      * @param data the content data
      */
     public ExternalizableContent(Object data) {
-    	super(null);
+        super(null);
         this.data = data;
     }
 
@@ -37,25 +35,24 @@ public class ExternalizableContent extends Content implements Externalizable {
     public Object getData() {
         return data;
     }
-    
-    @Override
-	public void writeExternal(ObjectOutput out) throws IOException {
-    	out.writeObject(data);
-    	out.flush();
-	}
 
-	@Override
-	public void readExternal(ObjectInput in) throws IOException,ClassNotFoundException {
-		data = in.readObject();
-	}
-    
-    public String toString(){
-    	if(data == null){
-    		return "";
-    	}else{
-    		return data.toString();
-    	}
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(data);
+        out.flush();
     }
 
-	
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        data = in.readObject();
+    }
+
+    public String toString() {
+        if (data == null) {
+            return "";
+        } else {
+            return data.toString();
+        }
+    }
+
 }
