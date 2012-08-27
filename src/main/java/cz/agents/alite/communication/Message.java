@@ -6,17 +6,11 @@ import java.util.LinkedList;
 
 import cz.agents.alite.communication.content.Content;
 
-/**
- *
- * @author Jiri Vokrinek
- */
 public final class Message implements Serializable {
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 5903646003802722160L;
-	private final long id;
+    private static final long serialVersionUID = 5903646003802722160L;
+
+    private final long id;
     private final String sender;
     private final LinkedList<String> receivers = new LinkedList<String>();
     private final Content content;
@@ -82,10 +76,10 @@ public final class Message implements Serializable {
     public String getSender() {
         return sender;
     }
-    
+
     public String toString(){
-    	return "[Sender: " + sender +"\n" +
-    			"Receivers: " + receivers + "\n" +
-    			"Content: " + content + "]";
+        return "[Sender: " + sender +"\n" +
+                "Receivers: " + receivers + "\n" +
+                "Content: " + content + "]";
     }
 }
