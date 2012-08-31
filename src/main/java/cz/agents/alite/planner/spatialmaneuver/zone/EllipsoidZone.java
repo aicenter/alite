@@ -1,5 +1,7 @@
 package cz.agents.alite.planner.spatialmaneuver.zone;
 
+import java.util.List;
+
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
@@ -36,6 +38,17 @@ public class EllipsoidZone implements Zone {
 //        }
 //        return false;
     }
+    
+    
+    @Override
+	public boolean testLine(Point3d point1, Point3d point2) {
+		throw new RuntimeException("Not implemented yet!");
+	}
+
+	@Override
+	public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
+		throw new RuntimeException("Not implemented yet!");
+	}
 
 
     @SuppressWarnings("unused")

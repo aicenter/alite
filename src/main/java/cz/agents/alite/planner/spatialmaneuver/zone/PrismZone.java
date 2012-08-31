@@ -1,5 +1,7 @@
 package cz.agents.alite.planner.spatialmaneuver.zone;
 
+import java.util.List;
+
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 
@@ -48,6 +50,16 @@ public class PrismZone implements Zone {
         return false;
 
     }
+    
+    @Override
+	public boolean testLine(Point3d point1, Point3d point2) {
+		throw new RuntimeException("Not implemented yet!");
+	}
+
+	@Override
+	public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
+		throw new RuntimeException("Not implemented yet!");
+	}
 
     @Override
     public void accept(ZoneVisitor visitor) {

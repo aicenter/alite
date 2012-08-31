@@ -2,6 +2,7 @@ package cz.agents.alite.planner.spatialmaneuver.zone;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.vecmath.Point3d;
 
@@ -32,6 +33,31 @@ public class GroupZone implements Zone, Serializable {
 
         return false;
     }
+    
+    @Override
+	public boolean testLine(Point3d point1, Point3d point2) {
+    	for (Zone zone : subZones) {
+            if (zone.testLine(point1, point2)) {
+                return true;
+            }
+        }
+
+        return false;
+	}
+
+	@Override
+	public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
+		
+		List<Point3d> intersections = new LinkedList<Point3d>();
+		
+		for (Zone zone : subZones) {
+			intersections.addAll(zone.findLineIntersections(point1, point2));
+        }
+
+        return intersections;
+	}
+	
+	
 
     public boolean add(Zone zone) {
         return subZones.add(zone);
