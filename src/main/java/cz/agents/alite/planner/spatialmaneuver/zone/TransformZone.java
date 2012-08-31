@@ -1,5 +1,7 @@
 package cz.agents.alite.planner.spatialmaneuver.zone;
 
+import java.util.List;
+
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector2d;
 import javax.vecmath.Vector3d;
@@ -75,6 +77,34 @@ public class TransformZone implements Zone {
         }
         return test;
     }
+    
+    @Override
+	public boolean testLine(Point3d point1, Point3d point2) {
+    	final double newPoint1x = transformPointX(point1.x, point1.y);
+        final double newPoint1y = transformPointY(point1.x, point1.y);
+        final double newPoint1z = transformPointZ(point1.z);
+
+        final double newPoint2x = transformPointX(point2.x, point2.y);
+        final double newPoint2y = transformPointY(point2.x, point2.y);
+        final double newPoint2z = transformPointZ(point2.z);
+
+        return zone.testLine(new Point3d(newPoint1x, newPoint1y, newPoint1z), new Point3d(
+                newPoint2x, newPoint2y, newPoint2z));
+	}
+
+	@Override
+	public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
+		final double newPoint1x = transformPointX(point1.x, point1.y);
+        final double newPoint1y = transformPointY(point1.x, point1.y);
+        final double newPoint1z = transformPointZ(point1.z);
+
+        final double newPoint2x = transformPointX(point2.x, point2.y);
+        final double newPoint2y = transformPointY(point2.x, point2.y);
+        final double newPoint2z = transformPointZ(point2.z);
+
+        return zone.findLineIntersections(new Point3d(newPoint1x, newPoint1y, newPoint1z), new Point3d(
+                newPoint2x, newPoint2y, newPoint2z));
+	}
 
     public Vector3d getTranslation() {
         return translation;

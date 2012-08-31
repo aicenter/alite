@@ -1,5 +1,7 @@
 package cz.agents.alite.planner.spatialmaneuver.zone;
 
+import java.util.List;
+
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector2d;
 
@@ -57,6 +59,16 @@ public class CylinderZone implements Zone {
         }
         return false;
     }
+    
+    @Override
+	public boolean testLine(Point3d point1, Point3d point2) {
+		throw new RuntimeException("Not implemented yet!");
+	}
+
+	@Override
+	public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
+		throw new RuntimeException("Not implemented yet!");
+	}
 
     private double testLineForFirstPoint(final double point1x, final double point1y,
             final double point1z, final double point2x, final double point2y, final double point2z) {
