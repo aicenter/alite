@@ -102,8 +102,16 @@ public class TransformZone implements Zone {
         final double newPoint2y = transformPointY(point2.x, point2.y);
         final double newPoint2z = transformPointZ(point2.z);
 
-        return zone.findLineIntersections(new Point3d(newPoint1x, newPoint1y, newPoint1z), new Point3d(
+        List<Point3d> intersections = zone.findLineIntersections(new Point3d(newPoint1x, newPoint1y, newPoint1z), new Point3d(
                 newPoint2x, newPoint2y, newPoint2z));
+        
+        for(Point3d p : intersections){
+        	invTransformPoint(p);
+        }
+        
+        return intersections;
+        
+        
 	}
 
     public Vector3d getTranslation() {
