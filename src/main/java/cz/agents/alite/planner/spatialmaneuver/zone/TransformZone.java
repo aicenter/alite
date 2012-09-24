@@ -59,6 +59,7 @@ public class TransformZone implements Zone {
         return zone.testPoint(new Point3d(newPointx, newPointy, newPointz));
     }
 
+    @Deprecated
     @Override
     public boolean testLine(final Point3d point1, final Point3d point2, final Point3d outPoint) {
         final double newPoint1x = transformPointX(point1.x, point1.y);
@@ -77,10 +78,10 @@ public class TransformZone implements Zone {
         }
         return test;
     }
-    
+
     @Override
-	public boolean testLine(Point3d point1, Point3d point2) {
-    	final double newPoint1x = transformPointX(point1.x, point1.y);
+    public boolean testLine(Point3d point1, Point3d point2) {
+        final double newPoint1x = transformPointX(point1.x, point1.y);
         final double newPoint1y = transformPointY(point1.x, point1.y);
         final double newPoint1z = transformPointZ(point1.z);
 
@@ -90,11 +91,11 @@ public class TransformZone implements Zone {
 
         return zone.testLine(new Point3d(newPoint1x, newPoint1y, newPoint1z), new Point3d(
                 newPoint2x, newPoint2y, newPoint2z));
-	}
+    }
 
-	@Override
-	public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
-		final double newPoint1x = transformPointX(point1.x, point1.y);
+    @Override
+    public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
+        final double newPoint1x = transformPointX(point1.x, point1.y);
         final double newPoint1y = transformPointY(point1.x, point1.y);
         final double newPoint1z = transformPointZ(point1.z);
 
@@ -104,15 +105,15 @@ public class TransformZone implements Zone {
 
         List<Point3d> intersections = zone.findLineIntersections(new Point3d(newPoint1x, newPoint1y, newPoint1z), new Point3d(
                 newPoint2x, newPoint2y, newPoint2z));
-        
+
         for(Point3d p : intersections){
-        	invTransformPoint(p);
+            invTransformPoint(p);
         }
-        
+
         return intersections;
-        
-        
-	}
+
+
+    }
 
     public Vector3d getTranslation() {
         return translation;

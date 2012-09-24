@@ -115,7 +115,7 @@ public class PitchManeuver extends Maneuver {
     @Override
     public boolean isIntersectingFullZone() {
         final Point3d end = getEnd();
-        return specification.getZone().testLine(start, end, null);
+        return specification.getZone().testLine(start, end);
     }
 
     @Override

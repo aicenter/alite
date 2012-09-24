@@ -1,6 +1,7 @@
 package cz.agents.alite.vis.layer.common;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Arrays;
@@ -30,8 +31,9 @@ public class BackgroundLayer extends ImageLayer {
 
     @Override
     public void paint(Graphics2D canvas) {
+        Rectangle worldBounds = Vis.getWorldBounds();
         for (Image image : getImageElements().getImages()) {
-            canvas.drawImage(image.getImage(), Vis.transX(0), Vis.transY(0), Vis.transW(Vis.getWorldSizeX()), Vis.transH(Vis.getWorldSizeY()), null);
+            canvas.drawImage(image.getImage(), Vis.transX(worldBounds.getX()), Vis.transY(worldBounds.getY()), Vis.transW(worldBounds.getWidth()), Vis.transH(worldBounds.getHeight()), null);
         }
     }
 
