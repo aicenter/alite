@@ -72,7 +72,7 @@ public class SpiralManeuver extends Maneuver {
                         loopHeight*alpha/Math.PI/2);
                 actual.add(start);
                 actual.add(centerShift);
-                if (specification.getZone().testLine(prev, actual, null)) {
+                if (specification.getZone().testLine(prev, actual)) {
                     return true;
                 }
                 prev.set(actual);

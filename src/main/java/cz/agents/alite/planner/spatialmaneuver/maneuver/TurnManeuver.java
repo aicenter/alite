@@ -101,7 +101,7 @@ public class TurnManeuver extends Maneuver {
     public boolean isIntersectingFullZone() {
         if (angle <= Math.PI / 32.0 + 1e-5) {
             final Point3d end = getEnd();
-            return specification.getZone().testLine(start, end, null);
+            return specification.getZone().testLine(start, end);
         } else {
             int steps = (int) (angle / Math.PI * 32.0);
             Point3d lastPoint = new Point3d(start);
@@ -112,7 +112,7 @@ public class TurnManeuver extends Maneuver {
             invalidate();
             for (int i = 1; i <= steps; i++, angle += stepAngle) {
                 final Point3d end = getEnd();
-                if (specification.getZone().testLine(lastPoint, end, null)) {
+                if (specification.getZone().testLine(lastPoint, end)) {
                     angle = oldAngle;
                     invalidate();
 

@@ -62,7 +62,7 @@ public class StraightManeuver extends Maneuver {
 
     @Override
     public boolean isIntersectingFullZone() {
-        return specification.getZone().testLine(start, getEnd(), null);
+        return specification.getZone().testLine(start, getEnd());
     }
 
     @Override
