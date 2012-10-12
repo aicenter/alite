@@ -3,6 +3,7 @@ package cz.agents.alite.configurator;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,18 @@ public class MapConfiguration implements ConfigurationInterface {
 
 	public MapConfiguration(Map<String, Object> values) {
 		this.values = values;
+	}
+	
+	public MapConfiguration(String[] keys, Object[] vals) {
+		if(keys.length != vals.length){
+			throw new IllegalArgumentException("Number of keys and values must match!");
+		}
+		
+		values = new HashMap<String, Object>();
+		
+		for(int i = 0; i < keys.length; i++){
+			values.put(keys[i], vals[i]);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
