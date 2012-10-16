@@ -15,15 +15,19 @@ public class MapConfiguration implements ConfigurationInterface {
 		this.values = values;
 	}
 	
-	public MapConfiguration(String[] keys, Object[] vals) {
-		if(keys.length != vals.length){
-			throw new IllegalArgumentException("Number of keys and values must match!");
-		}
-		
+	/**
+	 * Var-args constructor
+	 * @param args Arguments correspond to map entries - key,value,key,value,.. where key must be a String
+	 */
+	public MapConfiguration(Object ... args) {
 		values = new HashMap<String, Object>();
 		
-		for(int i = 0; i < keys.length; i++){
-			values.put(keys[i], vals[i]);
+		for(int i = 0; i + 1 < args.length; i+=2){
+			if(args[i] instanceof String){
+				values.put((String)args[i], args[i+1]);
+			}else{
+				throw new IllegalArgumentException("Keys must be Strings!");
+			}
 		}
 	}
 	
