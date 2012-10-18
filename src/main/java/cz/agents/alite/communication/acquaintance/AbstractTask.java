@@ -1,5 +1,7 @@
 package cz.agents.alite.communication.acquaintance;
 
+import java.io.Serializable;
+
 /**
  *
  * Abstract class for default Task. 
@@ -7,12 +9,15 @@ package cz.agents.alite.communication.acquaintance;
  *
  * @author Jiri Vokrinek
  */
-public class AbstractTask implements Task {
+public class AbstractTask implements Task, Serializable {
 
-    private static final String TASK_TYPE_NAME = "AbstractTask";
-    private final Object content;
-    private final String taskID;
+	private static final long serialVersionUID = -8640881245155276281L;
 
+	private static final String TASK_TYPE_NAME = "AbstractTask";
+    
+    private Object content;
+    private String taskID;
+    
     /**
      *  Default constructor
      *

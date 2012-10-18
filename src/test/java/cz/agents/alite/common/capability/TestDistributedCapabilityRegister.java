@@ -40,6 +40,27 @@ public class TestDistributedCapabilityRegister {
 		
 		assertTrue(cr1.getIdentities().equals(cr2.getIdentities()));
 		
+		
+		DefaultCommunicator comm3 = new DefaultCommunicator("C");
+		comm3.addChannel(new DirectCommunicationChannel(comm3, rt));
+		
+		assertTrue(rt.contains("C"));
+		
+		CapabilityRegister cr3 = new DistributedCapabilityRegisterImpl(comm3);
+		
+		assertTrue(cr3.getIdentities().equals(cr1.getIdentities()));
+		assertTrue(cr3.getIdentities().equals(cr2.getIdentities()));
+		
+		cr3.register("C", "canSwim");
+		
+		assertTrue(cr1.getIdentities("canSwim").contains("C"));
+		
+		assertTrue(cr3.getIdentities().equals(cr1.getIdentities()));
+		assertTrue(cr3.getIdentities().equals(cr2.getIdentities()));
+		
+		assertTrue(cr1.getIdentities("canSwim").contains("B"));
+		assertTrue(cr1.getIdentities("canSwim").contains("C"));
+		
 	}
 
 }
