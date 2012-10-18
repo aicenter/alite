@@ -1,5 +1,7 @@
 package cz.agents.alite.communication.acquaintance;
 
+import java.io.Serializable;
+
 /**
  * The default arithmetic plan cost.
  * Floats and Doubles are internally handled as float, other types as long.
@@ -7,10 +9,11 @@ package cz.agents.alite.communication.acquaintance;
  *
  * @author Jiri Vokrinek
  */
-public class DefaultPlanCost implements PlanCost {
+public class DefaultPlanCost implements PlanCost, Serializable {
 
-    private final Number cost;
-    private final boolean isFloating;
+	private static final long serialVersionUID = 8909772959707669132L;
+	private Number cost;
+    private boolean isFloating;
 
     /**
      * Default constructor.
