@@ -60,27 +60,27 @@ public class CylinderZone implements Zone {
         }
         return false;
     }
-    
-    @Override
-	public boolean testLine(Point3d point1, Point3d point2) {
-		throw new RuntimeException("Not implemented yet!");
-	}
 
-	@Override
-	public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
-		final double ret1 = testLineForFirstPoint(point1.x, point1.y, point1.z, point2.x, point2.y,point2.z);
-		final double ret2 = testLineForFirstPoint(point2.x, point2.y,point2.z, point1.x, point1.y, point1.z);
-		
-		List<Point3d> out = new LinkedList<Point3d>();
-		
-		double dx = point2.x - point1.x;
+    @Override
+    public boolean testLine(Point3d point1, Point3d point2) {
+        return testLine(point1, point2, null);
+    }
+
+    @Override
+    public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
+        final double ret1 = testLineForFirstPoint(point1.x, point1.y, point1.z, point2.x, point2.y,point2.z);
+        final double ret2 = testLineForFirstPoint(point2.x, point2.y,point2.z, point1.x, point1.y, point1.z);
+
+        List<Point3d> out = new LinkedList<Point3d>();
+
+        double dx = point2.x - point1.x;
         double dy = point2.y - point1.y;
         double dz = point2.z - point1.z;
         double outx = point1.x + dx * ret1;
         double outy = point1.y + dy * ret1;
         double outz = point1.z + dz * ret1;
         out.add(new Point3d(outx, outy, outz));
-        
+
         dx = point1.x - point2.x;
         dy = point1.y - point2.y;
         dz = point1.z - point2.z;
@@ -88,9 +88,9 @@ public class CylinderZone implements Zone {
         outy = point2.y + dy * ret2;
         outz = point2.z + dz * ret2;
         out.add(new Point3d(outx, outy, outz));
-        
+
         return out;
-	}
+    }
 
     private double testLineForFirstPoint(final double point1x, final double point1y,
             final double point1z, final double point2x, final double point2y, final double point2z) {

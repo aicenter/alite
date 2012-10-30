@@ -50,16 +50,17 @@ public class PrismZone implements Zone {
         return false;
 
     }
-    
-    @Override
-	public boolean testLine(Point3d point1, Point3d point2) {
-		throw new RuntimeException("Not implemented yet!");
-	}
 
-	@Override
-	public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
-		throw new RuntimeException("Not implemented yet!");
-	}
+    @Override
+    public boolean testLine(Point3d point1, Point3d point2) {
+        // TODO: has to be changed after finishing outPoint TODO in testLine(Point3d, Point3d, Point3d)
+        return testLine(point1, point2, null);
+    }
+
+    @Override
+    public List<Point3d> findLineIntersections(Point3d point1, Point3d point2) {
+        throw new RuntimeException("Not implemented yet!");
+    }
 
     @Override
     public void accept(ZoneVisitor visitor) {
