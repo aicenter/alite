@@ -16,10 +16,9 @@ import cz.agents.alite.communication.Message;
  */
 public class DirectCommunicationChannelAsync extends DirectCommunicationChannel {
 
-    static final int availableProcessors = Runtime.getRuntime().availableProcessors();
-    // TODO: change executors similarily to DirectCommunicationChannel reciever tables
-    static final ExecutorService executor = Executors.newFixedThreadPool(availableProcessors);
-    //static final ExecutorService executor = Executors.newFixedThreadPool(1);
+    private final ExecutorService executorService;
+    @Deprecated
+    private static ExecutorService obsoleteExecutorService = null;
 
     /**
      *
@@ -28,10 +27,26 @@ public class DirectCommunicationChannelAsync extends DirectCommunicationChannel 
     @Deprecated
     public DirectCommunicationChannelAsync(CommunicationReceiver communicator) throws CommunicationChannelException {
         super(communicator);
+        if (obsoleteExecutorService == null) {
+            int availableProcessors = Runtime.getRuntime().availableProcessors();
+            obsoleteExecutorService = Executors.newFixedThreadPool(availableProcessors);
+        }
+        executorService = obsoleteExecutorService;
     }
 
+    @Deprecated
     public DirectCommunicationChannelAsync(CommunicationReceiver communicator, ReceiverTable channelReceiverTable) throws CommunicationChannelException {
         super(communicator, channelReceiverTable);
+        if (obsoleteExecutorService == null) {
+            int availableProcessors = Runtime.getRuntime().availableProcessors();
+            obsoleteExecutorService = Executors.newFixedThreadPool(availableProcessors);
+        }
+        executorService = obsoleteExecutorService;
+    }
+
+    public DirectCommunicationChannelAsync(CommunicationReceiver communicator, ReceiverTable channelReceiverTable, ExecutorService executorService) throws CommunicationChannelException {
+        super(communicator, channelReceiverTable);
+        this.executorService = executorService;
     }
 
     /**
@@ -42,7 +57,7 @@ public class DirectCommunicationChannelAsync extends DirectCommunicationChannel 
      */
     @Override
     protected void callDirectReceive(final CommunicationReceiver receiver, final Message message) {
-        executor.submit(new Runnable() {
+        executorService.submit(new Runnable() {
 
             @Override
             public void run() {
