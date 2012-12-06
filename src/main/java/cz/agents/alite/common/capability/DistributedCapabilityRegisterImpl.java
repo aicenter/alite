@@ -49,6 +49,8 @@ public class DistributedCapabilityRegisterImpl implements CapabilityRegister, Me
         comm.sendMessage(m);
     }
     
+    
+    
     private void register(HashMap<String, Set<String>> register,String identity, String capabilityName) {
     	System.out.println("Register " + identity + " - " + capabilityName);
         Set<String> recS = register.get(capabilityName);
@@ -96,6 +98,10 @@ public class DistributedCapabilityRegisterImpl implements CapabilityRegister, Me
         return result;
     }
     
+    public void broadcastLocalRegister(){
+    	sendLocalRegister(CommunicationChannelBroadcast.BROADCAST_ADDRESS);
+    }
+
     private void sendLocalRegister(String receiver){
     	Message m = comm.createMessage(new Content(new CapabilityReply(localRegister)));
         m.addReceiver(receiver);
