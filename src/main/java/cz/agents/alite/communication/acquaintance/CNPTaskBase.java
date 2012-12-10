@@ -234,7 +234,11 @@ public class CNPTaskBase implements TaskBase {
 
         @Override
         protected void canceled(String session) {
-            Task what = (Task) getRequest(session);
+            if (!isActive(session)) {
+            	Logger.getLogger(CNPTaskBase.class.getName()).log(Level.WARN, "CANCELING NON ACTIVE SESSION");
+            	return;
+            }
+        	Task what = (Task) getRequest(session);
             PlanBase planner = planBases.get(what.getTaskType());
             if (planner == null) {
                 Logger.getLogger(CNPTaskBase.class.getName()).log(Level.ERROR, "CANCELING TASK TYPE");
