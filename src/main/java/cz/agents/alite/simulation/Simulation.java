@@ -1,15 +1,14 @@
 package cz.agents.alite.simulation;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import cz.agents.alite.common.event.Event;
+import cz.agents.alite.common.event.EventHandlerAdapter;
+import cz.agents.alite.common.event.EventProcessor;
+import cz.agents.alite.environment.Sensor;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import cz.agents.alite.common.event.Event;
-import cz.agents.alite.common.event.EventHandler;
-import cz.agents.alite.common.event.EventProcessor;
-import cz.agents.alite.environment.Sensor;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The simulation is a wrapper of the {@link EventProcessor} with an additional
@@ -278,18 +277,13 @@ public class Simulation extends EventProcessor {
         return timeToSleep + startTime - System.currentTimeMillis();
     }
 
-    private class FinishSimulationEventHandler implements EventHandler{
+    public static class FinishSimulationEventHandler extends EventHandlerAdapter{
 
-        private final Simulation simulation;
+        private final EventProcessor simulation;
 
-        public FinishSimulationEventHandler(Simulation simulation) {
+        public FinishSimulationEventHandler(EventProcessor simulation) {
             super();
             this.simulation = simulation;
-        }
-
-        public EventProcessor getEventProcessor() {
-            // TODO Auto-generated method stub
-            return null;
         }
 
         public void handleEvent(Event arg0) {
@@ -297,7 +291,6 @@ public class Simulation extends EventProcessor {
             simulation.clearQueue();
 
         }
-
     }
 
 }
