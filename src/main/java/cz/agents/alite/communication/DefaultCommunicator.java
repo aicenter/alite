@@ -95,4 +95,9 @@ public class DefaultCommunicator implements Communicator {
     private long generateId() {
         return address.hashCode() + counter;
     }
+    
+    @Override
+    public String toString() {
+    	return channels.toString();
+    }
 }
