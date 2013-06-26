@@ -1,29 +1,13 @@
 package cz.agents.alite.vis;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferStrategy;
+import cz.agents.alite.vis.VisManager.SceneParams;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
-
-import cz.agents.alite.vis.VisManager.SceneParams;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.image.BufferStrategy;
 
 /**
  * Vis is a singleton holding the visualization window and the drawing canvas.
@@ -390,7 +374,7 @@ public class Vis extends Canvas {
         }
     }
 
-    private static void limitTransformation() {
+    public static void limitTransformation() {
         int windowWidth = size.width;
         int windowHeight = size.height;
 
