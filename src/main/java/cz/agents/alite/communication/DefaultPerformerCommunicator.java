@@ -3,13 +3,12 @@ package cz.agents.alite.communication;
 import java.util.LinkedList;
 import java.util.List;
 
-import cz.agents.alite.communication.channel.CommunicationChannel;
-import cz.agents.alite.communication.channel.PerformerCommunicationChannel;
+import cz.agents.alite.communication.channel.CommunicationPerformerChannel;
 
-public class DefaultPerformerCommunicator extends DefaultCommunicator implements CommunicationPerformer {
+public class DefaultPerformerCommunicator extends DefaultCommunicator implements PerformerCommunicator {
 
 	
-	private final List<PerformerCommunicationChannel> performerChannels = new LinkedList<PerformerCommunicationChannel>();
+	private final List<CommunicationPerformerChannel> performerChannels = new LinkedList<CommunicationPerformerChannel>();
 	
 	public DefaultPerformerCommunicator(String address) {
 		super(address);
@@ -17,13 +16,14 @@ public class DefaultPerformerCommunicator extends DefaultCommunicator implements
 
 	@Override
 	public void performReceive() {
-		for(PerformerCommunicationChannel channel : performerChannels){
+		for(CommunicationPerformerChannel channel : performerChannels){
 			channel.performReceive();
 		}
 	}
 	
-	public void addPerformerChannel(PerformerCommunicationChannel channel) {
+	public void addPerformerChannel(CommunicationPerformerChannel channel) {
 		performerChannels.add(channel);
+		addChannel(channel);
     }
 
 }
