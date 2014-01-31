@@ -16,5 +16,10 @@ public interface CommunicationPerformer {
 	 * The call is non-blocking.
 	 */
 	public void performReceive();
+	
+	/**
+	 * Close opened resources, i.e. socket.
+	 */
+	public void performClose();
 
 }
