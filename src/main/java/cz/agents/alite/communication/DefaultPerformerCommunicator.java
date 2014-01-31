@@ -51,4 +51,11 @@ public class DefaultPerformerCommunicator extends DefaultCommunicator implements
 		super.addMessageHandler(handler);
 	}
 
+	@Override
+	public void performClose() {
+		for(CommunicationPerformerChannel channel : performerChannels){
+			channel.performClose();
+		}
+	}
+
 }

@@ -17,4 +17,10 @@ public interface CommunicationPerformerChannel extends CommunicationChannel {
 	 */
 	public void performReceive();
 	
+	/**
+	 * If the channel opens resources such as sockets, this method should be called
+	 * when the channel is no longer used.
+	 */
+	public void performClose();
+	
 }
