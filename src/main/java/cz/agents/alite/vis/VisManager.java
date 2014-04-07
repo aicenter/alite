@@ -134,7 +134,9 @@ public class VisManager {
     }
 
     public static void unregisterLayer(VisLayer layer) {
-        layer.deinit(Vis.getInstance());
+    	if (instance != null) {
+    		layer.deinit(Vis.getInstance());
+    	}
         layers.remove(layer);
     }
 
@@ -144,7 +146,9 @@ public class VisManager {
 
     public static void unregisterLayers() {
         for (VisLayer layer : layers) {
-            layer.deinit(Vis.getInstance());
+        	if (instance != null) {
+        		layer.deinit(Vis.getInstance());
+        	}
             layers.remove(layer);
         }
     }
