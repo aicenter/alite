@@ -241,6 +241,7 @@ abstract public class Maneuver implements Comparable<Maneuver> {
                 return new TurnManeuver(end, endDirection, endTime, -radius, stepAngle, specification);
             case TURN_RIGHT:
                 return new TurnManeuver(end, endDirection, endTime, radius, stepAngle, specification);
+            default:
             }
 
         case PITCH_UP:
@@ -254,6 +255,7 @@ abstract public class Maneuver implements Comparable<Maneuver> {
                     return new PitchManeuver(end, endDirection, endTime, pitchRadius, stepPitchAngle, specification);
                 case PITCH_DOWN:
                     return new PitchManeuver(end, endDirection, endTime, -pitchRadius, stepPitchAngle, specification);
+                default:
             }
 
         case SPIRAL:
