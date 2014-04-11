@@ -28,7 +28,7 @@ public class PathFinderByManeuvers {
      * @throws ATCException throws {@link PathNotFoundException} when path cannot be found
      */
     public static Maneuver findPath(PathFindSpecification specification) {
-        //specification.check();
+        specification.check();
         return findPathProcess(specification);
     }
 
