@@ -5,7 +5,7 @@ import java.awt.Point;
 
 /**
 * This implementation will keep drawn rectangle's top left corner in given point.
-* @author Ondrej Hrstka <hrstka at agents.felk.cvut.cz>
+* @author Ondrej Hrstka (ondrej.hrstka at agents.fel.cvut.cz)
 */
 public class TopLeftPositionFunction implements PositionFunction {
 

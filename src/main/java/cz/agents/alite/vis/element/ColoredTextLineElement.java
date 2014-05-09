@@ -4,7 +4,7 @@ import java.awt.Color;
 
 /**
  * Element representing line with given color.
- * @author Ondrej Hrstka <hrstka at agents.felk.cvut.cz>
+ * @author Ondrej Hrstka (ondrej.hrstka at agents.fel.cvut.cz)
  *
  * @see cz.agents.alite.vis.layer.terminal.textBackgroundLayer.TextBackgroundLayer
  */

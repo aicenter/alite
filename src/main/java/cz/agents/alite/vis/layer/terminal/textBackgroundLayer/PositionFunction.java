@@ -8,7 +8,7 @@ import java.awt.Point;
  * {@link TextBackgroundLayer} rectangle. Various implementations allows anchoring the rectangle to different points
  * in drawing area.
  *
- * @author Ondrej Hrstka <hrstka at agents.felk.cvut.cz>
+ * @author Ondrej Hrstka (ondrej.hrstka at agents.fel.cvut.cz)
  * @see TextBackgroundLayer
  */
 public interface PositionFunction {

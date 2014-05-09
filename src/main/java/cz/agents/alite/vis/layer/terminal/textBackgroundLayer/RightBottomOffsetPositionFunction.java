@@ -7,7 +7,7 @@ import java.awt.Point;
  * This implementation will keep drawn rectangle by given distance from bottom and righ border of canvas. The
  * distance  is between right edge of drawn rectangle and right border of canvas and between bottom edge of drawn
  * rectangle and bottom border of canvas.
- * @author Ondrej Hrstka <hrstka at agents.felk.cvut.cz>
+ * @author Ondrej Hrstka (ondrej.hrstka at agents.fel.cvut.cz)
  */
 public class RightBottomOffsetPositionFunction implements PositionFunction {
 
