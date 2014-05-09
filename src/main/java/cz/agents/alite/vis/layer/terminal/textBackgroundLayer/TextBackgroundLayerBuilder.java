@@ -7,7 +7,7 @@ import java.awt.Color;
 /**
  * Builder for {@link TextBackgroundLayer} class.
  *
- * @author Ondrej Hrstka <hrstka at agents.felk.cvut.cz>
+ * @author Ondrej Hrstka (ondrej.hrstka at agents.fel.cvut.cz)
  * @see TextBackgroundLayer
  * @see PositionFunction
  */

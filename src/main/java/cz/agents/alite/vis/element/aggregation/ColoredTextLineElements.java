@@ -4,7 +4,7 @@ import cz.agents.alite.vis.element.ColoredTextLineElement;
 
 /**
  * Aggregation interface for {@link ColoredTextLineElement}
- * @author Ondrej Hrstka <hrstka at agents.felk.cvut.cz>
+ * @author Ondrej Hrstka (ondrej.hrstka at agents.fel.cvut.cz)
  *
  * @see ColoredTextLineElement
  * @see cz.agents.alite.vis.layer.terminal.textBackgroundLayer.TextBackgroundLayer

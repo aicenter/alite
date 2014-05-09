@@ -9,7 +9,7 @@ import java.awt.event.MouseMotionListener;
 /**
  * DraggableLayer allows to move another layer by mouse over screen. The another layer must implement {@link
  * Draggable} interface.
- * @author Ondrej Hrstka <hrstka at agents.felk.cvut.cz>
+ * @author Ondrej Hrstka (ondrej.hrstka at agents.fel.cvut.cz)
  *
  * @see Draggable
  * @see cz.agents.alite.vis.layer.terminal.textBackgroundLayer.TextBackgroundLayer

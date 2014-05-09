@@ -6,7 +6,7 @@ import java.awt.Color;
 
 /**
  * Default implementation of {@link ColoredTextLineElement}
- * @author Ondrej Hrstka <hrstka at agents.felk.cvut.cz>
+ * @author Ondrej Hrstka (ondrej.hrstka at agents.fel.cvut.cz)
  */
 public class ColoredTextLineElementImpl implements ColoredTextLineElement {
 

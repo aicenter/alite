@@ -20,7 +20,7 @@ import java.util.List;
  * of {@link PositionFunction}, which allows custom positiong. The TextBackgroundLayer implements {@link
  * DraggableLayer.Draggable} interface.</p>
  *
- * @author Ondrej Hrstka <hrstka at agents.felk.cvut.cz>
+ * @author Ondrej Hrstka (ondrej.hrstka at agents.fel.cvut.cz)
  * @see TextBackgroundLayerBuilder
  * @see PositionFunction
  * @see ColoredTextLineElements
