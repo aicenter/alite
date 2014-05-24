@@ -6,6 +6,7 @@ import cz.agents.alite.vis.visualizable.Visualizable;
 
 import javax.vecmath.Point2d;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -29,13 +30,13 @@ public class PointVis<T> implements Visualizable {
     public void paint(Graphics2D canvas, Rectangle2D drawingRectangle) {
         Point2d center = adapter.convert(centerPosition);
         int x = Vis.transX(center.x);
-        int y = Vis.transX(center.y);
+        int y = Vis.transY(center.y);
         canvas.setColor(color);
 
-        Rectangle2D point = new Rectangle2D.Double(x - radiusInPx, y - radiusInPx,
+        Ellipse2D point = new Ellipse2D.Double(x - radiusInPx, y - radiusInPx,
                 2 * radiusInPx + 1, 2 * radiusInPx + 1);
 
-        if (drawingRectangle.intersects(point)) {
+        if (drawingRectangle.intersects(point.getBounds2D())) {
             canvas.fill(point);
         }
     }
