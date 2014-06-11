@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import javax.swing.KeyStroke;
 
 import cz.agents.alite.vis.Vis;
+import cz.agents.alite.vis.layer.VisLayer;
 
 
 /**
@@ -19,11 +20,18 @@ public class KeyToggleLayer extends ToggleLayer {
     private final Integer toggleKeyCode;
     private KeyListener keyListener;
 
+    
     protected KeyToggleLayer(String toggleKey) {
         this.toggleKey = toggleKey;
         this.toggleKeyCode = null;
     }
 
+    protected KeyToggleLayer(String toggleKey, VisLayer layer) {
+    	this.toggleKey = toggleKey;
+    	this.toggleKeyCode = null;
+    	addSubLayer(layer);
+    }
+    
     protected KeyToggleLayer(int toggleKeyCode) {
         this.toggleKey = null;
         this.toggleKeyCode = toggleKeyCode;
@@ -90,6 +98,10 @@ public class KeyToggleLayer extends ToggleLayer {
 
     public static KeyToggleLayer create(String toggleKeyCode) {
         return new KeyToggleLayer(toggleKeyCode);
+    }
+    
+    public static KeyToggleLayer create(String toggleKeyCode, VisLayer visLayer) {
+        return new KeyToggleLayer(toggleKeyCode, visLayer);
     }
 
 }
