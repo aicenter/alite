@@ -26,9 +26,10 @@ public class KeyToggleLayer extends ToggleLayer {
         this.toggleKeyCode = null;
     }
 
-    protected KeyToggleLayer(String toggleKey, VisLayer layer) {
+    protected KeyToggleLayer(String toggleKey, boolean enabled, VisLayer layer) {
     	this.toggleKey = toggleKey;
     	this.toggleKeyCode = null;
+    	this.setEnabled(enabled);
     	addSubLayer(layer);
     }
     
@@ -100,8 +101,8 @@ public class KeyToggleLayer extends ToggleLayer {
         return new KeyToggleLayer(toggleKeyCode);
     }
     
-    public static KeyToggleLayer create(String toggleKeyCode, VisLayer visLayer) {
-        return new KeyToggleLayer(toggleKeyCode, visLayer);
+    public static KeyToggleLayer create(String toggleKeyCode, boolean enabled, VisLayer visLayer) {
+        return new KeyToggleLayer(toggleKeyCode, enabled, visLayer);
     }
 
 }
