@@ -1,9 +1,9 @@
 package cz.agents.alite.common.event;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -36,7 +36,7 @@ public class EventProcessor {
     private long eventIdCounter = 0;
     private Thread thread = Thread.currentThread();
     private final Queue<Event> eventQueue = new PriorityQueue<Event>();
-    private final List<EventHandler> entityList = new LinkedList<EventHandler>();
+    private final List<EventHandler> entityList = new CopyOnWriteArrayList<EventHandler>();
 
     public void run() {
         Event event = eventQueue.poll();
