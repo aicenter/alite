@@ -28,40 +28,55 @@ import org.apache.log4j.Logger;
  * @author Antonin Komenda
  */
 public class EventProcessor {
-
+	
     private volatile boolean running = true;
     private volatile boolean finished = false;
+    
+    /**
+     * "Current" simulation time (timestamp of the last event received).
+     */
     private volatile long currentTime = 0;
 
     private long eventIdCounter = 0;
-    private Thread thread = Thread.currentThread();
+    private final Thread thread = Thread.currentThread();
     private final Queue<Event> eventQueue = new PriorityQueue<Event>();
     private final List<EventHandler> entityList = new CopyOnWriteArrayList<EventHandler>();
 
     public void run() {
-        Event event = eventQueue.poll();
+    	if (thread.getId() != Thread.currentThread().getId()) {
+    		throw new RuntimeException("Event processor started from a different thread than it was created in");
+    	}
+    	
+    	synchronized (this) {
+	        Event event = eventQueue.poll();
+	
+	        while (event != null) {
+	            if (event.getTime() < 0) {
+	            	throw new RuntimeException("Event time is negative");
+	            }
 
-        while (event != null) {
-            breforeRunningTest(event);
+	            breforeRunningTest(event);
 
-            currentTime = event.getTime();
+	            currentTime = event.getTime();
+	
+	            while (!running) {
+	                synchronized (thread) {
+	                    try {
+	                        if (!running) {
+	                            thread.wait();
+	                        }
+	                    } catch (InterruptedException ex) {
+	                        Logger.getLogger(EventProcessor.class.getName()).log(Level.ERROR, null, ex);
+	                    }
+	                }
+	            }
+	
+	            fireEvent(event);
+	
+	            event = eventQueue.poll();
+	        }
+    	}
 
-            while (!running) {
-                synchronized (thread) {
-                    try {
-                        if (!running) {
-                            thread.wait();
-                        }
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(EventProcessor.class.getName()).log(Level.ERROR, null, ex);
-                    }
-                }
-            }
-
-            fireEvent(event);
-
-            event = eventQueue.poll();
-        }
         finished = true;
         running = false;
     }
@@ -72,7 +87,9 @@ public class EventProcessor {
      * This method has to be called from the same thread as the run() method was called!
      */
     public void clearQueue() {
-        eventQueue.clear();
+    	synchronized (this) {
+    		eventQueue.clear();
+    	}
     }
 
     /**
@@ -112,12 +129,21 @@ public class EventProcessor {
      */
     public void addEvent(EventType type, EventHandler recipient, String owner, Object content,
             long deltaTime) {
-        // TODO: refactorize the recipients/owners/senders/groups and similar
-        if (deltaTime < 1) {
-            throw new IllegalArgumentException("deltaTime must be greater then zero!");
-        }
-        Event event = new Event(eventIdCounter++, currentTime + deltaTime, type, recipient, owner, content);
-        eventQueue.add(event);
+    	
+    	synchronized(this) {
+    	
+	        // TODO: refactorize the recipients/owners/senders/groups and similar
+
+	        if (deltaTime < 1) {
+	            throw new IllegalArgumentException("Negative or zero deltaTime is illegal");
+	        }
+
+	        Event event = new Event(eventIdCounter++, currentTime + deltaTime, type, recipient, owner, content);
+	        if (event.getTime() < 0) {
+	        	throw new RuntimeException("Event with negative currentTime generated (wraparound?)");
+	        }
+	        eventQueue.add(event);
+    	}
     }
 
     /**
@@ -146,11 +172,13 @@ public class EventProcessor {
      *            place (be send to its recipients)
      */
     public void addEvent(EventHandler eventHandler, long deltaTime) {
-        if (deltaTime < 1) {
-            throw new IllegalArgumentException("deltaTime must be greater then zero!");
-        }
-        Event event = new Event(eventIdCounter++, currentTime + deltaTime, null, eventHandler, null, null);
-        eventQueue.add(event);
+    	synchronized(this) {    	
+	        if (deltaTime < 1) {
+	            throw new IllegalArgumentException("Negative or zero deltaTime is illegal");
+	        }
+	        Event event = new Event(eventIdCounter++, currentTime + deltaTime, null, eventHandler, null, null);
+	        eventQueue.add(event);
+    	}
     }
 
     /**
@@ -162,7 +190,9 @@ public class EventProcessor {
      * @param eventHandler
      */
     public void addEventHandler(EventHandler eventHandler) {
-        entityList.add(eventHandler);
+    	synchronized(this) {
+    		entityList.add(eventHandler);
+    	}
     }
 
     /**
@@ -206,27 +236,33 @@ public class EventProcessor {
      * The method can be called from other threads (than the run() method was called).
      */
     public int getCurrentQueueLength() {
-        return eventQueue.size();
+    	synchronized (this) {
+    		return eventQueue.size();
+    	}
     }
 
     protected void breforeRunningTest(Event event) {
     }
 
     protected void fireEvent(EventType type, EventHandler recipient, String owner, Object content) {
-        fireEvent(new Event(eventIdCounter++, currentTime, type, recipient, owner, content));
+    	synchronized (this) {
+	        fireEvent(new Event(eventIdCounter++, currentTime, type, recipient, owner, content));
+    	}
     }
 
     private void fireEvent(Event event) {
-        if (event.getRecipient() != null) {
-            event.getRecipient().handleEvent(event);
-        } else {
-            for (EventHandler entity : entityList) {
-                entity.handleEvent(event);
-            }
-            if (event.isType(EventProcessorEventType.STOP)) {
-                eventQueue.clear();
-            }
-        }
+    	synchronized (this) {
+	        if (event.getRecipient() != null) {
+	            event.getRecipient().handleEvent(event);
+	        } else {
+	            for (EventHandler entity : entityList) {
+	                entity.handleEvent(event);
+	            }
+	            if (event.isType(EventProcessorEventType.STOP)) {
+	                eventQueue.clear();
+	            }
+	        }
+    	}
     }
 
 }
