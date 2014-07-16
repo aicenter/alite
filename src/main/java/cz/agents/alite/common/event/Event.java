@@ -16,12 +16,6 @@ package cz.agents.alite.common.event;
  */
 public final class Event implements Comparable<Event> {
 
-	/**
-	 * Maximum event time value (in milliseconds of simulation time)
-	 * that is considered "sane"; currently approx. 100 years.
-	 */
-	public final long MAX_SANE_DELTA_TIME = 1000 * 60 * 60 * 24 * 360 * 100;
-	
     private final long id;
     private final long time;
     private final EventType type;
@@ -30,14 +24,7 @@ public final class Event implements Comparable<Event> {
     private final EventHandler recipient;
 
 
-
     Event(long id, long time, EventType type, EventHandler recipient, String owner, Object content) {
-    	if (id < 0) {
-    		throw new IllegalArgumentException("Event ID cannot be negative");
-    	}
-    	if (time < 0 || time > MAX_SANE_DELTA_TIME) {
-    		throw new IllegalArgumentException("Event time delta (" + time + ") is out of allowed range");
-    	}
         this.id = id;
         this.time = time;
         this.recipient = recipient;
