@@ -56,5 +56,20 @@
             <version>0.8.2</version>
         </dependency>
     </dependencies>
+    
+    <distributionManagement>
+        <snapshotRepository>
+            <uniqueVersion>true</uniqueVersion>
+            <id>atg-repo</id>
+            <name>jones.felk.cvut.cz-snapshots</name>
+            <url>http://jones.felk.cvut.cz/artifactory/pub-snapshot-local</url>
+        </snapshotRepository>
+        <repository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>atg-repo</id>
+            <name>jones.felk.cvut.cz-releases</name>
+            <url>http://jones.felk.cvut.cz/artifactory/pub-release-local</url>
+        </repository>
+    </distributionManagement>
 
 </project>
