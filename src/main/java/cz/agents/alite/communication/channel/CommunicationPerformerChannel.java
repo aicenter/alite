@@ -14,8 +14,16 @@ public interface CommunicationPerformerChannel extends CommunicationChannel {
 	/**
 	 * Use the current thread to poll a message and give it to the handlers.
 	 * The call is non-blocking.
+	 * @return true if message was received
 	 */
-	public void performReceive();
+	public boolean performReceiveNonblock();
+	
+	/**
+	 * Use the current thread to poll a message and give it to the handlers.
+	 * The call is blocking.
+	 * @param timeoutMs in milliseconds
+	 */
+	public boolean performReceiveBlock(long timeoutMs);
 	
 	/**
 	 * If the channel opens resources such as sockets, this method should be called
