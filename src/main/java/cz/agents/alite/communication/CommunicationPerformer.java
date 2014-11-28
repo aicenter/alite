@@ -14,8 +14,16 @@ public interface CommunicationPerformer {
 	/**
 	 * Use the current thread to poll a message and give it to the handlers.
 	 * The call is non-blocking.
+	 * @return true if a message was received, false otherwise
 	 */
-	public void performReceive();
+	public boolean performReceiveNonblock();
+	
+	/**
+	 * Use the current thread to poll a message and give it to the handlers.
+	 * The call is blocking.
+	 * @param timeout in milliseconds
+	 */
+	public void performReceiveBlock(long timeoutMs);
 	
 	/**
 	 * Close opened resources, i.e. socket.

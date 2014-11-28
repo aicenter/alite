@@ -27,9 +27,18 @@ public class DefaultPerformerCommunicator extends DefaultCommunicator implements
 	}
 
 	@Override
-	public void performReceive() {
+	public boolean performReceiveNonblock() {
+		boolean received=false;
 		for(CommunicationPerformerChannel channel : performerChannels){
-			channel.performReceive();
+			received = received || channel.performReceiveNonblock();
+		}
+		return received;
+	}
+	
+	@Override
+	public void performReceiveBlock(long timeout) {
+		for(CommunicationPerformerChannel channel : performerChannels){
+			channel.performReceiveBlock(timeout);
 		}
 	}
 	
@@ -57,5 +66,7 @@ public class DefaultPerformerCommunicator extends DefaultCommunicator implements
 			channel.performClose();
 		}
 	}
+
+	
 
 }
