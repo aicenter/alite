@@ -23,7 +23,7 @@ public interface CommunicationPerformerChannel extends CommunicationChannel {
 	 * The call is blocking.
 	 * @param timeoutMs in milliseconds
 	 */
-	public boolean performReceiveBlock(long timeoutMs);
+	public void performReceiveBlock(long timeoutMs);
 	
 	/**
 	 * If the channel opens resources such as sockets, this method should be called
