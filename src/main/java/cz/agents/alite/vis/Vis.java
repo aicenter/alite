@@ -40,6 +40,8 @@ public class Vis extends Canvas {
     private static Rectangle worldBounds;
     private static double zoomFactorBack = 1.0;
     private static final Point2d offsetBack = new Point2d(0, 0);
+    
+    private static boolean invertYAxis = false;
 
     private JFrame window;
 
@@ -278,7 +280,7 @@ public class Vis extends Canvas {
     }
 
     public static int transY(double y) {
-        return (int) (offsetBack.y + y * zoomFactorBack);
+        return ((int)  (offsetBack.y + ((invertYAxis ? (-1) : 1) * y) * zoomFactorBack));
     }
 
     public static int transW(double w) {
@@ -294,7 +296,7 @@ public class Vis extends Canvas {
     }
 
     public static double transInvY(int y) {
-        return (y - offsetBack.y) / zoomFactorBack;
+        return (invertYAxis ? (-1) : 1) * ((y - offsetBack.y) / zoomFactorBack);
     }
 
     public static double transInvW(int w) {
@@ -416,6 +418,10 @@ public class Vis extends Canvas {
     public static void setPosition(double offsetX, double offsetY, double zoom) {
         offset.set(offsetX * zoom, offsetY * zoom);
         zoomFactor = zoom;
+    }
+    
+    public static void setInvertYAxis(boolean enabled) {
+    	invertYAxis = enabled;
     }
 
     /**

@@ -108,6 +108,10 @@ public class VisManager {
     public static void setPanningBounds(Rectangle bounds) {
         Vis.setPanningBounds(bounds);
     }
+    
+    public static void setInvertYAxis(boolean enabled) {
+    	Vis.setInvertYAxis(enabled);
+    }
 
     public static void setSceneParam(SceneParams sceneParams) {
         Vis.setSceneParams(sceneParams);
