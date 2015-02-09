@@ -5,6 +5,7 @@ import cz.agents.alite.vis.VisManager.SceneParams;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.vecmath.Point2d;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
@@ -67,9 +68,7 @@ public class Vis extends Canvas {
         panel.setBounds(0, 0, initCanvasWidth, initCanvasHeight);
         panel.add(this);
 
-        int offsetX = (int) ((transInvW(initCanvasWidth)/2.0 - initLookAt.x));
-        int offsetY = (int) ((transInvH(initCanvasHeight)/2.0 - initLookAt.y));
-        setPosition(offsetX, offsetY, zoomFactor);
+        lookAt(initLookAt.x, initLookAt.y, zoomFactor);
 
         window.addWindowListener(new WindowAdapter() {
 
@@ -110,21 +109,18 @@ public class Vis extends Canvas {
             public void mouseWheelMoved(MouseWheelEvent mouseWheelEvent) {
                 final double zoomStep = 1.1;
 
-                int rotation = mouseWheelEvent.getWheelRotation()
-                        * mouseWheelEvent.getScrollAmount();
+                int rotation = mouseWheelEvent.getWheelRotation() * mouseWheelEvent.getScrollAmount();
                 if (rotation < 0) {
-                    offset.x -= transInvX(mouseWheelEvent.getX()) * zoomFactor
-                            * (zoomStep - 1.0);
-                    offset.y -= transInvY(mouseWheelEvent.getY()) * zoomFactor
-                            * (zoomStep - 1.0);
+                    offset.x -= transInvX(mouseWheelEvent.getX()) * zoomFactor  * (zoomStep - 1.0);
+                    offset.y -= (invertYAxis ? (-1) : 1) * transInvY(mouseWheelEvent.getY()) * zoomFactor  * (zoomStep - 1.0);
 
                     zoomFactor *= zoomStep;
                 } else {
-                    zoomFactor /= zoomStep;
+                    
+                	zoomFactor /= zoomStep;
 
                     offset.x += transInvX(getWidth() / 2) * zoomFactor * (zoomStep - 1.0);
-                    offset.y += transInvY(getHeight() / 2) * zoomFactor
-                            * (zoomStep - 1.0);
+                    offset.y += (invertYAxis ? (-1) : 1) * transInvY(getHeight() / 2) * zoomFactor * (zoomStep - 1.0);
                 }
 
                 limitTransformation();
@@ -197,9 +193,7 @@ public class Vis extends Canvas {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_HOME) {
-                    offset.x = 0;
-                    offset.y = 0;
-                    zoomFactor = 1;
+                	lookAt(initLookAt.x, initLookAt.y, initZoomFactor);
                 }
             }
         });
@@ -207,6 +201,15 @@ public class Vis extends Canvas {
         // buffers
         reinitializeBuffers();
     }
+
+	private void lookAt(double worldX, double worldY, double zoom) {
+		int offsetX = (int) ((transInvW(initCanvasWidth)/2.0 - worldX));
+        int offsetY = (int) ((transInvH(initCanvasHeight)/2.0 - (invertYAxis ? (-1) : 1) * worldY));
+        
+        zoomFactorBack = zoomFactor = Math.max(initZoomFactor, getMinimalZoomFactor(initCanvasWidth, initCanvasHeight));
+        
+        setPosition(offsetX, offsetY, zoom);
+	}
 
     /**
      * sets initial parameters of the window, call this before creating the window
