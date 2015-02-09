@@ -203,10 +203,9 @@ public class Vis extends Canvas {
     }
 
 	private void lookAt(double worldX, double worldY, double zoom) {
+		zoomFactorBack = zoomFactor = Math.max(initZoomFactor, getMinimalZoomFactor(initCanvasWidth, initCanvasHeight));
 		int offsetX = (int) ((transInvW(initCanvasWidth)/2.0 - worldX));
         int offsetY = (int) ((transInvH(initCanvasHeight)/2.0 - (invertYAxis ? (-1) : 1) * worldY));
-        
-        zoomFactorBack = zoomFactor = Math.max(initZoomFactor, getMinimalZoomFactor(initCanvasWidth, initCanvasHeight));
         
         setPosition(offsetX, offsetY, zoom);
 	}
