@@ -19,7 +19,7 @@ public class SwitchLayer extends GroupLayer {
     }
 
     public void cycle() {
-        if (enabled++ >= subLayers.size()) {
+        if (++enabled >= subLayers.size()) {
             enabled = -1;
         }
     }
