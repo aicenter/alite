@@ -14,7 +14,7 @@ import cz.agents.alite.vis.Vis;
  */
 public class GroupLayer extends AbstractLayer implements GroupVisLayer {
 
-    private final LinkedList<VisLayer> subLayers = new LinkedList<VisLayer>();
+    protected final LinkedList<VisLayer> subLayers = new LinkedList<VisLayer>();
 
     protected GroupLayer() {
     }
