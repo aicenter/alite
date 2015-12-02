@@ -105,7 +105,7 @@ public class SimulationControlLayer extends AbstractLayer {
             } else {
                 if (simulation.isRunning()) {
                     label.append("(");
-                    label.append(MessageFormat.format("{0,number,#.##}", 1/simulation.getSimulationSpeed()/5.0));
+                    label.append(MessageFormat.format("{0,number,#.##}", 1/simulation.getSimulationSpeed()));
                     label.append("x)");
                 } else {
                     label.append("(PAUSED)");
