@@ -72,22 +72,27 @@ public class CylinderZone implements Zone {
         final double ret2 = testLineForFirstPoint(point2.x, point2.y,point2.z, point1.x, point1.y, point1.z);
 
         List<Point3d> out = new LinkedList<Point3d>();
-
-        double dx = point2.x - point1.x;
-        double dy = point2.y - point1.y;
-        double dz = point2.z - point1.z;
-        double outx = point1.x + dx * ret1;
-        double outy = point1.y + dy * ret1;
-        double outz = point1.z + dz * ret1;
-        out.add(new Point3d(outx, outy, outz));
-
-        dx = point1.x - point2.x;
-        dy = point1.y - point2.y;
-        dz = point1.z - point2.z;
-        outx = point2.x + dx * ret2;
-        outy = point2.y + dy * ret2;
-        outz = point2.z + dz * ret2;
-        out.add(new Point3d(outx, outy, outz));
+        double dx, dy, dz;
+        double outx, outy, outz;
+        
+        if(ret1 >= 0 && ret1 < 1){
+        	dx = point2.x - point1.x;
+        	dy = point2.y - point1.y;
+        	dz = point2.z - point1.z;
+        	outx = point1.x + dx * ret1;
+        	outy = point1.y + dy * ret1;
+        	outz = point1.z + dz * ret1;
+        	out.add(new Point3d(outx, outy, outz));
+        }
+        if(ret2 >= 0 && ret2 < 1){
+        	dx = point1.x - point2.x;
+        	dy = point1.y - point2.y;
+        	dz = point1.z - point2.z;
+        	outx = point2.x + dx * ret2;
+        	outy = point2.y + dy * ret2;
+        	outz = point2.z + dz * ret2;
+        	out.add(new Point3d(outx, outy, outz));
+        }
 
         return out;
     }
