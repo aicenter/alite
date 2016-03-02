@@ -4,8 +4,8 @@
     <name>Alite</name>
     <groupId>cz.agents.alite</groupId>
     <artifactId>alite</artifactId>
-    <version>1.1.2</version><!-- Increment after every release -->
-    <!-- <version>1.2-SNAPSHOT</version> --> <!-- SNAPSHOT version has to be higher than the last release --> 
+    <!-- <version>1.1.2</version>--> <!-- Increment after every release -->
+    <version>1.2-SNAPSHOT</version> <!-- SNAPSHOT version has to be higher than the last release --> 
     <description>
         A multipurpose toolkit (not only) for Agent Oriented Prototyping.
 
