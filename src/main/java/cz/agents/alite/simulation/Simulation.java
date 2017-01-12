@@ -23,6 +23,9 @@ import java.util.List;
  * @author Antonin Komenda
  */
 public class Simulation extends EventProcessor {
+    
+    private static final int DEFAULT_MIN_WAIT_TIME = 5;
+    
 
     private Logger LOGGER = Logger.getLogger(Simulation.class);
 
@@ -49,6 +52,23 @@ public class Simulation extends EventProcessor {
 
     private long sleepTimeIfWaitToOtherEvent = 0 ;
     private boolean sleepTimeFlag = false; // reason for using flag is back compatibility
+    
+    private int minWaitTime;
+    
+    private int timeToSleepPostponed;
+    
+    private int timeToSleepPostponedNano;
+
+    
+    
+    
+    public void setMinWaitTime(int minWaitTime) {
+        this.minWaitTime = minWaitTime;
+    }
+    
+    
+    
+    
 
     /**
      * Through this constructor is possible to set duration of simulation.
@@ -57,6 +77,7 @@ public class Simulation extends EventProcessor {
      */
     public Simulation(long simulationEndTime) {
         addEvent(new FinishSimulationEventHandler(this), simulationEndTime);
+        minWaitTime = DEFAULT_MIN_WAIT_TIME;
     }
 
     /**
@@ -216,29 +237,42 @@ public class Simulation extends EventProcessor {
         }
 
         long timeToSleep = (long) ((event.getTime() - getCurrentTime()) * simulationSpeed);
+        
+        int timeToSleepNano 
+                = (int) (((double) ((event.getTime() - getCurrentTime()) * simulationSpeed) - timeToSleep) * 1000000);
+      
+        int timeToSleepNanoTotal = timeToSleepNano + timeToSleepPostponedNano;
+        long timeToSleepTotal = timeToSleep + timeToSleepPostponed + timeToSleepNanoTotal / 1000000;
+        timeToSleepNanoTotal = timeToSleepNanoTotal % 1000000;
+        
+        if(timeToSleepTotal < minWaitTime){
+            timeToSleepPostponed = (int) timeToSleepTotal;
+            timeToSleepPostponedNano = timeToSleepNanoTotal;
+            timeToSleepTotal = 0;
+            timeToSleepNanoTotal = 0;
+        }
+        else{
+            timeToSleepPostponed = 0;
+            timeToSleepPostponedNano = 0;
+        }
+        
+        
         callEventListeners();
         // draws frame for vis
         if (drawFrame && (drawListener != null)
                 && (System.currentTimeMillis() > lastDrawed + drawReload)) {
-            timeToSleep = drawFrame(timeToSleep);
-        }
-
-        if(sleepTimeFlag){
-            if(timeToSleep > sleepTimeIfWaitToOtherEvent){
-                timeToSleep = sleepTimeIfWaitToOtherEvent;
-            }else{
-                timeToSleep = 0;
-            }
-
+            timeToSleepTotal = drawFrame(timeToSleep);
+            timeToSleepNanoTotal = 0;
         }
 
         if(turnOnEventStepSimulation){
-            timeToSleep = durationOfOneEventStep;
+            timeToSleepTotal = durationOfOneEventStep;
+            timeToSleepNanoTotal = 0;
         }
 
-        if ((simulationSpeed > 0) && (timeToSleep > 0)) {
+        if ((simulationSpeed > 0) && (timeToSleepTotal > 0)) {
             try {
-                Thread.sleep(timeToSleep);
+                Thread.sleep(timeToSleepTotal, timeToSleepNanoTotal);
             } catch (InterruptedException ex) {
                 Logger.getLogger(EventProcessor.class.getName()).log(Level.ERROR, null, ex);
             }
