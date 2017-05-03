@@ -39,7 +39,7 @@ public class EventProcessor {
 
     private long eventIdCounter = 0;
     private final Thread thread = Thread.currentThread();
-    private final Queue<Event> eventQueue = new PriorityQueue<Event>();
+    protected final Queue<Event> eventQueue = new PriorityQueue<Event>();
     private final List<EventHandler> entityList = new CopyOnWriteArrayList<EventHandler>();
 
     public void run() {
@@ -231,7 +231,7 @@ public class EventProcessor {
         fireEvent(new Event(eventIdCounter++, currentTime, type, recipient, owner, content));
     }
 
-    private void fireEvent(Event event) {
+    protected void fireEvent(Event event) {
         if (event.getRecipient() != null) {
             event.getRecipient().handleEvent(event);
         } else {
