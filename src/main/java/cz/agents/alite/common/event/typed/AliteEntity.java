@@ -16,12 +16,15 @@ import java.util.List;
  * @author fido
  */
 public abstract class AliteEntity implements EventHandler{
+    
+    private TypedSimulation typedSimulation;
 
     
     public void init(TypedSimulation eventProcessor){
         if(getEventTypesToHandle() != null){
             eventProcessor.addEventHandler(this, getEventTypesToHandle());
         }
+        typedSimulation = eventProcessor;
     }
     
     protected List<EventType> getEventTypesToHandle(){
@@ -30,7 +33,7 @@ public abstract class AliteEntity implements EventHandler{
 
     @Override
     public EventProcessor getEventProcessor() {
-        return null;
+        return typedSimulation;
     }
 
     @Override
