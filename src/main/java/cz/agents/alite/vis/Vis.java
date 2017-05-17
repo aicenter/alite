@@ -9,6 +9,7 @@ import javax.vecmath.Point2d;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
+import javax.swing.JToolBar;
 
 /**
  * Vis is a singleton holding the visualization window and the drawing canvas.
@@ -60,13 +61,23 @@ public class Vis extends Canvas {
 
 
         // canvas
-        setBounds(0, 0, initCanvasWidth, initCanvasHeight);
         size = new Dimension(initCanvasWidth, initCanvasHeight);
         window = new JFrame(initTitle);
 
-        final JPanel panel = (JPanel) window.getContentPane();
-        panel.setBounds(0, 0, initCanvasWidth, initCanvasHeight);
-        panel.add(this);
+        final JPanel mainPanel = new JPanel(new BorderLayout());
+        if(initCanvasWidth == 0){
+            window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        }
+        else{
+            mainPanel.setBounds(0, 0, initCanvasWidth, initCanvasHeight);
+            setBounds(0, 0, initCanvasWidth, initCanvasHeight);
+        }
+        
+        mainPanel.add(this, BorderLayout.CENTER);
+        
+        // toolbar
+//        JToolBar toolBar = new JToolBar("layers", JToolBar.VERTICAL);
+//        mainPanel.add(toolBar, BorderLayout.LINE_START);
 
         lookAt(initLookAt.x, initLookAt.y, zoomFactor);
 
@@ -100,6 +111,7 @@ public class Vis extends Canvas {
 
         });
 
+        window.add(mainPanel);
         window.pack();
 
         // listeners
