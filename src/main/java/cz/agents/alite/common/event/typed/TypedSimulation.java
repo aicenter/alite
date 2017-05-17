@@ -7,7 +7,6 @@ package cz.agents.alite.common.event.typed;
 
 import cz.agents.alite.common.event.Event;
 import cz.agents.alite.common.event.EventHandler;
-import cz.agents.alite.common.event.EventProcessor;
 import cz.agents.alite.common.event.EventProcessorEventType;
 import cz.agents.alite.common.event.EventType;
 import cz.agents.alite.simulation.Simulation;
