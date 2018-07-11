@@ -21,7 +21,6 @@ package cz.cvut.fel.aic.alite.common.event.typed;
 import cz.cvut.fel.aic.alite.common.event.Event;
 import cz.cvut.fel.aic.alite.common.event.EventHandler;
 import cz.cvut.fel.aic.alite.common.event.EventProcessorEventType;
-import cz.cvut.fel.aic.alite.common.event.EventType;
 import cz.cvut.fel.aic.alite.simulation.Simulation;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,19 +32,19 @@ import java.util.List;
  */
 public class TypedSimulation extends Simulation{
     
-    private final HashMap<EventType,List<AliteEntity>> listeningEntities;
+    private final HashMap<Enum,List<AliteEntity>> listeningEntities;
 
     public TypedSimulation(long simulationEndTime) {
         super(simulationEndTime);
-        listeningEntities = new HashMap<EventType, List<AliteEntity>>();
+        listeningEntities = new HashMap<>();
     }
     
     
     
-    public void addEventHandler(AliteEntity eventHandler, List<EventType> eventsTypesToHandle) {
-        for (EventType eventType : eventsTypesToHandle) {
+    public void addEventHandler(AliteEntity eventHandler, List<Enum> eventsTypesToHandle) {
+        for (Enum eventType : eventsTypesToHandle) {
             if(!listeningEntities.containsKey(eventType)){
-                listeningEntities.put(eventType, new LinkedList<AliteEntity>());
+                listeningEntities.put(eventType, new LinkedList<>());
             }
             listeningEntities.get(eventType).add(eventHandler);
         }

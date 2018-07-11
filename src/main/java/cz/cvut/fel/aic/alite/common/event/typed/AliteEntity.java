@@ -21,7 +21,6 @@ package cz.cvut.fel.aic.alite.common.event.typed;
 import cz.cvut.fel.aic.alite.common.event.Event;
 import cz.cvut.fel.aic.alite.common.event.EventHandler;
 import cz.cvut.fel.aic.alite.common.event.EventProcessor;
-import cz.cvut.fel.aic.alite.common.event.EventType;
 import java.util.List;
 
 /**
@@ -40,7 +39,7 @@ public abstract class AliteEntity implements EventHandler{
         typedSimulation = eventProcessor;
     }
     
-    protected List<EventType> getEventTypesToHandle(){
+    protected List<Enum> getEventTypesToHandle(){
         return null;
     }
 

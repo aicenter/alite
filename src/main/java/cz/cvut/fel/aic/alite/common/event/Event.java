@@ -36,13 +36,13 @@ public final class Event implements Comparable<Event> {
 
     private final long id;
     private final long time;
-    private final EventType type;
+    private final Enum type;
     private final String owner;
     private final Object content;
     private final EventHandler recipient;
 
 
-    Event(long id, long time, EventType type, EventHandler recipient, String owner, Object content) {
+    Event(long id, long time, Enum type, EventHandler recipient, String owner, Object content) {
         this.id = id;
         this.time = time;
         this.recipient = recipient;
@@ -59,7 +59,7 @@ public final class Event implements Comparable<Event> {
         return owner;
     }
 
-    public EventType getType() {
+    public Enum getType() {
         return type;
     }
 
@@ -71,7 +71,7 @@ public final class Event implements Comparable<Event> {
         return recipient;
     }
 
-    public boolean isType(EventType eventType) {
+    public boolean isType(Enum eventType) {
         return type.equals(eventType);
     }
 

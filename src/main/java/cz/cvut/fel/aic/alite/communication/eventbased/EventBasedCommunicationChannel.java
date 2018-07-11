@@ -21,7 +21,6 @@ package cz.cvut.fel.aic.alite.communication.eventbased;
 import cz.cvut.fel.aic.alite.common.event.Event;
 import cz.cvut.fel.aic.alite.common.event.EventHandler;
 import cz.cvut.fel.aic.alite.common.event.EventProcessor;
-import cz.cvut.fel.aic.alite.common.event.EventType;
 import cz.cvut.fel.aic.alite.communication.CommunicationReceiver;
 import cz.cvut.fel.aic.alite.communication.Message;
 import cz.cvut.fel.aic.alite.communication.channel.CommunicationChannelException;
@@ -91,7 +90,7 @@ public class EventBasedCommunicationChannel extends DirectCommunicationChannel i
     }
 }
 
-enum EventMessageType implements EventType {
+enum EventMessageType{
 
     EVENT_MESSAGE
 }

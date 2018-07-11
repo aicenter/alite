@@ -116,7 +116,7 @@ public class EventProcessor {
      * @param content
      *            the payload of the event (by the user specified data)
      */
-    public void addEvent(EventType type, EventHandler recipient, String owner, Object content) {
+    public void addEvent(Enum type, EventHandler recipient, String owner, Object content) {
         addEvent(type, recipient, owner, content, 1);
     }
 
@@ -137,7 +137,7 @@ public class EventProcessor {
      *            the duration (in milliseconds) from now till the time when the event should take
      *            place (be send to its recipients)
      */
-    public void addEvent(EventType type, EventHandler recipient, String owner, Object content,
+    public void addEvent(Enum type, EventHandler recipient, String owner, Object content,
             long deltaTime) {
         // TODO: refactorize the recipients/owners/senders/groups and similar
 
@@ -245,7 +245,7 @@ public class EventProcessor {
     protected void breforeRunningTest(Event event) {
     }
 
-    protected void fireEvent(EventType type, EventHandler recipient, String owner, Object content) {
+    protected void fireEvent(Enum type, EventHandler recipient, String owner, Object content) {
         fireEvent(new Event(eventIdCounter++, currentTime, type, recipient, owner, content));
     }
 
