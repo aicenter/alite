@@ -176,27 +176,8 @@ public class VisManager {
     }
 
     public static void swapLayers(VisLayer x, VisLayer y) {
-        int xpos = 0;
-        int ypos = 0;
-        boolean foundOneAlready = false;
-        for (int i = 0; i < layers.size(); i++) {
-            if (layers.get(i) == x) {
-                xpos = i;
-                if (foundOneAlready) {
-                    break;
-                } else {
-                    foundOneAlready = true;
-                }
-            }
-            if (layers.get(i) == y) {
-                ypos = i;
-                if (foundOneAlready) {
-                    break;
-                } else {
-                    foundOneAlready = true;
-                }
-            }
-        }
+        int xpos = layers.indexOf(x);
+        int ypos = layers.indexOf(y);
         Collections.swap(layers, xpos, ypos);
     }
 
