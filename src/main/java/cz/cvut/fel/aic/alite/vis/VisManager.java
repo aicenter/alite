@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2017 Czech Technical University in Prague.
  *
  * This library is free software; you can redistribute it and/or
@@ -18,9 +18,8 @@
  */
 package cz.cvut.fel.aic.alite.vis;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Rectangle;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +33,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.imageio.ImageIO;
 import javax.vecmath.Point2d;
 
+import cz.cvut.fel.aic.alite.common.event.EventProcessor;
+import cz.cvut.fel.aic.alite.common.event.typed.ScreenRecordingEventHandler;
+import io.humble.video.*;
+import io.humble.video.awt.MediaPictureConverter;
+import io.humble.video.awt.MediaPictureConverterFactory;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -69,6 +73,16 @@ public class VisManager {
 
     private static final List<VisLayer> layers = new CopyOnWriteArrayList<VisLayer>();
     private static VisManager instance = null;
+
+    private static long frame_no = 0;
+    private static Muxer muxer;
+    private static Encoder encoder;
+    private static Rational framerate;
+    private static MediaPacket packet;
+    private static MediaPicture picture;
+    private static MediaPictureConverter converter;
+    private static EventProcessor processor;
+    private static ScreenRecordingEventHandler handler;
 
     private VisManager() {
         new Thread(new Runnable() {
@@ -126,16 +140,17 @@ public class VisManager {
     public static void setPanningBounds(Rectangle bounds) {
         Vis.setPanningBounds(bounds);
     }
-    
+
     public static void setInvertYAxis(boolean enabled) {
-    	Vis.setInvertYAxis(enabled);
+        Vis.setInvertYAxis(enabled);
     }
 
     public static void setSceneParam(SceneParams sceneParams) {
         Vis.setSceneParams(sceneParams);
     }
 
-    public static synchronized void init() {
+    public static synchronized void init(EventProcessor eventProcessor) {
+        VisManager.processor = eventProcessor;
         if (instance == null) {
             instance = new VisManager();
 
@@ -156,9 +171,9 @@ public class VisManager {
     }
 
     public static void unregisterLayer(VisLayer layer) {
-    	if (instance != null) {
-    		layer.deinit(Vis.getInstance());
-    	}
+        if (instance != null) {
+            layer.deinit(Vis.getInstance());
+        }
         layers.remove(layer);
     }
 
@@ -168,9 +183,9 @@ public class VisManager {
 
     public static void unregisterLayers() {
         for (VisLayer layer : layers) {
-        	if (instance != null) {
-        		layer.deinit(Vis.getInstance());
-        	}
+            if (instance != null) {
+                layer.deinit(Vis.getInstance());
+            }
             layers.remove(layer);
         }
     }
@@ -189,9 +204,127 @@ public class VisManager {
         }
     }
 
+    public static void startVideoRecording(String fileName, int width, int height){
+        framerate = Rational.make(1, 25);
+
+        /** First we create a muxer using the passed in filename and formatname if given. */
+        muxer = Muxer.make(fileName, null, null);
+
+        /** Now, we need to decide what type of codec to use to encode video. Muxers
+         * have limited sets of codecs they can use. We're going to pick the first one that
+         * works, or if the user supplied a codec name, we're going to force-fit that
+         * in instead.
+         */
+
+        final Codec codec = Codec.findEncodingCodec(Codec.ID.CODEC_ID_H264);
+
+        /**
+         * Now that we know what codec, we need to create an encoder
+         */
+        encoder = Encoder.make(codec);
+
+        /**
+         * Video encoders need to know at a minimum:
+         *   width
+         *   height
+         *   pixel format
+         * Some also need to know frame-rate (older codecs that had a fixed rate at which video files could
+         * be written needed this). There are many other options you can set on an encoder, but we're
+         * going to keep it simpler here.
+         */
+        encoder.setWidth(width);
+        encoder.setHeight(height);
+        // We are going to use 420P as the format because that's what most video formats these days use
+        final PixelFormat.Type pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
+        encoder.setPixelFormat(pixelformat);
+        encoder.setTimeBase(framerate);
+
+        /** An annoynace of some formats is that they need global (rather than per-stream) headers,
+         * and in that case you have to tell the encoder. And since Encoders are decoupled from
+         * Muxers, there is no easy way to know this beyond
+         */
+        if (muxer.getFormat().getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
+            encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
+
+        /** Open the encoder. */
+        encoder.open(null, null);
+
+
+        /** Add this stream to the muxer. */
+        muxer.addNewStream(encoder);
+
+        /** And open the muxer for business. */
+        try {
+            muxer.open(null, null);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /** Next, we need to make sure we have the right MediaPicture format objects
+         * to encode data with. Java (and most on-screen graphics programs) use some
+         * variant of Red-Green-Blue image encoding (a.k.a. RGB or BGR). Most video
+         * codecs use some variant of YCrCb formatting. So we're going to have to
+         * convert. To do that, we'll introduce a MediaPictureConverter object later. object.
+         */
+        picture = MediaPicture.make(
+                encoder.getWidth(),
+                encoder.getHeight(),
+                pixelformat);
+        picture.setTimeBase(framerate);
+
+        handler = new ScreenRecordingEventHandler(processor, width, height);
+        handler.recordingStarted();
+        processor.addEvent(handler, 40);
+    }
+
+    public static void encodeFrame(int width, int height) {
+
+        packet = MediaPacket.make();
+        final BufferedImage screen = convertToType(renderImage(width, height), width, height, BufferedImage.TYPE_3BYTE_BGR);
+
+        /** This is LIKELY not in YUV420P format, so we're going to convert it using some handy utilities. */
+        if (converter == null)
+            converter = MediaPictureConverterFactory.createConverter(screen, picture);
+        converter.toPicture(picture, screen, frame_no);
+        frame_no++;
+
+        do {
+            encoder.encode(packet, picture);
+            if (packet.isComplete())
+                muxer.write(packet, false);
+        } while (packet.isComplete());
+
+    }
+
+    public static void stopVideoRecording(){
+        handler.recordingStopped();
+    }
+
+    public static void finishVideoRecording(){
+        /** Encoders, like decoders, sometimes cache pictures so it can do the right key-frame optimizations.
+         * So, they need to be flushed as well. As with the decoders, the convention is to pass in a null
+         * input until the output is not complete.
+         */
+        packet = MediaPacket.make();
+        do {
+            encoder.encode(packet, null);
+            if (packet.isComplete())
+                muxer.write(packet,  false);
+        } while (packet.isComplete());
+
+        /** Finally, let's clean up after ourselves. */
+        muxer.close();
+        frame_no = 0;
+    }
+
     public static Image renderImage(int width, int height) {
         Image image = Vis.getInstance().createImage(width, height);
         Graphics2D graphics = (Graphics2D) image.getGraphics();
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         for (VisLayer visLayer : layers) {
             drawLayer(visLayer, graphics);
@@ -222,6 +355,13 @@ public class VisManager {
                             + " has thrown the following exception:\n"
                             + stacktrace);
         }
+    }
+
+    private static BufferedImage convertToType(Image sourceImage, int width, int height, int targetType)
+    {
+        BufferedImage image = new BufferedImage(width, height, targetType);
+        image.getGraphics().drawImage(sourceImage, 0, 0, null);
+        return image;
     }
 
     /**
