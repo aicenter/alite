@@ -74,6 +74,7 @@ public class VisManager {
     private static final List<VisLayer> layers = new CopyOnWriteArrayList<VisLayer>();
     private static VisManager instance = null;
 
+    private static String recordingFilepath = "";
     private static long frame_no = 0;
     private static Muxer muxer;
     private static Encoder encoder;
@@ -196,78 +197,46 @@ public class VisManager {
         Collections.swap(layers, xpos, ypos);
     }
 
-    public static void saveToFile(String fileName, int width, int height) {
+    public static void setRecordingFilepath(String path){ recordingFilepath = path; }
+
+    public static void saveToFile(int width, int height) {
         try {
-            ImageIO.write((RenderedImage) renderImage(width, height), "png", new File(fileName));
+            ImageIO.write((RenderedImage) renderImage(width, height), "png",
+                    new File(recordingFilepath + "screen_capture" + System.currentTimeMillis() + ".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void startVideoRecording(String fileName, int width, int height){
+    public static void startVideoRecording(int width, int height){
+        //Video recording implemented thanks to this demo:
+        // https://github.com/artclarke/humble-video/blob/master/humble-video-demos/src/main/java/io/humble/video/demos/RecordAndEncodeVideo.java
+
         framerate = Rational.make(1, 25);
 
-        /** First we create a muxer using the passed in filename and formatname if given. */
-        muxer = Muxer.make(fileName, null, null);
-
-        /** Now, we need to decide what type of codec to use to encode video. Muxers
-         * have limited sets of codecs they can use. We're going to pick the first one that
-         * works, or if the user supplied a codec name, we're going to force-fit that
-         * in instead.
-         */
+        muxer = Muxer.make(recordingFilepath + "screen_recording" + System.currentTimeMillis() + ".mp4", null, null);
 
         final Codec codec = Codec.findEncodingCodec(Codec.ID.CODEC_ID_H264);
-
-        /**
-         * Now that we know what codec, we need to create an encoder
-         */
         encoder = Encoder.make(codec);
-
-        /**
-         * Video encoders need to know at a minimum:
-         *   width
-         *   height
-         *   pixel format
-         * Some also need to know frame-rate (older codecs that had a fixed rate at which video files could
-         * be written needed this). There are many other options you can set on an encoder, but we're
-         * going to keep it simpler here.
-         */
         encoder.setWidth(width);
         encoder.setHeight(height);
-        // We are going to use 420P as the format because that's what most video formats these days use
+
         final PixelFormat.Type pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
         encoder.setPixelFormat(pixelformat);
         encoder.setTimeBase(framerate);
 
-        /** An annoynace of some formats is that they need global (rather than per-stream) headers,
-         * and in that case you have to tell the encoder. And since Encoders are decoupled from
-         * Muxers, there is no easy way to know this beyond
-         */
         if (muxer.getFormat().getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
             encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
 
-        /** Open the encoder. */
         encoder.open(null, null);
-
-
-        /** Add this stream to the muxer. */
         muxer.addNewStream(encoder);
 
-        /** And open the muxer for business. */
         try {
             muxer.open(null, null);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         }
 
-        /** Next, we need to make sure we have the right MediaPicture format objects
-         * to encode data with. Java (and most on-screen graphics programs) use some
-         * variant of Red-Green-Blue image encoding (a.k.a. RGB or BGR). Most video
-         * codecs use some variant of YCrCb formatting. So we're going to have to
-         * convert. To do that, we'll introduce a MediaPictureConverter object later. object.
-         */
         picture = MediaPicture.make(
                 encoder.getWidth(),
                 encoder.getHeight(),
@@ -284,7 +253,6 @@ public class VisManager {
         packet = MediaPacket.make();
         final BufferedImage screen = convertToType(renderImage(width, height), width, height, BufferedImage.TYPE_3BYTE_BGR);
 
-        /** This is LIKELY not in YUV420P format, so we're going to convert it using some handy utilities. */
         if (converter == null)
             converter = MediaPictureConverterFactory.createConverter(screen, picture);
         converter.toPicture(picture, screen, frame_no);
@@ -303,10 +271,6 @@ public class VisManager {
     }
 
     public static void finishVideoRecording(){
-        /** Encoders, like decoders, sometimes cache pictures so it can do the right key-frame optimizations.
-         * So, they need to be flushed as well. As with the decoders, the convention is to pass in a null
-         * input until the output is not complete.
-         */
         packet = MediaPacket.make();
         do {
             encoder.encode(packet, null);
@@ -314,7 +278,6 @@ public class VisManager {
                 muxer.write(packet,  false);
         } while (packet.isComplete());
 
-        /** Finally, let's clean up after ourselves. */
         muxer.close();
         frame_no = 0;
     }
