@@ -32,7 +32,7 @@ import java.util.List;
  */
 public class TypedSimulation extends Simulation{
     
-    private final HashMap<Enum,List<AliteEntity>> listeningEntities;
+    private final HashMap<Enum,List<EventHandler>> listeningEntities;
 
     public TypedSimulation(long simulationEndTime) {
         super(simulationEndTime);
@@ -41,7 +41,7 @@ public class TypedSimulation extends Simulation{
     
     
     
-    public void addEventHandler(AliteEntity eventHandler, List<Enum> eventsTypesToHandle) {
+    public void addEventHandler(EventHandler eventHandler, List<Enum> eventsTypesToHandle) {
         for (Enum eventType : eventsTypesToHandle) {
             if(!listeningEntities.containsKey(eventType)){
                 listeningEntities.put(eventType, new LinkedList<>());
@@ -56,7 +56,7 @@ public class TypedSimulation extends Simulation{
             event.getRecipient().handleEvent(event);
         }
         else {
-            List<AliteEntity> relevantEntities = listeningEntities.get(event.getType());
+            List<EventHandler> relevantEntities = listeningEntities.get(event.getType());
             if(relevantEntities != null){
                 for (EventHandler entity : relevantEntities) {
                     entity.handleEvent(event);
