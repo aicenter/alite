@@ -316,10 +316,18 @@ public class Vis extends Canvas {
     }
 
     public static int transW(double w) {
+        return transW(w, zoomFactorBack);
+    }
+	
+	public static int transW(double w, double zoomFactorBack) {
         return (int) (w * zoomFactorBack);
     }
 
     public static int transH(double h) {
+        return transH(h, zoomFactorBack);
+    }
+	
+	public static int transH(double h, double zoomFactorBack) {
         return (int) (h * zoomFactorBack);
     }
 
