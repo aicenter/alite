@@ -27,24 +27,24 @@ import cz.cvut.fel.aic.alite.vis.element.Sprite;
 
 public class SpriteImpl extends ImageImpl implements Sprite {
 
-    public final Point3d position;
-    public final Vector3d direction;
+	public final Point3d position;
+	public final Vector3d direction;
 
-    public SpriteImpl(Point3d position, Vector3d direction, BufferedImage image) {
-        super(image);
+	public SpriteImpl(Point3d position, Vector3d direction, BufferedImage image) {
+		super(image);
 
-        this.position = position;
-        this.direction = direction;
-    }
+		this.position = position;
+		this.direction = direction;
+	}
 
-    @Override
-    public Point3d getPosition() {
-        return position;
-    }
+	@Override
+	public Point3d getPosition() {
+		return position;
+	}
 
-    @Override
-    public Vector3d getDirection() {
-        return direction;
-    }
+	@Override
+	public Vector3d getDirection() {
+		return direction;
+	}
 
 }

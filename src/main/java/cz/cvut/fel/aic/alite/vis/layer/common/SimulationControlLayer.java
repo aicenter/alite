@@ -48,112 +48,112 @@ import java.text.MessageFormat;
  */
 public class SimulationControlLayer extends AbstractLayer {
 
-    private final Simulation simulation;
-    private KeyListener keyListener;
+	private final Simulation simulation;
+	private KeyListener keyListener;
 
-    SimulationControlLayer(Simulation simulation) {
-        this.simulation = simulation;
-    }
+	SimulationControlLayer(Simulation simulation) {
+		this.simulation = simulation;
+	}
 
-    @Override
-    public void init(Vis vis) {
-        super.init(vis);
+	@Override
+	public void init(Vis vis) {
+		super.init(vis);
 
-        keyListener = new KeyListener() {
+		keyListener = new KeyListener() {
 
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyChar() == '+') {
-                    simulation.setSimulationSpeed(simulation.getSimulationSpeed() * 0.9);
-                } else if (e.getKeyChar() == '-') {
-                    simulation.setSimulationSpeed(simulation.getSimulationSpeed() * 1.1);
-                } else if (e.getKeyChar() == '*') {
-                    if ((e.getModifiers() & (KeyEvent.CTRL_MASK | KeyEvent.CTRL_DOWN_MASK)) != 0) {
-                        simulation.setSimulationSpeed(0);
-                    } else {
-                        simulation.setSimulationSpeed(0.2);
-                    }
-                } else if (e.getKeyChar() == ' ') {
-                    if (simulation.isRunning()) {
-                        simulation.setRunning(false);
-                    } else {
-                        simulation.setRunning(true);
-                    }
-                }
-            }
-        };
-        vis.addKeyListener(keyListener);
-    }
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyChar() == '+') {
+					simulation.setSimulationSpeed(simulation.getSimulationSpeed() * 0.9);
+				} else if (e.getKeyChar() == '-') {
+					simulation.setSimulationSpeed(simulation.getSimulationSpeed() * 1.1);
+				} else if (e.getKeyChar() == '*') {
+					if ((e.getModifiers() & (KeyEvent.CTRL_MASK | KeyEvent.CTRL_DOWN_MASK)) != 0) {
+						simulation.setSimulationSpeed(0);
+					} else {
+						simulation.setSimulationSpeed(0.2);
+					}
+				} else if (e.getKeyChar() == ' ') {
+					if (simulation.isRunning()) {
+						simulation.setRunning(false);
+					} else {
+						simulation.setRunning(true);
+					}
+				}
+			}
+		};
+		vis.addKeyListener(keyListener);
+	}
 
-    @Override
-    public void deinit(Vis vis) {
-        super.deinit(vis);
+	@Override
+	public void deinit(Vis vis) {
+		super.deinit(vis);
 
-        vis.removeKeyListener(keyListener);
-    }
+		vis.removeKeyListener(keyListener);
+	}
 
-    @Override
-    public void paint(Graphics2D canvas) {
-        StringBuilder label = new StringBuilder();
-        label.append("TIME: ");
-        label.append(simulation.getCurrentTime() / 1000.0);
-        label.append(" ");
-        if (simulation.isFinished()) {
-            label.append("(FINISHED)");
-        } else {
-            if (simulation.getCurrentTime() == 0) {
-                label.append("(INITIALIZING)");
+	@Override
+	public void paint(Graphics2D canvas) {
+		StringBuilder label = new StringBuilder();
+		label.append("TIME: ");
+		label.append(simulation.getCurrentTime() / 1000.0);
+		label.append(" ");
+		if (simulation.isFinished()) {
+			label.append("(FINISHED)");
+		} else {
+			if (simulation.getCurrentTime() == 0) {
+				label.append("(INITIALIZING)");
 
-                canvas.setColor(new Color(0, 0, 0, 200));
-                canvas.fillRect(200, 400, Vis.getDrawingDimension().width - 400, Vis.getDrawingDimension().height - 800);
+				canvas.setColor(new Color(0, 0, 0, 200));
+				canvas.fillRect(200, 400, Vis.getDrawingDimension().width - 400, Vis.getDrawingDimension().height - 800);
 
-                Font oldFont = canvas.getFont();
-                canvas.setFont(new Font("Arial", 0, 20));
-                canvas.setColor(Color.WHITE);
-                canvas.drawString("INITIALIZING...", Vis.getDrawingDimension().width / 2 - 60 , Vis.getDrawingDimension().height / 2 + 7);
-                canvas.setFont(oldFont);
-            } else {
-                if (simulation.isRunning()) {
-                    label.append("(");
-                    label.append(MessageFormat.format("{0,number,#.##}", 1/simulation.getSimulationSpeed()));
-                    label.append("x)");
-                } else {
-                    label.append("(PAUSED)");
-                }
-            }
-        }
+				Font oldFont = canvas.getFont();
+				canvas.setFont(new Font("Arial", 0, 20));
+				canvas.setColor(Color.WHITE);
+				canvas.drawString("INITIALIZING...", Vis.getDrawingDimension().width / 2 - 60 , Vis.getDrawingDimension().height / 2 + 7);
+				canvas.setFont(oldFont);
+			} else {
+				if (simulation.isRunning()) {
+					label.append("(");
+					label.append(MessageFormat.format("{0,number,#.##}", 1/simulation.getSimulationSpeed()));
+					label.append("x)");
+				} else {
+					label.append("(PAUSED)");
+				}
+			}
+		}
 
-        canvas.setColor(Color.BLUE);
-        canvas.drawString(label.toString(), 15, 20);
-    }
+		canvas.setColor(Color.BLUE);
+		canvas.drawString(label.toString(), 15, 20);
+	}
 
-    @Override
-    public String getLayerDescription() {
-        String description = "[Simulation Control] Layer controls the simulation and shows simulation time and speed,\n" +
-                "by pressing '<space>', the simulation can be paused and unpaused,\n" +
-                "by pressing '+'/'-', the simulation can be speed up and slow down,\n" +
-                "by pressing '*', the speed of simulation is set to default value (1x),\n" +
-                "by pressing Ctrl+'*', the speed of simulation is set to fastest possible speed (∞x).";
-        return buildLayersDescription(description);
-    }
+	@Override
+	public String getLayerDescription() {
+		String description = "[Simulation Control] Layer controls the simulation and shows simulation time and speed,\n" +
+				"by pressing '<space>', the simulation can be paused and unpaused,\n" +
+				"by pressing '+'/'-', the simulation can be speed up and slow down,\n" +
+				"by pressing '*', the speed of simulation is set to default value (1x),\n" +
+				"by pressing Ctrl+'*', the speed of simulation is set to fastest possible speed (∞x).";
+		return buildLayersDescription(description);
+	}
 
-    public static VisLayer create(Simulation simulation) {
-        VisLayer simulationControl = new SimulationControlLayer(simulation);
+	public static VisLayer create(Simulation simulation) {
+		VisLayer simulationControl = new SimulationControlLayer(simulation);
 
-        KeyToggleLayer toggle = KeyToggleLayer.create("s");
-        toggle.addSubLayer(simulationControl);
-        toggle.setHelpOverrideString(simulationControl.getLayerDescription() + "\n" +
-                "By pressing 's', the simulation info can be turned off and on.");
+		KeyToggleLayer toggle = KeyToggleLayer.create("s");
+		toggle.addSubLayer(simulationControl);
+		toggle.setHelpOverrideString(simulationControl.getLayerDescription() + "\n" +
+				"By pressing 's', the simulation info can be turned off and on.");
 
-        return toggle;
-    }
+		return toggle;
+	}
 
 }

@@ -27,24 +27,24 @@ import java.awt.Point;
 */
 public class TopLeftPositionFunction implements PositionFunction {
 
-    private Point point;
+	private Point point;
 
-    /**
-     *
-     * @param x x-coordinate of top left corner
-     * @param y y-coordinate of top left corner
-     */
-    public TopLeftPositionFunction(int x, int y) {
-        point = new Point(x, y);
-    }
+	/**
+	 *
+	 * @param x x-coordinate of top left corner
+	 * @param y y-coordinate of top left corner
+	 */
+	public TopLeftPositionFunction(int x, int y) {
+		point = new Point(x, y);
+	}
 
-    @Override
-    public Point getTopLeftPoint(int rectangeWidth, int rectangleHeight, Dimension drawingDimension) {
-        return point;
-    }
+	@Override
+	public Point getTopLeftPoint(int rectangeWidth, int rectangleHeight, Dimension drawingDimension) {
+		return point;
+	}
 
-    @Override
-    public void moveLocation(int deltaX, int deltaY) {
-        point = new Point(point.x + deltaX, point.y + deltaY);
-    }
+	@Override
+	public void moveLocation(int deltaX, int deltaY) {
+		point = new Point(point.x + deltaX, point.y + deltaY);
+	}
 }

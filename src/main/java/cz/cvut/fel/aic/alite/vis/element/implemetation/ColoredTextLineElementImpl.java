@@ -28,25 +28,25 @@ import java.awt.Color;
  */
 public class ColoredTextLineElementImpl implements ColoredTextLineElement {
 
-    private final Color color;
-    private final String textLine;
+	private final Color color;
+	private final String textLine;
 
-    /**
-     * @param textLine text of the line
-     * @param color color of the line
-     */
-    public ColoredTextLineElementImpl(String textLine, Color color) {
-        this.textLine = textLine;
-        this.color = color;
-    }
+	/**
+	 * @param textLine text of the line
+	 * @param color color of the line
+	 */
+	public ColoredTextLineElementImpl(String textLine, Color color) {
+		this.textLine = textLine;
+		this.color = color;
+	}
 
-    @Override
-    public Color getColor() {
-        return color;
-    }
+	@Override
+	public Color getColor() {
+		return color;
+	}
 
-    @Override
-    public String getTextLine() {
-        return textLine;
-    }
+	@Override
+	public String getTextLine() {
+		return textLine;
+	}
 }

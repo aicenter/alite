@@ -29,10 +29,10 @@ import cz.cvut.fel.aic.alite.vis.element.ColoredTextLineElement;
  */
 public interface ColoredTextLineElements extends Elements {
 
-    /**
-     * Returns {@link Iterable} instance. The instance should be immutable.
-     * @return {@link Iterable} instance. The instance should be immutable.
-     */
-    public Iterable<ColoredTextLineElement> getTextLines();
+	/**
+	 * Returns {@link Iterable} instance. The instance should be immutable.
+	 * @return {@link Iterable} instance. The instance should be immutable.
+	 */
+	public Iterable<ColoredTextLineElement> getTextLines();
 
 }

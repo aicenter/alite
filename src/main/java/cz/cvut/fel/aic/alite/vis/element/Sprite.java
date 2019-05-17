@@ -23,8 +23,8 @@ import javax.vecmath.Vector3d;
 
 public interface Sprite extends Image {
 
-    Point3d getPosition();
+	Point3d getPosition();
 
-    Vector3d getDirection();
+	Vector3d getDirection();
 
 }

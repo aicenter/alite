@@ -35,32 +35,32 @@ import java.util.Set;
  */
 public abstract class SubscribeProtocolSender extends SubscribeProtocol {
 
-    final String agentName;
-    private final CapabilityRegister directory;
+	final String agentName;
+	private final CapabilityRegister directory;
 
-    /**
-     *
-     * @param communicator
-     * @param directory
-     * @param name
-     */
-    public SubscribeProtocolSender(Communicator communicator, CapabilityRegister directory, String name) {
-        super(communicator, name);
-        this.directory = directory;
-        this.agentName = communicator.getAddress();
-    }
+	/**
+	 *
+	 * @param communicator
+	 * @param directory
+	 * @param name
+	 */
+	public SubscribeProtocolSender(Communicator communicator, CapabilityRegister directory, String name) {
+		super(communicator, name);
+		this.directory = directory;
+		this.agentName = communicator.getAddress();
+	}
 
-    /**
-     * Sends a message to subscrabers of this protocol.
-     *
-     * @param inform a content object to be sent.
-     */
-    public void sendInform(Object inform) {
-        ProtocolContent content = new ProtocolContent(this, Performative.INFORM, inform, generateSession());
-        Message message = communicator.createMessage(content);
-        Set<String> addresses = directory.getIdentities(getName());
-        addresses.remove(agentName);
-        message.addReceivers(addresses);
-        communicator.sendMessage(message);
-    }
+	/**
+	 * Sends a message to subscrabers of this protocol.
+	 *
+	 * @param inform a content object to be sent.
+	 */
+	public void sendInform(Object inform) {
+		ProtocolContent content = new ProtocolContent(this, Performative.INFORM, inform, generateSession());
+		Message message = communicator.createMessage(content);
+		Set<String> addresses = directory.getIdentities(getName());
+		addresses.remove(agentName);
+		message.addReceivers(addresses);
+		communicator.sendMessage(message);
+	}
 }

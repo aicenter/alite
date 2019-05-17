@@ -30,93 +30,93 @@ import cz.cvut.fel.aic.alite.planner.spatialmaneuver.PathFindSpecification;
  */
 public class ToEndLevelManeuver extends Maneuver {
 
-    private PitchToLevelManeuver endPitch = null;
-    private StraightManeuver straight = null;
-    private double endLevel;
+	private PitchToLevelManeuver endPitch = null;
+	private StraightManeuver straight = null;
+	private double endLevel;
 
-    /**
-     * @param start
-     * @param direction
-     * @param zone
-     */
-    public ToEndLevelManeuver(Point3d start, Vector3d direction, double time, PathFindSpecification specification) {
-        super(start, direction, time, specification);
+	/**
+	 * @param start
+	 * @param direction
+	 * @param zone
+	 */
+	public ToEndLevelManeuver(Point3d start, Vector3d direction, double time, PathFindSpecification specification) {
+		super(start, direction, time, specification);
 
-        Point3d end = specification.getTo();
+		Point3d end = specification.getTo();
 
-        this.endLevel = end.z;
+		this.endLevel = end.z;
 
-        if (   (start.z - endLevel > 0 && direction.z > 0)
-            || (start.z - endLevel < 0 && direction.z < 0)) {
-            return;
-        }
+		if (   (start.z - endLevel > 0 && direction.z > 0)
+			|| (start.z - endLevel < 0 && direction.z < 0)) {
+			return;
+		}
 
-        double pitchRadius = specification.getPitchRadius();
-        double pitchAngle = direction.angle(new Vector3d(direction.x, direction.y, 0.0));
-        double straightZ = Math.abs(start.z - endLevel) - (pitchRadius - Math.cos(pitchAngle)*pitchRadius);
-        double length = straightZ/direction.z;
+		double pitchRadius = specification.getPitchRadius();
+		double pitchAngle = direction.angle(new Vector3d(direction.x, direction.y, 0.0));
+		double straightZ = Math.abs(start.z - endLevel) - (pitchRadius - Math.cos(pitchAngle)*pitchRadius);
+		double length = straightZ/direction.z;
 
-        if (start.z - endLevel > 0) {
-            length = -length;
-        }
+		if (start.z - endLevel > 0) {
+			length = -length;
+		}
 
-        if (length > 0) {
-            straight = new StraightManeuver(start, direction, time, length, specification);
-            endPitch = new PitchToLevelManeuver(straight.getEnd(), straight.getEndDirection(), straight.getEndTime(), specification);
-        }
-    }
+		if (length > 0) {
+			straight = new StraightManeuver(start, direction, time, length, specification);
+			endPitch = new PitchToLevelManeuver(straight.getEnd(), straight.getEndDirection(), straight.getEndTime(), specification);
+		}
+	}
 
-    @Override
-    public Point3d getEnd() {
-        Point3d end = endPitch.getEnd();
-        end.z = endLevel;
-        return end;
-    }
+	@Override
+	public Point3d getEnd() {
+		Point3d end = endPitch.getEnd();
+		end.z = endLevel;
+		return end;
+	}
 
-    @Override
-    public Vector3d getEndDirection() {
-        return endPitch.getEndDirection();
-    }
+	@Override
+	public Vector3d getEndDirection() {
+		return endPitch.getEndDirection();
+	}
 
-    @Override
-    public double getLength() {
-        return straight.getLength() + endPitch.getLength();
-    }
+	@Override
+	public double getLength() {
+		return straight.getLength() + endPitch.getLength();
+	}
 
-    public StraightManeuver getStraight() {
-        return straight;
-    }
+	public StraightManeuver getStraight() {
+		return straight;
+	}
 
-    public PitchToLevelManeuver getEndPitch() {
-        return endPitch;
-    }
+	public PitchToLevelManeuver getEndPitch() {
+		return endPitch;
+	}
 
-    @Override
-    public void setPredecessor(Maneuver predecessor) {
-        super.setPredecessor(predecessor);
+	@Override
+	public void setPredecessor(Maneuver predecessor) {
+		super.setPredecessor(predecessor);
 
-        straight.setPredecessor(predecessor);
-        predecessor = straight;
-        endPitch.setPredecessor(predecessor);
-        predecessor = endPitch;
-    }
+		straight.setPredecessor(predecessor);
+		predecessor = straight;
+		endPitch.setPredecessor(predecessor);
+		predecessor = endPitch;
+	}
 
-    @Override
-    public boolean isIntersectingFullZone() {
-        return straight.isIntersectingFullZone() || endPitch.isIntersectingFullZone();
-    }
+	@Override
+	public boolean isIntersectingFullZone() {
+		return straight.isIntersectingFullZone() || endPitch.isIntersectingFullZone();
+	}
 
-    @Override
-    public boolean isValid() {
-        if (straight != null && endPitch != null) {
-            return straight.isValid() && endPitch.isValid();
-        }
-        return false;
-    }
+	@Override
+	public boolean isValid() {
+		if (straight != null && endPitch != null) {
+			return straight.isValid() && endPitch.isValid();
+		}
+		return false;
+	}
 
-    @Override
-    public void accept(ManeuverVisitor visitor) {
-        visitor.visit(this);
-    }
+	@Override
+	public void accept(ManeuverVisitor visitor) {
+		visitor.visit(this);
+	}
 
 }

@@ -36,7 +36,7 @@ public class BinaryContent extends Content {
 	
 	@Override
 	public byte[] getData() {
-        return (byte[])super.getData();
-    }
+		return (byte[])super.getData();
+	}
 
 }

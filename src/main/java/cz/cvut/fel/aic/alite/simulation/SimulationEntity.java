@@ -46,17 +46,17 @@ import cz.cvut.fel.aic.alite.environment.Storage;
  */
 public abstract class SimulationEntity extends Entity implements EventHandler {
 
-    private Simulation simulation;
+	private Simulation simulation;
 
-    public SimulationEntity(String name, Simulation simulation) {
-        super(name);
+	public SimulationEntity(String name, Simulation simulation) {
+		super(name);
 
-        this.simulation = simulation;
-    }
+		this.simulation = simulation;
+	}
 
-    @Override
-    public Simulation getEventProcessor() {
-        return simulation;
-    }
+	@Override
+	public Simulation getEventProcessor() {
+		return simulation;
+	}
 
 }

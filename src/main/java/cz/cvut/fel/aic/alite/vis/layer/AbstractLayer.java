@@ -29,39 +29,39 @@ import cz.cvut.fel.aic.alite.vis.Vis;
  */
 public abstract class AbstractLayer implements VisLayer {
 
-    private String helpOverrideString = null;
+	private String helpOverrideString = null;
 
-    @Override
-    public void init(Vis vis) {
-    }
+	@Override
+	public void init(Vis vis) {
+	}
 
-    @Override
-    public void deinit(Vis vis) {
-    }
+	@Override
+	public void deinit(Vis vis) {
+	}
 
-    @Override
-    public void paint(Graphics2D canvas) {
-    }
+	@Override
+	public void paint(Graphics2D canvas) {
+	}
 
-    @Override
-    public String getLayerDescription() {
-    return buildLayersDescription(getClass().toString() + " layer\n");
-    }
+	@Override
+	public String getLayerDescription() {
+	return buildLayersDescription(getClass().toString() + " layer\n");
+	}
 
-    @Override
-    public void setHelpOverrideString(String helpOverrideString) {
-    this.helpOverrideString = helpOverrideString;
-    }
+	@Override
+	public void setHelpOverrideString(String helpOverrideString) {
+	this.helpOverrideString = helpOverrideString;
+	}
 
-    protected String getHelpOverrideString() {
-    return helpOverrideString;
-    }
+	protected String getHelpOverrideString() {
+	return helpOverrideString;
+	}
 
-    protected String buildLayersDescription(String description) {
-    if (helpOverrideString != null) {
-        return helpOverrideString;
-    }
-    return description;
-    }
+	protected String buildLayersDescription(String description) {
+	if (helpOverrideString != null) {
+		return helpOverrideString;
+	}
+	return description;
+	}
 
 }

@@ -29,14 +29,14 @@ import cz.cvut.fel.aic.alite.communication.protocol.DefaultProtocol;
  */
 public class SubscribeProtocol extends DefaultProtocol {
 
-    static final String SUBSCRIBE_PROTOCOL_NAME = "SUBSCRIBE_PROTOCOL";
+	static final String SUBSCRIBE_PROTOCOL_NAME = "SUBSCRIBE_PROTOCOL";
 
-    /**
-     *
-     * @param communicator
-     * @param name
-     */
-    public SubscribeProtocol(Communicator communicator, String name) {
-        super(communicator, SUBSCRIBE_PROTOCOL_NAME + ": " + name);
-    }
+	/**
+	 *
+	 * @param communicator
+	 * @param name
+	 */
+	public SubscribeProtocol(Communicator communicator, String name) {
+		super(communicator, SUBSCRIBE_PROTOCOL_NAME + ": " + name);
+	}
 }

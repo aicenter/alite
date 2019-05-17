@@ -22,8 +22,8 @@ import java.awt.Color;
 
 public interface StyledLine extends Line {
 
-    public Color getColor();
+	public Color getColor();
 
-    public int getStrokeWidth();
+	public int getStrokeWidth();
 
 }

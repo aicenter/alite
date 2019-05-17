@@ -34,19 +34,19 @@ import org.apache.log4j.Logger;
  */
 public class CreatorFactory {
 
-    public static Creator createCreator(String[] args) {
-        if (args.length == 0) {
-            throw new IllegalArgumentException("Creator must be instantiated with at least Creator class name as a first parameter!");
-        }
+	public static Creator createCreator(String[] args) {
+		if (args.length == 0) {
+			throw new IllegalArgumentException("Creator must be instantiated with at least Creator class name as a first parameter!");
+		}
 
-        try {
-            Creator creator = (Creator) Class.forName(args[0]).newInstance();
-            creator.init(args);
-            return creator;
-        } catch (Exception ex) {
-            Logger.getLogger(CreatorFactory.class.getName()).log(Level.FATAL, null, ex);
-        }
-        return null;
-    }
+		try {
+			Creator creator = (Creator) Class.forName(args[0]).newInstance();
+			creator.init(args);
+			return creator;
+		} catch (Exception ex) {
+			Logger.getLogger(CreatorFactory.class.getName()).log(Level.FATAL, null, ex);
+		}
+		return null;
+	}
 
 }

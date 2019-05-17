@@ -28,15 +28,15 @@ import javax.vecmath.Point3d;
  */
 public interface Zone {
 
-    public boolean testPoint(final Point3d point);
+	public boolean testPoint(final Point3d point);
 
-    @Deprecated
-    public boolean testLine(final Point3d point1, final Point3d point2, final Point3d outPoint);
-    
-    public boolean testLine(final Point3d point1, final Point3d point2);
-    
-    public List<Point3d> findLineIntersections(final Point3d point1, final Point3d point2);
+	@Deprecated
+	public boolean testLine(final Point3d point1, final Point3d point2, final Point3d outPoint);
+	
+	public boolean testLine(final Point3d point1, final Point3d point2);
+	
+	public List<Point3d> findLineIntersections(final Point3d point1, final Point3d point2);
 
-    public void accept(ZoneVisitor visitor);
+	public void accept(ZoneVisitor visitor);
 
 }

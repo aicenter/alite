@@ -24,15 +24,15 @@ import cz.cvut.fel.aic.alite.vis.element.Image;
 
 public class ImageImpl implements Image {
 
-    private final BufferedImage image;
+	private final BufferedImage image;
 
-    public ImageImpl(BufferedImage image) {
-        this.image = image;
-    }
+	public ImageImpl(BufferedImage image) {
+		this.image = image;
+	}
 
-    @Override
-    public BufferedImage getImage() {
-        return image;
-    }
+	@Override
+	public BufferedImage getImage() {
+		return image;
+	}
 
 }

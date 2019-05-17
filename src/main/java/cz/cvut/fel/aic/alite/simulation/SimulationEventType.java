@@ -26,5 +26,5 @@ package cz.cvut.fel.aic.alite.simulation;
  * @author Antonin Komenda
  */
 public enum SimulationEventType {
-    SIMULATION_STARTED, SIMULATION_FINISHED
+	SIMULATION_STARTED, SIMULATION_FINISHED
 }

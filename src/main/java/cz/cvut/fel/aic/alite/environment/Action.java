@@ -34,20 +34,20 @@ import cz.cvut.fel.aic.alite.environment.Environment.Handler;
  */
 public abstract class Action {
 
-    private final Environment environment;
-    private final Entity relatedEntity;
+	private final Environment environment;
+	private final Entity relatedEntity;
 
-    public Action(Environment environment, Entity relatedEntity) {
-        this.environment = environment;
-        this.relatedEntity = relatedEntity;
-    }
+	public Action(Environment environment, Entity relatedEntity) {
+		this.environment = environment;
+		this.relatedEntity = relatedEntity;
+	}
 
-    protected Environment getEnvironment() {
-        return environment;
-    }
+	protected Environment getEnvironment() {
+		return environment;
+	}
 
-    protected Entity getRelatedEntity() {
-        return relatedEntity;
-    }
+	protected Entity getRelatedEntity() {
+		return relatedEntity;
+	}
 
 }

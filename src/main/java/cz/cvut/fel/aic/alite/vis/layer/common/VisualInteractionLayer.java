@@ -28,52 +28,52 @@ import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
 
 public class VisualInteractionLayer extends CommonLayer {
 
-    private VisualInteractionProvidingEntity entity;
-    private MouseInputAdapter mouseListener;
+	private VisualInteractionProvidingEntity entity;
+	private MouseInputAdapter mouseListener;
 
-    protected VisualInteractionLayer(VisualInteractionProvidingEntity entity) {
-        this.entity = entity;
-    }
+	protected VisualInteractionLayer(VisualInteractionProvidingEntity entity) {
+		this.entity = entity;
+	}
 
-    @Override
-    public void init(Vis vis) {
-        super.init(vis);
+	@Override
+	public void init(Vis vis) {
+		super.init(vis);
 
-        mouseListener = new MouseInputAdapter() {
+		mouseListener = new MouseInputAdapter() {
 
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
 
-                double x = Vis.transInvX(e.getX());
-                double y = Vis.transInvY(e.getY());
-                entity.interactVisually(x, y, e);
-            }
+				double x = Vis.transInvX(e.getX());
+				double y = Vis.transInvY(e.getY());
+				entity.interactVisually(x, y, e);
+			}
 
-        };
-        vis.addMouseListener(mouseListener);
-    }
+		};
+		vis.addMouseListener(mouseListener);
+	}
 
-    @Override
-    public void deinit(Vis vis) {
-        super.deinit(vis);
+	@Override
+	public void deinit(Vis vis) {
+		super.deinit(vis);
 
-        vis.removeMouseListener(mouseListener);
-    }
+		vis.removeMouseListener(mouseListener);
+	}
 
-    public static VisLayer create(final VisualInteractionProvidingEntity entity) {
-        GroupLayer group = GroupLayer.create();
+	public static VisLayer create(final VisualInteractionProvidingEntity entity) {
+		GroupLayer group = GroupLayer.create();
 
-        // interaction
-        group.addSubLayer(new VisualInteractionLayer(entity));
+		// interaction
+		group.addSubLayer(new VisualInteractionLayer(entity));
 
-        return group;
-    }
+		return group;
+	}
 
-    public static interface VisualInteractionProvidingEntity {
+	public static interface VisualInteractionProvidingEntity {
 
-        public String getName();
-        public void interactVisually(double x, double y, MouseEvent e);
-    }
+		public String getName();
+		public void interactVisually(double x, double y, MouseEvent e);
+	}
 
 }

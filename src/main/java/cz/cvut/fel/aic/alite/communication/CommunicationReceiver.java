@@ -24,17 +24,17 @@ package cz.cvut.fel.aic.alite.communication;
  */
 public interface CommunicationReceiver {
 
-    /**
-     * Receives a message obtained by the communication.
-     * Note: implementation of this method should be thread-safe.
-     *     
-     * @param message
-     */
-    void receiveMessage(Message message);
+	/**
+	 * Receives a message obtained by the communication.
+	 * Note: implementation of this method should be thread-safe.
+	 *	 
+	 * @param message
+	 */
+	void receiveMessage(Message message);
 
-    /**
-     * Gets communication address.
-     * @return
-     */
-    String getAddress();
+	/**
+	 * Gets communication address.
+	 * @return
+	 */
+	String getAddress();
 }

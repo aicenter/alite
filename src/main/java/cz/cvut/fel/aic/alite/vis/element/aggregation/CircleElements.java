@@ -22,6 +22,6 @@ import cz.cvut.fel.aic.alite.vis.element.Circle;
 
 public interface CircleElements extends StyledElements {
 
-    public Iterable<? extends Circle> getCircles();
+	public Iterable<? extends Circle> getCircles();
 
 }

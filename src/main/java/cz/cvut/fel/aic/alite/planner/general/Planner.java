@@ -27,70 +27,70 @@ import java.util.PriorityQueue;
  */
 public class Planner {
 
-    private Planner() {
-    }
+	private Planner() {
+	}
 
-    /**
-     * Finds path between two points using A* algorithm.
-     *
-     * @param problem specification of the planning problem
-     * @return last operator in the resulting sequence (found path)
-     */
-    public static Operator findPath(Problem specification) {
-        //specification.check();
-        return findPathProcess(specification);
-    }
+	/**
+	 * Finds path between two points using A* algorithm.
+	 *
+	 * @param problem specification of the planning problem
+	 * @return last operator in the resulting sequence (found path)
+	 */
+	public static Operator findPath(Problem specification) {
+		//specification.check();
+		return findPathProcess(specification);
+	}
 
-    private static Operator findPathProcess(Problem problem) {
-        Operator neighbors[];
-        HashMap<Operator, Operator> nodeCache = new HashMap<Operator, Operator>();
-        PriorityQueue<Operator> open = new PriorityQueue<Operator>();
-        HashSet<Operator> close = new HashSet<Operator>();
-        Operator current, operatorCached;
+	private static Operator findPathProcess(Problem problem) {
+		Operator neighbors[];
+		HashMap<Operator, Operator> nodeCache = new HashMap<Operator, Operator>();
+		PriorityQueue<Operator> open = new PriorityQueue<Operator>();
+		HashSet<Operator> close = new HashSet<Operator>();
+		Operator current, operatorCached;
 
-        current = problem.getStartingOperator();
-        open.add(current);
+		current = problem.getStartingOperator();
+		open.add(current);
 
-        while(!open.isEmpty()) {
-            current = open.poll();
-            close.add(current);
+		while(!open.isEmpty()) {
+			current = open.poll();
+			close.add(current);
 
-            if (current.isGoal()) {
-                break;
-            }
+			if (current.isGoal()) {
+				break;
+			}
 
-            // prepare all neighbours for expansion
-            neighbors = current.getNeighbors();
+			// prepare all neighbours for expansion
+			neighbors = current.getNeighbors();
 
-            for (Operator neighbor : neighbors) {
-                if (neighbor == null) {
-                    // all neighbors processed
-                    break;
-                }
-                if (close.contains(neighbor)) {
-                    // skip node
-                    continue;
-                }
+			for (Operator neighbor : neighbors) {
+				if (neighbor == null) {
+					// all neighbors processed
+					break;
+				}
+				if (close.contains(neighbor)) {
+					// skip node
+					continue;
+				}
 
-                if ((operatorCached = nodeCache.get(neighbor)) != null) {
-                    // check if current is better than old
-                    if (neighbor.compareTo(operatorCached) <= 0) {
-                        // skip
-                        continue;
-                    }
-                    // replace it
-                    open.remove(neighbor);
-                }
+				if ((operatorCached = nodeCache.get(neighbor)) != null) {
+					// check if current is better than old
+					if (neighbor.compareTo(operatorCached) <= 0) {
+						// skip
+						continue;
+					}
+					// replace it
+					open.remove(neighbor);
+				}
 
-                open.add(neighbor);
-                nodeCache.put(neighbor, neighbor);
-            }
-        }
+				open.add(neighbor);
+				nodeCache.put(neighbor, neighbor);
+			}
+		}
 
-        if (!current.isGoal()) {
-            throw new RuntimeException("PathNotFoundException");
-        }
+		if (!current.isGoal()) {
+			throw new RuntimeException("PathNotFoundException");
+		}
 
-        return current;
-    }
+		return current;
+	}
 }

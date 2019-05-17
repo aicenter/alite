@@ -30,36 +30,36 @@ import cz.cvut.fel.aic.alite.vis.element.aggregation.ImageElements;
 
 public abstract class ImageLayer extends TerminalLayer {
 
-    private final ImageElements imageElements;
+	private final ImageElements imageElements;
 
-    protected ImageLayer(ImageElements imageElements) {
-        this.imageElements = imageElements;
-    }
+	protected ImageLayer(ImageElements imageElements) {
+		this.imageElements = imageElements;
+	}
 
-    protected ImageElements getImageElements() {
-        return imageElements;
-    }
+	protected ImageElements getImageElements() {
+		return imageElements;
+	}
 
-    public static BufferedImage loadImage(File file) {
-        BufferedImage img = null;
-        try {
-            img = loadImage(file.toURI().toURL());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return img;
-    }
+	public static BufferedImage loadImage(File file) {
+		BufferedImage img = null;
+		try {
+			img = loadImage(file.toURI().toURL());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return img;
+	}
 
-    public static BufferedImage loadImage(URL file) {
-        BufferedImage img = null;
+	public static BufferedImage loadImage(URL file) {
+		BufferedImage img = null;
 
-        try {
-            img = ImageIO.read(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		try {
+			img = ImageIO.read(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        return img;
-    }
+		return img;
+	}
 
 }

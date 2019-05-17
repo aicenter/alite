@@ -28,30 +28,30 @@ import java.util.List;
  * @author fido
  */
 public abstract class AliteEntity implements EventHandler{
-    
-    private TypedSimulation typedSimulation;
+	
+	private TypedSimulation typedSimulation;
 
-    
-    public void init(TypedSimulation eventProcessor){
-        if(getEventTypesToHandle() != null){
-            eventProcessor.addEventHandler(this, getEventTypesToHandle());
-        }
-        typedSimulation = eventProcessor;
-    }
-    
-    protected List<Enum> getEventTypesToHandle(){
-        return null;
-    }
+	
+	public void init(TypedSimulation eventProcessor){
+		if(getEventTypesToHandle() != null){
+			eventProcessor.addEventHandler(this, getEventTypesToHandle());
+		}
+		typedSimulation = eventProcessor;
+	}
+	
+	protected List<Enum> getEventTypesToHandle(){
+		return null;
+	}
 
-    @Override
-    public EventProcessor getEventProcessor() {
-        return typedSimulation;
-    }
+	@Override
+	public EventProcessor getEventProcessor() {
+		return typedSimulation;
+	}
 
-    @Override
-    public void handleEvent(Event event){
-        
-    }
+	@Override
+	public void handleEvent(Event event){
+		
+	}
 
-    
+	
 }

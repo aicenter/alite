@@ -24,16 +24,16 @@ package cz.cvut.fel.aic.alite.communication;
  */
 public interface CommunicationSender {
 
-    /**
-     * Sends a message.
-     *
-     * @param message
-     */
-    void sendMessage(Message message);
+	/**
+	 * Sends a message.
+	 *
+	 * @param message
+	 */
+	void sendMessage(Message message);
 
-    /**
-     * Gets communication address.
-     * @return
-     */
-    String getAddress();
+	/**
+	 * Gets communication address.
+	 * @return
+	 */
+	String getAddress();
 }

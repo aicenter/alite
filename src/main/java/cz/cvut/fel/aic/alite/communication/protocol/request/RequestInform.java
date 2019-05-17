@@ -28,14 +28,14 @@ import cz.cvut.fel.aic.alite.communication.protocol.DefaultProtocol;
  */
 public class RequestInform extends DefaultProtocol {
 
-    static final String REQUEST_INFORM_PROTOCOL_NAME = "REQUEST_INFORM_PROTOCOL";
+	static final String REQUEST_INFORM_PROTOCOL_NAME = "REQUEST_INFORM_PROTOCOL";
 
-    /**
-     * 
-     * @param communicator
-     * @param name
-     */
-    public RequestInform(Communicator communicator, String name) {
-        super(communicator, REQUEST_INFORM_PROTOCOL_NAME + ": " + name);
-    }
+	/**
+	 * 
+	 * @param communicator
+	 * @param name
+	 */
+	public RequestInform(Communicator communicator, String name) {
+		super(communicator, REQUEST_INFORM_PROTOCOL_NAME + ": " + name);
+	}
 }

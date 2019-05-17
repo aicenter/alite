@@ -21,18 +21,18 @@ package cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver;
 
 public class ExpandManeuver {
 
-    private ExpandManeuverType type;
+	private ExpandManeuverType type;
 
-    public ExpandManeuver(ExpandManeuverType type) {
-        this.type = type;
-    }
+	public ExpandManeuver(ExpandManeuverType type) {
+		this.type = type;
+	}
 
-    public ExpandManeuverType getType() {
-        return type;
-    }
+	public ExpandManeuverType getType() {
+		return type;
+	}
 
-    public void setType(ExpandManeuverType value) {
-        this.type = value;
-    }
+	public void setType(ExpandManeuverType value) {
+		this.type = value;
+	}
 
 }

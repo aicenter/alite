@@ -25,6 +25,6 @@ import cz.cvut.fel.aic.alite.vis.element.StyledPoint;
  */
 public interface StyledPointElements extends Elements {
 
-    Iterable<? extends StyledPoint> getPoints();
+	Iterable<? extends StyledPoint> getPoints();
 
 }

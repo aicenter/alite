@@ -22,6 +22,6 @@ import java.awt.image.BufferedImage;
 
 public interface Image extends Element {
 
-    BufferedImage getImage();
+	BufferedImage getImage();
 
 }

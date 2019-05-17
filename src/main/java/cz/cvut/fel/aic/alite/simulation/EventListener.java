@@ -24,5 +24,5 @@ package cz.cvut.fel.aic.alite.simulation;
  * @author Ondrej Milenovsky
  * */
 public interface EventListener {
-    public void eventFired();
+	public void eventFired();
 }

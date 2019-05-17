@@ -25,19 +25,19 @@ package cz.cvut.fel.aic.alite.planner.general;
  */
 
 public interface Operator extends Comparable<Operator>{
-    /** Actions (operator instances) applicable in state S, i.e. the state in which this operator was applied. **/
-    public Operator[] getNeighbors();
-    /** Determines if state S, i.e. the state in which this operator was applied, is the goal state. **/
-    public boolean isGoal();
+	/** Actions (operator instances) applicable in state S, i.e. the state in which this operator was applied. **/
+	public Operator[] getNeighbors();
+	/** Determines if state S, i.e. the state in which this operator was applied, is the goal state. **/
+	public boolean isGoal();
 
 
-    /** Returns the cost of getting to state S, i.e. the state in which this operator was applied. In A*, this will be g. **/
-    public double getCost();
-    /** Returns the heuristic guess of getting from state S, i.e. the state in which this operator was applied top the goal state. In A*, this will be h. */
-    public double getHeuristicEstimate();
+	/** Returns the cost of getting to state S, i.e. the state in which this operator was applied. In A*, this will be g. **/
+	public double getCost();
+	/** Returns the heuristic guess of getting from state S, i.e. the state in which this operator was applied top the goal state. In A*, this will be h. */
+	public double getHeuristicEstimate();
 
-    /** Sets the predecessor of this operator, so that the sequence can be recovered from the last operator.*/
-    public void setPredecessor(Operator pred);
-    public Operator getPredecessor();
+	/** Sets the predecessor of this operator, so that the sequence can be recovered from the last operator.*/
+	public void setPredecessor(Operator pred);
+	public Operator getPredecessor();
 
 }

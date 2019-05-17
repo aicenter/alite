@@ -30,67 +30,67 @@ import cz.cvut.fel.aic.alite.planner.spatialmaneuver.PathFindSpecification;
  */
 public class TurnPitchManeuver extends Maneuver {
 
-    private TurnManeuver turn;
-    private PitchManeuver pitch;
+	private TurnManeuver turn;
+	private PitchManeuver pitch;
 
-    /**
-     * @param start
-     * @param direction
-     * @param zone
-     */
-    public TurnPitchManeuver(TurnManeuver turn, PitchManeuver pitch, PathFindSpecification specification) {
-        super(turn.start, turn.direction, turn.time, specification);
+	/**
+	 * @param start
+	 * @param direction
+	 * @param zone
+	 */
+	public TurnPitchManeuver(TurnManeuver turn, PitchManeuver pitch, PathFindSpecification specification) {
+		super(turn.start, turn.direction, turn.time, specification);
 
-        this.turn = turn;
-        this.pitch = pitch;
-    }
+		this.turn = turn;
+		this.pitch = pitch;
+	}
 
-    @Override
-    public Point3d getEnd() {
-        return pitch.getEnd();
-    }
+	@Override
+	public Point3d getEnd() {
+		return pitch.getEnd();
+	}
 
-    @Override
-    public Vector3d getEndDirection() {
-        return pitch.getEndDirection();
-    }
+	@Override
+	public Vector3d getEndDirection() {
+		return pitch.getEndDirection();
+	}
 
-    @Override
-    public double getLength() {
-        return turn.getLength() + pitch.getLength();
-    }
+	@Override
+	public double getLength() {
+		return turn.getLength() + pitch.getLength();
+	}
 
-    public TurnManeuver getTurn() {
-        return turn;
-    }
+	public TurnManeuver getTurn() {
+		return turn;
+	}
 
-    public PitchManeuver getPitch() {
-        return pitch;
-    }
+	public PitchManeuver getPitch() {
+		return pitch;
+	}
 
-    @Override
-    public void setPredecessor(Maneuver predecessor) {
-        super.setPredecessor(predecessor);
+	@Override
+	public void setPredecessor(Maneuver predecessor) {
+		super.setPredecessor(predecessor);
 
-        turn.setPredecessor(predecessor);
-        predecessor = turn;
-        pitch.setPredecessor(predecessor);
-        predecessor = pitch;
-    }
+		turn.setPredecessor(predecessor);
+		predecessor = turn;
+		pitch.setPredecessor(predecessor);
+		predecessor = pitch;
+	}
 
-    @Override
-    public boolean isIntersectingFullZone() {
-        return turn.isIntersectingFullZone() || pitch.isIntersectingFullZone();
-    }
+	@Override
+	public boolean isIntersectingFullZone() {
+		return turn.isIntersectingFullZone() || pitch.isIntersectingFullZone();
+	}
 
-    @Override
-    public boolean isValid() {
-        return turn.isValid() && pitch.isValid();
-    }
+	@Override
+	public boolean isValid() {
+		return turn.isValid() && pitch.isValid();
+	}
 
-    @Override
-    public void accept(ManeuverVisitor visitor) {
-        visitor.visit(this);
-    }
+	@Override
+	public void accept(ManeuverVisitor visitor) {
+		visitor.visit(this);
+	}
 
 }

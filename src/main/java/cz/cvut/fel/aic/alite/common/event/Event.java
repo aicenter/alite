@@ -34,62 +34,62 @@ package cz.cvut.fel.aic.alite.common.event;
  */
 public final class Event implements Comparable<Event> {
 
-    private final long id;
-    private final long time;
-    private final Enum type;
-    private final String owner;
-    private final Object content;
-    private final EventHandler recipient;
+	private final long id;
+	private final long time;
+	private final Enum type;
+	private final String owner;
+	private final Object content;
+	private final EventHandler recipient;
 
 
-    Event(long id, long time, Enum type, EventHandler recipient, String owner, Object content) {
-        this.id = id;
-        this.time = time;
-        this.recipient = recipient;
-        this.type = type;
-        this.owner = owner;
-        this.content = content;
-    }
+	Event(long id, long time, Enum type, EventHandler recipient, String owner, Object content) {
+		this.id = id;
+		this.time = time;
+		this.recipient = recipient;
+		this.type = type;
+		this.owner = owner;
+		this.content = content;
+	}
 
-    public Object getContent() {
-        return content;
-    }
+	public Object getContent() {
+		return content;
+	}
 
-    public String getOwner() {
-        return owner;
-    }
+	public String getOwner() {
+		return owner;
+	}
 
-    public Enum getType() {
-        return type;
-    }
+	public Enum getType() {
+		return type;
+	}
 
-    public long getTime() {
-        return time;
-    }
+	public long getTime() {
+		return time;
+	}
 
-    public EventHandler getRecipient() {
-        return recipient;
-    }
+	public EventHandler getRecipient() {
+		return recipient;
+	}
 
-    public boolean isType(Enum eventType) {
-        return type.equals(eventType);
-    }
+	public boolean isType(Enum eventType) {
+		return type.equals(eventType);
+	}
 
-    @Override
-    public int compareTo(Event event) {
-        if (time == event.time) {
-            if (id == event.id) {
-                throw new RuntimeException("Found same event ids in comparation!");
-            }
-            return (id < event.id ? -1 : 1);
-        } else {
-            return (time < event.time ? -1 : (time == event.time ? 0 : 1));
-        }
-    }
+	@Override
+	public int compareTo(Event event) {
+		if (time == event.time) {
+			if (id == event.id) {
+				throw new RuntimeException("Found same event ids in comparation!");
+			}
+			return (id < event.id ? -1 : 1);
+		} else {
+			return (time < event.time ? -1 : (time == event.time ? 0 : 1));
+		}
+	}
 
-    @Override
-    public String toString() {
-        return time + ": " + type + "(" + owner + "): " + content;
-    }
+	@Override
+	public String toString() {
+		return time + ": " + type + "(" + owner + "): " + content;
+	}
 
 }

@@ -22,8 +22,8 @@ import javax.vecmath.Point3d;
 
 public interface Circle extends Element {
 
-    Point3d getPosition();
+	Point3d getPosition();
 
-    double getRadius();
+	double getRadius();
 
 }

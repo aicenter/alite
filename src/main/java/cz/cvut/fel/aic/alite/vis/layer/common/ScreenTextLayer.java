@@ -28,29 +28,29 @@ import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
  */
 public class ScreenTextLayer extends CommonLayer {
 
-    public static interface TextProvider {
-        String getText();
-    }
+	public static interface TextProvider {
+		String getText();
+	}
 
-    private final Color color;
-    private final int x;
-    private final int y;
-    private final TextProvider textProvider;
+	private final Color color;
+	private final int x;
+	private final int y;
+	private final TextProvider textProvider;
 
-    protected ScreenTextLayer(int x, int y, Color color, TextProvider textProvider) {
-        this.textProvider = textProvider;
-        this.color = color;
-        this.x = x;
-        this.y = y;
-    }
+	protected ScreenTextLayer(int x, int y, Color color, TextProvider textProvider) {
+		this.textProvider = textProvider;
+		this.color = color;
+		this.x = x;
+		this.y = y;
+	}
 
-    @Override
-    public void paint(Graphics2D canvas) {
-        canvas.setColor(color);
-        canvas.drawString(textProvider.getText(),x,y);
-    }
+	@Override
+	public void paint(Graphics2D canvas) {
+		canvas.setColor(color);
+		canvas.drawString(textProvider.getText(),x,y);
+	}
 
-    public static VisLayer create(int x, int y, Color color, TextProvider textProvider) {
-        return new ScreenTextLayer(x, y, color, textProvider);
-    }
+	public static VisLayer create(int x, int y, Color color, TextProvider textProvider) {
+		return new ScreenTextLayer(x, y, color, textProvider);
+	}
 }

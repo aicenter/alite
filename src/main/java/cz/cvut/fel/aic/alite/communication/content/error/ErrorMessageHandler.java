@@ -28,26 +28,26 @@ import cz.cvut.fel.aic.alite.communication.MessageHandler;
  */
 public abstract class ErrorMessageHandler implements MessageHandler {
 
-    /**
-     *
-     */
-    public ErrorMessageHandler() {
-    }
+	/**
+	 *
+	 */
+	public ErrorMessageHandler() {
+	}
 
 
-    @Override
-    public void notify(Message message) {
-        if (ErrorContent.class.equals(message.getContent().getClass())) {
-            ErrorContent content = (ErrorContent) message.getContent();
-            handleMessage(message, content);
-        }
-    }
+	@Override
+	public void notify(Message message) {
+		if (ErrorContent.class.equals(message.getContent().getClass())) {
+			ErrorContent content = (ErrorContent) message.getContent();
+			handleMessage(message, content);
+		}
+	}
 
-    /**
-     * Handler for error messages.
-     *
-     * @param message
-     * @param content
-     */
-    abstract public void handleMessage(Message message, ErrorContent content);
+	/**
+	 * Handler for error messages.
+	 *
+	 * @param message
+	 * @param content
+	 */
+	abstract public void handleMessage(Message message, ErrorContent content);
 }

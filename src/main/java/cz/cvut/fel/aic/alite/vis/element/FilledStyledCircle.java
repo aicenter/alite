@@ -22,8 +22,8 @@ import java.awt.Color;
 
 public interface FilledStyledCircle extends Circle {
 
-    public Color getColor();
+	public Color getColor();
 
-    public Color getFillColor();
+	public Color getFillColor();
 
 }

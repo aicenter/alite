@@ -38,8 +38,8 @@ import cz.cvut.fel.aic.alite.simulation.Simulation;
  */
 public interface Creator {
 
-    public void init(String[] args);
+	public void init(String[] args);
 
-    public void create();
+	public void create();
 
 }

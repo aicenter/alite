@@ -30,47 +30,47 @@ import java.io.ObjectOutput;
  */
 public class ExternalizableContent extends Content implements Externalizable {
 
-    private Object data;
+	private Object data;
 
-    public ExternalizableContent() {
-        super(null);
-    }
+	public ExternalizableContent() {
+		super(null);
+	}
 
-    /**
-     *
-     * @param data the content data
-     */
-    public ExternalizableContent(Object data) {
-        super(null);
-        this.data = data;
-    }
+	/**
+	 *
+	 * @param data the content data
+	 */
+	public ExternalizableContent(Object data) {
+		super(null);
+		this.data = data;
+	}
 
-    /**
-     * Returns the content data.
-     *
-     * @return the content data
-     */
-    public Object getData() {
-        return data;
-    }
+	/**
+	 * Returns the content data.
+	 *
+	 * @return the content data
+	 */
+	public Object getData() {
+		return data;
+	}
 
-    @Override
-    public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeObject(data);
-        out.flush();
-    }
+	@Override
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeObject(data);
+		out.flush();
+	}
 
-    @Override
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        data = in.readObject();
-    }
+	@Override
+	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+		data = in.readObject();
+	}
 
-    public String toString() {
-        if (data == null) {
-            return "";
-        } else {
-            return data.toString();
-        }
-    }
+	public String toString() {
+		if (data == null) {
+			return "";
+		} else {
+			return data.toString();
+		}
+	}
 
 }

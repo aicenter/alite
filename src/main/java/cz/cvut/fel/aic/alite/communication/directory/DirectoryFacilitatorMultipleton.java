@@ -32,12 +32,12 @@ import java.util.Map;
 public class DirectoryFacilitatorMultipleton extends CapabilityRegisterImpl {
 
 
-    private static final Map<String, CapabilityRegisterImpl> instances = new HashMap<String, CapabilityRegisterImpl>();
+	private static final Map<String, CapabilityRegisterImpl> instances = new HashMap<String, CapabilityRegisterImpl>();
 
-    static public CapabilityRegister getInstance(String id) {
-        if (!instances.containsKey(id)) {
-            instances.put(id, new CapabilityRegisterImpl());
-        }
-        return instances.get(id);
-    }
+	static public CapabilityRegister getInstance(String id) {
+		if (!instances.containsKey(id)) {
+			instances.put(id, new CapabilityRegisterImpl());
+		}
+		return instances.get(id);
+	}
 }

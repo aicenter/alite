@@ -22,6 +22,6 @@ import cz.cvut.fel.aic.alite.vis.element.Line;
 
 public interface LineElements extends StyledElements {
 
-    Iterable<? extends Line> getLines();
+	Iterable<? extends Line> getLines();
 
 }

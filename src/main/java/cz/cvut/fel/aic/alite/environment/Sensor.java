@@ -34,20 +34,20 @@ import cz.cvut.fel.aic.alite.environment.Environment.Handler;
  */
 public abstract class Sensor {
 
-    private final Environment environment;
-    private final Entity relatedEntity;
+	private final Environment environment;
+	private final Entity relatedEntity;
 
-    public Sensor(Environment environment, Entity relatedEntity) {
-        this.environment = environment;
-        this.relatedEntity = relatedEntity;
-    }
+	public Sensor(Environment environment, Entity relatedEntity) {
+		this.environment = environment;
+		this.relatedEntity = relatedEntity;
+	}
 
-    protected Environment getEnvironment() {
-        return environment;
-    }
+	protected Environment getEnvironment() {
+		return environment;
+	}
 
-    protected Entity getRelatedEntity() {
-        return relatedEntity;
-    }
+	protected Entity getRelatedEntity() {
+		return relatedEntity;
+	}
 
 }

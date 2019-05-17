@@ -36,23 +36,23 @@ import cz.cvut.fel.aic.alite.environment.Storage;
  */
 public class EventBasedStorage extends Storage implements EventHandler {
 
-    private final EventBasedEnvironment environment;
+	private final EventBasedEnvironment environment;
 
-    public EventBasedStorage(EventBasedEnvironment environment) {
-        this.environment = environment;
-    }
+	public EventBasedStorage(EventBasedEnvironment environment) {
+		this.environment = environment;
+	}
 
-    protected EventBasedEnvironment getEnvironment() {
-        return environment;
-    }
+	protected EventBasedEnvironment getEnvironment() {
+		return environment;
+	}
 
-    @Override
-    public EventProcessor getEventProcessor() {
-        return environment.getEventProcessor();
-    }
+	@Override
+	public EventProcessor getEventProcessor() {
+		return environment.getEventProcessor();
+	}
 
-    @Override
-    public void handleEvent(Event event) {
-    }
+	@Override
+	public void handleEvent(Event event) {
+	}
 
 }

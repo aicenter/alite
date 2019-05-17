@@ -26,8 +26,8 @@ import java.awt.Color;
  * */
 public interface StyledPoint extends Point {
 
-    public Color getColor();
+	public Color getColor();
 
-    public int getWidth();
+	public int getWidth();
 
 }

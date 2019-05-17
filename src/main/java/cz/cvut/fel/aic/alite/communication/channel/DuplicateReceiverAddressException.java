@@ -24,27 +24,27 @@ package cz.cvut.fel.aic.alite.communication.channel;
  */
 public class DuplicateReceiverAddressException extends CommunicationChannelException {
 
-    private static final long serialVersionUID = 1895646481681762411L;
-    private final String receiverAddress;
+	private static final long serialVersionUID = 1895646481681762411L;
+	private final String receiverAddress;
 
-    /**
-     *
-     * @param address
-     */
-    public DuplicateReceiverAddressException(String address) {
-        this.receiverAddress = address;
-    }
+	/**
+	 *
+	 * @param address
+	 */
+	public DuplicateReceiverAddressException(String address) {
+		this.receiverAddress = address;
+	}
 
-    /**
-     *
-     * @return
-     */
-    public String getDuplicateAddress() {
-        return receiverAddress;
-    }
+	/**
+	 *
+	 * @return
+	 */
+	public String getDuplicateAddress() {
+		return receiverAddress;
+	}
 
-    @Override
-    public String getMessage() {
-        return "Duplicate receiver address in communication channel: " + receiverAddress;
-    }
+	@Override
+	public String getMessage() {
+		return "Duplicate receiver address in communication channel: " + receiverAddress;
+	}
 }

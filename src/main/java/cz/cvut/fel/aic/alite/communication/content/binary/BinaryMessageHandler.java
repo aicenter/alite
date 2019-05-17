@@ -30,19 +30,19 @@ import cz.cvut.fel.aic.alite.communication.MessageHandler;
  */
 public abstract class BinaryMessageHandler implements MessageHandler {
 
-    @Override
-    public void notify(Message message) {
-        if (BinaryContent.class.equals(message.getContent().getClass())) {
-        	BinaryContent content = (BinaryContent) message.getContent();
-            handleMessage(message, content);
-        }
-    }
+	@Override
+	public void notify(Message message) {
+		if (BinaryContent.class.equals(message.getContent().getClass())) {
+			BinaryContent content = (BinaryContent) message.getContent();
+			handleMessage(message, content);
+		}
+	}
 
-    /**
-     * Handler for binary messages.
-     *
-     * @param message
-     * @param content
-     */
-    abstract public void handleMessage(Message message, BinaryContent content);
+	/**
+	 * Handler for binary messages.
+	 *
+	 * @param message
+	 * @param content
+	 */
+	abstract public void handleMessage(Message message, BinaryContent content);
 }

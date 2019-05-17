@@ -26,45 +26,45 @@ import cz.cvut.fel.aic.alite.vis.layer.toggle.KeyToggleLayer;
 
 public class FpsLayer extends CommonLayer {
 
-    private final Color color;
+	private final Color color;
 
-    private int fps;
-    private int fpsCount = 0;
-    private long time = System.currentTimeMillis();
+	private int fps;
+	private int fpsCount = 0;
+	private long time = System.currentTimeMillis();
 
-    protected FpsLayer(Color color) {
-        this.color = color;
-    }
+	protected FpsLayer(Color color) {
+		this.color = color;
+	}
 
-    @Override
-    public void paint(Graphics2D canvas) {
-        fpsCount++;
-        if (fpsCount == 10) {
-            long now = System.currentTimeMillis();
-            fps = (int) (10 * 1000 / (now - time + 1));
-            time = now;
-            fpsCount = 0;
-        }
+	@Override
+	public void paint(Graphics2D canvas) {
+		fpsCount++;
+		if (fpsCount == 10) {
+			long now = System.currentTimeMillis();
+			fps = (int) (10 * 1000 / (now - time + 1));
+			time = now;
+			fpsCount = 0;
+		}
 
-        canvas.setColor(color);
-        canvas.drawString("FPS: " + fps, 15, 40);
-    }
+		canvas.setColor(color);
+		canvas.drawString("FPS: " + fps, 15, 40);
+	}
 
-    public static VisLayer create(final Color color) {
-        KeyToggleLayer toggle = KeyToggleLayer.create("f");
-        toggle.addSubLayer(new FpsLayer(color));
+	public static VisLayer create(final Color color) {
+		KeyToggleLayer toggle = KeyToggleLayer.create("f");
+		toggle.addSubLayer(new FpsLayer(color));
 
-        return toggle;
-    }
+		return toggle;
+	}
 
-    public static VisLayer create() {
-        return create(Color.BLUE);
-    }
+	public static VisLayer create() {
+		return create(Color.BLUE);
+	}
 
-    @Override
-    public String getLayerDescription() {
-        String description = "[FPS] The layer shows current visualisation FPS (Frames per Second).";
-        return buildLayersDescription(description);
-    }
+	@Override
+	public String getLayerDescription() {
+		String description = "[FPS] The layer shows current visualisation FPS (Frames per Second).";
+		return buildLayersDescription(description);
+	}
 
 }

@@ -29,27 +29,27 @@ import java.awt.Point;
  */
 public class RightBottomOffsetPositionFunction implements PositionFunction {
 
-    private int rightOffset;
-    private int bottomOffset;
+	private int rightOffset;
+	private int bottomOffset;
 
-    /**
-     * @param rightOffset distance between right edge of the drawn rectangle and right border of canvas
-     * @param bottomOffset distance between bottom edge of the drawn rectangle and bottom border of canvas
-     */
-    public RightBottomOffsetPositionFunction(int rightOffset, int bottomOffset) {
-        this.rightOffset = rightOffset;
-        this.bottomOffset = bottomOffset;
-    }
+	/**
+	 * @param rightOffset distance between right edge of the drawn rectangle and right border of canvas
+	 * @param bottomOffset distance between bottom edge of the drawn rectangle and bottom border of canvas
+	 */
+	public RightBottomOffsetPositionFunction(int rightOffset, int bottomOffset) {
+		this.rightOffset = rightOffset;
+		this.bottomOffset = bottomOffset;
+	}
 
-    @Override
-    public Point getTopLeftPoint(int rectangeWidth, int rectangleHeight, Dimension drawingDimension) {
-        return new Point((int) (drawingDimension.getWidth() - rightOffset - rectangeWidth),
-                (int) (drawingDimension.getHeight() - bottomOffset - rectangleHeight));
-    }
+	@Override
+	public Point getTopLeftPoint(int rectangeWidth, int rectangleHeight, Dimension drawingDimension) {
+		return new Point((int) (drawingDimension.getWidth() - rightOffset - rectangeWidth),
+				(int) (drawingDimension.getHeight() - bottomOffset - rectangleHeight));
+	}
 
-    @Override
-    public void moveLocation(int deltaX, int deltaY) {
-        rightOffset -= deltaX;
-        bottomOffset -= deltaY;
-    }
+	@Override
+	public void moveLocation(int deltaX, int deltaY) {
+		rightOffset -= deltaX;
+		bottomOffset -= deltaY;
+	}
 }

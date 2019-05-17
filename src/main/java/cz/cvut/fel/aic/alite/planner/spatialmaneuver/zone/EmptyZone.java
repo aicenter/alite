@@ -25,17 +25,17 @@ import javax.vecmath.Point3d;
 
 public class EmptyZone implements Zone {
 
-    @Override
-    public boolean testLine(Point3d point1, Point3d point2, Point3d outPoint) {
-        return false;
-    }
+	@Override
+	public boolean testLine(Point3d point1, Point3d point2, Point3d outPoint) {
+		return false;
+	}
 
-    @Override
-    public boolean testPoint(Point3d point) {
-        return false;
-    }
-    
-    @Override
+	@Override
+	public boolean testPoint(Point3d point) {
+		return false;
+	}
+	
+	@Override
 	public boolean testLine(Point3d point1, Point3d point2) {
 		return false;
 	}
@@ -45,9 +45,9 @@ public class EmptyZone implements Zone {
 		return new LinkedList<Point3d>();
 	}
 
-    @Override
-    public void accept(ZoneVisitor visitor) {
-        visitor.visit(this);
-    }
+	@Override
+	public void accept(ZoneVisitor visitor) {
+		visitor.visit(this);
+	}
 
 }

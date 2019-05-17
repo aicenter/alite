@@ -35,51 +35,51 @@ import cz.cvut.fel.aic.alite.communication.protocol.Performative;
  */
 public abstract class QueryResponder extends Query {
 
-    private final MessageHandler messagehandler;
-    final String entityAddress;
+	private final MessageHandler messagehandler;
+	final String entityAddress;
 
-    /**
-     *
-     * @param communicator
-     * @param directory
-     * @param name
-     */
-    public QueryResponder(final Communicator communicator, CapabilityRegister directory, String name) {
-        super(communicator, name);
-        this.entityAddress = communicator.getAddress();
-        directory.register(entityAddress, getName());
-        messagehandler = new ProtocolMessageHandler(this) {
+	/**
+	 *
+	 * @param communicator
+	 * @param directory
+	 * @param name
+	 */
+	public QueryResponder(final Communicator communicator, CapabilityRegister directory, String name) {
+		super(communicator, name);
+		this.entityAddress = communicator.getAddress();
+		directory.register(entityAddress, getName());
+		messagehandler = new ProtocolMessageHandler(this) {
 
-            @Override
-            public void handleMessage(Message message, ProtocolContent content) {
-                processMessage(message, content);
-            }
-        };
-        communicator.addMessageHandler(messagehandler);
-    }
+			@Override
+			public void handleMessage(Message message, ProtocolContent content) {
+				processMessage(message, content);
+			}
+		};
+		communicator.addMessageHandler(messagehandler);
+	}
 
-    private void processMessage(Message message, ProtocolContent content) {
-        String session = content.getSession();
-        Object body = content.getData();
-        switch (content.getPerformative()) {
-            case QUERY:
-                Object answer = handleQuery(body);
-                Message msg = createReply(message, Performative.INFORM, answer, session);
-                communicator.sendMessage(msg);
-                break;
-            default:
-        }
-    }
+	private void processMessage(Message message, ProtocolContent content) {
+		String session = content.getSession();
+		Object body = content.getData();
+		switch (content.getPerformative()) {
+			case QUERY:
+				Object answer = handleQuery(body);
+				Message msg = createReply(message, Performative.INFORM, answer, session);
+				communicator.sendMessage(msg);
+				break;
+			default:
+		}
+	}
 
-    private Message createReply(Message message, Performative performative, Object body, String session) {
-        return communicator.createReply(message, new ProtocolContent(this, performative, body, session));
-    }
+	private Message createReply(Message message, Performative performative, Object body, String session) {
+		return communicator.createReply(message, new ProtocolContent(this, performative, body, session));
+	}
 
-    /**
-     * This methods is called if some other agent sends Query.
-     *
-     * @param query the data of the query send by the initiator
-     * @return the queried object to be returned to the initiator
-     */
-    abstract protected Object handleQuery(Object query);
+	/**
+	 * This methods is called if some other agent sends Query.
+	 *
+	 * @param query the data of the query send by the initiator
+	 * @return the queried object to be returned to the initiator
+	 */
+	abstract protected Object handleQuery(Object query);
 }

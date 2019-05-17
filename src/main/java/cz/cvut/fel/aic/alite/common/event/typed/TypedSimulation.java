@@ -31,43 +31,43 @@ import java.util.List;
  * @author fido
  */
 public class TypedSimulation extends Simulation{
-    
-    private final HashMap<Enum,List<EventHandler>> listeningEntities;
+	
+	private final HashMap<Enum,List<EventHandler>> listeningEntities;
 
-    public TypedSimulation(long simulationEndTime) {
-        super(simulationEndTime);
-        listeningEntities = new HashMap<>();
-    }
-    
-    
-    
-    public void addEventHandler(EventHandler eventHandler, List<Enum> eventsTypesToHandle) {
-        for (Enum eventType : eventsTypesToHandle) {
-            if(!listeningEntities.containsKey(eventType)){
-                listeningEntities.put(eventType, new LinkedList<>());
-            }
-            listeningEntities.get(eventType).add(eventHandler);
-        }
-    }
+	public TypedSimulation(long simulationEndTime) {
+		super(simulationEndTime);
+		listeningEntities = new HashMap<>();
+	}
+	
+	
+	
+	public void addEventHandler(EventHandler eventHandler, List<Enum> eventsTypesToHandle) {
+		for (Enum eventType : eventsTypesToHandle) {
+			if(!listeningEntities.containsKey(eventType)){
+				listeningEntities.put(eventType, new LinkedList<>());
+			}
+			listeningEntities.get(eventType).add(eventHandler);
+		}
+	}
 
-    @Override
-    protected void fireEvent(Event event) {
-        if (event.getRecipient() != null) {
-            event.getRecipient().handleEvent(event);
-        }
-        else {
-            List<EventHandler> relevantEntities = listeningEntities.get(event.getType());
-            if(relevantEntities != null){
-                for (EventHandler entity : relevantEntities) {
-                    entity.handleEvent(event);
-                }
-            }
-            if (event.isType(EventProcessorEventType.STOP)) {
-                eventQueue.clear();
-            }
-        }
-    }
-    
-    
-    
+	@Override
+	protected void fireEvent(Event event) {
+		if (event.getRecipient() != null) {
+			event.getRecipient().handleEvent(event);
+		}
+		else {
+			List<EventHandler> relevantEntities = listeningEntities.get(event.getType());
+			if(relevantEntities != null){
+				for (EventHandler entity : relevantEntities) {
+					entity.handleEvent(event);
+				}
+			}
+			if (event.isType(EventProcessorEventType.STOP)) {
+				eventQueue.clear();
+			}
+		}
+	}
+	
+	
+	
 }

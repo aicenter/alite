@@ -28,8 +28,8 @@ import java.awt.Color;
  */
 public interface StyledElements extends Elements {
 
-    public Color getColor();
+	public Color getColor();
 
-    public int getStrokeWidth();
+	public int getStrokeWidth();
 
 }

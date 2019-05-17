@@ -36,61 +36,61 @@ import cz.cvut.fel.aic.alite.communication.channel.DirectCommunicationChannel;
  */
 public class EventBasedCommunicationChannel extends DirectCommunicationChannel implements EventHandler {
 
-    private final EventProcessor eventProcessor;
+	private final EventProcessor eventProcessor;
 
-    /**
-     *
-     * @param communicator
-     */
-    @Deprecated
-    public EventBasedCommunicationChannel(CommunicationReceiver communicator, EventProcessor eventProcessor) throws CommunicationChannelException {
-        super(communicator);
-        this.eventProcessor = eventProcessor;
-    }
+	/**
+	 *
+	 * @param communicator
+	 */
+	@Deprecated
+	public EventBasedCommunicationChannel(CommunicationReceiver communicator, EventProcessor eventProcessor) throws CommunicationChannelException {
+		super(communicator);
+		this.eventProcessor = eventProcessor;
+	}
 
-    public EventBasedCommunicationChannel(CommunicationReceiver communicator, EventProcessor eventProcessor, ReceiverTable channelReceiverTable) throws CommunicationChannelException {
-        super(communicator, channelReceiverTable);
-        this.eventProcessor = eventProcessor;
-    }
+	public EventBasedCommunicationChannel(CommunicationReceiver communicator, EventProcessor eventProcessor, ReceiverTable channelReceiverTable) throws CommunicationChannelException {
+		super(communicator, channelReceiverTable);
+		this.eventProcessor = eventProcessor;
+	}
 
-    /**
-     * Asynchronous event-based call using {@link EventProcessor}.
-     *
-     * @param receiver
-     * @param message
-     */
-    @Override
-    protected void callDirectReceive(final CommunicationReceiver receiver, final Message message) {
-        eventProcessor.addEvent(EventMessageType.EVENT_MESSAGE, this, null, new EventBasedMessage(receiver, message));
-    }
+	/**
+	 * Asynchronous event-based call using {@link EventProcessor}.
+	 *
+	 * @param receiver
+	 * @param message
+	 */
+	@Override
+	protected void callDirectReceive(final CommunicationReceiver receiver, final Message message) {
+		eventProcessor.addEvent(EventMessageType.EVENT_MESSAGE, this, null, new EventBasedMessage(receiver, message));
+	}
 
-    @Override
-    public EventProcessor getEventProcessor() {
-        return eventProcessor;
-    }
+	@Override
+	public EventProcessor getEventProcessor() {
+		return eventProcessor;
+	}
 
-    @Override
-    public void handleEvent(Event event) {
+	@Override
+	public void handleEvent(Event event) {
 
-        if (event.isType(EventMessageType.EVENT_MESSAGE)) {
-            ((EventBasedMessage) event.getContent()).receiver.receiveMessage(((EventBasedMessage) event.getContent()).message);
-        }
+		if (event.isType(EventMessageType.EVENT_MESSAGE)) {
+			((EventBasedMessage) event.getContent()).receiver.receiveMessage(((EventBasedMessage) event.getContent()).message);
+		}
 
-    }
+	}
 
-    class EventBasedMessage {
+	class EventBasedMessage {
 
-        final CommunicationReceiver receiver;
-        final Message message;
+		final CommunicationReceiver receiver;
+		final Message message;
 
-        public EventBasedMessage(CommunicationReceiver receiver, Message message) {
-            this.receiver = receiver;
-            this.message = message;
-        }
-    }
+		public EventBasedMessage(CommunicationReceiver receiver, Message message) {
+			this.receiver = receiver;
+			this.message = message;
+		}
+	}
 }
 
 enum EventMessageType{
 
-    EVENT_MESSAGE
+	EVENT_MESSAGE
 }

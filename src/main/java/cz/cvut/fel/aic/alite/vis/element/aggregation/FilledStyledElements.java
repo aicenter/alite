@@ -22,6 +22,6 @@ import java.awt.Color;
 
 public interface FilledStyledElements extends StyledElements {
 
-    public Color getFillColor();
+	public Color getFillColor();
 
 }

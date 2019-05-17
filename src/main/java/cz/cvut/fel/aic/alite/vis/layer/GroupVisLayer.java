@@ -31,8 +31,8 @@ package cz.cvut.fel.aic.alite.vis.layer;
  */
 public interface GroupVisLayer extends VisLayer {
 
-    public void addSubLayer(VisLayer layer);
+	public void addSubLayer(VisLayer layer);
 
-    public void removeSubLayer(VisLayer layer);
+	public void removeSubLayer(VisLayer layer);
 
 }

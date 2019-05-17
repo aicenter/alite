@@ -28,9 +28,9 @@ import cz.cvut.fel.aic.alite.common.capability.CapabilityRegisterImpl;
  */
 public class DirectoryFacilitatorSingleton extends CapabilityRegisterImpl {
 
-    private static final DirectoryFacilitatorSingleton instance = new DirectoryFacilitatorSingleton();
+	private static final DirectoryFacilitatorSingleton instance = new DirectoryFacilitatorSingleton();
 
-    static public CapabilityRegister getInstance() {
-        return instance;
-    }
+	static public CapabilityRegister getInstance() {
+		return instance;
+	}
 }

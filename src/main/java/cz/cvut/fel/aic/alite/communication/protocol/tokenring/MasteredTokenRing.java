@@ -37,83 +37,83 @@ import java.util.LinkedList;
  */
 public abstract class MasteredTokenRing extends TokenRing {
 
-    private final SimpleProtocol simpleProtocol;
-    private final LinkedList<Object> waitingTokens = new LinkedList<Object>();
-    private boolean tokenOnTheWay = false;
+	private final SimpleProtocol simpleProtocol;
+	private final LinkedList<Object> waitingTokens = new LinkedList<Object>();
+	private boolean tokenOnTheWay = false;
 
-    /**
-     *
-     * @param communicator
-     * @param directory
-     * @param name
-     */
-    public MasteredTokenRing(Communicator communicator, CapabilityRegister directory, String name) {
-        super(communicator, directory, name);
-        simpleProtocol = new SimpleProtocol(communicator, name) {
+	/**
+	 *
+	 * @param communicator
+	 * @param directory
+	 * @param name
+	 */
+	public MasteredTokenRing(Communicator communicator, CapabilityRegister directory, String name) {
+		super(communicator, directory, name);
+		simpleProtocol = new SimpleProtocol(communicator, name) {
 
-            @Override
-            protected void processMessage(Object content) {
-                invokeToken(content);
-            }
-        };
+			@Override
+			protected void processMessage(Object content) {
+				invokeToken(content);
+			}
+		};
 
-    }
+	}
 
-    /**
-     * Sends an token to the ring. The method {@link handleToken(Object token)} will
-     * be called on all agents in the ring.
-     *
-     * @param token a token to be sent
-     */
-    synchronized public void invokeToken(Object token) {
-        refresh();
-        if (isMaster()) {
-            if (!waitingTokens.contains(token)) {
-                waitingTokens.add(token);
-                if (!tokenOnTheWay) {
-                    startNextToken();
-                }
-            }
-        } else {
-            simpleProtocol.sendMessage(token, getMaster());
-        }
-    }
+	/**
+	 * Sends an token to the ring. The method {@link handleToken(Object token)} will
+	 * be called on all agents in the ring.
+	 *
+	 * @param token a token to be sent
+	 */
+	synchronized public void invokeToken(Object token) {
+		refresh();
+		if (isMaster()) {
+			if (!waitingTokens.contains(token)) {
+				waitingTokens.add(token);
+				if (!tokenOnTheWay) {
+					startNextToken();
+				}
+			}
+		} else {
+			simpleProtocol.sendMessage(token, getMaster());
+		}
+	}
 
-    /**
-     * Sends an token to the ring. The method {@link handleToken(Object token)} will
-     * be called on all agents in the ring.
-     *
-     * @param token a token to be sent
-     * @param callback TokenRingInform callback (ignored!)
-     */
-    @Override
-    synchronized public void invokeToken(Object token, TokenRingInform callback) {
-        invokeToken(token);
-    }
+	/**
+	 * Sends an token to the ring. The method {@link handleToken(Object token)} will
+	 * be called on all agents in the ring.
+	 *
+	 * @param token a token to be sent
+	 * @param callback TokenRingInform callback (ignored!)
+	 */
+	@Override
+	synchronized public void invokeToken(Object token, TokenRingInform callback) {
+		invokeToken(token);
+	}
 
-    synchronized private void startNextToken() {
-        tokenOnTheWay = true;
-        if (waitingTokens.isEmpty()) {
-            tokenOnTheWay = false;
-        } else {
-            final Object token = waitingTokens.removeFirst();
-            handleToken(token, new TokenProcessCallback() {
+	synchronized private void startNextToken() {
+		tokenOnTheWay = true;
+		if (waitingTokens.isEmpty()) {
+			tokenOnTheWay = false;
+		} else {
+			final Object token = waitingTokens.removeFirst();
+			handleToken(token, new TokenProcessCallback() {
 
-                public void processingDone() {
-                    superInvokeToken(token);
-                }
-            });
+				public void processingDone() {
+					superInvokeToken(token);
+				}
+			});
 
-        }
+		}
 
-    }
+	}
 
-    private void superInvokeToken(Object token) {
-        super.invokeToken(token, new TokenRingInform() {
+	private void superInvokeToken(Object token) {
+		super.invokeToken(token, new TokenRingInform() {
 
-            public void tokenBack() {
-                startNextToken();
-            }
-        });
-    }
+			public void tokenBack() {
+				startNextToken();
+			}
+		});
+	}
 }

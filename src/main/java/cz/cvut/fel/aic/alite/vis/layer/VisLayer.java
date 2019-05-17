@@ -39,14 +39,14 @@ import cz.cvut.fel.aic.alite.vis.Vis;
  */
 public interface VisLayer {
 
-    public void init(Vis vis);
+	public void init(Vis vis);
 
-    public void deinit(Vis vis);
+	public void deinit(Vis vis);
 
-    public void paint(Graphics2D canvas);
+	public void paint(Graphics2D canvas);
 
-    public String getLayerDescription();
+	public String getLayerDescription();
 
-    public void setHelpOverrideString(String string);
+	public void setHelpOverrideString(String string);
 
 }

@@ -37,38 +37,38 @@ import cz.cvut.fel.aic.alite.environment.Sensor;
  */
 public abstract class EventBasedEnvironment extends Environment {
 
-    private final EventProcessor eventProcessor;
-    private final EventBasedHandler handler;
+	private final EventProcessor eventProcessor;
+	private final EventBasedHandler handler;
 
-    public EventBasedEnvironment(EventProcessor eventProcessor) {
-        this.eventProcessor = eventProcessor;
+	public EventBasedEnvironment(EventProcessor eventProcessor) {
+		this.eventProcessor = eventProcessor;
 
-        handler = new EventBasedHandler();
-    }
+		handler = new EventBasedHandler();
+	}
 
-    public EventProcessor getEventProcessor() {
-        return eventProcessor;
-    }
+	public EventProcessor getEventProcessor() {
+		return eventProcessor;
+	}
 
-    public EventBasedEnvironment.EventBasedHandler handler() {
-        return handler;
-    }
+	public EventBasedEnvironment.EventBasedHandler handler() {
+		return handler;
+	}
 
-    public class EventBasedHandler extends Handler {
+	public class EventBasedHandler extends Handler {
 
-        protected EventBasedHandler() {
-        }
+		protected EventBasedHandler() {
+		}
 
-        @Override
-        public <C extends Action> C addAction(Class<C> clazz, Entity entity) {
-            return instantiateEnvironmentClass(clazz, entity, new Class<?>[] {EventBasedEnvironment.class, Entity.class});
-        }
+		@Override
+		public <C extends Action> C addAction(Class<C> clazz, Entity entity) {
+			return instantiateEnvironmentClass(clazz, entity, new Class<?>[] {EventBasedEnvironment.class, Entity.class});
+		}
 
-        @Override
-        public <C extends Sensor> C addSensor(Class<C> clazz, Entity entity) {
-            return instantiateEnvironmentClass(clazz, entity, new Class<?>[] {EventBasedEnvironment.class, Entity.class});
-        }
+		@Override
+		public <C extends Sensor> C addSensor(Class<C> clazz, Entity entity) {
+			return instantiateEnvironmentClass(clazz, entity, new Class<?>[] {EventBasedEnvironment.class, Entity.class});
+		}
 
-    }
+	}
 
 }

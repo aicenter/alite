@@ -26,18 +26,18 @@ import cz.cvut.fel.aic.alite.planner.spatialmaneuver.PathFindSpecification;
 
 public class ToEndManeuver extends ToManeuver {
 
-    public ToEndManeuver(Point3d start, Vector3d direction, double time, PathFindSpecification specification) {
-        super(start, direction, time, specification.getTo(), specification.getToDirection(), specification);
-    }
+	public ToEndManeuver(Point3d start, Vector3d direction, double time, PathFindSpecification specification) {
+		super(start, direction, time, specification.getTo(), specification.getToDirection(), specification);
+	}
 
-    @Override
-    public boolean isEnding() {
-        return true;
-    }
+	@Override
+	public boolean isEnding() {
+		return true;
+	}
 
-    @Override
-    public void accept(ManeuverVisitor visitor) {
-        visitor.visit(this);
-    }
+	@Override
+	public void accept(ManeuverVisitor visitor) {
+		visitor.visit(this);
+	}
 
 }

@@ -29,13 +29,13 @@ import java.util.LinkedList;
  */
 public class DefaultPlan extends LinkedList<Task> implements Plan {
 
-    private static final long serialVersionUID = -5734327377766938273L;
+	private static final long serialVersionUID = -5734327377766938273L;
 
-    @Override
-    public DefaultPlan getReadOnly() {
-        DefaultPlan dp = new DefaultPlan();
-        dp.addAll(Collections.unmodifiableList(this));
-        return dp;
-    }
+	@Override
+	public DefaultPlan getReadOnly() {
+		DefaultPlan dp = new DefaultPlan();
+		dp.addAll(Collections.unmodifiableList(this));
+		return dp;
+	}
 
 }

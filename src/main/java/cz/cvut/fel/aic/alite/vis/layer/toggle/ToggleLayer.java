@@ -32,24 +32,24 @@ import cz.cvut.fel.aic.alite.vis.layer.GroupLayer;
  */
 public class ToggleLayer extends GroupLayer {
 
-    private boolean enabled = true;
+	private boolean enabled = true;
 
-    public ToggleLayer() {
-    }
+	public ToggleLayer() {
+	}
 
-    public boolean getEnabled() {
-        return enabled;
-    }
+	public boolean getEnabled() {
+		return enabled;
+	}
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
 
-    @Override
-    public void paint(Graphics2D canvas) {
-        if (enabled) {
-            super.paint(canvas);
-        }
-    }
+	@Override
+	public void paint(Graphics2D canvas) {
+		if (enabled) {
+			super.paint(canvas);
+		}
+	}
 
 }

@@ -26,8 +26,8 @@ package cz.cvut.fel.aic.alite.common.event;
  */
 public interface EventHandler {
 
-    public EventProcessor getEventProcessor();
+	public EventProcessor getEventProcessor();
 
-    public void handleEvent(Event event);
+	public void handleEvent(Event event);
 
 }

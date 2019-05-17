@@ -29,18 +29,18 @@ import cz.cvut.fel.aic.alite.communication.Communicator;
  */
 public class CNPTaskBaseSyncIterDefault extends CNPTaskBaseSyncIter{
 
-    public CNPTaskBaseSyncIterDefault(Communicator communicator, CapabilityRegister directory, String name) {
-        super(communicator, directory, name);
-    }
+	public CNPTaskBaseSyncIterDefault(Communicator communicator, CapabilityRegister directory, String name) {
+		super(communicator, directory, name);
+	}
 
-    public CNPTaskBaseSyncIterDefault(Communicator communicator, CapabilityRegister directory) {
-        super(communicator, directory);
-    }
+	public CNPTaskBaseSyncIterDefault(Communicator communicator, CapabilityRegister directory) {
+		super(communicator, directory);
+	}
 
-    @Override
-    void tryToImprove(Task task, PlanCost estR) {
-//         System.out.println(this.toString()+" Improving "+task+" with cost "+estR.toString());
-        invokeImprovement(false);
-    }
+	@Override
+	void tryToImprove(Task task, PlanCost estR) {
+//		 System.out.println(this.toString()+" Improving "+task+" with cost "+estR.toString());
+		invokeImprovement(false);
+	}
 
 }

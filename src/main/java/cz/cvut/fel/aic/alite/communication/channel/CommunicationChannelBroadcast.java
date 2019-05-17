@@ -25,5 +25,5 @@ package cz.cvut.fel.aic.alite.communication.channel;
  */
 public interface CommunicationChannelBroadcast {
 
-    public static String BROADCAST_ADDRESS = "*";
+	public static String BROADCAST_ADDRESS = "*";
 }

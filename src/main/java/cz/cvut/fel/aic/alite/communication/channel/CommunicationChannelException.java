@@ -24,6 +24,6 @@ package cz.cvut.fel.aic.alite.communication.channel;
  */
 public class CommunicationChannelException extends Exception {
 
-    private static final long serialVersionUID = -8392863386738205406L;
+	private static final long serialVersionUID = -8392863386738205406L;
 
 }

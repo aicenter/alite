@@ -32,8 +32,8 @@ import cz.cvut.fel.aic.alite.creator.CreatorFactory;
  */
 public class Main {
 
-    public static void main(String[] args) {
-        CreatorFactory.createCreator(args).create();
-    }
+	public static void main(String[] args) {
+		CreatorFactory.createCreator(args).create();
+	}
 
 }

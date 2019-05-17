@@ -27,12 +27,12 @@ package cz.cvut.fel.aic.alite.common.event;
  */
 public abstract class EventHandlerAdapter implements EventHandler {
 
-    /**
-     * This method is obsolete and is not even used. It returns null now.
-     * @return null pointer
-     */
-    @Override
-    public EventProcessor getEventProcessor() {
-        return null;
-    }
+	/**
+	 * This method is obsolete and is not even used. It returns null now.
+	 * @return null pointer
+	 */
+	@Override
+	public EventProcessor getEventProcessor() {
+		return null;
+	}
 }

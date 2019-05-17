@@ -33,42 +33,42 @@ import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
  */
 public abstract class SubscribeProtocolReceiver extends SubscribeProtocolSender {
 
-    private final MessageHandler messagehandler;
+	private final MessageHandler messagehandler;
 
-    /**
-     *
-     * @param communicator
-     * @param directory
-     * @param name
-     */
-    public SubscribeProtocolReceiver(final Communicator communicator, CapabilityRegister directory, String name) {
-        super(communicator, directory, name);
-        directory.register(agentName, getName());
-        messagehandler = new ProtocolMessageHandler(this) {
+	/**
+	 *
+	 * @param communicator
+	 * @param directory
+	 * @param name
+	 */
+	public SubscribeProtocolReceiver(final Communicator communicator, CapabilityRegister directory, String name) {
+		super(communicator, directory, name);
+		directory.register(agentName, getName());
+		messagehandler = new ProtocolMessageHandler(this) {
 
-            @Override
-            public void handleMessage(Message message, ProtocolContent content) {
-                processMessage(content);
-            }
-        };
-        communicator.addMessageHandler(messagehandler);
-    }
+			@Override
+			public void handleMessage(Message message, ProtocolContent content) {
+				processMessage(content);
+			}
+		};
+		communicator.addMessageHandler(messagehandler);
+	}
 
-    private void processMessage(ProtocolContent content) {
-//        String session = content.getSession();
-        Object body = content.getData();
-        switch (content.getPerformative()) {
-            case INFORM:
-                handleInform(body);
-                break;
-            default:
-        }
-    }
+	private void processMessage(ProtocolContent content) {
+//		String session = content.getSession();
+		Object body = content.getData();
+		switch (content.getPerformative()) {
+			case INFORM:
+				handleInform(body);
+				break;
+			default:
+		}
+	}
 
-    /**
-     * This methods is called if some other agent sends the subscribed inform to this protocol.
-     *
-     * @param inform
-     */
-    abstract protected void handleInform(Object inform);
+	/**
+	 * This methods is called if some other agent sends the subscribed inform to this protocol.
+	 *
+	 * @param inform
+	 */
+	abstract protected void handleInform(Object inform);
 }

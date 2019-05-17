@@ -28,25 +28,25 @@ import cz.cvut.fel.aic.alite.communication.protocol.DefaultProtocol;
  */
 public class Cnp extends DefaultProtocol {
 
-    static final String CNP_PROTOCOL_NAME = "CONTRACT_NET_PROTOCOL";
+	static final String CNP_PROTOCOL_NAME = "CONTRACT_NET_PROTOCOL";
 
-    /**
-     *
-     * @param communicator
-     * @param name
-     */
-    public Cnp(Communicator communicator, String name) {
-        super(communicator, buildName(name));
-    }
+	/**
+	 *
+	 * @param communicator
+	 * @param name
+	 */
+	public Cnp(Communicator communicator, String name) {
+		super(communicator, buildName(name));
+	}
 
-    /**
-     * Builds a unique name of the protocol in the form
-     * {@code CNP_PROTOCOL_NAME + ": " + name;}
-     *
-     * @param name
-     * @return the name of the protocol
-     */
-    protected static String buildName(String name) {
-        return CNP_PROTOCOL_NAME + ": " + name;
-    }
+	/**
+	 * Builds a unique name of the protocol in the form
+	 * {@code CNP_PROTOCOL_NAME + ": " + name;}
+	 *
+	 * @param name
+	 * @return the name of the protocol
+	 */
+	protected static String buildName(String name) {
+		return CNP_PROTOCOL_NAME + ": " + name;
+	}
 }

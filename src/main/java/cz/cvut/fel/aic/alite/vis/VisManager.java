@@ -68,283 +68,283 @@ import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
  */
 public class VisManager {
 
-    private static final int FPS_MAX = 24;
-    private static final int VIS_THREAD_PRIORITY = Thread.MIN_PRIORITY;
+	private static final int FPS_MAX = 24;
+	private static final int VIS_THREAD_PRIORITY = Thread.MIN_PRIORITY;
 
-    private static final List<VisLayer> layers = new CopyOnWriteArrayList<VisLayer>();
-    private static VisManager instance = null;
+	private static final List<VisLayer> layers = new CopyOnWriteArrayList<VisLayer>();
+	private static VisManager instance = null;
 
-    private static String recordingFilepath = "";
-    private static long frame_no = 0;
-    private static Muxer muxer;
-    private static Encoder encoder;
-    private static Rational framerate;
-    private static MediaPacket packet;
-    private static MediaPicture picture;
-    private static MediaPictureConverter converter;
-    private static EventProcessor processor;
-    private static ScreenRecordingEventHandler handler;
+	private static String recordingFilepath = "";
+	private static long frame_no = 0;
+	private static Muxer muxer;
+	private static Encoder encoder;
+	private static Rational framerate;
+	private static MediaPacket packet;
+	private static MediaPicture picture;
+	private static MediaPictureConverter converter;
+	private static EventProcessor processor;
+	private static ScreenRecordingEventHandler handler;
 
-    private VisManager() {
-        new Thread(new Runnable() {
+	private VisManager() {
+		new Thread(new Runnable() {
 
-            @Override
-            public void run() {
-                Thread.currentThread().setPriority(VIS_THREAD_PRIORITY);
-                while (true) {
-                    long startNanos = System.nanoTime();
-                    update();
-                    long endNanos = System.nanoTime();
+			@Override
+			public void run() {
+				Thread.currentThread().setPriority(VIS_THREAD_PRIORITY);
+				while (true) {
+					long startNanos = System.nanoTime();
+					update();
+					long endNanos = System.nanoTime();
 
-                    long sleepNanos = (long) (1.0 / FPS_MAX * 1000000000.0)
-                            - (endNanos - startNanos);
-                    sleepNanos = sleepNanos < 0 ? 0 : sleepNanos;
-                    long sleepMillis = sleepNanos / 1000000;
-                    sleepNanos -= sleepMillis * 1000000;
+					long sleepNanos = (long) (1.0 / FPS_MAX * 1000000000.0)
+							- (endNanos - startNanos);
+					sleepNanos = sleepNanos < 0 ? 0 : sleepNanos;
+					long sleepMillis = sleepNanos / 1000000;
+					sleepNanos -= sleepMillis * 1000000;
 
-                    try {
-                        Thread.sleep(sleepMillis, (int) sleepNanos);
-                    } catch (InterruptedException ex) {
-                    }
-                }
-            }
-        }, "Alite VisManager Thread").start();
-    }
+					try {
+						Thread.sleep(sleepMillis, (int) sleepNanos);
+					} catch (InterruptedException ex) {
+					}
+				}
+			}
+		}, "Alite VisManager Thread").start();
+	}
 
-    /**
-     * sets initial parameters of the window, call this before creating the
-     * window
-     *
-     */
-    public static void setInitParam(final String title, final int canvasWidth, final int canvasHeight) {
-        Vis.setInitParam(title, canvasWidth, canvasHeight);
-    }
+	/**
+	 * sets initial parameters of the window, call this before creating the
+	 * window
+	 *
+	 */
+	public static void setInitParam(final String title, final int canvasWidth, final int canvasHeight) {
+		Vis.setInitParam(title, canvasWidth, canvasHeight);
+	}
 
-    /**
-     * sets initial parameters of the window, call this before creating the
-     * window
-     */
-    public static void setInitParam(final String title, final int canvasWidth, final int canvasHeight, final int worldSizeX, final int worldSizeY) {
-        setInitParam(title, canvasWidth, canvasHeight);
-        setSceneParam(new SceneParams(){
+	/**
+	 * sets initial parameters of the window, call this before creating the
+	 * window
+	 */
+	public static void setInitParam(final String title, final int canvasWidth, final int canvasHeight, final int worldSizeX, final int worldSizeY) {
+		setInitParam(title, canvasWidth, canvasHeight);
+		setSceneParam(new SceneParams(){
 
-            @Override
-            public Rectangle getWorldBounds() {
-                return new Rectangle(0, 0, worldSizeX, worldSizeY);
-            }
-        });
-    }
+			@Override
+			public Rectangle getWorldBounds() {
+				return new Rectangle(0, 0, worldSizeX, worldSizeY);
+			}
+		});
+	}
 
-    /**
-     * @deprecated use setSceneParams instead
-     */
-    public static void setPanningBounds(Rectangle bounds) {
-        Vis.setPanningBounds(bounds);
-    }
+	/**
+	 * @deprecated use setSceneParams instead
+	 */
+	public static void setPanningBounds(Rectangle bounds) {
+		Vis.setPanningBounds(bounds);
+	}
 
-    public static void setInvertYAxis(boolean enabled) {
-        Vis.setInvertYAxis(enabled);
-    }
+	public static void setInvertYAxis(boolean enabled) {
+		Vis.setInvertYAxis(enabled);
+	}
 
-    public static void setSceneParam(SceneParams sceneParams) {
-        Vis.setSceneParams(sceneParams);
-    }
+	public static void setSceneParam(SceneParams sceneParams) {
+		Vis.setSceneParams(sceneParams);
+	}
 
-    public static synchronized void init(EventProcessor eventProcessor) {
-        VisManager.processor = eventProcessor;
-        if (instance == null) {
-            instance = new VisManager();
+	public static synchronized void init(EventProcessor eventProcessor) {
+		VisManager.processor = eventProcessor;
+		if (instance == null) {
+			instance = new VisManager();
 
-            for (VisLayer visLayer : layers) {
-                visLayer.init(Vis.getInstance());
-            }
-        }
-    }
+			for (VisLayer visLayer : layers) {
+				visLayer.init(Vis.getInstance());
+			}
+		}
+	}
 
-    public static void registerLayer(VisLayer layer) {
-        if (layers.contains(layer)) {
-            return;
-        }
-        layers.add(layer);
-        if (instance != null) {
-            layer.init(Vis.getInstance());
-        }
-    }
+	public static void registerLayer(VisLayer layer) {
+		if (layers.contains(layer)) {
+			return;
+		}
+		layers.add(layer);
+		if (instance != null) {
+			layer.init(Vis.getInstance());
+		}
+	}
 
-    public static void unregisterLayer(VisLayer layer) {
-        if (instance != null) {
-            layer.deinit(Vis.getInstance());
-        }
-        layers.remove(layer);
-    }
+	public static void unregisterLayer(VisLayer layer) {
+		if (instance != null) {
+			layer.deinit(Vis.getInstance());
+		}
+		layers.remove(layer);
+	}
 
-    public static List<VisLayer> getLayers() {
-        return Collections.unmodifiableList(layers);
-    }
+	public static List<VisLayer> getLayers() {
+		return Collections.unmodifiableList(layers);
+	}
 
-    public static void unregisterLayers() {
-        for (VisLayer layer : layers) {
-            if (instance != null) {
-                layer.deinit(Vis.getInstance());
-            }
-            layers.remove(layer);
-        }
-    }
+	public static void unregisterLayers() {
+		for (VisLayer layer : layers) {
+			if (instance != null) {
+				layer.deinit(Vis.getInstance());
+			}
+			layers.remove(layer);
+		}
+	}
 
-    public static void swapLayers(VisLayer x, VisLayer y) {
-        int xpos = layers.indexOf(x);
-        int ypos = layers.indexOf(y);
-        Collections.swap(layers, xpos, ypos);
-    }
+	public static void swapLayers(VisLayer x, VisLayer y) {
+		int xpos = layers.indexOf(x);
+		int ypos = layers.indexOf(y);
+		Collections.swap(layers, xpos, ypos);
+	}
 
-    public static void setRecordingFilepath(String path){ recordingFilepath = path; }
+	public static void setRecordingFilepath(String path){ recordingFilepath = path; }
 
-    public static void saveToFile(int width, int height) {
-        try {
-            ImageIO.write((RenderedImage) renderImage(width, height), "png",
-                    new File(recordingFilepath + "screen_capture" + System.currentTimeMillis() + ".png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	public static void saveToFile(int width, int height) {
+		try {
+			ImageIO.write((RenderedImage) renderImage(width, height), "png",
+					new File(recordingFilepath + "screen_capture" + System.currentTimeMillis() + ".png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public static void startVideoRecording(int width, int height){
-        //Video recording implemented thanks to this demo:
-        // https://github.com/artclarke/humble-video/blob/master/humble-video-demos/src/main/java/io/humble/video/demos/RecordAndEncodeVideo.java
+	public static void startVideoRecording(int width, int height){
+		//Video recording implemented thanks to this demo:
+		// https://github.com/artclarke/humble-video/blob/master/humble-video-demos/src/main/java/io/humble/video/demos/RecordAndEncodeVideo.java
 
-        framerate = Rational.make(1, 25);
+		framerate = Rational.make(1, 25);
 
-        muxer = Muxer.make(recordingFilepath + "screen_recording" + System.currentTimeMillis() + ".mp4", null, null);
+		muxer = Muxer.make(recordingFilepath + "screen_recording" + System.currentTimeMillis() + ".mp4", null, null);
 
-        final Codec codec = Codec.findEncodingCodec(Codec.ID.CODEC_ID_H264);
-        encoder = Encoder.make(codec);
-        encoder.setWidth(width);
-        encoder.setHeight(height);
+		final Codec codec = Codec.findEncodingCodec(Codec.ID.CODEC_ID_H264);
+		encoder = Encoder.make(codec);
+		encoder.setWidth(width);
+		encoder.setHeight(height);
 
-        final PixelFormat.Type pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
-        encoder.setPixelFormat(pixelformat);
-        encoder.setTimeBase(framerate);
+		final PixelFormat.Type pixelformat = PixelFormat.Type.PIX_FMT_YUV420P;
+		encoder.setPixelFormat(pixelformat);
+		encoder.setTimeBase(framerate);
 
-        if (muxer.getFormat().getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
-            encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
+		if (muxer.getFormat().getFlag(MuxerFormat.Flag.GLOBAL_HEADER))
+			encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
 
-        encoder.open(null, null);
-        muxer.addNewStream(encoder);
+		encoder.open(null, null);
+		muxer.addNewStream(encoder);
 
-        try {
-            muxer.open(null, null);
-        } catch (InterruptedException | IOException e) {
-            e.printStackTrace();
-        }
+		try {
+			muxer.open(null, null);
+		} catch (InterruptedException | IOException e) {
+			e.printStackTrace();
+		}
 
-        picture = MediaPicture.make(
-                encoder.getWidth(),
-                encoder.getHeight(),
-                pixelformat);
-        picture.setTimeBase(framerate);
+		picture = MediaPicture.make(
+				encoder.getWidth(),
+				encoder.getHeight(),
+				pixelformat);
+		picture.setTimeBase(framerate);
 
-        handler = new ScreenRecordingEventHandler(processor, width, height);
-        handler.recordingStarted();
-        processor.addEvent(handler, 40);
-    }
+		handler = new ScreenRecordingEventHandler(processor, width, height);
+		handler.recordingStarted();
+		processor.addEvent(handler, 40);
+	}
 
-    public static void encodeFrame(int width, int height) {
+	public static void encodeFrame(int width, int height) {
 
-        packet = MediaPacket.make();
-        final BufferedImage screen = convertToType(renderImage(width, height), width, height, BufferedImage.TYPE_3BYTE_BGR);
+		packet = MediaPacket.make();
+		final BufferedImage screen = convertToType(renderImage(width, height), width, height, BufferedImage.TYPE_3BYTE_BGR);
 
-        if (converter == null)
-            converter = MediaPictureConverterFactory.createConverter(screen, picture);
-        converter.toPicture(picture, screen, frame_no);
-        frame_no++;
+		if (converter == null)
+			converter = MediaPictureConverterFactory.createConverter(screen, picture);
+		converter.toPicture(picture, screen, frame_no);
+		frame_no++;
 
-        do {
-            encoder.encode(packet, picture);
-            if (packet.isComplete())
-                muxer.write(packet, false);
-        } while (packet.isComplete());
+		do {
+			encoder.encode(packet, picture);
+			if (packet.isComplete())
+				muxer.write(packet, false);
+		} while (packet.isComplete());
 
-    }
+	}
 
-    public static void stopVideoRecording(){
-        handler.recordingStopped();
-    }
+	public static void stopVideoRecording(){
+		handler.recordingStopped();
+	}
 
-    public static void finishVideoRecording(){
-        packet = MediaPacket.make();
-        do {
-            encoder.encode(packet, null);
-            if (packet.isComplete())
-                muxer.write(packet,  false);
-        } while (packet.isComplete());
+	public static void finishVideoRecording(){
+		packet = MediaPacket.make();
+		do {
+			encoder.encode(packet, null);
+			if (packet.isComplete())
+				muxer.write(packet,  false);
+		} while (packet.isComplete());
 
-        muxer.close();
-        frame_no = 0;
-    }
+		muxer.close();
+		frame_no = 0;
+	}
 
-    public static Image renderImage(int width, int height) {
-        Image image = Vis.getInstance().createImage(width, height);
-        Graphics2D graphics = (Graphics2D) image.getGraphics();
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	public static Image renderImage(int width, int height) {
+		Image image = Vis.getInstance().createImage(width, height);
+		Graphics2D graphics = (Graphics2D) image.getGraphics();
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-        for (VisLayer visLayer : layers) {
-            drawLayer(visLayer, graphics);
-        }
-        return image;
-    }
+		for (VisLayer visLayer : layers) {
+			drawLayer(visLayer, graphics);
+		}
+		return image;
+	}
 
-    private static void update() {
-        Graphics2D graphics = Vis.getCanvas();
-        for (VisLayer visLayer : layers) {
-            drawLayer(visLayer, graphics);
-        }
-        Vis.flip();
-    }
+	private static void update() {
+		Graphics2D graphics = Vis.getCanvas();
+		for (VisLayer visLayer : layers) {
+			drawLayer(visLayer, graphics);
+		}
+		Vis.flip();
+	}
 
-    private static void drawLayer(VisLayer visLayer, Graphics2D graphics) {
-        try {
-            visLayer.paint(graphics);
-        } catch (ConcurrentModificationException e) {
-            Logger.getLogger(VisManager.class.getName()).log(Level.DEBUG, "Skipped layer drawing.");
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            e.printStackTrace(new PrintWriter(sw));
-            String stacktrace = sw.toString();
-            Logger.getLogger(VisManager.class.getName()).log(
-                    Level.WARN,
-                    "Vis layer " + visLayer
-                            + " has thrown the following exception:\n"
-                            + stacktrace);
-        }
-    }
+	private static void drawLayer(VisLayer visLayer, Graphics2D graphics) {
+		try {
+			visLayer.paint(graphics);
+		} catch (ConcurrentModificationException e) {
+			Logger.getLogger(VisManager.class.getName()).log(Level.DEBUG, "Skipped layer drawing.");
+		} catch (Exception e) {
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			String stacktrace = sw.toString();
+			Logger.getLogger(VisManager.class.getName()).log(
+					Level.WARN,
+					"Vis layer " + visLayer
+							+ " has thrown the following exception:\n"
+							+ stacktrace);
+		}
+	}
 
-    private static BufferedImage convertToType(Image sourceImage, int width, int height, int targetType)
-    {
-        BufferedImage image = new BufferedImage(width, height, targetType);
-        image.getGraphics().drawImage(sourceImage, 0, 0, null);
-        return image;
-    }
+	private static BufferedImage convertToType(Image sourceImage, int width, int height, int targetType)
+	{
+		BufferedImage image = new BufferedImage(width, height, targetType);
+		image.getGraphics().drawImage(sourceImage, 0, 0, null);
+		return image;
+	}
 
-    /**
-     * Extend this class to set custom scene parameters using the {@link VisManager#setSceneParam(SceneParams) method.}
-     */
-    public static class SceneParams {
+	/**
+	 * Extend this class to set custom scene parameters using the {@link VisManager#setSceneParam(SceneParams) method.}
+	 */
+	public static class SceneParams {
 
-        public Rectangle getWorldBounds() {
-            return new Rectangle(-Integer.MAX_VALUE/2, -Integer.MAX_VALUE/2, Integer.MAX_VALUE, Integer.MAX_VALUE);
-        }
+		public Rectangle getWorldBounds() {
+			return new Rectangle(-Integer.MAX_VALUE/2, -Integer.MAX_VALUE/2, Integer.MAX_VALUE, Integer.MAX_VALUE);
+		}
 
-        public Point2d getDefaultLookAt() {
-            Rectangle world = getWorldBounds();
-            return new Point2d(world.x + world.width/2, world.y + world.height/2);
-        }
+		public Point2d getDefaultLookAt() {
+			Rectangle world = getWorldBounds();
+			return new Point2d(world.x + world.width/2, world.y + world.height/2);
+		}
 
-        public double getDefaultZoomFactor() {
-            return 1.0;
-        }
+		public double getDefaultZoomFactor() {
+			return 1.0;
+		}
 
-    }
+	}
 
 }

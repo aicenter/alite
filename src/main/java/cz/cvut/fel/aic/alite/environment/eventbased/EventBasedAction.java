@@ -39,25 +39,25 @@ import cz.cvut.fel.aic.alite.environment.Storage;
  */
 public abstract class EventBasedAction extends Action implements EventHandler {
 
-    private final EventBasedEnvironment environment;
+	private final EventBasedEnvironment environment;
 
-    public EventBasedAction(EventBasedEnvironment environment, Entity relatedEntity) {
-        super(environment, relatedEntity);
+	public EventBasedAction(EventBasedEnvironment environment, Entity relatedEntity) {
+		super(environment, relatedEntity);
 
-        this.environment = environment;
-    }
+		this.environment = environment;
+	}
 
-    protected EventBasedEnvironment getEnvironment() {
-        return environment;
-    }
+	protected EventBasedEnvironment getEnvironment() {
+		return environment;
+	}
 
-    @Override
-    public EventProcessor getEventProcessor() {
-        return environment.getEventProcessor();
-    }
+	@Override
+	public EventProcessor getEventProcessor() {
+		return environment.getEventProcessor();
+	}
 
-    @Override
-    public void handleEvent(Event event) {
-    }
+	@Override
+	public void handleEvent(Event event) {
+	}
 
 }

@@ -7,36 +7,36 @@ import cz.cvut.fel.aic.alite.vis.VisManager;
 
 public class ScreenRecordingEventHandler implements EventHandler {
 
-    private int width, height;
-    private boolean recording = false;
-    private EventProcessor eventProcessor;
+	private int width, height;
+	private boolean recording = false;
+	private EventProcessor eventProcessor;
 
-    public ScreenRecordingEventHandler(EventProcessor eventProcessor, int width, int height){
-        this.eventProcessor = eventProcessor;
-        this.width = width;
-        this.height = height;
-    }
+	public ScreenRecordingEventHandler(EventProcessor eventProcessor, int width, int height){
+		this.eventProcessor = eventProcessor;
+		this.width = width;
+		this.height = height;
+	}
 
-    public void recordingStarted(){
-        recording = true;
-    }
+	public void recordingStarted(){
+		recording = true;
+	}
 
-    public void recordingStopped(){
-        recording = false;
-    }
+	public void recordingStopped(){
+		recording = false;
+	}
 
-    @Override
-    public EventProcessor getEventProcessor() {
-        return null;
-    }
+	@Override
+	public EventProcessor getEventProcessor() {
+		return null;
+	}
 
-    @Override
-    public void handleEvent(Event event) {
-        if(recording){
-            VisManager.encodeFrame(width, height);
-            eventProcessor.addEvent(this, 40);
-        } else {
-            VisManager.finishVideoRecording();
-        }
-    }
+	@Override
+	public void handleEvent(Event event) {
+		if(recording){
+			VisManager.encodeFrame(width, height);
+			eventProcessor.addEvent(this, 40);
+		} else {
+			VisManager.finishVideoRecording();
+		}
+	}
 }

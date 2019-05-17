@@ -28,14 +28,14 @@ import java.awt.Color;
  */
 public interface ColoredTextLineElement extends Element {
 
-    /**
-     * @return color of the line
-     */
-    public Color getColor();
+	/**
+	 * @return color of the line
+	 */
+	public Color getColor();
 
-    /**
-     * @return text of the line
-     */
-    public String getTextLine();
+	/**
+	 * @return text of the line
+	 */
+	public String getTextLine();
 
 }

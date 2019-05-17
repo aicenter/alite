@@ -68,10 +68,10 @@ public class DefaultPerformerCommunicator extends DefaultCommunicator implements
 	public void addPerformerChannel(CommunicationPerformerChannel channel) {
 		performerChannels.add(channel);
 		addChannel(channel);
-    }
+	}
 	
 	@Override
-    public void addMessageHandler(MessageHandler handler) {
+	public void addMessageHandler(MessageHandler handler) {
 		if(!performerChannels.isEmpty()){
 			LOGGER.info("The performReceive() method must be (periodically) called in order to receive any messages!");
 		}
