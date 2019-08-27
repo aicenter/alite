@@ -117,7 +117,9 @@ public class EventProcessor {
 	 *			the payload of the event (by the user specified data)
 	 */
 	public void addEvent(Enum type, EventHandler recipient, String owner, Object content) {
-		addEvent(type, recipient, owner, content, 1);
+//		addEvent(type, recipient, owner, content, 1);
+		Event event = new Event(eventIdCounter++, currentTime, type, recipient, owner, content);
+		fireEvent(event);
 	}
 
 	/**
