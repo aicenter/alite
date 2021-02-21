@@ -38,10 +38,9 @@ import cz.cvut.fel.aic.alite.common.event.typed.ScreenRecordingEventHandler;
 import io.humble.video.*;
 import io.humble.video.awt.MediaPictureConverter;
 import io.humble.video.awt.MediaPictureConverterFactory;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
+import org.slf4j.LoggerFactory;
 
 /**
  * The VisManager is a singleton holding the visualization layers and providing
@@ -67,6 +66,8 @@ import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
  * @author Ondrej Milenovsky
  */
 public class VisManager {
+	
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(VisManager.class);
 
 	private static final int FPS_MAX = 24;
 	private static final int VIS_THREAD_PRIORITY = Thread.MIN_PRIORITY;
@@ -307,16 +308,11 @@ public class VisManager {
 		try {
 			visLayer.paint(graphics);
 		} catch (ConcurrentModificationException e) {
-			Logger.getLogger(VisManager.class.getName()).log(Level.DEBUG, "Skipped layer drawing.");
+			LOGGER.debug("Skipped layer drawing.");
 		} catch (Exception e) {
 			StringWriter sw = new StringWriter();
 			e.printStackTrace(new PrintWriter(sw));
-			String stacktrace = sw.toString();
-			Logger.getLogger(VisManager.class.getName()).log(
-					Level.WARN,
-					"Vis layer " + visLayer
-							+ " has thrown the following exception:\n"
-							+ stacktrace);
+			LOGGER.warn("Vis layer {} has thrown the following exception: \n {}", visLayer, sw.toString());
 		}
 	}
 

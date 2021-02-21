@@ -22,9 +22,7 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The event processor is a wrapper for an event-queue cycle.
@@ -46,6 +44,8 @@ import org.apache.log4j.Logger;
  * @author Antonin Komenda
  */
 public class EventProcessor {
+	
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(EventProcessor.class);
 
 	private volatile boolean running = true;
 	private volatile boolean finished = false;
@@ -79,7 +79,7 @@ public class EventProcessor {
 							thread.wait();
 						}
 					} catch (InterruptedException ex) {
-						Logger.getLogger(EventProcessor.class.getName()).log(Level.ERROR, null, ex);
+						LOGGER.error(ex.getMessage());
 					}
 				}
 			}

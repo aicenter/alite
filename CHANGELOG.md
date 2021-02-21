@@ -1,3 +1,8 @@
+# 2.1.0
+
+## Changed
+- logs changed to logback
+
 # 2.0.0
 
 ## Changed

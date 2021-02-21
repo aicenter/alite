@@ -24,8 +24,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -35,7 +34,7 @@ import org.apache.log4j.Logger;
  */
 public class Configurator {
 
-	private static final Logger LOGGER = Logger.getLogger(Configurator.class);
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Configurator.class);
 
 	private static ConfigurationInterface config;
 	private static boolean initialized = false;

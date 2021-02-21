@@ -21,9 +21,8 @@ package cz.cvut.fel.aic.alite.communication;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import cz.cvut.fel.aic.alite.communication.channel.CommunicationPerformerChannel;
+import org.slf4j.LoggerFactory;
 
 /**
  * Used to implement passive communication - in order to receive any messages 
@@ -36,7 +35,7 @@ import cz.cvut.fel.aic.alite.communication.channel.CommunicationPerformerChannel
  */
 public class DefaultPerformerCommunicator extends DefaultCommunicator implements PerformerCommunicator {
 
-	private static final Logger LOGGER = Logger.getLogger(DefaultPerformerCommunicator.class);
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(DefaultPerformerCommunicator.class);
 
 	private final List<CommunicationPerformerChannel> performerChannels = new LinkedList<CommunicationPerformerChannel>();
 	

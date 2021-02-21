@@ -22,11 +22,10 @@ import cz.cvut.fel.aic.alite.common.event.Event;
 import cz.cvut.fel.aic.alite.common.event.EventHandlerAdapter;
 import cz.cvut.fel.aic.alite.common.event.EventProcessor;
 import cz.cvut.fel.aic.alite.environment.Sensor;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
+import org.slf4j.LoggerFactory;
 
 /**
  * The simulation is a wrapper of the {@link EventProcessor} with an additional
@@ -45,7 +44,7 @@ public class Simulation extends EventProcessor {
 	private static final int DEFAULT_MIN_WAIT_TIME = 5;
 	
 
-	private Logger LOGGER = Logger.getLogger(Simulation.class);
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Simulation.class);
 
 	private double simulationSpeed = 0;
 	private long eventCount = 0;
@@ -292,7 +291,7 @@ public class Simulation extends EventProcessor {
 			try {
 				Thread.sleep(timeToSleepTotal, timeToSleepNanoTotal);
 			} catch (InterruptedException ex) {
-				Logger.getLogger(EventProcessor.class.getName()).log(Level.ERROR, null, ex);
+				LOGGER.error(ex.getMessage());
 			}
 		}
 	}
@@ -321,8 +320,7 @@ public class Simulation extends EventProcessor {
 			long time = Math.max(drawDeadline - System.currentTimeMillis(), 1);
 			thread2.join(time);
 		} catch (InterruptedException e) {
-			Logger.getLogger(EventProcessor.class.getName()).log(Level.INFO,
-					null, e);
+			LOGGER.info(e.getMessage());
 		}
 		lastDrawed = System.currentTimeMillis();
 		// recompute event delay

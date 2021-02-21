@@ -18,9 +18,6 @@
  */
 package cz.cvut.fel.aic.alite.communication.acquaintance.iterative;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
 import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
 import cz.cvut.fel.aic.alite.communication.acquaintance.CNPTaskBase;
@@ -29,6 +26,7 @@ import cz.cvut.fel.aic.alite.communication.acquaintance.Task;
 import cz.cvut.fel.aic.alite.communication.acquaintance.Task.TaskListener;
 import cz.cvut.fel.aic.alite.communication.protocol.cnp.CnpInitiator;
 import cz.cvut.fel.aic.alite.communication.protocol.cnp.CnpInitiator.CancelCallback;
+import org.slf4j.LoggerFactory;
 
 /**
  *  ReallocateAll dynamic improvement strategy for {@link CNPTaskBaseSyncIter}.
@@ -36,6 +34,8 @@ import cz.cvut.fel.aic.alite.communication.protocol.cnp.CnpInitiator.CancelCallb
  * @author Jiri Vokrinek
  */
 public class CNPTaskBaseSyncIterRA extends CNPTaskBaseSyncIter {
+	
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(CNPTaskBaseSyncIterRA.class);
 
 	public CNPTaskBaseSyncIterRA(Communicator communicator, CapabilityRegister directory, String name) {
 		super(communicator, directory, name);
@@ -62,7 +62,7 @@ public class CNPTaskBaseSyncIterRA extends CNPTaskBaseSyncIter {
 
 					public void allocated() {
 						if (estR.isLower((PlanCost) tasksOwned.get(task).getWinnerResponse())) {
-							Logger.getLogger(CNPTaskBase.class.getName()).log(Level.ERROR, "REALLOCATION");
+							LOGGER.error("REALLOCATION");
 						}
 						if (!lastResource.equals(tasksOwned.get(task).getWinner())) {
 							//improved by delegation

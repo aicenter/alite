@@ -20,9 +20,6 @@ package cz.cvut.fel.aic.alite.communication.acquaintance.iterative;
 
 import java.util.LinkedList;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
 import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
 import cz.cvut.fel.aic.alite.communication.acquaintance.CNPTaskBase;
@@ -34,6 +31,7 @@ import cz.cvut.fel.aic.alite.communication.protocol.request.RequestInformInitiat
 import cz.cvut.fel.aic.alite.communication.protocol.request.RequestInformResponder;
 import cz.cvut.fel.aic.alite.communication.protocol.tokenring.MasteredTokenRing;
 import cz.cvut.fel.aic.alite.communication.protocol.tokenring.TokenRing.TokenProcessCallback;
+import org.slf4j.LoggerFactory;
 
 /**
  *  Default agent TaskBase with iterative improvement and synchronization..
@@ -48,6 +46,8 @@ import cz.cvut.fel.aic.alite.communication.protocol.tokenring.TokenRing.TokenPro
  * @author Jiri Vokrinek
  */
 public abstract class CNPTaskBaseSyncIter extends CNPTaskBase {
+	
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(CNPTaskBaseSyncIter.class);
 
 	private final MasteredTokenRing synchroRing;
 	private static final String DEFAULT_RING_NAME = "DEFAULT_RING_NAME";
@@ -149,7 +149,7 @@ public abstract class CNPTaskBaseSyncIter extends CNPTaskBase {
 		try {
 			super.invokeTask(task, taskListener, allocationCallback);
 		} catch (UnknownTaskTypeException ex) {
-			Logger.getLogger(CNPTaskBaseSyncIterRA.class.getName()).log(Level.ERROR, null, ex);
+			LOGGER.error(ex.getMessage());
 		}
 	}
 

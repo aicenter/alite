@@ -18,8 +18,7 @@
  */
 package cz.cvut.fel.aic.alite.creator;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The {@link CreatorFactory} dynamically instantiates a particular {@link Creator}
@@ -33,6 +32,8 @@ import org.apache.log4j.Logger;
  * @author Antonin Komenda
  */
 public class CreatorFactory {
+	
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(CreatorFactory.class);
 
 	public static Creator createCreator(String[] args) {
 		if (args.length == 0) {
@@ -44,7 +45,7 @@ public class CreatorFactory {
 			creator.init(args);
 			return creator;
 		} catch (Exception ex) {
-			Logger.getLogger(CreatorFactory.class.getName()).log(Level.FATAL, null, ex);
+			LOGGER.error(ex.getMessage());
 		}
 		return null;
 	}

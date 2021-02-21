@@ -29,9 +29,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *  Default agent TaskBase.
@@ -46,6 +44,8 @@ import org.apache.log4j.Logger;
  * @author Jiri Vokrinek
  */
 public class CNPTaskBase implements TaskBase {
+	
+	private static final org.slf4j.Logger LOGGER = LoggerFactory.getLogger(CNPTaskBase.class);
 
 	final protected HashMap<String, PlanBase> planBases = new HashMap<String, PlanBase>();
 	// tasks planned by a local PlanBase
@@ -214,7 +214,7 @@ public class CNPTaskBase implements TaskBase {
 			Task what = (Task) request;
 			PlanBase planner = planBases.get(what.getTaskType());
 			if (planner == null) {
-				Logger.getLogger(CNPTaskBase.class.getName()).log(Level.ERROR, "REGISTERING TASK TYPE");
+				LOGGER.error("REGISTERING TASK TYPE");
 				return null;
 			}
 			return planner.evaluateInsertion(what);
@@ -225,7 +225,7 @@ public class CNPTaskBase implements TaskBase {
 			final Task what = (Task) getRequest(session);
 			PlanBase planner = planBases.get(what.getTaskType());
 			if (planner == null) {
-				Logger.getLogger(CNPTaskBase.class.getName()).log(Level.ERROR, "PLANNING TASK TYPE");
+				LOGGER.error("PLANNING TASK TYPE");
 			} else {
 				if (planner.insertTask(what, new TaskListener() {
 
@@ -253,13 +253,13 @@ public class CNPTaskBase implements TaskBase {
 		@Override
 		protected void canceled(String session) {
 			if (!isActive(session)) {
-				Logger.getLogger(CNPTaskBase.class.getName()).log(Level.WARN, "CANCELING NON ACTIVE SESSION");
+				LOGGER.warn("CANCELING NON ACTIVE SESSION");
 				return;
 			}
 			Task what = (Task) getRequest(session);
 			PlanBase planner = planBases.get(what.getTaskType());
 			if (planner == null) {
-				Logger.getLogger(CNPTaskBase.class.getName()).log(Level.ERROR, "CANCELING TASK TYPE");
+				LOGGER.error("CANCELING TASK TYPE");
 			} else {
 				planner.removeTask(what);
 				tasksPlanned.remove(what);
