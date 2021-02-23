@@ -19,12 +19,7 @@
 package cz.cvut.fel.aic.alite.common.event;
 
 import static org.junit.Assert.* ;
-
 import org.junit.Test;
-
-import cz.cvut.fel.aic.alite.common.event.Event;
-import cz.cvut.fel.aic.alite.common.event.EventHandler;
-import cz.cvut.fel.aic.alite.common.event.EventProcessor;
 
 public class TestEventProcessorDeterministic {
 

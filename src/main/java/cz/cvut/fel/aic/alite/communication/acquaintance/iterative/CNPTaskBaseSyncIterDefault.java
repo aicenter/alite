@@ -18,10 +18,10 @@
  */
 package cz.cvut.fel.aic.alite.communication.acquaintance.iterative;
 
-import cz.cvut.fel.aic.alite.communication.acquaintance.PlanCost;
-import cz.cvut.fel.aic.alite.communication.acquaintance.Task;
 import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
+import cz.cvut.fel.aic.alite.communication.acquaintance.PlanCost;
+import cz.cvut.fel.aic.alite.communication.acquaintance.Task;
 
 /**
  *

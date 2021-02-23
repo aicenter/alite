@@ -18,11 +18,9 @@
  */
 package cz.cvut.fel.aic.alite.vis.element.implemetation;
 
-import java.awt.Color;
-
-import javax.vecmath.Point3d;
-
 import cz.cvut.fel.aic.alite.vis.element.StyledPoint;
+import java.awt.Color;
+import javax.vecmath.Point3d;
 
 public class StyledPointImpl implements StyledPoint {
 

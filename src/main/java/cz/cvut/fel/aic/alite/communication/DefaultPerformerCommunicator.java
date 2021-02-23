@@ -18,10 +18,9 @@
  */
 package cz.cvut.fel.aic.alite.communication;
 
+import cz.cvut.fel.aic.alite.communication.channel.CommunicationPerformerChannel;
 import java.util.LinkedList;
 import java.util.List;
-
-import cz.cvut.fel.aic.alite.communication.channel.CommunicationPerformerChannel;
 import org.slf4j.LoggerFactory;
 
 /**

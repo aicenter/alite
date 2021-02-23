@@ -18,29 +18,24 @@
  */
 package cz.cvut.fel.aic.alite.communication;
 
-import cz.cvut.fel.aic.alite.communication.DefaultCommunicator;
-import cz.cvut.fel.aic.alite.communication.Message;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-
-import junit.framework.Assert;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import cz.cvut.fel.aic.alite.communication.channel.CommunicationChannelException;
 import cz.cvut.fel.aic.alite.communication.channel.DirectCommunicationChannel;
-import cz.cvut.fel.aic.alite.communication.channel.UnknownReceiversException;
 import cz.cvut.fel.aic.alite.communication.channel.DirectCommunicationChannel.DefaultReceiverTable;
 import cz.cvut.fel.aic.alite.communication.channel.DirectCommunicationChannel.ReceiverTable;
+import cz.cvut.fel.aic.alite.communication.channel.UnknownReceiversException;
 import cz.cvut.fel.aic.alite.communication.content.error.ErrorContent;
 import cz.cvut.fel.aic.alite.communication.content.error.ErrorMessageHandler;
 import cz.cvut.fel.aic.alite.communication.protocol.Performative;
 import cz.cvut.fel.aic.alite.communication.protocol.Protocol;
 import cz.cvut.fel.aic.alite.communication.protocol.ProtocolContent;
 import cz.cvut.fel.aic.alite.communication.protocol.ProtocolMessageHandler;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
+import junit.framework.Assert;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class TestMessaging {
 

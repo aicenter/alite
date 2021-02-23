@@ -18,10 +18,9 @@
  */
 package cz.cvut.fel.aic.alite.planner.general.graph;
 
-import org.jgrapht.graph.AbstractGraph;
-
 import cz.cvut.fel.aic.alite.planner.general.Operator;
 import cz.cvut.fel.aic.alite.planner.general.Problem;
+import org.jgrapht.graph.AbstractGraph;
 
 public class GraphPlanningProblem<N, E, G extends AbstractGraph<N,E>> extends Problem {
 	

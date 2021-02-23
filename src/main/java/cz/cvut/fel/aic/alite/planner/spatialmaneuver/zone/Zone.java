@@ -19,7 +19,6 @@
 package cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone;
 
 import java.util.List;
-
 import javax.vecmath.Point3d;
 
 /**

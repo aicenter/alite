@@ -18,17 +18,16 @@
  */
 package cz.cvut.fel.aic.alite.common.capability;
 
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
 import cz.cvut.fel.aic.alite.communication.Communicator;
 import cz.cvut.fel.aic.alite.communication.Message;
 import cz.cvut.fel.aic.alite.communication.MessageHandler;
 import cz.cvut.fel.aic.alite.communication.channel.CommunicationChannelBroadcast;
 import cz.cvut.fel.aic.alite.communication.content.Content;
 import cz.cvut.fel.aic.alite.communication.content.error.ErrorContent;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Provides basic distributed implementation of @CapabilityRegister using @HashMap 

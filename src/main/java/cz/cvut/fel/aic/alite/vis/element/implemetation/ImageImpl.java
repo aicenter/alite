@@ -18,9 +18,8 @@
  */
 package cz.cvut.fel.aic.alite.vis.element.implemetation;
 
-import java.awt.image.BufferedImage;
-
 import cz.cvut.fel.aic.alite.vis.element.Image;
+import java.awt.image.BufferedImage;
 
 public class ImageImpl implements Image {
 

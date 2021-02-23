@@ -18,11 +18,10 @@
  */
 package cz.cvut.fel.aic.alite.communication;
 
+import cz.cvut.fel.aic.alite.communication.content.Content;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
-
-import cz.cvut.fel.aic.alite.communication.content.Content;
 
 public final class Message implements Serializable {
 

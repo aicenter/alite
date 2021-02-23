@@ -18,9 +18,8 @@
  */
 package cz.cvut.fel.aic.alite.communication.protocol.cnp;
 
-import cz.cvut.fel.aic.alite.communication.Communicator;
-import cz.cvut.fel.aic.alite.communication.protocol.cnp.CnpInitiator;
 import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
+import cz.cvut.fel.aic.alite.communication.Communicator;
 import java.util.Set;
 
 /**

@@ -18,19 +18,18 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.common;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.URL;
-import java.util.Arrays;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.element.Image;
 import cz.cvut.fel.aic.alite.vis.element.aggregation.ImageElements;
 import cz.cvut.fel.aic.alite.vis.element.implemetation.ImageImpl;
 import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
 import cz.cvut.fel.aic.alite.vis.layer.terminal.ImageLayer;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.URL;
+import java.util.Arrays;
 
 public class LogoLayer extends ImageLayer {
 

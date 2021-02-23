@@ -23,7 +23,6 @@ import cz.cvut.fel.aic.alite.vis.element.ColoredTextLineElement;
 import cz.cvut.fel.aic.alite.vis.element.aggregation.ColoredTextLineElements;
 import cz.cvut.fel.aic.alite.vis.layer.DraggableLayer;
 import cz.cvut.fel.aic.alite.vis.layer.terminal.TerminalLayer;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;

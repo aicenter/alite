@@ -18,12 +18,11 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer;
 
+import cz.cvut.fel.aic.alite.vis.Vis;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import cz.cvut.fel.aic.alite.vis.Vis;
 
 /**
  * A default implementation of the {@link GroupVisLayer} interface.

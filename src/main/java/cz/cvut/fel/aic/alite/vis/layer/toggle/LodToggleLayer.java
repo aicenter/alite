@@ -18,9 +18,8 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.toggle;
 
-import java.awt.Graphics2D;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
+import java.awt.Graphics2D;
 
 
 /**

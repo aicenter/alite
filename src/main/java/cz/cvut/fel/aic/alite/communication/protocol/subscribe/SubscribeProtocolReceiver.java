@@ -18,12 +18,12 @@
  */
 package cz.cvut.fel.aic.alite.communication.protocol.subscribe;
 
+import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
 import cz.cvut.fel.aic.alite.communication.Message;
 import cz.cvut.fel.aic.alite.communication.MessageHandler;
 import cz.cvut.fel.aic.alite.communication.protocol.ProtocolContent;
 import cz.cvut.fel.aic.alite.communication.protocol.ProtocolMessageHandler;
-import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 
 /**
  * The general subscription protocol. For each subscribe instance the method {@link handleInform(Object inform)}

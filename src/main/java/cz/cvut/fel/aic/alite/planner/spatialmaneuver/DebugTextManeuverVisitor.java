@@ -18,11 +18,6 @@
  */
 package cz.cvut.fel.aic.alite.planner.spatialmaneuver;
 
-import java.io.PrintStream;
-
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector3d;
-
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.ManeuverVisitor;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.PitchManeuver;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.PitchToLevelManeuver;
@@ -35,6 +30,9 @@ import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.ToEndManeuver;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.ToManeuver;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.TurnManeuver;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.TurnPitchManeuver;
+import java.io.PrintStream;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector3d;
 
 
 public class DebugTextManeuverVisitor implements ManeuverVisitor {

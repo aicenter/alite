@@ -18,11 +18,9 @@
  */
 package cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver;
 
-import java.io.Serializable;
-
-import javax.vecmath.Point3d;
-
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.GroupZone;
+import java.io.Serializable;
+import javax.vecmath.Point3d;
 
 
 

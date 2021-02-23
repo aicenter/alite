@@ -18,10 +18,6 @@
  */
 package cz.cvut.fel.aic.alite.communication.acquaintance.iterative;
 
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.Map.Entry;
-
 import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
 import cz.cvut.fel.aic.alite.communication.acquaintance.PlanCost;
@@ -29,6 +25,9 @@ import cz.cvut.fel.aic.alite.communication.acquaintance.Task;
 import cz.cvut.fel.aic.alite.communication.acquaintance.Task.TaskListener;
 import cz.cvut.fel.aic.alite.communication.protocol.cnp.CnpInitiator;
 import cz.cvut.fel.aic.alite.communication.protocol.cnp.DirectoredCnpInitiator;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * DelegateAll dynamic improvement strategy for {@link CNPTaskBaseSyncIter}.

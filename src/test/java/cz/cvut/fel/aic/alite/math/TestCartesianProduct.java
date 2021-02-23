@@ -18,16 +18,13 @@
  */
 package cz.cvut.fel.aic.alite.math;
 
-import cz.cvut.fel.aic.alite.math.CartesianProduct;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
 
 public class TestCartesianProduct {

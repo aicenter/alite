@@ -18,14 +18,12 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.terminal;
 
-import java.awt.Graphics2D;
-
-import javax.vecmath.Matrix4d;
-import javax.vecmath.Vector3d;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.element.Line;
 import cz.cvut.fel.aic.alite.vis.element.aggregation.LineElements;
+import java.awt.Graphics2D;
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Vector3d;
 
 public class ArrowLayer extends LineLayer {
 // TODO: should be an extender of the LineLayer (inheritance is bad here!)

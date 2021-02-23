@@ -18,11 +18,10 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.common;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-
 import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
 import cz.cvut.fel.aic.alite.vis.layer.toggle.KeyToggleLayer;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
 public class FpsLayer extends CommonLayer {
 

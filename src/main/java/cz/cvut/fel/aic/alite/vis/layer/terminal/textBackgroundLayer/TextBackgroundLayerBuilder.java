@@ -19,7 +19,6 @@
 package cz.cvut.fel.aic.alite.vis.layer.terminal.textBackgroundLayer;
 
 import cz.cvut.fel.aic.alite.vis.element.aggregation.ColoredTextLineElements;
-
 import java.awt.Color;
 
 /**

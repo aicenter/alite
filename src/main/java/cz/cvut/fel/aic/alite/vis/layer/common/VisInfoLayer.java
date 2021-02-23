@@ -18,13 +18,12 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.common;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
 import cz.cvut.fel.aic.alite.vis.layer.toggle.KeyToggleLayer;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 
 /**
  * The VisInfoLayer shows current values of the coordinate systems of Vis.

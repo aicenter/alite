@@ -18,9 +18,8 @@
  */
 package cz.cvut.fel.aic.alite.vis.element.implemetation;
 
-import javax.vecmath.Point3d;
-
 import cz.cvut.fel.aic.alite.vis.element.Point;
+import javax.vecmath.Point3d;
 
 public class PointImpl implements Point {
 

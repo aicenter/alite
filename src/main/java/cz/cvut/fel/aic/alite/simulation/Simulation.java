@@ -22,7 +22,6 @@ import cz.cvut.fel.aic.alite.common.event.Event;
 import cz.cvut.fel.aic.alite.common.event.EventHandlerAdapter;
 import cz.cvut.fel.aic.alite.common.event.EventProcessor;
 import cz.cvut.fel.aic.alite.environment.Sensor;
-
 import java.util.LinkedList;
 import java.util.List;
 import org.slf4j.LoggerFactory;

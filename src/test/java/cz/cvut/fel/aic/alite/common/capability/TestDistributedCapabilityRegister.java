@@ -18,17 +18,13 @@
  */
 package cz.cvut.fel.aic.alite.common.capability;
 
-import cz.cvut.fel.aic.alite.common.capability.DistributedCapabilityRegisterImpl;
-import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
 import cz.cvut.fel.aic.alite.communication.DefaultCommunicator;
 import cz.cvut.fel.aic.alite.communication.channel.CommunicationChannelException;
 import cz.cvut.fel.aic.alite.communication.channel.DirectCommunicationChannel;
 import cz.cvut.fel.aic.alite.communication.channel.DirectCommunicationChannel.DefaultReceiverTable;
 import cz.cvut.fel.aic.alite.communication.channel.DirectCommunicationChannel.ReceiverTable;
+import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 public class TestDistributedCapabilityRegister {
 

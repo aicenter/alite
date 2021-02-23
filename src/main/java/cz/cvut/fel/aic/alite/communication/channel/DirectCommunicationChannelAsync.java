@@ -18,11 +18,10 @@
  */
 package cz.cvut.fel.aic.alite.communication.channel;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import cz.cvut.fel.aic.alite.communication.CommunicationReceiver;
 import cz.cvut.fel.aic.alite.communication.Message;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Asynchronous version of {@link DirectCommunicationChannel}.

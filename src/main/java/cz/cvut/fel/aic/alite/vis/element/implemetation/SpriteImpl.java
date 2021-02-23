@@ -18,12 +18,10 @@
  */
 package cz.cvut.fel.aic.alite.vis.element.implemetation;
 
+import cz.cvut.fel.aic.alite.vis.element.Sprite;
 import java.awt.image.BufferedImage;
-
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
-
-import cz.cvut.fel.aic.alite.vis.element.Sprite;
 
 public class SpriteImpl extends ImageImpl implements Sprite {
 

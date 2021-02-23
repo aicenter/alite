@@ -18,14 +18,13 @@
  */
 package cz.cvut.fel.aic.alite.communication;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import cz.cvut.fel.aic.alite.communication.channel.CommunicationChannel;
 import cz.cvut.fel.aic.alite.communication.channel.CommunicationChannelException;
 import cz.cvut.fel.aic.alite.communication.content.Content;
 import cz.cvut.fel.aic.alite.communication.content.error.ErrorContent;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  *

@@ -18,13 +18,12 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.terminal;
 
-import java.awt.BasicStroke;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.element.Point;
 import cz.cvut.fel.aic.alite.vis.element.aggregation.PointElements;
+import java.awt.BasicStroke;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 
 public class PointLayer extends TerminalLayer {
 

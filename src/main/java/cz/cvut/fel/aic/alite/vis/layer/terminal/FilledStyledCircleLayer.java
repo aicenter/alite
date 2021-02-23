@@ -18,12 +18,11 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.terminal;
 
-import java.awt.BasicStroke;
-import java.awt.Graphics2D;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.element.Circle;
 import cz.cvut.fel.aic.alite.vis.element.aggregation.FilledStyledCircleElements;
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
 
 public class FilledStyledCircleLayer extends TerminalLayer {
 

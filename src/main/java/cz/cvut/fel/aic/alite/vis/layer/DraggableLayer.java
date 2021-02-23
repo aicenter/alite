@@ -19,7 +19,6 @@
 package cz.cvut.fel.aic.alite.vis.layer;
 
 import cz.cvut.fel.aic.alite.vis.Vis;
-
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;

@@ -18,12 +18,6 @@
  */
 package cz.cvut.fel.aic.alite.planner.spatialmaneuver;
 
-import java.io.PrintStream;
-
-import javax.vecmath.Point3d;
-import javax.vecmath.Vector2d;
-import javax.vecmath.Vector3d;
-
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.ExpandManeuver;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.ExpandManeuverType;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.ExpandManeuvers;
@@ -33,6 +27,10 @@ import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.ManeuverSpecificat
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.CylinderZone;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.GroupZone;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.TransformZone;
+import java.io.PrintStream;
+import javax.vecmath.Point3d;
+import javax.vecmath.Vector2d;
+import javax.vecmath.Vector3d;
 
 
 public class TestCase {

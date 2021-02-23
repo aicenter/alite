@@ -20,7 +20,6 @@ package cz.cvut.fel.aic.alite.planner.spatialmaneuver;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
-
 import javax.vecmath.Point3d;
 
 /**

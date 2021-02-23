@@ -18,12 +18,11 @@
  */
 package cz.cvut.fel.aic.alite.environment;
 
+import cz.cvut.fel.aic.alite.common.entity.Entity;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Random;
-
-import cz.cvut.fel.aic.alite.common.entity.Entity;
 
 /**
  * The Environment is a base class for all basic environments.

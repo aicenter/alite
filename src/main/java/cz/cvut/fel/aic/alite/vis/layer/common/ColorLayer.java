@@ -18,12 +18,11 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.common;
 
+import cz.cvut.fel.aic.alite.vis.Vis;
+import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-
-import cz.cvut.fel.aic.alite.vis.Vis;
-import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
 
 public class ColorLayer extends CommonLayer {
 // TODO: the color should be requested

@@ -21,7 +21,6 @@ package cz.cvut.fel.aic.alite.vis.layer.terminal;
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.element.StyledLine;
 import cz.cvut.fel.aic.alite.vis.element.aggregation.StyledLineElements;
-
 import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics2D;

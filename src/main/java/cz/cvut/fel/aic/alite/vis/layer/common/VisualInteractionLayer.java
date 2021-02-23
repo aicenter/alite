@@ -18,13 +18,11 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.common;
 
-import java.awt.event.MouseEvent;
-
-import javax.swing.event.MouseInputAdapter;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.layer.GroupLayer;
 import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
+import java.awt.event.MouseEvent;
+import javax.swing.event.MouseInputAdapter;
 
 public class VisualInteractionLayer extends CommonLayer {
 

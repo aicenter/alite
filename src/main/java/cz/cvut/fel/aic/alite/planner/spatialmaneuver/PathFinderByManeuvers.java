@@ -18,13 +18,12 @@
  */
 package cz.cvut.fel.aic.alite.planner.spatialmaneuver;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.Maneuver;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.StartManeuver;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver.ToEndManeuver;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.PriorityQueue;
 
 
 /**

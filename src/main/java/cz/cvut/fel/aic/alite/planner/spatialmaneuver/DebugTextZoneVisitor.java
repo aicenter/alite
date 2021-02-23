@@ -18,11 +18,6 @@
  */
 package cz.cvut.fel.aic.alite.planner.spatialmaneuver;
 
-import java.io.PrintStream;
-
-import javax.vecmath.Point2d;
-import javax.vecmath.Vector3d;
-
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.BoxZone;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.CylinderZone;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.EllipsoidZone;
@@ -32,6 +27,9 @@ import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.PrismZone;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.TransformZone;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.Zone;
 import cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone.ZoneVisitor;
+import java.io.PrintStream;
+import javax.vecmath.Point2d;
+import javax.vecmath.Vector3d;
 
 
 public class DebugTextZoneVisitor implements ZoneVisitor {

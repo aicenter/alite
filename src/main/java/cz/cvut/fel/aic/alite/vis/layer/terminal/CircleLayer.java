@@ -18,13 +18,12 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.terminal;
 
-import java.awt.BasicStroke;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.element.Circle;
 import cz.cvut.fel.aic.alite.vis.element.aggregation.CircleElements;
+import java.awt.BasicStroke;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
 
 public class CircleLayer extends TerminalLayer {
 

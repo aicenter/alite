@@ -18,11 +18,11 @@
  */
 package cz.cvut.fel.aic.alite.communication.protocol.subscribe;
 
+import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
 import cz.cvut.fel.aic.alite.communication.Message;
 import cz.cvut.fel.aic.alite.communication.protocol.Performative;
 import cz.cvut.fel.aic.alite.communication.protocol.ProtocolContent;
-import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import java.util.Set;
 
 /**

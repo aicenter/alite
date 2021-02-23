@@ -18,15 +18,13 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.terminal;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-
-import javax.vecmath.Vector3d;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.element.Sprite;
 import cz.cvut.fel.aic.alite.vis.element.aggregation.SpriteElements;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import javax.vecmath.Vector3d;
 
 public class SpriteLayer extends TerminalLayer {
 

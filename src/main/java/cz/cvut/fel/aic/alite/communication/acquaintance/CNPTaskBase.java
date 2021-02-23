@@ -18,13 +18,12 @@
  */
 package cz.cvut.fel.aic.alite.communication.acquaintance;
 
-import cz.cvut.fel.aic.alite.communication.acquaintance.Task.TaskListener;
 import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
+import cz.cvut.fel.aic.alite.communication.acquaintance.Task.TaskListener;
 import cz.cvut.fel.aic.alite.communication.protocol.cnp.CnpInitiator;
 import cz.cvut.fel.aic.alite.communication.protocol.cnp.DirectoredCnpInitiator;
 import cz.cvut.fel.aic.alite.communication.protocol.cnp.DirectoredCnpResponder;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;

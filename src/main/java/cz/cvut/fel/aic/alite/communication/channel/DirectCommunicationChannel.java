@@ -18,13 +18,12 @@
  */
 package cz.cvut.fel.aic.alite.communication.channel;
 
+import cz.cvut.fel.aic.alite.communication.CommunicationReceiver;
+import cz.cvut.fel.aic.alite.communication.Message;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import cz.cvut.fel.aic.alite.communication.CommunicationReceiver;
-import cz.cvut.fel.aic.alite.communication.Message;
 
 /**
  * Direct Call communication channel.

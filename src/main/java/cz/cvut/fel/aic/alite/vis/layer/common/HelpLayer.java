@@ -18,12 +18,6 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.common;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.VisManager;
 import cz.cvut.fel.aic.alite.vis.layer.AbstractLayer;
@@ -32,6 +26,11 @@ import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
 import cz.cvut.fel.aic.alite.vis.layer.terminal.SpriteLayer;
 import cz.cvut.fel.aic.alite.vis.layer.toggle.KeyToggleLayer;
 import cz.cvut.fel.aic.alite.vis.layer.toggle.ToggleLayer;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * The HelpLayer shows a help window, if F1 is pressed.

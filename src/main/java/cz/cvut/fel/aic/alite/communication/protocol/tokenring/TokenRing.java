@@ -18,11 +18,11 @@
  */
 package cz.cvut.fel.aic.alite.communication.protocol.tokenring;
 
+import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
 import cz.cvut.fel.aic.alite.communication.protocol.DefaultProtocol;
 import cz.cvut.fel.aic.alite.communication.protocol.request.RequestInformInitiator;
 import cz.cvut.fel.aic.alite.communication.protocol.request.RequestInformResponder;
-import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import java.util.LinkedList;
 import java.util.Set;
 

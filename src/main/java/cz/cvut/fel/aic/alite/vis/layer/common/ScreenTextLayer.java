@@ -18,10 +18,9 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.common;
 
+import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
 import java.awt.Color;
 import java.awt.Graphics2D;
-
-import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
 
 /**
  * The layer prints one line of text to the given screen coordinates.

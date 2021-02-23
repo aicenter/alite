@@ -18,13 +18,13 @@
  */
 package cz.cvut.fel.aic.alite.communication.protocol.query;
 
+import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
 import cz.cvut.fel.aic.alite.communication.Message;
 import cz.cvut.fel.aic.alite.communication.MessageHandler;
+import cz.cvut.fel.aic.alite.communication.protocol.Performative;
 import cz.cvut.fel.aic.alite.communication.protocol.ProtocolContent;
 import cz.cvut.fel.aic.alite.communication.protocol.ProtocolMessageHandler;
-import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
-import cz.cvut.fel.aic.alite.communication.protocol.Performative;
 
 /**
  * The general Query protocol. For each receiver instance the method {@link handleQuery(Object query)}

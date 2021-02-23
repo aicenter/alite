@@ -18,10 +18,9 @@
  */
 package cz.cvut.fel.aic.alite.planner.spatialmaneuver.maneuver;
 
+import cz.cvut.fel.aic.alite.planner.spatialmaneuver.PathFindSpecification;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
-
-import cz.cvut.fel.aic.alite.planner.spatialmaneuver.PathFindSpecification;
 
 
 public class StraightManeuver extends Maneuver {

@@ -18,12 +18,10 @@
  */
 package cz.cvut.fel.aic.alite.planner.spatialmaneuver.zone;
 
+import cz.cvut.fel.aic.alite.planner.spatialmaneuver.GeometryUtils;
 import java.util.List;
-
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
-
-import cz.cvut.fel.aic.alite.planner.spatialmaneuver.GeometryUtils;
 
 
 public class PrismZone implements Zone {

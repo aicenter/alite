@@ -19,7 +19,6 @@
 package cz.cvut.fel.aic.alite.vis.element.implemetation;
 
 import cz.cvut.fel.aic.alite.vis.element.ColoredTextLineElement;
-
 import java.awt.Color;
 
 /**

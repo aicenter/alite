@@ -18,11 +18,9 @@
  */
 package cz.cvut.fel.aic.alite.planner.general.graph;
 
-import java.util.Set;
-
-import org.jgrapht.graph.AbstractGraph;
-
 import cz.cvut.fel.aic.alite.planner.general.Operator;
+import java.util.Set;
+import org.jgrapht.graph.AbstractGraph;
 
 public class StartOperator<N, E, G extends AbstractGraph<N, E>> implements Operator {
 

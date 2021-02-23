@@ -18,6 +18,12 @@
  */
 package cz.cvut.fel.aic.alite.vis;
 
+import cz.cvut.fel.aic.alite.common.event.EventProcessor;
+import cz.cvut.fel.aic.alite.common.event.typed.ScreenRecordingEventHandler;
+import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
+import io.humble.video.*;
+import io.humble.video.awt.MediaPictureConverter;
+import io.humble.video.awt.MediaPictureConverterFactory;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -29,17 +35,8 @@ import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import javax.imageio.ImageIO;
 import javax.vecmath.Point2d;
-
-import cz.cvut.fel.aic.alite.common.event.EventProcessor;
-import cz.cvut.fel.aic.alite.common.event.typed.ScreenRecordingEventHandler;
-import io.humble.video.*;
-import io.humble.video.awt.MediaPictureConverter;
-import io.humble.video.awt.MediaPictureConverterFactory;
-
-import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
 import org.slf4j.LoggerFactory;
 
 /**

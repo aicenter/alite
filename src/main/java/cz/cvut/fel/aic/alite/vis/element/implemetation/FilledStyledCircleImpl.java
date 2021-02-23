@@ -18,11 +18,9 @@
  */
 package cz.cvut.fel.aic.alite.vis.element.implemetation;
 
-import java.awt.Color;
-
-import javax.vecmath.Point3d;
-
 import cz.cvut.fel.aic.alite.vis.element.FilledStyledCircle;
+import java.awt.Color;
+import javax.vecmath.Point3d;
 
 public class FilledStyledCircleImpl implements FilledStyledCircle {
 

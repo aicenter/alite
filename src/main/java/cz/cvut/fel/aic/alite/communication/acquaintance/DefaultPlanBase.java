@@ -18,10 +18,9 @@
  */
 package cz.cvut.fel.aic.alite.communication.acquaintance;
 
+import cz.cvut.fel.aic.alite.communication.acquaintance.Task.TaskListener;
 import java.util.HashMap;
 import java.util.List;
-
-import cz.cvut.fel.aic.alite.communication.acquaintance.Task.TaskListener;
 
 /**
  *  Default PlanBase for testing and basic operations.

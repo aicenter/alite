@@ -18,9 +18,8 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.toggle;
 
-import java.awt.Graphics2D;
-
 import cz.cvut.fel.aic.alite.vis.layer.GroupLayer;
+import java.awt.Graphics2D;
 
 /**
  * A ToggleLayer can simply switch, if the sub-layers are drawn or not.

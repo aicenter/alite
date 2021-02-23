@@ -18,8 +18,6 @@
  */
 package cz.cvut.fel.aic.alite.communication.acquaintance.iterative;
 
-import java.util.LinkedList;
-
 import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
 import cz.cvut.fel.aic.alite.communication.acquaintance.CNPTaskBase;
@@ -31,6 +29,7 @@ import cz.cvut.fel.aic.alite.communication.protocol.request.RequestInformInitiat
 import cz.cvut.fel.aic.alite.communication.protocol.request.RequestInformResponder;
 import cz.cvut.fel.aic.alite.communication.protocol.tokenring.MasteredTokenRing;
 import cz.cvut.fel.aic.alite.communication.protocol.tokenring.TokenRing.TokenProcessCallback;
+import java.util.LinkedList;
 import org.slf4j.LoggerFactory;
 
 /**

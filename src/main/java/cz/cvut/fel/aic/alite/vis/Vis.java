@@ -19,15 +19,12 @@
 package cz.cvut.fel.aic.alite.vis;
 
 import cz.cvut.fel.aic.alite.vis.VisManager.SceneParams;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.vecmath.Point2d;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import javax.swing.JToolBar;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.vecmath.Point2d;
 
 /**
  * Vis is a singleton holding the visualization window and the drawing canvas.

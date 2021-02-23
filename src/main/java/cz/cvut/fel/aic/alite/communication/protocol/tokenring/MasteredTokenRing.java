@@ -18,9 +18,9 @@
  */
 package cz.cvut.fel.aic.alite.communication.protocol.tokenring;
 
+import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import cz.cvut.fel.aic.alite.communication.Communicator;
 import cz.cvut.fel.aic.alite.communication.protocol.simple.SimpleProtocol;
-import cz.cvut.fel.aic.alite.common.capability.CapabilityRegister;
 import java.util.LinkedList;
 
 /**

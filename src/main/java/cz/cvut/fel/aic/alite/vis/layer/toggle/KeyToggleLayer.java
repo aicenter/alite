@@ -18,13 +18,11 @@
  */
 package cz.cvut.fel.aic.alite.vis.layer.toggle;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-import javax.swing.KeyStroke;
-
 import cz.cvut.fel.aic.alite.vis.Vis;
 import cz.cvut.fel.aic.alite.vis.layer.VisLayer;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import javax.swing.KeyStroke;
 
 
 /**
