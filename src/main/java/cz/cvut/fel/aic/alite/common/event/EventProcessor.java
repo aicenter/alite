@@ -185,6 +185,11 @@ public class EventProcessor {
 		}
 
 		Event event = new Event(eventIdCounter++, currentTime + deltaTime, null, eventHandler, null, null);
+		
+		if (event.getTime() < 0) {
+			throw new RuntimeException("Event with negative currentTime generated (wraparound?)");
+		}
+		
 		eventQueue.add(event);
 	}
 

@@ -1,3 +1,7 @@
+# 2.1.1
+## Fixed
+- EventProcessor: negative time is detected even in an alternative `addEvent` method
+
 # 2.1.0
 
 ## Changed
