@@ -1,6 +1,9 @@
-# 2.1.1
+# 3.0.0
 ## Fixed
 - EventProcessor: negative time is detected even in an alternative `addEvent` method
+
+## Changed
+- AIC maven repo is now accessed from https
 
 # 2.1.0
 

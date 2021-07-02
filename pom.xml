@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<artifactId>alite</artifactId>
-	<version>2.1.1-SNAPSHOT</version> <!-- SNAPSHOT version has to be higher than the last release --> 
+	<version>3.0.0-SNAPSHOT</version> <!-- SNAPSHOT version has to be higher than the last release --> 
 	
 	<parent>
 		<groupId>cz.cvut.fel.aic</groupId>
@@ -92,7 +92,7 @@
 			<releases />
 			<id>atg-repo</id>
 			<name>atg-repo</name>
-			<url>http://jones.felk.cvut.cz/artifactory/repo</url>
+			<url>https://jones.felk.cvut.cz/artifactory/repo</url>
 		</repository>
 	</repositories>
 </project>
